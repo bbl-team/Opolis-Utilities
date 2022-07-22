@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities;
 
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,7 +20,11 @@ public class OpolisUtilities {
     public OpolisUtilities() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModItems.register(modEventBus);
+
+
         modEventBus.addListener(this::commonSetup);
+
 
         MinecraftForge.EVENT_BUS.register(this);
     }

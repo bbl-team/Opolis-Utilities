@@ -1,0 +1,12 @@
+{
+  "item.opolisutilities.copper_nugget": "Copper Nugget",
+
+  "item.opolisutilities.home_stone": "Home Stone",
+
+  "tooltips.hover.shift": "Press SHIFT for more info",
+  "tooltips.hover.alt": "Press ALT for more info",
+  "tooltips.no_location_set": "No location set!",
+  "tooltips.shift.held": "Shift right click in off hand to set location. Right click in main hand to teleport there! Only works in the overworld!",
+
+  "itemGroup.opolis_utilities": "Opolis Utilities"
+}
