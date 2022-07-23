@@ -1,13 +1,20 @@
 {
   "item.opolisutilities.copper_nugget": "Copper Nugget",
   "item.opolisutilities.wooden_shears": "Wooden Shears",
-
   "item.opolisutilities.home_stone": "Home Stone",
+  "item.opolisutilities.floating_block_item": "Floating Block",
 
-  "tooltips.hover.shift": "Press SHIFT for more info",
-  "tooltips.hover.alt": "Press ALT for more info",
-  "tooltips.no_location_set": "No location set!",
-  "tooltips.shift.held": "Shift right click in off hand to set location. Right click in main hand to teleport there! Only works in the overworld!",
+  "block.opolisutilities.floating_block_block": "Floating Block",
+
+  "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
+  "tooltips.home_stone.hover.alt": "Press ALT for more info",
+  "tooltips.home_stone.no_location_set": "No location set!",
+  "tooltips.home_stone.shift.held": "Shift right click in off hand to set location. Right click in main hand to teleport there! Only works in the overworld!",
+  "tooltip.home_stone.going_saved_location": "Going to saved location!",
+  "tooltip.home_stone.no_location": "No Location Set!",
+  "tooltip.home_stone.location_set": "Location Set!",
+
+  "tooltips.floating_block.place_in_air": "Place me in the air",
 
   "itemGroup.opolis_utilities": "Opolis Utilities"
 }

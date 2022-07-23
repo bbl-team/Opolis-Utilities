@@ -46,14 +46,14 @@ public class HomeStoneItem extends Item {
 
             itemstack.setTag(nbt);
             player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.2f,1);
-            player.sendSystemMessage(Component.literal("Location Set!"));
+            player.sendSystemMessage(Component.translatable("tooltip.home_stone.location_set").withStyle(ChatFormatting.GREEN));
         }
 
         //Checks Location set if not nothing and send message
 
         if (!level.isClientSide() && level.dimension().equals(Level.OVERWORLD) && hand == InteractionHand.MAIN_HAND && !nbt.contains("x")) {
             player.playNotifySound(SoundEvents.SHIELD_BLOCK, SoundSource.AMBIENT, 0.2f,1);
-            player.sendSystemMessage(Component.literal("No Location Set!"));
+            player.sendSystemMessage(Component.translatable("tooltip.home_stone.no_location").withStyle(ChatFormatting.RED));
         }
 
         //If location Set tps
@@ -61,10 +61,10 @@ public class HomeStoneItem extends Item {
 
             player.teleportTo(nbt.getFloat("x") + 0.5, nbt.getFloat("y")+ 1, nbt.getFloat("z")+ 0.5);
 
-            player.getCooldowns().addCooldown(this, ConfigFile.homeStoneCooldown.get()); // TODO make this configurable
+            player.getCooldowns().addCooldown(this, ConfigFile.homeStoneCooldown.get());
 
             player.playNotifySound(SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.2f,1);
-            player.sendSystemMessage(Component.literal("Going to saved location!"));
+            player.sendSystemMessage(Component.translatable("tooltip.home_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
 
             if(ConfigFile.homeStoneTakesDamage.get().equals(true)) {
 
@@ -83,11 +83,11 @@ public class HomeStoneItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
 
         if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.shift.held")
+            components.add(Component.translatable("tooltips.home_stone.shift.held")
                     .withStyle(ChatFormatting.GREEN));
             }
         else {
-            components.add(Component.translatable("tooltips.hover.shift").withStyle(ChatFormatting.BLUE));
+            components.add(Component.translatable("tooltips.home_stone.hover.shift").withStyle(ChatFormatting.BLUE));
         }
 
         if(Screen.hasAltDown()) {
@@ -102,12 +102,12 @@ public class HomeStoneItem extends Item {
                         .withStyle(ChatFormatting.GREEN));
             }
             if(!stack.hasTag()) {
-                components.add(Component.translatable("tooltips.no_location_set")
+                components.add(Component.translatable("tooltips.home_stone.no_location_set")
                         .withStyle(ChatFormatting.RED));
             }
         }
         else {
-            components.add(Component.translatable("tooltips.hover.alt")
+            components.add(Component.translatable("tooltips.home_stone.hover.alt")
                     .withStyle(ChatFormatting.BLUE));
         }
 

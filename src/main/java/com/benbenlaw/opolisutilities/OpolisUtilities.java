@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities;
 
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.mojang.logging.LogUtils;
@@ -24,6 +25,7 @@ public class OpolisUtilities {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
 
         modEventBus.addListener(this::commonSetup);
