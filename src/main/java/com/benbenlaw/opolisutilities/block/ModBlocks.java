@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.block;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.custom.DryingTableBlock;
 import com.benbenlaw.opolisutilities.item.ModCreativeModTab;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.network.chat.Component;
@@ -27,15 +28,13 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.of(Material.WOOL)
                     .instabreak()));
 
-    /*
-
-    public static final RegistryObject<Block> TEST = registerBlock("test",
-            () -> new Block(BlockBehaviour.Properties.of(Material.WOOL).instabreak()),
+    public static final RegistryObject<Block> DRYING_TABLE = registerBlock("drying_table",
+            () -> new DryingTableBlock(BlockBehaviour.Properties.of(Material.WOOL).instabreak()),
             ModCreativeModTab.OPOLIS_UTILITIES);
 
 
 
-     */
+
 
 
 

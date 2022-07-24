@@ -7,7 +7,7 @@ group = 'com.benbenlaw.opolis'
 version = '1.0'
 
 java {
-    archivesBaseName = 'opolis'
+    archivesBaseName = 'opolisutilities'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 

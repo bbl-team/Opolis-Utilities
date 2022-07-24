@@ -14,7 +14,7 @@
   "tooltip.home_stone.no_location": "No Location Set!",
   "tooltip.home_stone.location_set": "Location Set!",
 
-  "tooltips.floating_block.place_in_air": "Place me in the air",
+  "tooltips.floating_block.place_in_air": "Place in the air!",
 
   "itemGroup.opolis_utilities": "Opolis Utilities"
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#C#",
+    " # "
+  ],
+  "key": {
+    "C": {
+      "tag": "minecraft:wool"
+    },
+    "#": {
+      "item": "minecraft:feather"
+    }
+  },
+  "result": {
+    "item": "opolisutilities:floating_block_item"
+  }
+}

@@ -1,9 +1,14 @@
 package com.benbenlaw.opolisutilities;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.recipe.ModRecipes;
+import com.benbenlaw.opolisutilities.screen.DryingTableScreen;
+import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,6 +31,9 @@ public class OpolisUtilities {
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
 
         modEventBus.addListener(this::commonSetup);
@@ -33,6 +41,9 @@ public class OpolisUtilities {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
+
+
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -44,6 +55,9 @@ public class OpolisUtilities {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+
+            MenuScreens.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
+
 
         }
     }
