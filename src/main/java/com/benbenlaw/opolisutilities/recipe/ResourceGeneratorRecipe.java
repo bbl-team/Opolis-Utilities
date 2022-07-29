@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class DryingTableRecipe implements Recipe<SimpleContainer> {
+public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
@@ -21,7 +21,7 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     public final int duration;
 
 
-    public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
+    public ResourceGeneratorRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
         this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
@@ -71,19 +71,19 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<DryingTableRecipe> {
+    public static class Type implements RecipeType<ResourceGeneratorRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "drying_table";
+        public static final String ID = "resource_generator";
     }
 
-    public static class Serializer implements RecipeSerializer<DryingTableRecipe> {
+    public static class Serializer implements RecipeSerializer<ResourceGeneratorRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"drying_table");
+                new ResourceLocation(OpolisUtilities.MOD_ID,"resource_generator");
 
         @Override
-        public DryingTableRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public ResourceGeneratorRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
@@ -94,23 +94,24 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new DryingTableRecipe(id, output, inputs, duration);
+            return new ResourceGeneratorRecipe(id, output, inputs, duration);
         }
 
         @Override
-        public DryingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public ResourceGeneratorRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+            int duration = buf.readInt();
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buf));
             }
 
             ItemStack output = buf.readItem();
-            return new DryingTableRecipe(id, output, inputs, buf.readInt());
+            return new ResourceGeneratorRecipe(id, output, inputs, duration);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, DryingTableRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, ResourceGeneratorRecipe recipe) {
             buf.writeInt(recipe.getIngredients().size());
             buf.writeInt(recipe.getDuration());
             for (Ingredient ing : recipe.getIngredients()) {

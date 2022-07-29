@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.item.custom.FloatingBlockItem;
 import com.benbenlaw.opolisutilities.item.custom.HomeStone2Item;
 import com.benbenlaw.opolisutilities.item.custom.HomeStoneItem;
+import com.benbenlaw.opolisutilities.item.custom.ResourceGeneratorCoreItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -33,6 +34,15 @@ public class ModItems {
     public static final RegistryObject<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",
             () -> new FloatingBlockItem(new Item.Properties()
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+
+
+
+    public static final RegistryObject<Item> STONE_CORE = ITEMS.register("stone_core",
+            () -> new ResourceGeneratorCoreItem(new Item.Properties().durability(32)
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,0 +1,12 @@
+{
+  "type": "opolisutilities:resource_generator",
+    "ingredients": [
+      {
+        "item": "opolisutilities:stone_core"
+      }
+    ],
+  "duration": 300,
+  "output": {
+    "item": "minecraft:stone"
+  }
+}

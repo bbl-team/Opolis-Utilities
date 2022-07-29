@@ -2,14 +2,13 @@ package com.benbenlaw.opolisutilities.block;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.DryingTableBlock;
-import com.benbenlaw.opolisutilities.block.custom.MinerBlock;
+import com.benbenlaw.opolisutilities.block.custom.ResourceGeneratorBlock;
 import com.benbenlaw.opolisutilities.item.ModCreativeModTab;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -34,6 +33,13 @@ public class ModBlocks {
                     .strength(2f,2f)
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);
+
+    public static final RegistryObject<Block> RESOURCE_GENERATOR = registerBlock("resource_generator",
+            () -> new ResourceGeneratorBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2f,2f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
 
 
 
