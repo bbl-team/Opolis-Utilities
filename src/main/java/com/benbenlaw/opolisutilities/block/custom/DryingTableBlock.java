@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,7 @@ public class DryingTableBlock extends BaseEntityBlock {
         super(properties);
     }
 
+    public static final VoxelShape SHAPE = Block.box(0,0,0,16,16,16);
 
     /* BLOCK ENTITY */
 

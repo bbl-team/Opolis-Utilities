@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
-import java.util.Random;
 
 public class DryingTableBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
@@ -42,7 +41,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 200;
+    private int maxProgress = 100;
 
     public DryingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -58,6 +57,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
             public void set(int index, int value) {
                 switch(index) {
                     case 0: DryingTableBlockEntity.this.progress = value; break;
+               //     case 1: DryingTableBlockEntity.this.maxProgress = value; break;
                     case 1: DryingTableBlockEntity.this.maxProgress = value; break;
                 }
             }
@@ -124,8 +124,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-
-
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DryingTableBlockEntity pBlockEntity) {
         if(hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
@@ -148,27 +146,9 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
 
         Optional<DryingTableRecipe> match = level.getRecipeManager()
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
-
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
-        //            && hasWaterInWaterSlot(entity) && hasToolsInToolSlot(entity);
     }
-
-    /*
-
-    private static boolean hasWaterInWaterSlot(DryingTableBlockEntity entity) {
-        return PotionUtils.getPotion(entity.itemHandler.getStackInSlot(0)) == Potions.WATER;
-    }
-
-     */
-
-    /*
-
-    private static boolean hasToolsInToolSlot(DryingTableBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(2).getItem() == ModItems.GEM_CUTTER_TOOL.get();
-    }
-
-     */
 
     private static void craftItem(DryingTableBlockEntity entity) {
         Level level = entity.level;
@@ -182,12 +162,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
 
         if(match.isPresent()) {
             entity.itemHandler.extractItem(0,1, false);
-            //        entity.itemHandler.extractItem(1,1, false);
-            //        entity.itemHandler.getStackInSlot(2).hurt(1, (RandomSource) new Random(), null);
-
             entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
-
             entity.resetProgress();
         }
     }
@@ -203,26 +179,4 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
-
-
-  //  LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create((WorldlyContainer) this, Direction.UP, Direction.DOWN);
-
-
-    /*
-    @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-        if (!this.remove && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == Direction.UP)
-                return handlers[0].cast();
-            else
-                return handlers[1].cast();
-        }
-        return super.getCapability(capability, facing);
-    }
-
-     */
-
-
-
 }

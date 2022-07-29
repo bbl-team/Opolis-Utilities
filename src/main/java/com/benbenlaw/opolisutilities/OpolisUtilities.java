@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
@@ -9,6 +10,11 @@ import com.benbenlaw.opolisutilities.screen.DryingTableScreen;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,6 +42,7 @@ public class OpolisUtilities {
         ModRecipes.register(modEventBus);
 
 
+
         modEventBus.addListener(this::commonSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
@@ -56,9 +63,14 @@ public class OpolisUtilities {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
 
-            MenuScreens.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
+            event.enqueueWork(() -> {
 
+                MenuScreens.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
 
+                //BlockEntityRenderers.register(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), RenderType.cutout());
+                //ItemBlockRenderTypes.setRenderLayer(ModBlocks.DRYING_TABLE.get(), RenderType.cutout());
+
+            });
         }
     }
 }

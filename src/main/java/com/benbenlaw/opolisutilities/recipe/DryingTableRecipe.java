@@ -18,16 +18,23 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> recipeItems;
+    public final int duration;
 
-    public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems) {
+
+    public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
         this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
+        this.duration = duration;
     }
 
     @Override
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
         return recipeItems.get(0).test(pContainer.getItem(0));
+    }
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return recipeItems;
     }
 
     @Override
@@ -43,6 +50,10 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     @Override
     public ItemStack getResultItem() {
         return output.copy();
+    }
+
+    public int getDuration() {
+        return this.duration;
     }
 
     @Override
@@ -77,34 +88,38 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
             NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
+            int duration = GsonHelper.getAsInt(json, "duration");
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new DryingTableRecipe(id, output, inputs);
+            return new DryingTableRecipe(id, output, inputs, duration);
         }
 
         @Override
         public DryingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+            int duration = buf.readInt();
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buf));
             }
 
             ItemStack output = buf.readItem();
-            return new DryingTableRecipe(id, output, inputs);
+            return new DryingTableRecipe(id, output, inputs, duration);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, DryingTableRecipe recipe) {
             buf.writeInt(recipe.getIngredients().size());
+            buf.writeInt(recipe.getDuration());
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);
             }
             buf.writeItemStack(recipe.getResultItem(), false);
         }
+
 
         public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
             return INSTANCE;

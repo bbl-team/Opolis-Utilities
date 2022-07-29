@@ -24,8 +24,6 @@ public class ModRecipes{
             SERIALIZER.register("drying_table", () -> DryingTableRecipe.Serializer.INSTANCE);
 
 
-
-
     public static void register(IEventBus eventBus) {
         SERIALIZER.register(eventBus);
     }
