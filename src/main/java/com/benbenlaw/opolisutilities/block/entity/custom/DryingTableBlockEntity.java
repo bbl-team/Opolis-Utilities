@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 import java.util.Optional;
 
 public class DryingTableBlockEntity extends BlockEntity implements MenuProvider {
@@ -38,6 +39,25 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
+            Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+
+                    Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack)))
+            );
+
 
     protected final ContainerData data;
     private int progress = 0;
@@ -78,11 +98,19 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
         return new DryingTableMenu(containerID, inventory, this, this.data);
     }
 
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return lazyItemHandler.cast();
+        }
+        return super.getCapability(cap);
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return lazyItemHandler.cast();
+        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return directionWrappedHandlerMap.get(side).cast();
         }
 
         return super.getCapability(cap, side);
@@ -98,6 +126,11 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
     public void invalidateCaps()  {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        for (Direction dir : Direction.values()) {
+            if(directionWrappedHandlerMap.containsKey(dir)) {
+                directionWrappedHandlerMap.get(dir).invalidate();
+            }
+        }
     }
 
     @Override

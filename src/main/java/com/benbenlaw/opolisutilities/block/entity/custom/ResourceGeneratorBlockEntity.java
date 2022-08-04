@@ -5,8 +5,10 @@ import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,9 +30,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
-public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider {
+public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider  {
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -38,6 +43,24 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
+            Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+
+                    Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+
+                    Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack)))
+            );
 
     protected final ContainerData data;
     private int progress = 0;
@@ -78,11 +101,19 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         return new ResourceGeneratorMenu(containerID, inventory, this, this.data);
     }
 
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return lazyItemHandler.cast();
+        }
+        return super.getCapability(cap);
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return lazyItemHandler.cast();
+        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return directionWrappedHandlerMap.get(side).cast();
         }
 
         return super.getCapability(cap, side);
@@ -98,6 +129,11 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     public void invalidateCaps()  {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        for (Direction dir : Direction.values()) {
+            if(directionWrappedHandlerMap.containsKey(dir)) {
+                directionWrappedHandlerMap.get(dir).invalidate();
+            }
+        }
     }
 
     @Override
@@ -160,9 +196,13 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 .getRecipeFor(ResourceGeneratorRecipe.Type.INSTANCE, inventory, level);
 
         if(match.isPresent()) {
-            entity.itemHandler.extractItem(0,0, false);
+            if(entity.itemHandler.getStackInSlot(0).hurt(1, level.random, null)){
+                entity.itemHandler.extractItem(0,1, false);
+            }
+
             entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
+
             entity.resetProgress();
         }
     }
@@ -178,4 +218,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
+
+
 }

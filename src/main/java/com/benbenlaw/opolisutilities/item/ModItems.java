@@ -36,11 +36,24 @@ public class ModItems {
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
 
+//CORES + FRAGMENTS
 
+    public static final RegistryObject<Item> EMPTY_CORE = ITEMS.register("empty_core",
+            () -> new ResourceGeneratorCoreItem(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
     public static final RegistryObject<Item> STONE_CORE = ITEMS.register("stone_core",
-            () -> new ResourceGeneratorCoreItem(new Item.Properties().durability(32)
+            () -> new ResourceGeneratorCoreItem(new Item.Properties().durability(8)
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> STONE_FRAGMENT = ITEMS.register("stone_fragment",
+            () -> new ResourceGeneratorCoreItem(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+
+
+
+
 
 
 

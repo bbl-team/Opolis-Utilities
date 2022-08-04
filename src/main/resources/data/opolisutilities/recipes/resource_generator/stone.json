@@ -7,6 +7,6 @@
     ],
   "duration": 300,
   "output": {
-    "item": "minecraft:stone"
+    "item": "opolisutilities:stone_fragment"
   }
-}
+}c
