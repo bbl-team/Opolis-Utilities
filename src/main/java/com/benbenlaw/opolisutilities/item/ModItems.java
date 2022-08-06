@@ -1,10 +1,7 @@
 package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.item.custom.FloatingBlockItem;
-import com.benbenlaw.opolisutilities.item.custom.HomeStone2Item;
-import com.benbenlaw.opolisutilities.item.custom.HomeStoneItem;
-import com.benbenlaw.opolisutilities.item.custom.ResourceGeneratorCoreItem;
+import com.benbenlaw.opolisutilities.item.custom.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,8 +24,13 @@ public class ModItems {
             () -> new HomeStoneItem(new Item.Properties().durability(32)
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
-    public static final RegistryObject<Item> HOME_STONE_2 = ITEMS.register("home_stone_2",
-            () -> new HomeStone2Item(new Item.Properties().durability(32)
+    public static final RegistryObject<Item> ADVANCED_HOME_STONE = ITEMS.register("advanced_home_stone",
+            () -> new AdvancedHomeStoneItem(new Item.Properties().durability(32)
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+
+    public static final RegistryObject<Item> NEW = ITEMS.register("new_homestone",
+            () -> new SuperHomeStoneItem(new Item.Properties().durability(32)
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
     public static final RegistryObject<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",

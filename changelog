@@ -1,5 +1,19 @@
 Changelog Opolis Utilities
 
+
+1.8
+
+
+Partially added /discord commands
+Advanced home stone now only works across the overworld, nether and end
+Super Home Stone, works in all dimensions
+
+
+1.7
+
+Added advanced home stone works across vanilla dimensions
+Added new command /discord displays a configurable discord link
+
 1.6
 
 Added a stone core which make stone fragments

@@ -6,16 +6,11 @@ import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.NewRegistryEvent;
-import net.minecraftforge.registries.RegistryObject;
-
-import javax.annotation.Nonnull;
 
 @Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
+
 
 
 
@@ -26,4 +21,6 @@ public class ModEventBusEvents {
         Registry.register(Registry.RECIPE_TYPE, ResourceGeneratorRecipe.Type.ID, ResourceGeneratorRecipe.Type.INSTANCE);
 
     }
+
+
 }

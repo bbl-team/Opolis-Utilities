@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import org.w3c.dom.Text;
 
 public final class ConfigFile {
 
@@ -10,6 +11,8 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<Integer> homeStoneCooldown;
     public static final ForgeConfigSpec.ConfigValue<Boolean> homeStoneTakesDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<String> discordURL;
+
     static {
         BUILDER.push("Opolis Utilities Config File");
 
@@ -18,6 +21,9 @@ public final class ConfigFile {
 
         homeStoneTakesDamage = BUILDER.comment("Does the home stone take damge when teleporting, default = true")
                 .define("Home Stone Durability", true);
+
+        discordURL = BUILDER.comment("URL for your discord")
+                .define("Discord URL", "Place your discord URL in the config file");
 
 
 
