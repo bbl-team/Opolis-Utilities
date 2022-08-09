@@ -61,6 +61,17 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
             player.sendSystemMessage(Component.translatable("tooltip.home_stone.location_set").withStyle(ChatFormatting.GREEN));
         }
 
+        /*
+
+        else if (!level.isClientSide() && !level.dimension().equals(Level.OVERWORLD) || !level.dimension().equals(Level.NETHER) || !level.dimension().equals(Level.END)
+                && player.isCrouching() && hand == InteractionHand.OFF_HAND) {
+
+            player.sendSystemMessage(Component.translatable("tooltip.advanced_home_stone.invalid_dimension").withStyle(ChatFormatting.RED));
+
+        }
+
+         */
+
 
         //Checks Location set if not nothing and send message
 

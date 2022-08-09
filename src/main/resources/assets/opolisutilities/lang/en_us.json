@@ -3,6 +3,7 @@
   "item.opolisutilities.wooden_shears": "Wooden Shears",
   "item.opolisutilities.home_stone": "Home Stone",
   "item.opolisutilities.advanced_home_stone": "Advanced Home Stone",
+  "item.opolisutilities.super_home_stone": "Super Home Stone",
   "item.opolisutilities.floating_block_item": "Floating Block",
 
   "item.opolisutilities.stone_core": "Stone Core",
@@ -16,7 +17,7 @@
   "tooltips.home_stone.no_location_set": "No location set!",
   "tooltips.home_stone.shift.held": "Shift right click in off hand to set location. Right click in main hand to teleport there! Only works in the overworld!",
   "tooltips.advanced_home_stone.shift.held": "Shift right click in off hand to set location. Right click in main hand to teleport there! Works across the overworld, nether and end!",
-  "tooltips.advanced_home_stone.shift.held": "Shift right click in off hand to set location. Right click in main hand to teleport there! Works across ALL dimensions!",
+  "tooltip.advanced_home_stone.invalid_dimension": "Cannot be used in this dimension!",
   "tooltip.home_stone.going_saved_location": "Going to saved location!",
   "tooltip.home_stone.no_location": "No Location Set!",
   "tooltip.home_stone.location_set": "Location Set!",

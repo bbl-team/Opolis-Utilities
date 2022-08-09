@@ -5,8 +5,8 @@
         "item": "opolisutilities:stone_core"
       }
     ],
-  "duration": 300,
+  "duration": 30,
   "output": {
     "item": "opolisutilities:stone_fragment"
   }
-}c
+}

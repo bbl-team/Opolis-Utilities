@@ -7,6 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -61,7 +64,21 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = 80;
+
+
+    public ItemStack getRenderStack() {
+        ItemStack stack;
+
+        if(!itemHandler.getStackInSlot(1).isEmpty()) {
+            stack = itemHandler.getStackInSlot(1);
+        } else {
+            stack = itemHandler.getStackInSlot(0);
+        }
+
+        return stack;
+
+    }
 
     public DryingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -182,9 +199,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
     }
 
-    private static void getDuration(SimpleContainer inventory, int duration) {
-    }
-
     private static void craftItem(DryingTableBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
@@ -214,5 +228,4 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
-
 }

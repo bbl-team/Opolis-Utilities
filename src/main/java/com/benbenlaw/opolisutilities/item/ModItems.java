@@ -28,8 +28,7 @@ public class ModItems {
             () -> new AdvancedHomeStoneItem(new Item.Properties().durability(32)
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
-
-    public static final RegistryObject<Item> NEW = ITEMS.register("new_homestone",
+    public static final RegistryObject<Item> SUPER_HOME_STONE = ITEMS.register("super_home_stone",
             () -> new SuperHomeStoneItem(new Item.Properties().durability(32)
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
