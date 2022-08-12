@@ -77,7 +77,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
         }
 
         return stack;
-
     }
 
     public DryingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
