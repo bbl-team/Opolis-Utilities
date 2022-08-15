@@ -42,7 +42,7 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
 
         //Check player is crouching and has item in off hand
 
-        if (!level.isClientSide() && level.dimension().equals(Level.OVERWORLD) || level.dimension().equals(Level.NETHER) || level.dimension().equals(Level.END)
+        if (!level.isClientSide() && ( level.dimension().equals(Level.OVERWORLD) || level.dimension().equals(Level.NETHER) || level.dimension().equals(Level.END) )
                 && player.isCrouching() && hand == InteractionHand.OFF_HAND) {
 
             //set x,y and x inside item nbt and playsound and print message
@@ -61,18 +61,6 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
             player.sendSystemMessage(Component.translatable("tooltip.home_stone.location_set").withStyle(ChatFormatting.GREEN));
         }
 
-        /*
-
-        else if (!level.isClientSide() && !level.dimension().equals(Level.OVERWORLD) || !level.dimension().equals(Level.NETHER) || !level.dimension().equals(Level.END)
-                && player.isCrouching() && hand == InteractionHand.OFF_HAND) {
-
-            player.sendSystemMessage(Component.translatable("tooltip.advanced_home_stone.invalid_dimension").withStyle(ChatFormatting.RED));
-
-        }
-
-         */
-
-
         //Checks Location set if not nothing and send message
 
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && !nbt.contains("x")) {
@@ -81,7 +69,9 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
         }
 
         //If location set then teleport
-        else if (!level.isClientSide() && level.dimension().equals(Level.OVERWORLD) || level.dimension().equals(Level.NETHER) || level.dimension().equals(Level.END) && hand == InteractionHand.MAIN_HAND){
+        else if (!level.isClientSide() && ( level.dimension().equals(Level.OVERWORLD)
+                || level.dimension().equals(Level.NETHER) || level.dimension().equals(Level.END) )
+                && hand == InteractionHand.MAIN_HAND){
 
             //IF A DIMENSION CHANGE IS REQUIRED
             if(nbt.getString("dimension").equals("minecraft:overworld")){
@@ -94,13 +84,6 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
             else if(nbt.getString("dimension").equals("minecraft:the_nether")){
                 MinecraftServer minecraftserver = player.getServer();
                 ResourceKey<Level> destination = Level.NETHER;
-                ServerLevel destinationWorld = minecraftserver.getLevel(destination);
-                player.changeDimension(destinationWorld, new ModTeleport(destinationWorld));
-            }
-
-            else if(nbt.getString("dimension").equals("minecraft:the_end")){
-                MinecraftServer minecraftserver = player.getServer();
-                ResourceKey<Level> destination = Level.END;
                 ServerLevel destinationWorld = minecraftserver.getLevel(destination);
                 player.changeDimension(destinationWorld, new ModTeleport(destinationWorld));
             }

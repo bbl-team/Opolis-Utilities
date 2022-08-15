@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.item.custom.*;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -34,6 +35,15 @@ public class ModItems {
 
     public static final RegistryObject<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",
             () -> new FloatingBlockItem(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> BUNDLED_FLESH = ITEMS.register("bundled_flesh",
+            () -> new FloatingBlockItem(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> JERKY = ITEMS.register("jerky",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
 

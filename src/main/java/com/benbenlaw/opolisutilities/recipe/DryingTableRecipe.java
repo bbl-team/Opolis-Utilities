@@ -100,13 +100,14 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         @Override
         public DryingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+            int duration = buf.readInt();
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buf));
             }
 
             ItemStack output = buf.readItem();
-            return new DryingTableRecipe(id, output, inputs, buf.readInt());
+            return new DryingTableRecipe(id, output, inputs, duration);
         }
 
         @Override

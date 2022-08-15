@@ -2,11 +2,11 @@
   "type": "opolisutilities:drying_table",
     "ingredients": [
       {
-        "tag": "forge:foods/meat/raw"
+        "item": "opolisutilities:bundled_flesh"
       }
     ],
-  "duration": 300,
+  "duration": 150,
   "output": {
-    "item": "opolisutilities:jerky"
+    "item": "minecraft:leather"
   }
 }

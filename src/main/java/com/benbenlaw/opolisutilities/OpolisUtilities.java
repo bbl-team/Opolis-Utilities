@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.screen.DryingTableScreen;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
@@ -43,8 +44,6 @@ public class OpolisUtilities {
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
 
-
-
         modEventBus.addListener(this::commonSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
@@ -76,4 +75,6 @@ public class OpolisUtilities {
             });
         }
     }
+
+
 }
