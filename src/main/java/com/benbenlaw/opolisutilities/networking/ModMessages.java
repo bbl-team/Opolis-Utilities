@@ -27,36 +27,12 @@ public class ModMessages {
 
         INSTANCE = net;
 
-        /*
-
-        net.messageBuilder(PacketSyncFluidStackToClient.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncFluidStackToClient::new)
-                .encoder(PacketSyncFluidStackToClient::toBytes)
-                .consumer(PacketSyncFluidStackToClient::handle)
-                .add();
-
-        net.messageBuilder(PacketSyncEnergyToClient.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncEnergyToClient::new)
-                .encoder(PacketSyncEnergyToClient::toBytes)
-                .consumer(PacketSyncEnergyToClient::handle)
-                .add();
-
-         */
-
         net.messageBuilder(PacketSyncItemStackToClient.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketSyncItemStackToClient::new)
                 .encoder(PacketSyncItemStackToClient::toBytes)
-                .consumer(PacketSyncItemStackToClient::handle)
+                .consumerMainThread(PacketSyncItemStackToClient::handle)
                 .add();
 
-        /*
-        net.messageBuilder(PacketSyncTwoFluidStacksToClient.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncTwoFluidStacksToClient::new)
-                .encoder(PacketSyncTwoFluidStacksToClient::toBytes)
-                .consumer(PacketSyncTwoFluidStacksToClient::handle)
-                .add();
-
-         */
     }
 
 

@@ -41,6 +41,10 @@ public class ModItems {
             () -> new FloatingBlockItem(new Item.Properties()
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
+    public static final RegistryObject<Item> ENDER_PEARL_FRAGMENT = ITEMS.register("ender_pearl_fragment",
+            () -> new FloatingBlockItem(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
     public static final RegistryObject<Item> JERKY = ITEMS.register("jerky",
             () -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())

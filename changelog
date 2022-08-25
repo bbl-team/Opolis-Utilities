@@ -1,5 +1,22 @@
 Changelog Opolis Utilities
 
+1.10
+
+All drying recipes times now the same
+Added ender ore, deepslate and normal
+When broken drop ender pearl fragments
+Fragments used to make ender pearls
+Ender pearls can be used to make fragments
+Home stone recipe changed
+Advanced and super home stone recipes added
+
+1.9
+
+Kinda added time requirement to recipes
+Added jerky made in drying station from raw meat
+Added bundled flesh, 4 rotten flesh makes 2
+Leather can now be made in the drying station
+Fixed advanced home stone
 
 1.8
 
@@ -8,11 +25,6 @@ Partially added /discord commands
 Advanced home stone now only works across the overworld, nether and end
 Super Home Stone, works in all dimensions
 Added item rendering drying station
-Kinda added time requirement to recipes
-Added jerky made in drying station from raw meat
-Added bundled flesh, 4 rotten flesh makes 2
-Leather can now be made in the drying station
-Fixed advanced waystone
 
 1.7
 

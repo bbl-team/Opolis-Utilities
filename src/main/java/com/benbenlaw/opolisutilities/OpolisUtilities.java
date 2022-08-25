@@ -6,11 +6,14 @@ import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
+import com.benbenlaw.opolisutilities.particles.ModParticles;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.screen.DryingTableScreen;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorScreen;
+import com.benbenlaw.opolisutilities.world.feature.ModConfiguredFeatures;
+import com.benbenlaw.opolisutilities.world.feature.ModPlacedFeatures;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -43,6 +46,10 @@ public class OpolisUtilities {
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModParticles.register(modEventBus);
+
+        ModConfiguredFeatures.register(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -50,11 +57,12 @@ public class OpolisUtilities {
 
         MinecraftForge.EVENT_BUS.register(this);
 
-
-
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            ModMessages.register();
+        });
 
     }
 

@@ -7,16 +7,16 @@
   ],
   "key": {
     "#": {
-      "tag": "minecraft:beds"
+      "item": "minecraft:ender_pearl"
     },
     "C": {
-      "item": "minecraft:compass"
+      "item": "opolisutilities:home_stone"
     },
     "F": {
       "item": "opolisutilities:ender_pearl_fragment"
     }
   },
   "result": {
-    "item": "opolisutilities:home_stone"
+    "item": "opolisutilities:advanced_home_stone"
   }
 }

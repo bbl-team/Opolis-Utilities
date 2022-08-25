@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "opolisutilities:resource_generator",
     "opolisutilities:ender_ore",
     "opolisutilities:deepslate_ender_ore"
   ]

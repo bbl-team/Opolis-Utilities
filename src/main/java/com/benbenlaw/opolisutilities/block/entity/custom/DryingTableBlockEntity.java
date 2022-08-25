@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.opolisutilities.block.entity.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,13 +36,15 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
 
-public class DryingTableBlockEntity extends BlockEntity implements MenuProvider {
-
+public class DryingTableBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if(!level.isClientSide()) {
+                ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
+            }
         }
     };
 
@@ -72,16 +76,27 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
     public ItemStack getRenderStack() {
         ItemStack stack;
 
-    //    stack = itemHandler.getStackInSlot(1);
-
-
-        if(!itemHandler.getStackInSlot(1).isEmpty()) {
-            stack = itemHandler.getStackInSlot(1);
-        } else {
+        if(!itemHandler.getStackInSlot(0).isEmpty()) {
             stack = itemHandler.getStackInSlot(0);
+        } else {
+            stack = itemHandler.getStackInSlot(1);
         }
 
-        return stack; //  itemHandler.getStackInSlot(1);
+        return stack;
+    }
+
+    public void setHandler(ItemStackHandler handler) {
+        copyHandlerContents(handler);
+    }
+
+    private void copyHandlerContents(ItemStackHandler handler) {
+        for (int i = 0; i < handler.getSlots(); i++) {
+            itemHandler.setStackInSlot(i, handler.getStackInSlot(i));
+        }
+    }
+
+    public ItemStackHandler getItemStackHandler() {
+        return this.itemHandler;
     }
 
     public DryingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -201,6 +216,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+
     }
 
     private static void craftItem(DryingTableBlockEntity entity) {
@@ -209,45 +225,28 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider 
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
-
         Optional<DryingTableRecipe> match = level.getRecipeManager()
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
         //TODO = Make this actually work across multiple machines
 
-        maxProgress = 60; // match.get().getDuration();
-
         if(match.isPresent()) {
+
+            maxProgress = match.get().getDuration();
 
             entity.itemHandler.extractItem(0,1, false);
             entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
 
             entity.resetProgress();
+     //       entity.resetMaxProgress();
+
         }
     }
-    /*
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots() - 2; i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
-        Optional<InfuserRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipes.INFUSER, inventory, level);
-        recipe.ifPresent(iRecipe -> {
-            ItemStack output = iRecipe.getResultItem();
-            if ((hasCraftingSlotSpace(6, output.getCount()) && itemHandler.getStackInSlot(6).isEmpty()) || ((itemHandler.getStackInSlot(6).sameItem(output)) && hasCraftingSlotSpace(6, output.getCount()))) {
 
-                outputItem = output;
-                maxProgress = iRecipe.getCraftTime();
-                inProgress = true;
-            } else {
-                resetProgress();
-            }
-        });
-        if (!recipe.isPresent()) {
-            resetProgress();
-        }
-     */
-
+    private void resetMaxProgress() {
+        maxProgress = 0;
+    }
 
     private void resetProgress() {
         this.progress = 0;
