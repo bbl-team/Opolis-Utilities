@@ -30,7 +30,14 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        return recipeItems.get(0).test(pContainer.getItem(0));
+
+
+        if(recipeItems.get(0).test(pContainer.getItem(0))){
+            if (duration >= 0)
+                return true;
+        }
+        return false;
+       // return recipeItems.get(0).test(pContainer.getItem(0))
     }
     @Override
     public NonNullList<Ingredient> getIngredients() {

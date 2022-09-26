@@ -71,7 +71,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
     public final ContainerData data;
     private int progress = 0;
-    private static int maxProgress;
+   // private static int maxProgress;
+    private static int maxProgress = 80;
 
     public ItemStack getRenderStack() {
         ItemStack stack;
@@ -214,12 +215,14 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
         Optional<DryingTableRecipe> match = level.getRecipeManager()
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
+
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
+                && hasDuration(match.get());
 
     }
 
-    private static void craftItem(DryingTableBlockEntity entity) {
+    private static void craftItem(@NotNull DryingTableBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
@@ -239,17 +242,17 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
 
             entity.resetProgress();
-     //       entity.resetMaxProgress();
+
 
         }
     }
-
-    private void resetMaxProgress() {
-        maxProgress = 0;
+    private void resetProgress() {
+         this.progress = 0;
     }
 
-    private void resetProgress() {
-        this.progress = 0;
+
+    private static boolean hasDuration(DryingTableRecipe recipe) {
+        return 0 <= recipe.getDuration();
     }
 
     private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {

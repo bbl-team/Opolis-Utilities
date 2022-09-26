@@ -20,6 +20,8 @@ public class ModEventBusEvents {
 
 
 
+
+
     //@SubscribeEvent
     public static void registerRecipeTypes(final RegistryAccess.RegistryEntry<RecipeSerializer<?>> event) {
         Registry.register(Registry.RECIPE_TYPE, DryingTableRecipe.Type.ID, DryingTableRecipe.Type.INSTANCE);
@@ -34,7 +36,6 @@ public class ModEventBusEvents {
         Minecraft.getInstance().particleEngine.register(ModParticles.ENDER_ORE_PARTICLES.get(),
                 EnderOreParticles.Provider::new);
     }
-
 
 
 

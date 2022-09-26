@@ -1,0 +1,11 @@
+{
+  "type": "opolisutilities:used_hammer",
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "tag": "opolisutilities:hammer"
+      }
+    }
+  ]
+}

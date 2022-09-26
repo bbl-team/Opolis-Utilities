@@ -27,6 +27,9 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
     public final static ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_drying_table.png");
 
+    static final RecipeType<DryingTableRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "drying_table",
+            DryingTableRecipe.class);
+
     private final IDrawable background;
     private final IDrawable icon;
 

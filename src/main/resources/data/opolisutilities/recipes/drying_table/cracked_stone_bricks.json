@@ -5,7 +5,7 @@
         "tag": "forge:foods/meat/raw"
       }
     ],
-  "duration": 80,
+  "duration": 100,
   "output": {
     "item": "opolisutilities:jerky"
   }

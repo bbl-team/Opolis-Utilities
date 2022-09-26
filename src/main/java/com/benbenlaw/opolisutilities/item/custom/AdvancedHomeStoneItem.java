@@ -45,7 +45,7 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
         if (!level.isClientSide() && ( level.dimension().equals(Level.OVERWORLD) || level.dimension().equals(Level.NETHER) || level.dimension().equals(Level.END) )
                 && player.isCrouching() && hand == InteractionHand.OFF_HAND) {
 
-            //set x,y and x inside item nbt and playsound and print message
+            //set x,y and x inside item nbt and play sound and print message
 
             nbt.putFloat("x", player.getOnPos().getX());
             nbt.putFloat("y", player.getOnPos().getY());
