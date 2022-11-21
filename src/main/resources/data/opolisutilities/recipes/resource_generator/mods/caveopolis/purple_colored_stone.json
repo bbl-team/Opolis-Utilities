@@ -1,0 +1,18 @@
+{
+  "type": "opolisutilities:resource_generator",
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "caveopolis"
+      }
+    ],
+    "ingredients": [
+      {
+        "item": "caveopolis:purple_colored_stone"
+      }
+    ],
+  "duration": 200,
+  "output": {
+    "item": "caveopolis:purple_colored_stone"
+  }
+}

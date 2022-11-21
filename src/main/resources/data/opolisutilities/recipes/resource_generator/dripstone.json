@@ -1,0 +1,12 @@
+{
+  "type": "opolisutilities:resource_generator",
+    "ingredients": [
+      {
+        "item": "minecraft:dripstone_block"
+      }
+    ],
+  "duration": 200,
+  "output": {
+    "item": "minecraft:dripstone_block"
+  }
+}

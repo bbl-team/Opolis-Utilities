@@ -4,7 +4,6 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,6 +23,7 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("resource_generator_block_entity", () ->
                     BlockEntityType.Builder.of(ResourceGeneratorBlockEntity::new,
                             ModBlocks.RESOURCE_GENERATOR.get()).build(null));
+
 
 
 

@@ -18,7 +18,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
 group = 'com.benbenlaw.opolis'
-version = '1.10'
+version = "1.19.X-${mod_version}"
 
 java {
     archivesBaseName = 'opolisutilities'
@@ -35,7 +35,6 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'opolis'
 
             mods {

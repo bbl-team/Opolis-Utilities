@@ -2,11 +2,11 @@
   "type": "opolisutilities:resource_generator",
     "ingredients": [
       {
-        "item": "opolisutilities:stone_core"
+        "item": "minecraft:stone"
       }
     ],
-  "duration": 30,
+  "duration": 200,
   "output": {
-    "item": "opolisutilities:stone_fragment"
+    "item": "minecraft:stone"
   }
 }

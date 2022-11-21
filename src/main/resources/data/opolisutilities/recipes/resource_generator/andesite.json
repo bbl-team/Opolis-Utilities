@@ -1,0 +1,12 @@
+{
+  "type": "opolisutilities:resource_generator",
+    "ingredients": [
+      {
+        "item": "minecraft:andesite"
+      }
+    ],
+  "duration": 200,
+  "output": {
+    "item": "minecraft:andesite"
+  }
+}

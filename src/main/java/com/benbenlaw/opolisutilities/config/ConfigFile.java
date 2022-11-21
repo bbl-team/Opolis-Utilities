@@ -12,6 +12,8 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<Boolean> homeStoneTakesDamage;
 
     public static final ForgeConfigSpec.ConfigValue<String> discordURL;
+    public static final ForgeConfigSpec.ConfigValue<String> modpackVersion;
+    public static final ForgeConfigSpec.ConfigValue<String> modpackName;
 
     static {
         BUILDER.push("Opolis Utilities Config File");
@@ -23,8 +25,13 @@ public final class ConfigFile {
                 .define("Home Stone Durability", true);
 
         discordURL = BUILDER.comment("URL for your discord")
-                .define("Discord URL", "Place your discord URL in the config file");
+                .define("Discord URL", "https://discord.gg/UpJknJ8");
 
+        modpackName = BUILDER.comment("Modpack name")
+                .define("Modpack name", "TESTMODPACK");
+
+        modpackVersion = BUILDER.comment("Modpack Version")
+                .define("Modpack Version", "VERSION");
 
 
         BUILDER.pop();

@@ -22,6 +22,9 @@ public class ResourceGeneratorRecipeCategory implements IRecipeCategory<Resource
     public final static ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_drying_table.png");
 
+    static final RecipeType<ResourceGeneratorRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "resource_generator",
+            ResourceGeneratorRecipe.class);
+
     private final IDrawable background;
     private final IDrawable icon;
 

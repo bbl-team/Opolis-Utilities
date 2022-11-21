@@ -22,7 +22,6 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU =
             registerMenuType(ResourceGeneratorMenu::new, "resource_generator_menu");
 
-
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

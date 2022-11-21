@@ -104,7 +104,7 @@ public class SuperHomeStoneItem extends SimpleFoiledItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
 
         if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.advanced_home_stone.shift.held")
+            components.add(Component.translatable("tooltips.super_home_stone.shift.held")
                     .withStyle(ChatFormatting.GREEN));
             }
         else {

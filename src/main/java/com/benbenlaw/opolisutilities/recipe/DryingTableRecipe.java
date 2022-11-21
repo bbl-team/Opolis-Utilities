@@ -60,7 +60,7 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     }
 
     public int getDuration() {
-        return this.duration;
+        return duration;
     }
 
     @Override

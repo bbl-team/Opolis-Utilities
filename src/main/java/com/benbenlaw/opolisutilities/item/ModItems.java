@@ -16,6 +16,22 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
         DeferredRegister.create(ForgeRegistries.ITEMS, OpolisUtilities.MOD_ID);
 
+
+    public static final RegistryObject<Item> WALLET = ITEMS.register("wallet",
+            () -> new WalletItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> BASIC_LOOT_BOX = ITEMS.register("basic_loot_box",
+            () -> new BasicLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> ADVANCED_LOOT_BOX = ITEMS.register("advanced_loot_box",
+            () -> new AdvancedLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> ELITE_LOOT_BOX = ITEMS.register("elite_loot_box",
+            () -> new EliteLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> B_BUCKS = ITEMS.register("b_bucks",
+            () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
     public static final RegistryObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
             () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
@@ -40,39 +56,17 @@ public class ModItems {
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
     public static final RegistryObject<Item> BUNDLED_FLESH = ITEMS.register("bundled_flesh",
-            () -> new FloatingBlockItem(new Item.Properties()
+            () -> new Item(new Item.Properties()
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
     public static final RegistryObject<Item> ENDER_PEARL_FRAGMENT = ITEMS.register("ender_pearl_fragment",
-            () -> new FloatingBlockItem(new Item.Properties()
+            () -> new Item(new Item.Properties()
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
     public static final RegistryObject<Item> JERKY = ITEMS.register("jerky",
             () -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
-
-
-//CORES + FRAGMENTS
-
-    public static final RegistryObject<Item> EMPTY_CORE = ITEMS.register("empty_core",
-            () -> new ResourceGeneratorCoreItem(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
-
-    public static final RegistryObject<Item> STONE_CORE = ITEMS.register("stone_core",
-            () -> new ResourceGeneratorCoreItem(new Item.Properties().durability(8)
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
-
-    public static final RegistryObject<Item> STONE_FRAGMENT = ITEMS.register("stone_fragment",
-            () -> new ResourceGeneratorCoreItem(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
-
-
-
-
-
-
-
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

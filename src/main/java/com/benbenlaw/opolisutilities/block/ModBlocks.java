@@ -11,7 +11,6 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,6 +45,7 @@ public class ModBlocks {
                     .strength(2.0f,2.0f)
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);
+
 
     public static final RegistryObject<Block> ENDER_ORE = registerBlock("ender_ore",
             () -> new EnderOreBlock(BlockBehaviour.Properties.of(Material.STONE)

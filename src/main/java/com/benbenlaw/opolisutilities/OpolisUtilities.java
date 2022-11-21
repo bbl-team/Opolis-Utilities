@@ -8,10 +8,7 @@ import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
-import com.benbenlaw.opolisutilities.screen.DryingTableScreen;
-import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
-import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
-import com.benbenlaw.opolisutilities.screen.ResourceGeneratorScreen;
+import com.benbenlaw.opolisutilities.screen.*;
 import com.benbenlaw.opolisutilities.world.feature.ModConfiguredFeatures;
 import com.benbenlaw.opolisutilities.world.feature.ModPlacedFeatures;
 import com.mojang.logging.LogUtils;
@@ -76,7 +73,6 @@ public class OpolisUtilities {
 
                 MenuScreens.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
                 MenuScreens.register(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
-
                 //BlockEntityRenderers.register(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), RenderType.cutout());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.DRYING_TABLE.get(), RenderType.cutout());
 

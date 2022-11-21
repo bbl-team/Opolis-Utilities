@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 @JeiPlugin
 public class JEIOpolisUtilitiesPlugin implements IModPlugin {
+
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(OpolisUtilities.MOD_ID, "jei_plugin");
@@ -35,6 +36,7 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.DRYING_TABLE.get()), DryingTableRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), ResourceGeneratorRecipeCategory.RECIPE_TYPE);
     }
 
     @Override

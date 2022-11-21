@@ -1,9 +1,54 @@
 Changelog Opolis Utilities
 
+1.13.2
+
+Added wallet item, stores b bucks. When wallet is on off hand right click on b bucks to insert them. Shift right click to remove them
+
+1.13.1
+
+Fixed bundled flesh and ender fragments being instances of the floation block item (right licking with those items no longer creates floating blocks)
+
+1.13
+
+Added 3 loot boxes types basic, advanced and elite (when right clicked will drop items from a loot table found in opolisutilities/loot_tables/loot_boxes/(type here)
+Basic loot tables provided useful for modpack devs
+Name tags, saddle, iron horse armor, gold horse armor and diamond horse armor added
+
+1.12.2
+
+/discord command now can be clicked to go to a discord defined in the config
+new command /modpack_version allows modpack creators to version there modpack in this config, using /modpack_version will display the version in chat
+Changed file names to match my other mods (modname-mc_version-mod_version)
+Fixed tooltip for super home stone
+
+1.12.1
+
+Fixed server crash
+
+1.12.0
+
+Added B Bucks
+Fixed dripstone block recipe in resource generator
+Updated license
+
+1.11
+
+Removed fragments and cores
+Pressing U on the resource generator in inventory will on show recipes
+Resource generator now acts like a cobblestone generator
+Resource generator new recipes:
+Stone, Cobblestone, Deepslate
+
+1.11
+
+Fixed render scale on drying table looking way to small
+Added recipes for andesite, calcite, diorite, dripstone, granite and tuff in the resource generator
+Added caveopolis colored stone support to resource generator
+
+
 1.10
 
 All drying recipes times now the same
-Pressing U on the drying table in inventory will on show recipes
 Added ender ore, deepslate and normal
 When broken drop ender pearl fragments
 Fragments used to make ender pearls

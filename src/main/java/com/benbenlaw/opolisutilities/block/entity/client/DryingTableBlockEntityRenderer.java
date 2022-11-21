@@ -31,7 +31,7 @@ public class DryingTableBlockEntityRenderer implements BlockEntityRenderer<Dryin
         pPoseStack.pushPose();
 
         pPoseStack.translate(0.5f, 0.5f, 0.5);  //x, y, x pos
-        pPoseStack.scale(0.75f, 0.75f, 0.75f); //size
+        pPoseStack.scale(1.25f, 1.25f, 1.25f); //size
         itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.GROUND, getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()),
                 OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 1);
 
