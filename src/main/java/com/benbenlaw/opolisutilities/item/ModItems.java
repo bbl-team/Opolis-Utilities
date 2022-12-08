@@ -16,6 +16,11 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
         DeferredRegister.create(ForgeRegistries.ITEMS, OpolisUtilities.MOD_ID);
 
+    public static final RegistryObject<Item> MINI_COAL = ITEMS.register("mini_coal",
+            () -> new MiniCoalItem(true));
+
+    public static final RegistryObject<Item> MINI_CHARCOAL = ITEMS.register("mini_charcoal",
+            () -> new MiniCoalItem(true));
 
     public static final RegistryObject<Item> WALLET = ITEMS.register("wallet",
             () -> new WalletItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));

@@ -16,6 +16,8 @@
   "item.opolisutilities.wallet": "Wallet",
 
   "item.opolisutilities.stone_core": "Stone Core",
+  "item.opolisutilities.mini_coal": "Mini Coal",
+  "item.opolisutilities.mini_charcoal": "Mini Charcoal",
 
   "block.opolisutilities.floating_block_block": "Floating Block",
   "block.opolisutilities.drying_table": "Drying Table",
@@ -39,6 +41,8 @@
   "tooltips.wallet.no_b_bucks": "Your wallet is empty!",
 
   "tooltips.floating_block.place_in_air": "Place in the air!",
+
+  "enchantment.opolisutilities.warden_smite": "Warden Smite",
 
   "itemGroup.opolis_utilities": "Opolis Utilities"
 }

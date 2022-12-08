@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.enchantment.ModEnchantments;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
@@ -44,6 +45,7 @@ public class OpolisUtilities {
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
+        ModEnchantments.register(modEventBus);
 
         ModConfiguredFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
