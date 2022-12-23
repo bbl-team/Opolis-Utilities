@@ -22,8 +22,10 @@
   "block.opolisutilities.floating_block_block": "Floating Block",
   "block.opolisutilities.drying_table": "Drying Table",
   "block.opolisutilities.resource_generator": "Resource Generator",
+  "block.opolisutilities.resource_generator_2": "Resource Generator 2",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
+  "block.opolisutilities.redstone_clock": "Redstone Clock",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",
@@ -40,7 +42,9 @@
   "tooltips.wallet.shift.held": "With the wallet in your off hand, right click B Bucks in your main hand to add them to your wallet! Sneak right click to remove B Bucks!",
   "tooltips.wallet.no_b_bucks": "Your wallet is empty!",
 
-  "tooltips.floating_block.place_in_air": "Place in the air!",
+  "tooltips.floating_block.place_in_air": "Place in the air or inside water!",
+
+  "jei.opolisutilities.resource_generator": "Place a block from the resource_generator_blocks tag above the resource generator. Then place a inventory like a chest or a hopper underneath",
 
   "enchantment.opolisutilities.warden_smite": "Warden Smite",
 

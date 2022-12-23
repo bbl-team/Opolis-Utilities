@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "opolisutilities:block/resource_generator_2"
+    },
+    "lit=true": {
+       "model": "opolisutilities:block/resource_generator_2_working"
+    }
+  }
+}

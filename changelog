@@ -1,5 +1,19 @@
 Changelog Opolis Utilities
 
+1.15
+
+Renamed method for loot bag event
+Added resource generator 2 works in world, place a inventory underneath and a block from the RESOURCE_GENERATOR_BLOCKS tag on top to create that item
+Removed old unused tags
+Added a redstone clock
+
+
+
+1.14.3
+
+All mobs now have a chance to drop small lot boxes when killed
+Floating block can now be placed in water
+
 1.14.2
 
 Added mini coal and mini charcoal

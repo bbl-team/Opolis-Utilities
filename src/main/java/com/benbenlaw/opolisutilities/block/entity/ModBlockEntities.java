@@ -3,6 +3,8 @@ package com.benbenlaw.opolisutilities.block.entity;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.RedstoneClockBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGenerator2BlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +25,16 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("resource_generator_block_entity", () ->
                     BlockEntityType.Builder.of(ResourceGeneratorBlockEntity::new,
                             ModBlocks.RESOURCE_GENERATOR.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<ResourceGenerator2BlockEntity>> RESOURCE_GENERATOR_2_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("resource_generator_2_block_entity", () ->
+                    BlockEntityType.Builder.of(ResourceGenerator2BlockEntity::new,
+                            ModBlocks.RESOURCE_GENERATOR_2.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<RedstoneClockBlockEntity>> REDSTONE_CLOCK_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("redstone_clock_block_entity", () ->
+                    BlockEntityType.Builder.of(RedstoneClockBlockEntity::new,
+                            ModBlocks.REDSTONE_CLOCK.get()).build(null));
 
 
 

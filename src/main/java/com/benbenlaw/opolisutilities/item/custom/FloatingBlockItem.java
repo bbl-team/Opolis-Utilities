@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.item.custom;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderSet;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -12,6 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 
@@ -31,13 +34,20 @@ public class FloatingBlockItem extends Item {
             double yPos = 1.5 + player.getY() + 3 * player.getLookAngle().y;
             double zPos = player.getZ() + 3 * player.getLookAngle().z;
 
-            BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
-            if (!level.getBlockState(blockPos).is(Blocks.AIR)) {
-                player.sendSystemMessage(Component.translatable("tooltips.floating_block.place_in_air")
-                        .withStyle(ChatFormatting.RED));
+        BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
+    //    if (level.getBlockState(blockPos).is(Blocks.WATER) || !level.getBlockState(blockPos).is(Blocks.AIR) ) {
+    //        player.sendSystemMessage(Component.translatable("tooltips.floating_block.place_in_air")
+    //                .withStyle(ChatFormatting.RED));
+    //   }
+
+            if (level.getBlockState(blockPos).is(Blocks.WATER)) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.FLOATING_BLOCK.get().defaultBlockState());
+                if (!player.isCreative())
+                    player.getItemInHand(hand).shrink(1);
+
             }
 
-            else if (level.getBlockState(blockPos).is(Blocks.AIR)) {
+            if (level.getBlockState(blockPos).is(Blocks.AIR)) {
                 level.setBlockAndUpdate(blockPos, ModBlocks.FLOATING_BLOCK.get().defaultBlockState());
                 if (!player.isCreative())
                     player.getItemInHand(hand).shrink(1);

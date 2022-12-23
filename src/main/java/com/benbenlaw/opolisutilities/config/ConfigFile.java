@@ -14,6 +14,7 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<String> discordURL;
     public static final ForgeConfigSpec.ConfigValue<String> modpackVersion;
     public static final ForgeConfigSpec.ConfigValue<String> modpackName;
+    public static final ForgeConfigSpec.ConfigValue<Double> basicLootBoxDropChance;
 
     static {
         BUILDER.push("Opolis Utilities Config File");
@@ -32,6 +33,9 @@ public final class ConfigFile {
 
         modpackVersion = BUILDER.comment("Modpack Version")
                 .define("Modpack Version", "VERSION");
+
+        basicLootBoxDropChance = BUILDER.comment("Mobs basic loot bag drop chance 0.0 = always, 1.0 = never, 0.5 = 50% chance, default = 0.75")
+                .define("Mob Drop Chance", 0.95);
 
 
         BUILDER.pop();

@@ -1,9 +1,7 @@
 package com.benbenlaw.opolisutilities.block;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.custom.DryingTableBlock;
-import com.benbenlaw.opolisutilities.block.custom.EnderOreBlock;
-import com.benbenlaw.opolisutilities.block.custom.ResourceGeneratorBlock;
+import com.benbenlaw.opolisutilities.block.custom.*;
 import com.benbenlaw.opolisutilities.item.ModCreativeModTab;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.network.chat.Component;
@@ -35,13 +33,25 @@ public class ModBlocks {
                     .instabreak()));
 
     public static final RegistryObject<Block> DRYING_TABLE = registerBlock("drying_table",
-            () -> new DryingTableBlock(BlockBehaviour.Properties.of(Material.WOOD)
+            () -> new DryingTableBlock(BlockBehaviour.Properties.of(Material.GLASS)
                     .strength(2.0f,2.0f)
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);
 
     public static final RegistryObject<Block> RESOURCE_GENERATOR = registerBlock("resource_generator",
             () -> new ResourceGeneratorBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
+    public static final RegistryObject<Block> RESOURCE_GENERATOR_2 = registerBlock("resource_generator_2",
+            () -> new ResourceGenerator2Block(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
+    public static final RegistryObject<Block> REDSTONE_CLOCK = registerBlock("redstone_clock",
+            () -> new RedstoneClockBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(2.0f,2.0f)
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);
