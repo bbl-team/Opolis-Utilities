@@ -28,11 +28,8 @@ public class InformationJEI implements IModPlugin {
 
          reg.addIngredientInfo(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), VanillaTypes.ITEM_STACK,
                  Component.translatable("jei.opolisutilities.resource_generator"));
-    }
 
-    private class Blocks {
-    }
 
-    private class List<T> {
+
     }
 }

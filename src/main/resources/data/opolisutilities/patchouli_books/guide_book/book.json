@@ -1,0 +1,10 @@
+{
+	"name": "Opolis Utilities",
+	"landing_text": "All the information about opolis utilities.",
+	"model": "patchouli:book_blue",
+	"version": 1,
+	"subtitle": "All you need to know",
+	"show_progress": false,
+	"advancement_namespaces": ["opolisutilities"],
+	"creative_tab": "opolisutilities"
+}

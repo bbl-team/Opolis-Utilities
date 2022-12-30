@@ -1,0 +1,86 @@
+{
+	"name": "Resource Generator 2",
+	"icon": "opolisutilities:resource_generator_2",
+	"category": "opolisutilities:advanced_items",
+	"sortnum": 2,
+	"pages": [
+		{
+			"type": "text",
+			"text": "The resource generator 2 is a basic block that will duplicate items like cobblestone and stone.$(br2)Any block that can store items will work with the resource generator 2 like hoppers and chests.$(br2)When working the resource generator 2 will turn blue and start to provide items to the inventory below."
+		},
+		{
+        	"type": "multiblock",
+        	"multiblock": {
+        		"pattern": [
+        			["S"],
+        			["R"],
+        			["0"],
+        			[" "]
+        		],
+        		"mapping": {
+        			"S": "#opolisutilities:resource_generator_blocks",
+        			"R": "opolisutilities:resource_generator_2",
+        			"0": "#forge:chests"
+        		}
+        	},
+        	"text": "Basic Resource Generator 2 setup. Produces one item every 4 seconds."
+        },
+		{
+        	"type": "multiblock",
+        	"multiblock": {
+        		"pattern": [
+        		    ["B"],
+        			["S"],
+        			["R"],
+        			["0"],
+        			[" "]
+        		],
+        		"mapping": {
+        		    "B": "#opolisutilities:resource_generator_speed_blocks_1",
+        			"S": "#opolisutilities:resource_generator_blocks",
+        			"R": "opolisutilities:resource_generator_2",
+        			"0": "#forge:chests"
+        		}
+        	},
+        	"text": "Advanced Resource Generator 2 setup. Produces one item every 3 seconds."
+        },
+		{
+        	"type": "multiblock",
+        	"multiblock": {
+        		"pattern": [
+        		    ["B"],
+        			["S"],
+        			["R"],
+        			["0"],
+        			[" "]
+        		],
+        		"mapping": {
+        		    "B": "#opolisutilities:resource_generator_speed_blocks_2",
+        			"S": "#opolisutilities:resource_generator_blocks",
+        			"R": "opolisutilities:resource_generator_2",
+        			"0": "#forge:chests"
+        		}
+        	},
+        	"text": "Elite Resource Generator 2 setup. Produces one item every 2 seconds."
+        },
+		{
+        	"type": "multiblock",
+        	"multiblock": {
+        		"pattern": [
+        		    ["B"],
+        			["S"],
+        			["R"],
+        			["0"],
+        			[" "]
+        		],
+        		"mapping": {
+        		    "B": "#opolisutilities:resource_generator_speed_blocks_3",
+        			"S": "#opolisutilities:resource_generator_blocks",
+        			"R": "opolisutilities:resource_generator_2",
+        			"0": "#forge:chests"
+        		}
+        	},
+        	"text": "Ultimate Resource Generator 2 setup. Produces one item every second."
+        }
+	]
+}

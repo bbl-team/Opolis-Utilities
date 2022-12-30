@@ -56,6 +56,10 @@ public class ModItems {
             () -> new SuperHomeStoneItem(new Item.Properties().durability(32)
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
+    public static final RegistryObject<Item> DEATH_STONE = ITEMS.register("death_stone",
+            () -> new DeathStoneItem(new Item.Properties().durability(32)
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
     public static final RegistryObject<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",
             () -> new FloatingBlockItem(new Item.Properties()
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));

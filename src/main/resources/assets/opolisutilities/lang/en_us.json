@@ -4,6 +4,7 @@
   "item.opolisutilities.home_stone": "Home Stone",
   "item.opolisutilities.advanced_home_stone": "Advanced Home Stone",
   "item.opolisutilities.super_home_stone": "Super Home Stone",
+  "item.opolisutilities.death_stone": "Death Stone",
   "item.opolisutilities.floating_block_item": "Floating Block",
   "item.opolisutilities.jerky": "Jerky",
   "item.opolisutilities.bundled_flesh": "Bundled Flesh",
@@ -37,6 +38,10 @@
   "tooltip.home_stone.going_saved_location": "Going to saved location!",
   "tooltip.home_stone.no_location": "No Location Set!",
   "tooltip.home_stone.location_set": "Location Set!",
+
+  "tooltip.death_stone.how": "How did you get this!",
+  "tooltip.death_stone.going_saved_location": "Returning to your latest death",
+  "tooltips.death_stone.shift.held": "Right click to return to your latest death point. Works across any dimension",
 
   "tooltips.wallet.hover.shift": "Press SHIFT for more info",
   "tooltips.wallet.shift.held": "With the wallet in your off hand, right click B Bucks in your main hand to add them to your wallet! Sneak right click to remove B Bucks!",

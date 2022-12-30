@@ -1,13 +1,19 @@
 Changelog Opolis Utilities
 
+1.16
+
+Added death stone, when you die you get given a death stone which when right clicked teleports you to your last death
+Removed a old stone core texture
+Added patchouli information
+Fixed ender pearl recipe having incorrect names
+
 1.15
 
 Renamed method for loot bag event
 Added resource generator 2 works in world, place a inventory underneath and a block from the RESOURCE_GENERATOR_BLOCKS tag on top to create that item
 Removed old unused tags
 Added a redstone clock
-
-
+Moved to 1.19.2 dev environment
 
 1.14.3
 
