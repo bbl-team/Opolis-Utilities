@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.util.ModTags;
+import net.minecraft.client.Game;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,45 +34,6 @@ import net.minecraftforge.fml.common.Mod;
 
 public class ModEvents {
 
-    /*
-
-    public static Vec3 globalEntity;
-
-    @SubscribeEvent
-    public static void getPlayerDeathPoint (LivingDeathEvent event) {
-
-        Entity entity = event.getEntity();
-
-        if (entity instanceof ServerPlayer) {
-            globalEntity = entity.position();
-        }
-
-    }
-
-    @SubscribeEvent
-    public static void addDeathStoneOnPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-
-        Player player = event.getEntity();
-        Level level = player.getLevel();
-
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DEATH_STONE.get()));
-        ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
-        CompoundTag nbt = itemstack.getTag();
-        if (nbt == null) nbt = new CompoundTag();
-
-        nbt.putFloat("x", (float) globalEntity.z);
-        nbt.putFloat("y", (float) globalEntity.y);
-        nbt.putFloat("z", (float) globalEntity.z);
-
-        ResourceLocation dim = level.dimension().location();
-        nbt.putString("dimension", dim.getNamespace() +":"+ dim.getPath());
-        nbt.putString("namespace", dim.getNamespace());
-        nbt.putString("path", dim.getPath());
-
-
-    }
-     */
-
     public static Vec3 globalEntity;
     public static Level globalLevel;
 
@@ -86,13 +49,14 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void addDeathStoneOnPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+
         Player player = event.getEntity();
         Level level = player.getLevel();
 
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DEATH_STONE.get()));
-        ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
-        CompoundTag nbt = itemstack.getTag();
-        if (nbt == null) nbt = new CompoundTag();
+        ItemStack deathStoneItem = new ItemStack(ModItems.DEATH_STONE.get());
+        CompoundTag nbt = new CompoundTag();
+
+        nbt.putInt("Age", -32768);
 
         nbt.putDouble("x", globalEntity.x);
         nbt.putDouble("y", globalEntity.y);
@@ -103,7 +67,17 @@ public class ModEvents {
         nbt.putString("namespace", dim.getNamespace());
         nbt.putString("path", dim.getPath());
 
-        itemstack.setTag(nbt);
+        deathStoneItem.setTag(nbt);
+
+        if (level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
+
+            level.addFreshEntity(new ItemEntity(level, player.getX(), player.getY(), player.getZ(),
+                    deathStoneItem));
+        }
+
+        if (!level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
+            player.addItem(deathStoneItem);
+        }
     }
 
 

@@ -36,11 +36,17 @@ public class ModTags {
 
 
     public static class Items {
-   //     public static final TagKey<Item> SPACE_SUIT_HELMET = tag("space_suit_helmet");
-//        public static final TagKey<Item> HAMMER = tag("hammer");
+
+        public static final TagKey<Item> RESOURCE_GENERATOR_BLOCKS = tag("resource_generator_blocks");
+        public static final TagKey<Item> RESOURCE_GENERATOR_SPEED_BLOCKS_1 = tag("resource_generator_speed_blocks_1");
+        public static final TagKey<Item> RESOURCE_GENERATOR_SPEED_BLOCKS_2 = tag("resource_generator_speed_blocks_2");
+        public static final TagKey<Item> RESOURCE_GENERATOR_SPEED_BLOCKS_3 = tag("resource_generator_speed_blocks_3");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
+
+
+
         }
 
         private static TagKey<Item> forgeTag(String name) {

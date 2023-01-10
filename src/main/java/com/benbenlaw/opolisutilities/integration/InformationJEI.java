@@ -16,6 +16,13 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
+
+import java.util.List;
+import java.util.Objects;
 
 @JeiPlugin
 public class InformationJEI implements IModPlugin {
@@ -30,6 +37,15 @@ public class InformationJEI implements IModPlugin {
                  Component.translatable("jei.opolisutilities.resource_generator"));
 
 
+/*
+         for (int i = 0; i < possibleBlocks.size(); i++) {
+             if (itemHandler.isItemValid(i, stack) && itemHandler.insertItem(i, stack, true).isEmpty()) {
+                 itemHandler.insertItem(i, stack, false);
+                 break;
+             }
+         }
+
+ */
 
     }
 }

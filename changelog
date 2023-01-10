@@ -1,5 +1,23 @@
 Changelog Opolis Utilities
 
+//Todo: 1.20 MC Update, add JEI support for resource generator 2
+//Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
+
+
+1.16.3
+
+Changed right clicking action on resource generator, now tell you to check the tags in JEI (can also be clicked on to copy)
+
+1.16.2
+
+Right clicking on the resource generator 2 will list the blocks that it can mine
+
+1.16.1
+
+Fixed the death stone being added to the players inventory and overriding other items when keep inventory is true
+The stone will now try to find the first available slot in the players inventory after respawning
+
+
 1.16
 
 Added death stone, when you die you get given a death stone which when right clicked teleports you to your last death
