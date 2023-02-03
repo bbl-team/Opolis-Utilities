@@ -1,8 +1,27 @@
 Changelog Opolis Utilities
 
-//Todo: 1.20 MC Update, add JEI support for resource generator 2
+//Todo: 1.20 MC Update, add tooltips on blocks that work with rsg2
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
+//Todo: 1.20 MC Update, Fix the drying table ignoring durations
+//Todo: 1.20 MC Update, Fabric and Forge
 
+1.17.1
+
+Drying table recipe durations now work
+
+1.17.0
+
+Added Ender Scrambler prevents enderman from spawning in a radius of 7x7x7 around the block
+Fixed some inconsistent lang stuff
+
+1.16.5
+
+Added JEI support for resource generator 2
+Removed old right click text spam
+
+1.16.4
+
+Fixed redstone clock crashing clients if you teleport to far
 
 1.16.3
 

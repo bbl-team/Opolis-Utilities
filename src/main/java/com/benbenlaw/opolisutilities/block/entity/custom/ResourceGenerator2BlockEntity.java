@@ -74,26 +74,3 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
         }
     }
 }
-
-
-
-/*
-public void tick() {
-        // Increment the tick counter
-        this.tickCounter++;
-
-        // Check if the tick counter is divisible by 20
-        if (this.tickCounter % 20 == 0) {
-        // Reset the tick counter
-        this.tickCounter = 0;
-
-        // Check if the block above the current block has the correct tag
-        if (this.level.getBlockState(this.pos.above()).getBlockHolder().containsTag(ModTags.Blocks.RESOURCE_GENERATOR_BLOCKS)) {
-        // Set the block state to not working
-        this.setBlockState(this.getBlockState().setValue(ResourceGenerator2Block.LIT, false));
-
-        // Get the block entity below the current block entity
-        BlockEntity ent = this.level.getBlockEntity(this.pos.below());
-        if (ent != null) {
-
- */

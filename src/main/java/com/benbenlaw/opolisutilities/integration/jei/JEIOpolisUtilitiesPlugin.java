@@ -1,12 +1,10 @@
-package com.benbenlaw.opolisutilities.integration;
+package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
-import com.benbenlaw.opolisutilities.recipe.ModRecipes;
+import com.benbenlaw.opolisutilities.recipe.ResourceGenerator2Recipe;
 import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
-import com.benbenlaw.opolisutilities.util.ModTags;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -17,16 +15,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @JeiPlugin
@@ -41,6 +33,7 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.DRYING_TABLE.get()), DryingTableRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), ResourceGeneratorRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), ResourceGenerator2RecipeCategory.RECIPE_TYPE);
     }
 
     @Override
@@ -51,6 +44,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 ResourceGeneratorRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new
+                ResourceGenerator2RecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
@@ -62,6 +58,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         List<ResourceGeneratorRecipe> recipes2 = rm.getAllRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE);
         registration.addRecipes(new RecipeType<>(ResourceGeneratorRecipeCategory.UID, ResourceGeneratorRecipe.class), recipes2);
+
+        List<ResourceGenerator2Recipe> recipes3 = rm.getAllRecipesFor(ResourceGenerator2Recipe.Type.INSTANCE);
+        registration.addRecipes(new RecipeType<>(ResourceGenerator2RecipeCategory.UID, ResourceGenerator2Recipe.class), recipes3);
 
 
 

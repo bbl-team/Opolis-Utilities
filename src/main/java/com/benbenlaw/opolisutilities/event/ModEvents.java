@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.event;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.util.ModTags;
@@ -11,17 +12,24 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -37,6 +45,32 @@ public class ModEvents {
     public static Vec3 globalEntity;
     public static Level globalLevel;
 
+
+    @SubscribeEvent
+    public static void cancelEndermanTeleportation(EntityTeleportEvent event) {
+        Entity entity = event.getEntity();
+
+        if (entity instanceof EnderMan) {
+            BlockPos pos = entity.getOnPos();
+            for (int x = -7; x <= 7; x++) {
+                for (int y = -7; y <= 7; y++) {
+                    for (int z = -7; z <= 7; z++) {
+                        BlockPos p = pos.offset(x, y, z);
+                        BlockState state = entity.getLevel().getBlockState(p);
+                        if (state.is(ModBlocks.ENDER_SCRAMBLER.get())) {
+                            if (state.getValue(EnderScramblerBlock.POWERED).equals(true)) {
+                                event.setCanceled(true);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
     @SubscribeEvent
     public static void getPlayerDeathPoint(LivingDeathEvent event) {
         Entity entity = event.getEntity();
@@ -46,6 +80,7 @@ public class ModEvents {
             globalLevel = entity.getLevel();
         }
     }
+
 
     @SubscribeEvent
     public static void addDeathStoneOnPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {

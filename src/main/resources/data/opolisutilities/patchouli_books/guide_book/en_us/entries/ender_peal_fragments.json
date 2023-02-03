@@ -3,7 +3,7 @@
 	"icon": "opolisutilities:textures/item/ender_pearl_fragment.png",
 
 	"category": "opolisutilities:advanced_items",
-	"sortnum": 5,
+	"sortnum": 6,
 	"pages": [
 		{
 			"type": "text",

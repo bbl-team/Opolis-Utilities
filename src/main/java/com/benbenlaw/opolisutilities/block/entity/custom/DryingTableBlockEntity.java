@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -71,7 +72,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
     public final ContainerData data;
     private int progress = 0;
-   // private static int maxProgress;
     private static int maxProgress = 80;
 
     public ItemStack getRenderStack() {
@@ -137,7 +137,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
         return super.getCapability(cap);
@@ -146,7 +146,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return directionWrappedHandlerMap.get(side).cast();
         }
 
@@ -216,6 +216,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         Optional<DryingTableRecipe> match = level.getRecipeManager()
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
+        match.ifPresent(recipe -> maxProgress = recipe.getDuration());
+
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
                 && hasDuration(match.get());
@@ -235,8 +237,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
         if(match.isPresent()) {
 
-            maxProgress = match.get().getDuration();
-
             entity.itemHandler.extractItem(0,1, false);
             entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
@@ -247,9 +247,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         }
     }
     private void resetProgress() {
-         this.progress = 0;
+        this.progress = 0;
     }
-
 
     private static boolean hasDuration(DryingTableRecipe recipe) {
         return 0 <= recipe.getDuration();

@@ -47,9 +47,12 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
         p_55484_.add(LIT);
     }
 
+    /* DISABLED IN 1.16.4 MOVED TO JEI
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if(!pLevel.isClientSide) {
+
+
 
             pPlayer.sendSystemMessage(Component.literal("Use JEI and search $resource_generator_blocks to view what blocks can be produced!")
                     .setStyle(Style.EMPTY.withUnderlined(false).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, "$resource_generator_blocks"))
@@ -62,23 +65,15 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
                     .setStyle(Style.EMPTY.withUnderlined(false).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, "$resource_generator_speed_blocks"))
                             .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("Click to copy the tag!"))))
                     .withStyle(ChatFormatting.WHITE));
-            /*
 
-            List<Block> possibleBlocks = Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(ModTags.Blocks.RESOURCE_GENERATOR_BLOCKS).stream().toList();
-            pPlayer.sendSystemMessage(Component.literal("Can generate " + possibleBlocks.toString()
-                    .replace("Block", "")
-                    .replace("minecraft:","")
-                    .replace("_"," ")
-                    .replace("{", "")
-                    .replace("}", "")
-                    .replace("[", "")
-                    .replace("]", "") + " when one of these blocks are placed on top! Inserts items into a inventory below.").withStyle(ChatFormatting.GREEN));
-
-             */
         }
+
+
 
         return InteractionResult.SUCCESS;
     }
+
+     */
 
     @Nullable
     @Override

@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.screen;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.ModResultSlot;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,9 +11,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 
 public class DryingTableMenu extends AbstractContainerMenu {
     private final DryingTableBlockEntity blockEntity;
@@ -33,7 +33,7 @@ public class DryingTableMenu extends AbstractContainerMenu {
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
-        this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 18));
             this.addSlot(new ModResultSlot(handler, 1, 80, 60));
       //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
@@ -45,16 +45,33 @@ public class DryingTableMenu extends AbstractContainerMenu {
     }
 
     public boolean isCrafting() {
-        return data.get(0) > 0;
+        return data.get(0) > 0 ;
     }
 
     public int getScaledProgress() {
+
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);  // Max Progress
         int progressArrowSize = 26; // This is the height in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
+
+
+
+    public int getScaledProgress(Level world, BlockPos pos) {
+        BlockEntity tileEntity = world.getBlockEntity(pos);
+        if (tileEntity instanceof DryingTableBlockEntity) {
+            DryingTableBlockEntity dryingTable = (DryingTableBlockEntity) tileEntity;
+            int progress = this.data.get(0);
+            int maxProgress = this.data.get(1);
+            int progressArrowSize = 26;
+
+            return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        }
+        return 0;
+    }
+
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;

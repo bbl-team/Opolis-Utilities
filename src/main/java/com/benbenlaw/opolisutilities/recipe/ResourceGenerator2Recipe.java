@@ -12,30 +12,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.jetbrains.annotations.NotNull;
 
-public class DryingTableRecipe implements Recipe<SimpleContainer> {
+public class ResourceGenerator2Recipe implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> recipeItems;
-    private final int duration;
 
 
-    public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
+    public ResourceGenerator2Recipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems) {
         this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
-        this.duration = duration;
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, @NotNull Level pLevel) {
-
-        if(recipeItems.get(0).test(pContainer.getItem(0))){
-            return duration >= 0;
-        }
-        return false;
+    public boolean matches(SimpleContainer pContainer, Level pLevel) {
+        return recipeItems.get(0).test(pContainer.getItem(0));
     }
     @Override
     public NonNullList<Ingredient> getIngredients() {
@@ -57,10 +50,6 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         return output.copy();
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
     @Override
     public ResourceLocation getId() {
         return id;
@@ -76,49 +65,46 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<DryingTableRecipe> {
+    public static class Type implements RecipeType<ResourceGenerator2Recipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "drying_table";
+        public static final String ID = "resource_generator_2";
     }
 
-    public static class Serializer implements RecipeSerializer<DryingTableRecipe> {
+    public static class Serializer implements RecipeSerializer<ResourceGenerator2Recipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"drying_table");
+                new ResourceLocation(OpolisUtilities.MOD_ID,"resource_generator_2");
 
         @Override
-        public DryingTableRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public ResourceGenerator2Recipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
-            int duration = GsonHelper.getAsInt(json, "duration");
+            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new DryingTableRecipe(id, output, inputs, duration);
+            return new ResourceGenerator2Recipe(id, output, inputs);
         }
 
         @Override
-        public DryingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public ResourceGenerator2Recipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
-            int duration = buf.readInt();
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buf));
             }
 
             ItemStack output = buf.readItem();
-            return new DryingTableRecipe(id, output, inputs, duration);
+            return new ResourceGenerator2Recipe(id, output, inputs);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, DryingTableRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, ResourceGenerator2Recipe recipe) {
             buf.writeInt(recipe.getIngredients().size());
-            buf.writeInt(recipe.getDuration());
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);
             }

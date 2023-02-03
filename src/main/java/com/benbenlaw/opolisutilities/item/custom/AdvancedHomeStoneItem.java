@@ -58,14 +58,14 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
             itemstack.setTag(nbt);
 
             player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.2f,1);
-            player.sendSystemMessage(Component.translatable("tooltip.home_stone.location_set").withStyle(ChatFormatting.GREEN));
+            player.sendSystemMessage(Component.translatable("tooltips.home_stone.location_set").withStyle(ChatFormatting.GREEN));
         }
 
         //Checks Location set if not nothing and send message
 
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && !nbt.contains("x")) {
             player.playNotifySound(SoundEvents.SHIELD_BLOCK, SoundSource.AMBIENT, 0.2f,1);
-            player.sendSystemMessage(Component.translatable("tooltip.home_stone.no_location").withStyle(ChatFormatting.RED));
+            player.sendSystemMessage(Component.translatable("tooltips.home_stone.no_location").withStyle(ChatFormatting.RED));
         }
 
         //If location set then teleport
@@ -100,7 +100,7 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
             player.teleportTo(nbt.getFloat("x") + 0.5, nbt.getFloat("y") + 1, nbt.getFloat("z") + 0.5);
             player.getCooldowns().addCooldown(this, ConfigFile.homeStoneCooldown.get());
             player.playNotifySound(SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.2f, 1);
-            player.sendSystemMessage(Component.translatable("tooltip.home_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
+            player.sendSystemMessage(Component.translatable("tooltips.home_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
 
             if (ConfigFile.homeStoneTakesDamage.get().equals(true)) {
 

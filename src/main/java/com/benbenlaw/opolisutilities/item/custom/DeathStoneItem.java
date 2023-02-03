@@ -41,7 +41,7 @@ public class DeathStoneItem extends SimpleFoiledItem {
 
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && !nbt.contains("x")) {
             player.playNotifySound(SoundEvents.SHIELD_BLOCK, SoundSource.AMBIENT, 0.2f,1);
-            player.sendSystemMessage(Component.translatable("tooltip.death_stone.how").withStyle(ChatFormatting.RED));
+            player.sendSystemMessage(Component.translatable("tooltips.death_stone.how").withStyle(ChatFormatting.RED));
         }
 
         //If location set then teleport
@@ -60,7 +60,7 @@ public class DeathStoneItem extends SimpleFoiledItem {
             player.teleportTo(nbt.getFloat("x") + 0.5, nbt.getFloat("y") + 1, nbt.getFloat("z") + 0.5);
             player.getItemInHand(hand).shrink(1);
             player.playNotifySound(SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.2f, 1);
-            player.sendSystemMessage(Component.translatable("tooltip.death_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
+            player.sendSystemMessage(Component.translatable("tooltips.death_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
 
         }
         return super.use(level, player, hand);

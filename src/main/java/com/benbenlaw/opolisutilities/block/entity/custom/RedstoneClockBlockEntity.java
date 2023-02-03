@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.block.custom.ResourceGenerator2Block;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
@@ -29,32 +30,14 @@ public class RedstoneClockBlockEntity extends BlockEntity {
 
         int tickRate = 80;
 
-        /*
+        if (entity.counter % tickRate == 0 && blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {
 
-        if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(ModTags.Blocks.RESOURCE_GENERATOR_SPEED_BLOCKS_1)) {
-            tickRate = 60;
+            level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.POWERED, true));
         }
 
-        if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(ModTags.Blocks.RESOURCE_GENERATOR_SPEED_BLOCKS_2)) {
-            tickRate = 40;
-        }
+        else if (entity.counter % tickRate == 40 && blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {
 
-        if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(ModTags.Blocks.RESOURCE_GENERATOR_SPEED_BLOCKS_3)) {
-            tickRate = 20;
-        }
-
-         */
-
-        if (entity.counter % tickRate == 0) {
-
-            BlockState powered = level.getBlockState(blockPos).setValue(RedstoneClockBlock.POWERED, true);
-            level.setBlockAndUpdate(blockPos, powered);
-
-        }
-
-        else if (entity.counter % tickRate == 40) {
-            BlockState unPowered = level.getBlockState(blockPos).setValue(RedstoneClockBlock.POWERED, false);
-            level.setBlockAndUpdate(blockPos, unPowered);
+            level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.POWERED, false));
         }
     }
 }

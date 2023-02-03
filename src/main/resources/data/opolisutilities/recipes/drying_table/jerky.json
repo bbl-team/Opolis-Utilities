@@ -2,11 +2,11 @@
   "type": "opolisutilities:drying_table",
     "ingredients": [
       {
-        "item": "minecraft:stone_bricks"
+        "tag": "forge:foods/meat/raw"
       }
     ],
-  "duration": 200,
+  "duration": 100,
   "output": {
-    "item": "minecraft:cracked_stone_bricks"
+    "item": "opolisutilities:jerky"
   }
 }

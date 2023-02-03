@@ -1,4 +1,4 @@
-package com.benbenlaw.opolisutilities.integration;
+package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;

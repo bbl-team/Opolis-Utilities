@@ -26,6 +26,9 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_SERIALIZER =
             SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<ResourceGenerator2Recipe>> RESOURCE_GENERATOR_2_SERIALIZER =
+            SERIALIZER.register("resource_generator_2", () -> ResourceGenerator2Recipe.Serializer.INSTANCE);
+
 
     public static void register(IEventBus eventBus) {
         SERIALIZER.register(eventBus);

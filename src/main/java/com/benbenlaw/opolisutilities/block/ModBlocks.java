@@ -75,6 +75,13 @@ public class ModBlocks {
                     UniformInt.of(2, 4)),
                     ModCreativeModTab.OPOLIS_UTILITIES);
 
+    public static final RegistryObject<Block> ENDER_SCRAMBLER = registerBlock("ender_scrambler",
+            () -> new EnderScramblerBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(4.5f,3.0f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE)),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
 
 
 
