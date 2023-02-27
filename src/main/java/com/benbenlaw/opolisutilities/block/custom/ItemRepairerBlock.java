@@ -1,7 +1,7 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -14,17 +14,15 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DryingTableBlock extends BaseEntityBlock {
-    public DryingTableBlock(Properties properties) {
+public class ItemRepairerBlock extends BaseEntityBlock {
+    public ItemRepairerBlock(Properties properties) {
         super(properties);
     }
 
@@ -41,8 +39,8 @@ public class DryingTableBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof DryingTableBlockEntity) {
-                ((DryingTableBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof ItemRepairerBlockEntity) {
+                ((ItemRepairerBlockEntity) blockEntity).drops();
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
@@ -53,37 +51,26 @@ public class DryingTableBlock extends BaseEntityBlock {
                                           Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof DryingTableBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (DryingTableBlockEntity)entity, pPos);
+            if(entity instanceof ItemRepairerBlockEntity) {
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (ItemRepairerBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
-
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new DryingTableBlockEntity(pPos, pState);
+        return new ItemRepairerBlockEntity(pPos, pState);
     }
-    /*
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(),
-                DryingTableBlockEntity::tick);
-    }
-
-     */
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> ((DryingTableBlockEntity) blockEntity).tick());
+        return createTickerHelper(pBlockEntityType, ModBlockEntities.ITEM_REPAIRER_BLOCK_ENTITY.get(),
+                (world, blockPos, blockState, blockEntity) -> ((ItemRepairerBlockEntity) blockEntity).tick());
     }
 
 }

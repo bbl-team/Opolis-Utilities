@@ -4,12 +4,14 @@ import com.benbenlaw.opolisutilities.block.entity.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
-import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
-import com.benbenlaw.opolisutilities.screen.DryingTableMenu;
+import com.benbenlaw.opolisutilities.screen.ItemRepairerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -19,16 +21,15 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional; 
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
 
-public class DryingTableBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
+public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
@@ -71,19 +72,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
     public final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 80;
-
-    public ItemStack getRenderStack() {
-        ItemStack stack;
-
-        if(!itemHandler.getStackInSlot(0).isEmpty()) {
-            stack = itemHandler.getStackInSlot(0);
-        } else {
-            stack = itemHandler.getStackInSlot(1);
-        }
-
-        return stack;
-    }
+    private int maxProgress = 40;
 
     public void setHandler(ItemStackHandler handler) {
         copyHandlerContents(handler);
@@ -95,25 +84,21 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         }
     }
 
-    public ItemStackHandler getItemStackHandler() {
-        return this.itemHandler;
-    }
-
-    public DryingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), blockPos, blockState);
+    public ItemRepairerBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(ModBlockEntities.ITEM_REPAIRER_BLOCK_ENTITY.get(), blockPos, blockState);
         this.data = new ContainerData() {
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> DryingTableBlockEntity.this.progress;
-                    case 1 -> DryingTableBlockEntity.this.maxProgress;
+                    case 0 -> ItemRepairerBlockEntity.this.progress;
+                    case 1 -> ItemRepairerBlockEntity.this.maxProgress;
                     default -> 0;
                 };
             }
 
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> DryingTableBlockEntity.this.progress = value;
-                    case 1 -> DryingTableBlockEntity.this.maxProgress = value;
+                    case 0 -> ItemRepairerBlockEntity.this.progress = value;
+                    case 1 -> ItemRepairerBlockEntity.this.maxProgress = value;
                 }
             }
 
@@ -125,13 +110,17 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Drying Table");
+        return Component.literal("Item Repairer");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return new DryingTableMenu(containerID, inventory, this, this.data);
+        return new ItemRepairerMenu(containerID, inventory, this, this.data);
+    }
+
+    public ItemStackHandler getItemStackHandler() {
+        return this.itemHandler;
     }
 
     @Override
@@ -172,7 +161,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("drying_table.progress", progress);
+        tag.putInt("item_repairer.progress", progress);
         super.saveAdditional(tag);
     }
 
@@ -180,7 +169,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("drying_table.progress");
+        progress = nbt.getInt("item_repairer.progress");
     }
 
     public void drops() {
@@ -198,74 +187,45 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         BlockPos pPos  = this.worldPosition;
         assert pLevel != null;
         BlockState pState = pLevel.getBlockState(pPos);
-        DryingTableBlockEntity pBlockEntity = this;
+        ItemRepairerBlockEntity pBlockEntity = this;
+        ItemStack inputAsStack = new ItemStack(pBlockEntity.itemHandler.getStackInSlot(0).getItem());
 
-
-        if(hasRecipe(pBlockEntity)) {
+        if(inputAsStack.isDamageableItem()) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);
             if(pBlockEntity.progress > pBlockEntity.maxProgress) {
-                craftItem(pBlockEntity);
+
+                boolean isDamaged = inputAsStack.isDamaged();
+                int damageValue = pBlockEntity.itemHandler.getStackInSlot(0).getDamageValue();
+
+                ItemStack stackInSlot0 = pBlockEntity.itemHandler.getStackInSlot(0);
+                ItemStack copiedStack = stackInSlot0.copy();
+
+                if (!isDamaged) {
+                    pBlockEntity.itemHandler.getStackInSlot(0).hurt(-1, RandomSource.create(), null);
+                    pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
+                }
+
+                if (damageValue == 0) {
+                    pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
+                    pBlockEntity.itemHandler.extractItem(0, 1, false);
+                }
+
+                pBlockEntity.resetProgress();
+                setChanged(pLevel, pPos, pState);
+
+
             }
-        } else{
+        }
+        else {
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
-    }
-
-
-
-    private boolean hasRecipe(DryingTableBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        Optional<DryingTableRecipe> match = level.getRecipeManager()
-                .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
-
-        match.ifPresent(recipe -> maxProgress = recipe.getDuration());
-
-        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
-                && hasDuration(match.get());
 
     }
 
-    private static void craftItem(@NotNull DryingTableBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-        Optional<DryingTableRecipe> match = level.getRecipeManager()
-                .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
-
-        if(match.isPresent()) {
-
-            entity.itemHandler.extractItem(0,1, false);
-            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(1).getCount() + 1));
-
-            entity.resetProgress();
-
-
-        }
-    }
     private void resetProgress() {
         this.progress = 0;
     }
 
-    private static boolean hasDuration(DryingTableRecipe recipe) {
-        return 0 <= recipe.getDuration();
-    }
-
-    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
-        return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
-    }
-
-    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
-        return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
-    }
 }

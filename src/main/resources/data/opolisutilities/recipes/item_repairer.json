@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "AMA",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "A": {
+      "item": "minecraft:anvil"
+    },
+    "M": {
+      "item": "minecraft:smithing_table"
+    }
+  },
+  "result": {
+    "item": "opolisutilities:item_repairer"
+  }
+}

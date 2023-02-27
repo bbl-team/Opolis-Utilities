@@ -2,8 +2,25 @@ Changelog Opolis Utilities
 
 //Todo: 1.20 MC Update, add tooltips on blocks that work with rsg2
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
-//Todo: 1.20 MC Update, Fix the drying table ignoring durations
 //Todo: 1.20 MC Update, Fabric and Forge
+
+1.18
+
+Wallet now only stacks to 1
+Added item repairer, a new block that will restore durability to items place in the top slot of the block. when the item is fully
+    restored the item will be moved into the bottom slot
+Moved to json render types for drying table
+
+
+1.17.2
+
+Updated to Forge Capabilities
+Drying tables recipes progress bars now work correctly with durations
+Changes do the duration of some drying table recipes
+Old custom drying table recipe must now include a duration value
+Drying table is now wood material
+Drying table recipe now show how long a recipe will take in JEI
+Added cracked bricks recipe
 
 1.17.1
 

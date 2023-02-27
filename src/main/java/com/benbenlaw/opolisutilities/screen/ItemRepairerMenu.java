@@ -1,8 +1,9 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.ModResultSlot;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,22 +12,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ResourceGeneratorMenu extends AbstractContainerMenu {
-    private final ResourceGeneratorBlockEntity blockEntity;
+public class ItemRepairerMenu extends AbstractContainerMenu {
+    private final ItemRepairerBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public ResourceGeneratorMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
+    public ItemRepairerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
         this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), containerID);
+    public ItemRepairerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
+        super(ModMenuTypes.ITEM_REPAIRER_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
-        blockEntity = ((ResourceGeneratorBlockEntity) entity);
+        blockEntity = ((ItemRepairerBlockEntity) entity);
         this.level = inventory.player.level;
         this.data = data;
 
@@ -45,16 +45,32 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     }
 
     public boolean isCrafting() {
-        return data.get(0) > 0;
+        return data.get(0) > 0 ;
     }
 
+
     public int getScaledProgress() {
+
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);  // Max Progress
         int progressArrowSize = 26; // This is the height in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
+
+    public int getScaledProgress(Level world, BlockPos pos) {
+        BlockEntity tileEntity = world.getBlockEntity(pos);
+        if (tileEntity instanceof ItemRepairerBlockEntity) {
+            ItemRepairerBlockEntity itemRepairer = (ItemRepairerBlockEntity) tileEntity;
+            int progress = this.data.get(0);
+            int maxProgress = this.data.get(1);
+            int progressArrowSize = 26;
+
+            return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        }
+        return 0;
+    }
+
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -104,7 +120,7 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.RESOURCE_GENERATOR.get());
+                pPlayer, ModBlocks.ITEM_REPAIRER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

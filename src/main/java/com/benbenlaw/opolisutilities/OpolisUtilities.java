@@ -75,8 +75,7 @@ public class OpolisUtilities {
 
                 MenuScreens.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
                 MenuScreens.register(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
-                //BlockEntityRenderers.register(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), RenderType.cutout());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.DRYING_TABLE.get(), RenderType.cutout());
+                MenuScreens.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
 
             });
         }

@@ -19,6 +19,9 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<DryingTableMenu>> DRYING_TABLE_MENU =
             registerMenuType(DryingTableMenu::new, "drying_table_menu");
 
+    public static final RegistryObject<MenuType<ItemRepairerMenu>> ITEM_REPAIRER_MENU =
+            registerMenuType(ItemRepairerMenu::new, "item_repairer_menu");
+
     public static final RegistryObject<MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU =
             registerMenuType(ResourceGeneratorMenu::new, "resource_generator_menu");
 

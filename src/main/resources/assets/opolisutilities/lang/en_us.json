@@ -28,6 +28,7 @@
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
   "block.opolisutilities.redstone_clock": "Redstone Clock",
   "block.opolisutilities.ender_scrambler": "Ender Scrambler",
+  "block.opolisutilities.item_repairer": "Item Repairer",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",

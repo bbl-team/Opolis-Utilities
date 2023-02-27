@@ -33,7 +33,13 @@ public class ModBlocks {
                     .instabreak()));
 
     public static final RegistryObject<Block> DRYING_TABLE = registerBlock("drying_table",
-            () -> new DryingTableBlock(BlockBehaviour.Properties.of(Material.GLASS)
+            () -> new DryingTableBlock(BlockBehaviour.Properties.of(Material.WOOD)
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
+    public static final RegistryObject<Block> ITEM_REPAIRER = registerBlock("item_repairer",
+            () -> new ItemRepairerBlock(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(2.0f,2.0f)
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);

@@ -23,7 +23,7 @@ public class ModItems {
             () -> new MiniCoalItem(true));
 
     public static final RegistryObject<Item> WALLET = ITEMS.register("wallet",
-            () -> new WalletItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new WalletItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES).stacksTo(1)));
 
     public static final RegistryObject<Item> BASIC_LOOT_BOX = ITEMS.register("basic_loot_box",
             () -> new BasicLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
