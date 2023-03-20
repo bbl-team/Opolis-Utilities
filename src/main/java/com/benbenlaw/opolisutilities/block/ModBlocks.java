@@ -44,6 +44,12 @@ public class ModBlocks {
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);
 
+    public static final RegistryObject<Block> SHOP = registerBlock("shop",
+            () -> new ShopBlock(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
     public static final RegistryObject<Block> RESOURCE_GENERATOR = registerBlock("resource_generator",
             () -> new ResourceGeneratorBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(2.0f,2.0f)

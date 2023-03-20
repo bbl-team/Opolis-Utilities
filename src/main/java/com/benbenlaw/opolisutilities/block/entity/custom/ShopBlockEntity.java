@@ -4,16 +4,12 @@ import com.benbenlaw.opolisutilities.block.entity.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
-import com.benbenlaw.opolisutilities.screen.ItemRepairerMenu;
-import com.mojang.realmsclient.util.LevelType;
-import com.mojang.realmsclient.util.WorldGenerationInfo;
+import com.benbenlaw.opolisutilities.recipe.ShopRecipe;
+import com.benbenlaw.opolisutilities.screen.ShopMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -21,30 +17,23 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
-public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
+public class ShopBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
@@ -91,21 +80,21 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
-    public ItemRepairerBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ModBlockEntities.ITEM_REPAIRER_BLOCK_ENTITY.get(), blockPos, blockState);
+    public ShopBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(ModBlockEntities.SHOP_BLOCK_ENTITY.get(), blockPos, blockState);
         this.data = new ContainerData() {
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> ItemRepairerBlockEntity.this.progress;
-                    case 1 -> ItemRepairerBlockEntity.this.maxProgress;
+                    case 0 -> ShopBlockEntity.this.progress;
+                    case 1 -> ShopBlockEntity.this.maxProgress;
                     default -> 0;
                 };
             }
 
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> ItemRepairerBlockEntity.this.progress = value;
-                    case 1 -> ItemRepairerBlockEntity.this.maxProgress = value;
+                    case 0 -> ShopBlockEntity.this.progress = value;
+                    case 1 -> ShopBlockEntity.this.maxProgress = value;
                 }
             }
 
@@ -117,13 +106,13 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Item Repairer");
+        return Component.literal("Shop");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return new ItemRepairerMenu(containerID, inventory, this, this.data);
+        return new ShopMenu(containerID, inventory, this, this.data);
     }
 
     public ItemStackHandler getItemStackHandler() {
@@ -168,7 +157,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("item_repairer.progress", progress);
+        tag.putInt("shop.progress", progress);
         super.saveAdditional(tag);
     }
 
@@ -176,7 +165,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("item_repairer.progress");
+        progress = nbt.getInt("shop.progress");
     }
 
     public void drops() {
@@ -194,44 +183,80 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         BlockPos pPos  = this.worldPosition;
         assert pLevel != null;
         BlockState pState = pLevel.getBlockState(pPos);
-        ItemRepairerBlockEntity pBlockEntity = this;
-        ItemStack inputAsStack = new ItemStack(pBlockEntity.itemHandler.getStackInSlot(0).getItem());
-        boolean isDamaged = inputAsStack.isDamaged();
-        int damageValue = pBlockEntity.itemHandler.getStackInSlot(0).getDamageValue();
-        ItemStack stackInSlot0 = pBlockEntity.itemHandler.getStackInSlot(0);
-        ItemStack copiedStack = stackInSlot0.copy();
+        ShopBlockEntity pBlockEntity = this;
 
-        if(inputAsStack.isDamageableItem() && !(damageValue == 0)) {
 
+        if(hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);
             if(pBlockEntity.progress > pBlockEntity.maxProgress) {
-
-                if (!isDamaged) {
-                    pBlockEntity.itemHandler.getStackInSlot(0).hurt(-1, RandomSource.create(), null);
-                    pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
-
-                }
-
-                pBlockEntity.resetProgress();
-                setChanged(pLevel, pPos, pState);
-
+                craftItem(pBlockEntity);
             }
-        }
-
-        if(inputAsStack.isDamageableItem() && damageValue == 0 && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty()) {
-
-            pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
-            pBlockEntity.itemHandler.extractItem(0, 1, false);
+        } else{
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
-
         }
-
     }
 
     private void resetProgress() {
         this.progress = 0;
     }
+
+    private static void craftItem(@NotNull ShopBlockEntity entity) {
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
+        Optional<ShopRecipe> match = level.getRecipeManager()
+                .getRecipeFor(ShopRecipe.Type.INSTANCE, inventory, level);
+
+        if(match.isPresent()) {
+
+            entity.itemHandler.extractItem(0, match.get().getInCount(), false);
+            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
+                    entity.itemHandler.getStackInSlot(1).getCount() + match.get().getOutCount()));
+
+            entity.resetProgress();
+
+        }
+    }
+
+    private static boolean hasRecipe(ShopBlockEntity entity) {
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
+
+        assert level != null;
+        Optional<ShopRecipe> match = level.getRecipeManager()
+                .getRecipeFor(ShopRecipe.Type.INSTANCE, inventory, level);
+
+        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
+                && hasOutputSpaceMaking(entity, match.get())
+                && hasCorrectCountInInputSlotUpgrading(entity, match.get());
+
+
+    }
+
+    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
+        return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
+    }
+
+    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
+        return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
+    }
+
+    private static boolean hasCorrectCountInInputSlotUpgrading(ShopBlockEntity entity, ShopRecipe recipe) {
+        return entity.itemHandler.getStackInSlot(0).getCount() >= recipe.getInCount();
+    }
+
+    private static boolean hasOutputSpaceMaking(ShopBlockEntity entity, ShopRecipe recipe) {
+        return entity.itemHandler.getStackInSlot(1).getCount() + recipe.getOutCount() - 1 <
+                entity.itemHandler.getStackInSlot(1).getMaxStackSize();
+    }
+
 
 }

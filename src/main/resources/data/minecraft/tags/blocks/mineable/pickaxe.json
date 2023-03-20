@@ -6,6 +6,7 @@
     "opolisutilities:deepslate_ender_ore",
     "opolisutilities:redstone_clock",
     "opolisutilities:resource_generator_2",
-    "opolisutilities:ender_scrambler"
+    "opolisutilities:ender_scrambler",
+    "opolisutilities:item_repairer"
   ]
 }

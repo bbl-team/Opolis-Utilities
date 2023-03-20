@@ -3,6 +3,19 @@ Changelog Opolis Utilities
 //Todo: 1.20 MC Update, add tooltips on blocks that work with rsg2
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
 //Todo: 1.20 MC Update, Fabric and Forge
+//Todo: shoip and selling shop blocks
+
+
+1.18.2
+
+Started initial work on a shop block
+Fully restored item in the item repairer will now be moved in the output slot if they are fully repaired
+
+
+1.18.1
+
+Item Repairer now drops when broken
+Item repairer now stop outputting if the bottom slot contains a item
 
 1.18
 

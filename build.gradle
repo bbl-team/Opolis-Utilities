@@ -143,6 +143,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
     implementation fg.deobf("curse.maven:Patchouli-306770:4031402")
+    implementation fg.deobf("curse.maven:Polymorph-388800:4119087")
 
 
     // Real mod deobf dependency examples - these get remapped to your current mappings

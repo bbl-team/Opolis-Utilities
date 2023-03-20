@@ -1,0 +1,13 @@
+{
+  "type": "opolisutilities:shop",
+    "ingredients": [
+      {
+        "item": "minecraft:dirt"
+      }
+    ],
+  "output": {
+    "item": "minecraft:emerald"
+  },
+  "inCount": 12,
+  "outCount": 56
+}

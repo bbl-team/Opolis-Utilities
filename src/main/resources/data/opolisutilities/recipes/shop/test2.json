@@ -1,0 +1,13 @@
+{
+  "type": "opolisutilities:shop",
+    "ingredients": [
+      {
+        "item": "opolisutilities:b_bucks"
+      }
+    ],
+  "output": {
+    "item": "minecraft:diamond"
+  },
+  "inCount": 20,
+  "outCount": 32
+}

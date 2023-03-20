@@ -23,6 +23,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(ItemRepairerBlockEntity::new,
                             ModBlocks.ITEM_REPAIRER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<ShopBlockEntity>> SHOP_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("shop_block_entity", () ->
+                    BlockEntityType.Builder.of(ShopBlockEntity::new,
+                            ModBlocks.SHOP.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<ResourceGeneratorBlockEntity>> RESOURCE_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("resource_generator_block_entity", () ->
                     BlockEntityType.Builder.of(ResourceGeneratorBlockEntity::new,

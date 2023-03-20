@@ -1,0 +1,11 @@
+{
+  "type": "opolisutilities:shop",
+    "ingredients": [
+      {
+        "item": "minecraft:dirt"
+      }
+    ],
+  "output": {
+    "item": "minecraft:cracked_stone_bricks"
+  }
+}
