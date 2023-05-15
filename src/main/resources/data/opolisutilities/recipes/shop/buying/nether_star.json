@@ -1,7 +1,7 @@
 {
   "type": "opolisutilities:shop",
   "ingredient": {
-    "item": "minecraft:diamond"
+    "item": "minecraft:nether_star"
   },
   "ingredient_count": 1,
   "result": "opolisutilities:b_bucks",
