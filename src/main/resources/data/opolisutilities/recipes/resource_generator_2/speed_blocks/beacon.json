@@ -1,0 +1,5 @@
+{
+  "type": "opolisutilities:rg2_speed_blocks",
+  "block": "minecraft:beacon",
+  "tickRate": 10
+}

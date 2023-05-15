@@ -38,6 +38,18 @@ public class ModBlocks {
                     .noOcclusion()),
                     ModCreativeModTab.OPOLIS_UTILITIES);
 
+    public static final RegistryObject<Block> BLOCK_PLACER = registerBlock("block_placer",
+            () -> new BlockPlacerBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
+    public static final RegistryObject<Block> BLOCK_BREAKER = registerBlock("block_breaker",
+            () -> new BlockBreakerBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()),
+                    ModCreativeModTab.OPOLIS_UTILITIES);
+
     public static final RegistryObject<Block> ITEM_REPAIRER = registerBlock("item_repairer",
             () -> new ItemRepairerBlock(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(2.0f,2.0f)

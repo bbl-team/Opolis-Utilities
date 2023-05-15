@@ -16,14 +16,17 @@ public class ModMenuTypes {
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, OpolisUtilities.MOD_ID);
 
 
+    public static final RegistryObject<MenuType<BlockBreakerMenu>> BLOCK_BREAKER_MENU =
+            registerMenuType(BlockBreakerMenu::new, "block_breaker_menu");
+
+    public static final RegistryObject<MenuType<BlockPlacerMenu>> BLOCK_PLACER_MENU =
+            registerMenuType(BlockPlacerMenu::new, "block_placer_menu");
+
     public static final RegistryObject<MenuType<DryingTableMenu>> DRYING_TABLE_MENU =
             registerMenuType(DryingTableMenu::new, "drying_table_menu");
 
     public static final RegistryObject<MenuType<ItemRepairerMenu>> ITEM_REPAIRER_MENU =
             registerMenuType(ItemRepairerMenu::new, "item_repairer_menu");
-
-    public static final RegistryObject<MenuType<ShopMenu>> SHOP_MENU =
-            registerMenuType(ShopMenu::new, "shop_menu");
 
     public static final RegistryObject<MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU =
             registerMenuType(ResourceGeneratorMenu::new, "resource_generator_menu");
@@ -34,8 +37,23 @@ public class ModMenuTypes {
 
 
 
+//SHOP
+
+
+    public static DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, OpolisUtilities.MOD_ID);
+
+    public static final RegistryObject<MenuType<ShopMenu>> SHOP_MENU =
+            CONTAINERS.register("shop_menu",
+                    () -> IForgeMenuType.create(((windowId, inv, data) -> {
+                        return new ShopMenu(windowId, inv);
+                    })));
+
+
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);
+        CONTAINERS.register(eventBus);
 
     }
+
+
 }

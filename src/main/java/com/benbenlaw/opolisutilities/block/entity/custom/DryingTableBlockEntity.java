@@ -213,8 +213,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         }
     }
 
-
-
     private boolean hasRecipe(DryingTableBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
@@ -249,7 +247,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
 
             entity.resetProgress();
-
 
         }
     }

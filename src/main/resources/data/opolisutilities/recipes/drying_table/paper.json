@@ -1,0 +1,12 @@
+{
+  "type": "opolisutilities:drying_table",
+    "ingredients": [
+      {
+        "item": "opolisutilities:soaked_paper"
+      }
+    ],
+  "duration": 60,
+  "output": {
+    "item": "minecraft:paper"
+  }
+}

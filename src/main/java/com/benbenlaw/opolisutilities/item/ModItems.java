@@ -77,6 +77,14 @@ public class ModItems {
                     .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())
                     .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
+    public static final RegistryObject<Item> SOAKED_PAPER = ITEMS.register("soaked_paper",
+            () -> new Item(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
+    public static final RegistryObject<Item> LOG_SHEET = ITEMS.register("log_sheet",
+            () -> new Item(new Item.Properties()
+                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

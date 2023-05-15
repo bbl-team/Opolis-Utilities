@@ -12,8 +12,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,22 +34,53 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.core.jmx.Server;
 
 
 @Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
 
 public class ModEvents {
 
+    /*
+
+    @SubscribeEvent
+    public static void logSheetsFromLogs(PlayerInteractEvent.RightClickBlock event) {
+
+        Level level = event.getLevel();
+        Entity entity = event.getEntity();
+        BlockPos blockPos = event.getPos();
+        BlockState state = level.getBlockState(blockPos);
+        Player player = event.getEntity().getInventory().player;
+
+        if(entity instanceof ServerPlayer){
+            if(player.getItemInHand(InteractionHand.MAIN_HAND).is(Tags.Items.SHEARS)) {
+                if (state.is(BlockTags.LOGS)) {
+                    level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1, 1, false);
+
+                    level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                    level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(),
+                            new ItemStack(ModItems.LOG_SHEET.get(), 6)));
+                    player.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, player,
+                            (player1) -> player.broadcastBreakEvent(player.getUsedItemHand()));
+
+                }
+            }
+        }
+    }
+
+     */
+
     public static Vec3 globalEntity;
     public static Level globalLevel;
-
 
     @SubscribeEvent
     public static void cancelEndermanTeleportation(EntityTeleportEvent event) {

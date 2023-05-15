@@ -15,6 +15,8 @@
   "item.opolisutilities.advanced_loot_box": "Advanced Loot Box",
   "item.opolisutilities.elite_loot_box": "Elite Loot Box",
   "item.opolisutilities.wallet": "Wallet",
+  "item.opolisutilities.log_sheet": "Log Sheet",
+  "item.opolisutilities.soaked_paper": "Soaked Paper",
 
   "item.opolisutilities.stone_core": "Stone Core",
   "item.opolisutilities.mini_coal": "Mini Coal",
@@ -29,6 +31,9 @@
   "block.opolisutilities.redstone_clock": "Redstone Clock",
   "block.opolisutilities.ender_scrambler": "Ender Scrambler",
   "block.opolisutilities.item_repairer": "Item Repairer",
+  "block.opolisutilities.block_placer": "Block Placer",
+  "block.opolisutilities.block_breaker": "Block Breaker",
+  "block.opolisutilities.shop": "Shop",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",
@@ -58,6 +63,13 @@
   "jei.recipes.resource_generator_2_line_2": "world as shown!",
   "jei.recipes.resource_generator_2_chest_1": "Puts the generated block",
   "jei.recipes.resource_generator_2_chest_2": "into any inventory below!",
+
+  "jei.recipes.resource_generator_2_speed_blocks_line_1": "Placing a speed block",
+  "jei.recipes.resource_generator_2_speed_blocks_line_2": "above the resource",
+  "jei.recipes.resource_generator_2_speed_blocks_line_3": "generator 2 will increase",
+  "jei.recipes.resource_generator_2_speed_blocks_line_4": "the speed!",
+
+  "jei.recipes.resource_generator_2_speed_blocks_line": "Ticks per block",
 
   "enchantment.opolisutilities.warden_smite": "Warden Smite",
 

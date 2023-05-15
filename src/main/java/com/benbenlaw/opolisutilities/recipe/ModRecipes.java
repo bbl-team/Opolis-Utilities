@@ -26,11 +26,14 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_SERIALIZER =
             SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
 
-    public static final RegistryObject<RecipeSerializer<ResourceGenerator2Recipe>> RESOURCE_GENERATOR_2_SERIALIZER =
-            SERIALIZER.register("resource_generator_2", () -> ResourceGenerator2Recipe.Serializer.INSTANCE);
-
     public static final RegistryObject<RecipeSerializer<ShopRecipe>> SHOP_SERIALIZER =
             SERIALIZER.register("shop", () -> ShopRecipe.Serializer.INSTANCE);
+
+    public static final RegistryObject<RecipeSerializer<RG2SpeedBlocksRecipe>> RG2_SPEED_BLOCKS_SERIALIZER =
+            SERIALIZER.register("rg2_speed_blocks", () -> RG2SpeedBlocksRecipe.Serializer.INSTANCE);
+
+    public static final RegistryObject<RecipeSerializer<RG2BlocksRecipe>> RG2_BLOCKS_SERIALIZER =
+            SERIALIZER.register("rg2_blocks", () -> RG2BlocksRecipe.Serializer.INSTANCE);
 
 
     public static void register(IEventBus eventBus) {

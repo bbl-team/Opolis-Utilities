@@ -1,0 +1,9 @@
+{
+  "type": "opolisutilities:shop",
+  "ingredient": {
+    "item": "opolisutilities:b_bucks"
+  },
+  "ingredient_count": 3,
+  "result": "opolisutilities:basic_loot_box",
+  "count": 1
+}

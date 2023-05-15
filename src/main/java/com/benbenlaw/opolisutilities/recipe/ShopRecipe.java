@@ -1,12 +1,15 @@
 package com.benbenlaw.opolisutilities.recipe;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -14,144 +17,76 @@ import net.minecraft.world.level.Level;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
 
-public class ShopRecipe implements Recipe<SimpleContainer> {
+public class ShopRecipe extends SingleItemRecipe {
 
-    private final ResourceLocation id;
-    private final ItemStack output;
-    private final NonNullList<Ingredient> recipeItems;
-    private final int inCount;
-    private final int outCount;
-
-    public ShopRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int inCount, int outCount) {
-        this.id = id;
-        this.output = output;
-        this.recipeItems = recipeItems;
-        this.inCount = inCount;
-        this.outCount = outCount;
+    public int ingredientCount;
+    public ShopRecipe(ResourceLocation pId, String pGroup, Ingredient pIngredient, ItemStack pResult, int ingredientCount) {
+        super(Type.INSTANCE, ModRecipes.SHOP_SERIALIZER.get(), pId, pGroup, pIngredient, pResult);
+        this.ingredientCount = ingredientCount;
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        return recipeItems.get(0).test(pContainer.getItem(0));
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return recipeItems;
-    }
-
-    @Override
-    public ItemStack assemble(SimpleContainer p_44001_) {
-        return output;
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+    public boolean isSpecial() {
         return true;
     }
 
-    @Override
-    public ItemStack getResultItem() {
-        return output.copy();
+    /**
+     * Used to check if a recipe matches current crafting inventory
+     */
+    public boolean matches(Container pInv, Level pLevel) {
+        return this.ingredient.test(pInv.getItem(0));
     }
 
-    public int getInCount() {
-        return this.inCount;
+    public ItemStack getToastSymbol() {
+        return new ItemStack(ModBlocks.SHOP.get());
     }
 
-    public int getOutCount() {
-        return this.outCount;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
-    }
 
     @Override
     public RecipeType<?> getType() {
-        return Type.INSTANCE;
+        return ShopRecipe.Type.INSTANCE;
     }
 
     public static class Type implements RecipeType<ShopRecipe> {
         private Type() { }
-        public static final Type INSTANCE = new Type();
+        public static final ShopRecipe.Type INSTANCE = new ShopRecipe.Type();
         public static final String ID = "shop";
     }
 
+
     public static class Serializer implements RecipeSerializer<ShopRecipe> {
-        public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"shop");
+        public static final ShopRecipe.Serializer INSTANCE = new ShopRecipe.Serializer();
 
-        @Override
-        public ShopRecipe fromJson(ResourceLocation id, JsonObject json) {
-            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
-
-            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
-            int inCount = GsonHelper.getAsInt(json, "inCount");
-            int outCount = GsonHelper.getAsInt(json, "outCount");
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
+        public ShopRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
+            String group = GsonHelper.getAsString(pJson, "group", "");
+            Ingredient ingredient;
+            int ingredient_count = GsonHelper.getAsInt(pJson, "ingredient_count", 1);
+            if (GsonHelper.isArrayNode(pJson, "ingredient")) {
+                ingredient = Ingredient.fromJson(GsonHelper.getAsJsonArray(pJson, "ingredient"));
+            } else {
+                ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(pJson, "ingredient"));
             }
 
-            return new ShopRecipe(id, output, inputs, inCount, outCount);
+            String result = GsonHelper.getAsString(pJson, "result");
+            int count = GsonHelper.getAsInt(pJson, "count", 1);
+            ItemStack itemstack = new ItemStack(Registry.ITEM.get(new ResourceLocation(result)), count);
+            return new ShopRecipe(pRecipeId, group, ingredient, itemstack, ingredient_count);
         }
 
-        @Override
-        public ShopRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
-            int inCount = buf.readInt();
-            int outCount = buf.readInt();
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf));
-            }
-
-            ItemStack output = buf.readItem();
-            return new ShopRecipe(id, output, inputs, inCount, outCount);
+        public ShopRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
+            String group = pBuffer.readUtf();
+            Ingredient ingredient = Ingredient.fromNetwork(pBuffer);
+            ItemStack result = pBuffer.readItem();
+            int ingredient_count = pBuffer.readInt();
+            return new ShopRecipe(pRecipeId, group, ingredient, result, ingredient_count);
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, ShopRecipe recipe) {
-            buf.writeInt(recipe.getIngredients().size());
-            buf.writeInt(recipe.getInCount());
-            buf.writeInt(recipe.getOutCount());
-
-            for (Ingredient ing : recipe.getIngredients()) {
-                ing.toNetwork(buf);
-            }
-            buf.writeItemStack(recipe.getResultItem(), false);
-        }
-
-
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
+        public void toNetwork(FriendlyByteBuf pBuffer, ShopRecipe pRecipe) {
+            pBuffer.writeUtf(pRecipe.group);
+            pRecipe.ingredient.toNetwork(pBuffer);
+            pBuffer.writeItem(pRecipe.result);
+            pBuffer.writeInt(pRecipe.ingredientCount);
         }
     }
-
-
-
 
 }

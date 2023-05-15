@@ -9,5 +9,7 @@ public class NoInventoryRecipe extends RecipeWrapper {
     private NoInventoryRecipe() {
         super(new ItemStackHandler(0));
     }
+
+
 }
 

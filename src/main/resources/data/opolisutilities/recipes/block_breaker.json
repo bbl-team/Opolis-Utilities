@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "AMA",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "A": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "M": {
+      "item": "minecraft:dispenser"
+    }
+  },
+  "result": {
+    "item": "opolisutilities:block_breaker"
+  }
+}

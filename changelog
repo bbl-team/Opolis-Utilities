@@ -3,8 +3,44 @@ Changelog Opolis Utilities
 //Todo: 1.20 MC Update, add tooltips on blocks that work with rsg2
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
 //Todo: 1.20 MC Update, Fabric and Forge
-//Todo: shoip and selling shop blocks
+//Todo: shop and selling shop blocks
+DO THE BOOK
 
+
+1.21
+
+fixed spam of [Render thread/WARN] [minecraft/ClientRecipeBook]: Unknown recipe category:
+Added recipe for block placer and block breaker
+Resource Generate 2 tick rates now working again correctly
+Default RG2 tickrate now 220 instead of 80, this now rewards you for using speed blocks
+Gold block added and additional iron block recipe removed
+Added right click information for resource generator 2 when they are in world
+RG2 speed blocks no longer limit to only tags meaning single blocks can be used
+netherite speed reduce to 20 and beacons added and
+Loads of modded blocks added as speed blocks for resource generator
+Added loot tables for the shop, breaker and placer
+Added shop block texture, translation and recipe
+Updated information on the resource generator 2 changes in guide book
+Added block breaker and placer and shop information into the guide book
+
+
+
+1.20
+
+Added block placer, places blocks in front of it, can face any direction
+Added block breaker, breaks blocks in front of it, respects harvest levels, enchantments and correct tools for the block, can face any direction
+
+1.19
+
+Complete rewrite of how resource generator 2's work:
+    Old Tag based system removed now uses recipes json files
+    various other changes that will be shown in the discord
+
+Added log sheet made from pressure plates
+Added soaked paper made from water buckets and log sheets
+Added paper recipe in the drying table using soaked paper
+Updated guide book to reflect new resource generator changes
+Added soaked paper information
 
 1.18.2
 

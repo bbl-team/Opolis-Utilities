@@ -1,25 +1,20 @@
 package com.benbenlaw.opolisutilities.util;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 
 public class ModTags {
 
-
-
     public static class Blocks {
 
-
-//        public static final TagKey<Block> MINEABLE_WITH_HAMMER = tag("mineable_with_hammer");
-        public static final TagKey<Block> RESOURCE_GENERATOR_BLOCKS = tag("resource_generator_blocks");
-        public static final TagKey<Block> RESOURCE_GENERATOR_SPEED_BLOCKS_1 = tag("resource_generator_speed_blocks_1");
-        public static final TagKey<Block> RESOURCE_GENERATOR_SPEED_BLOCKS_2 = tag("resource_generator_speed_blocks_2");
-        public static final TagKey<Block> RESOURCE_GENERATOR_SPEED_BLOCKS_3 = tag("resource_generator_speed_blocks_3");
+        public static final TagKey<Block> EMPTY = tag("empty");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
@@ -32,20 +27,12 @@ public class ModTags {
     }
 
 
-
-
     public static class Items {
 
-        public static final TagKey<Item> RESOURCE_GENERATOR_BLOCKS = tag("resource_generator_blocks");
-        public static final TagKey<Item> RESOURCE_GENERATOR_SPEED_BLOCKS_1 = tag("resource_generator_speed_blocks_1");
-        public static final TagKey<Item> RESOURCE_GENERATOR_SPEED_BLOCKS_2 = tag("resource_generator_speed_blocks_2");
-        public static final TagKey<Item> RESOURCE_GENERATOR_SPEED_BLOCKS_3 = tag("resource_generator_speed_blocks_3");
+        public static final TagKey<Item> EMPTY = tag("empty");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
-
-
-
         }
 
         private static TagKey<Item> forgeTag(String name) {
@@ -53,5 +40,23 @@ public class ModTags {
         }
 
     }
+    /*
+
+    public static class Structures {
+
+    //    public static final TagKey<Item> RESOURCE_GENERATOR_BLOCKS = tag("resource_generator_blocks");
+
+        private static TagKey<StructureType<?>> tag(String name) {
+            return TagKey.create(Registry.STRUCTURE_TYPE_REGISTRY, new ResourceLocation(OpolisUtilities.MOD_ID, name));
+        }
+
+        private static TagKey<StructureType<?>> forgeTag(String name) {
+            return TagKey.create(Registry.STRUCTURE_TYPE_REGISTRY, new ResourceLocation("forge", name));
+        }
+
+    }
+
+     */
+
 
 }

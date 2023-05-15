@@ -1,0 +1,22 @@
+{
+	"name": "Soaked Papper",
+	"icon": "opolisutilities:textures/item/soaked_paper.png",
+	"category": "opolisutilities:basic_items",
+	"sortnum": 2,
+	"pages": [
+		{
+			"type": "text",
+			"text": "Soaked paper can be dried in a drying table to make paper."
+		},
+		{
+        	"type": "crafting",
+        	"recipe": "opolisutilities:log_sheet",
+        	"text": "Used to make soaked paper."
+        },
+		{
+        	"type": "crafting",
+        	"recipe": "opolisutilities:soaked_paper",
+        	"text": "Can be used to make paper."
+        }
+	]
+}
