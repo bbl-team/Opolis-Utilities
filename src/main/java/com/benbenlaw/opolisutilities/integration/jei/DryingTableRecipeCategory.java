@@ -34,7 +34,7 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
     private final IDrawable icon;
 
     public DryingTableRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 120, 19);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.DRYING_TABLE.get()));
     }
 
@@ -64,8 +64,8 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, DryingTableRecipe recipe, IFocusGroup focusGroup) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 80, 12).addIngredients(recipe.getIngredients().get(0));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 54).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getIngredients().get(0));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 2).addItemStack(recipe.getResultItem());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
 
         int duration = recipe.getDuration();
 
-        minecraft.font.draw(stack, Component.literal(String.valueOf(duration) + " ticks"), 92, 37, Color.black.getRGB());
+        minecraft.font.draw(stack, Component.literal(String.valueOf(duration/20 +"s")), 95, 6, Color.gray.getRGB());
 
 
     }

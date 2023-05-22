@@ -37,6 +37,9 @@ public class ModItems {
     public static final RegistryObject<Item> B_BUCKS = ITEMS.register("b_bucks",
             () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 
+    public static final RegistryObject<Item> LEAFY_STRING = ITEMS.register("leafy_string",
+            () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+
     public static final RegistryObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
             () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
 

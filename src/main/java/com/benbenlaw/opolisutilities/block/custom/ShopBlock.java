@@ -26,47 +26,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ShopBlock extends Block {
-    private static final Component CONTAINER_TITLE = Component.literal(" Shop");
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
 
     public ShopBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+
     /* FACING */
 
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
-    }
-
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pLevel.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else {
-            pPlayer.openMenu(pState.getMenuProvider(pLevel, pPos));
-            return InteractionResult.CONSUME;
-        }
-    }
-
-    @Nullable
-    public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-        return new SimpleMenuProvider((p_57074_, p_57075_, p_57076_) -> {
-            return new ShopMenu(p_57074_, p_57075_, ContainerLevelAccess.create(pLevel, pPos));
-        }, CONTAINER_TITLE);
-    }
-
-    public @NotNull VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
-    }
-
-    public boolean useShapeForLightOcclusion(BlockState pState) {
-        return true;
-    }
-
-    public @NotNull RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
     }
 
     public BlockState rotate(BlockState pState, Rotation pRotation) {
@@ -80,5 +51,28 @@ public class ShopBlock extends Block {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(FACING);
 
+    }
+
+    public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+
+    /* MENU */
+
+    @Nullable
+    public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
+        return new SimpleMenuProvider((p_57074_, p_57075_, p_57076_) -> {
+            return new ShopMenu(p_57074_, p_57075_, ContainerLevelAccess.create(pLevel, pPos));
+        }, NAME);
+    }
+
+    private static final Component NAME = Component.literal(" Shop");
+
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (pLevel.isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        else {
+            pPlayer.openMenu(pState.getMenuProvider(pLevel, pPos));
+            return InteractionResult.CONSUME;
+        }
     }
 }

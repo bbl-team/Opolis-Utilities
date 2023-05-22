@@ -3,9 +3,14 @@ Changelog Opolis Utilities
 //Todo: 1.20 MC Update, add tooltips on blocks that work with rsg2
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
 //Todo: 1.20 MC Update, Fabric and Forge
-//Todo: shop and selling shop blocks
-DO THE BOOK
 
+1.22
+
+Made some additional checks with the death stone to prevent a strange interaction with player dying but not dying (should fix
+        worlds that had a strange issue where they couldn't interact with the world
+Added leafy string, made from leaves, used to make green wool
+Make shop and drying table recipe render smaller in JEI to show more recipes per page
+Improved Drying table JEI category show time in seconds not ticks same as vanilla furnace recipes
 
 1.21
 

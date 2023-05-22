@@ -21,7 +21,6 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     private final NonNullList<Ingredient> recipeItems;
     private final int duration;
 
-
     public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
         this.id = id;
         this.output = output;

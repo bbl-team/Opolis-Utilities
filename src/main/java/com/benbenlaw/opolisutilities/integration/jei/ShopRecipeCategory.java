@@ -35,7 +35,7 @@ public class ShopRecipeCategory implements IRecipeCategory<ShopRecipe> {
     private final IDrawable icon;
 
     public ShopRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 70, 19);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SHOP.get()));
     }
 
@@ -66,9 +66,9 @@ public class ShopRecipeCategory implements IRecipeCategory<ShopRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ShopRecipe recipe, IFocusGroup focusGroup) {
     //    builder.addSlot(RecipeIngredientRole.INPUT, 26, 31).addIngredients(recipe.getIngredients().get(0));
-        builder.addSlot(RecipeIngredientRole.INPUT, 26, 31).addItemStack(
+        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addItemStack(
                 new ItemStack(recipe.getIngredients().get(0).getItems()[0].getItem(), recipe.ingredientCount));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 43).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 51, 2).addItemStack(recipe.getResultItem());
 
     }
 

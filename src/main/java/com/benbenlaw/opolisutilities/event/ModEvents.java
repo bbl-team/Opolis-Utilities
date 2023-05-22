@@ -50,35 +50,6 @@ import org.apache.logging.log4j.core.jmx.Server;
 
 public class ModEvents {
 
-    /*
-
-    @SubscribeEvent
-    public static void logSheetsFromLogs(PlayerInteractEvent.RightClickBlock event) {
-
-        Level level = event.getLevel();
-        Entity entity = event.getEntity();
-        BlockPos blockPos = event.getPos();
-        BlockState state = level.getBlockState(blockPos);
-        Player player = event.getEntity().getInventory().player;
-
-        if(entity instanceof ServerPlayer){
-            if(player.getItemInHand(InteractionHand.MAIN_HAND).is(Tags.Items.SHEARS)) {
-                if (state.is(BlockTags.LOGS)) {
-                    level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1, 1, false);
-
-                    level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                    level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(),
-                            new ItemStack(ModItems.LOG_SHEET.get(), 6)));
-                    player.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, player,
-                            (player1) -> player.broadcastBreakEvent(player.getUsedItemHand()));
-
-                }
-            }
-        }
-    }
-
-     */
-
     public static Vec3 globalEntity;
     public static Level globalLevel;
 
@@ -115,6 +86,7 @@ public class ModEvents {
             globalEntity = entity.position();
             globalLevel = entity.getLevel();
         }
+
     }
 
 
@@ -127,18 +99,19 @@ public class ModEvents {
         ItemStack deathStoneItem = new ItemStack(ModItems.DEATH_STONE.get());
         CompoundTag nbt = new CompoundTag();
 
-        nbt.putInt("Age", -32768);
+        if (!(globalEntity == null) && !(globalLevel == null)) {
 
-        nbt.putDouble("x", globalEntity.x);
-        nbt.putDouble("y", globalEntity.y);
-        nbt.putDouble("z", globalEntity.z);
+            nbt.putInt("Age", -32768);
+            nbt.putDouble("x", globalEntity.x);
+            nbt.putDouble("y", globalEntity.y);
+            nbt.putDouble("z", globalEntity.z);
+            ResourceLocation dim = globalLevel.dimension().location();
+            nbt.putString("dimension", dim.getNamespace() + ":" + dim.getPath());
+            nbt.putString("namespace", dim.getNamespace());
+            nbt.putString("path", dim.getPath());
 
-        ResourceLocation dim = globalLevel.dimension().location();
-        nbt.putString("dimension", dim.getNamespace() + ":" + dim.getPath());
-        nbt.putString("namespace", dim.getNamespace());
-        nbt.putString("path", dim.getPath());
-
-        deathStoneItem.setTag(nbt);
+            deathStoneItem.setTag(nbt);
+        }
 
         if (level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
 
@@ -149,6 +122,9 @@ public class ModEvents {
         if (!level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
             player.addItem(deathStoneItem);
         }
+
+
+
     }
 
 
@@ -161,10 +137,7 @@ public class ModEvents {
         Level world = event.getEntity().getLevel();
         Entity e = event.getEntity();
 
-        if (e instanceof ServerPlayer) {}
-
-        else if (Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
-
+        if (!(e instanceof ServerPlayer) && Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
             world.addFreshEntity(new ItemEntity(world, entityPos.x(), entityPos.y(), entityPos.z(),
                     new ItemStack(ModItems.BASIC_LOOT_BOX.get())));
         }
