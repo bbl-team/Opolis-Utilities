@@ -76,6 +76,5 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
 
         minecraft.font.draw(stack, Component.literal(String.valueOf(duration/20 +"s")), 95, 6, Color.gray.getRGB());
 
-
     }
 }

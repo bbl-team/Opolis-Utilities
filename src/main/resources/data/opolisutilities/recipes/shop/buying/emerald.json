@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:emerald"
   },
-  "ingredient_count": 12,
+  "itemInCount": 12,
   "result": "opolisutilities:b_bucks",
-  "count": 1
+  "itemOutCount": 1
 }

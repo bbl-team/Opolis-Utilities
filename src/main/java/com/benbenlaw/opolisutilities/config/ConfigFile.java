@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import org.w3c.dom.Text;
 
 public final class ConfigFile {
 

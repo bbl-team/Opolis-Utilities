@@ -38,10 +38,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
-import static net.minecraft.world.level.block.Block.getDrops;
 
 public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 

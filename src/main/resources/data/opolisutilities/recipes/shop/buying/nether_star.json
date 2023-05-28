@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:nether_star"
   },
-  "ingredient_count": 1,
+  "itemInCount": 1,
   "result": "opolisutilities:b_bucks",
-  "count": 50
+  "itemOutCount": 50
 }

@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.*;
+import java.util.List;
 
 public class ShopScreen extends AbstractContainerScreen<ShopMenu> {
 
@@ -145,9 +145,9 @@ public class ShopScreen extends AbstractContainerScreen<ShopMenu> {
         }
 
         if (this.menu.getSelectedRecipeIndex() != -1 && this.menu.getRecipes().size() >= this.menu.getSelectedRecipeIndex() + 1) {
-            ShopRecipe selectedRecipe = this.menu.getRecipes().get(this.menu.getSelectedRecipeIndex());
-            ItemStack stack = selectedRecipe.getIngredients().get(0).getItems()[0];
-            stack.setCount(selectedRecipe.ingredientCount);
+            ShopRecipe recipe = this.menu.getRecipes().get(this.menu.getSelectedRecipeIndex());
+            ItemStack stack = recipe.getIngredients().get(0).getItems()[0];
+            stack.setCount(recipe.itemInCount);
 
             this.minecraft.getItemRenderer().renderAndDecorateItem(stack, this.leftPos + 142, this.topPos + 32);
             this.minecraft.getItemRenderer().renderGuiItemDecorations(this.font, stack, this.leftPos + 142, this.topPos + 32);

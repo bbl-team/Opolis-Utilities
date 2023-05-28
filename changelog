@@ -3,6 +3,20 @@ Changelog Opolis Utilities
 //Todo: 1.20 MC Update, add tooltips on blocks that work with rsg2
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
 //Todo: 1.20 MC Update, Fabric and Forge
+//Todo: Added recipe for guide book
+//Todo: Magnet?
+
+1.22.2
+
+Fixed resource generator 2 working with all blocks (hopefully)
+
+1.22.1
+
+changed recipe format for shop
+Optimised imports
+Added caveopolis spray cans to the shop (when caveopolis is loaded)
+Fixed resource generator JEI category being messed up
+Added b bucks to basic loot bags, nerfed dirt and cobblestone amounts
 
 1.22
 

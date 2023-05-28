@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:diamond"
   },
-  "ingredient_count": 8,
+  "itemInCount": 8,
   "result": "opolisutilities:b_bucks",
-  "count": 1
+  "itemOutCount": 1
 }

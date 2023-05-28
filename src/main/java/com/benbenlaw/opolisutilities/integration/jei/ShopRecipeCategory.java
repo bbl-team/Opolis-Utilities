@@ -21,7 +21,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 public class ShopRecipeCategory implements IRecipeCategory<ShopRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "shop");
@@ -67,11 +66,10 @@ public class ShopRecipeCategory implements IRecipeCategory<ShopRecipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, ShopRecipe recipe, IFocusGroup focusGroup) {
     //    builder.addSlot(RecipeIngredientRole.INPUT, 26, 31).addIngredients(recipe.getIngredients().get(0));
         builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addItemStack(
-                new ItemStack(recipe.getIngredients().get(0).getItems()[0].getItem(), recipe.ingredientCount));
+                new ItemStack(recipe.getIngredients().get(0).getItems()[0].getItem(), recipe.itemInCount));
         builder.addSlot(RecipeIngredientRole.OUTPUT, 51, 2).addItemStack(recipe.getResultItem());
 
     }
-
 
     @Override
     public void draw(ShopRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {

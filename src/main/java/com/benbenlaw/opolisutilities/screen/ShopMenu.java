@@ -60,7 +60,7 @@ public class ShopMenu extends AbstractContainerMenu {
 
             @Override
             public boolean mayPickup(Player pPlayer) {
-                if(ShopMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < ShopMenu.this.selectedRecipeIndex.get() || ShopMenu.this.container.getItem(0).getCount() < recipes.get(ShopMenu.this.selectedRecipeIndex.get()).ingredientCount)
+                if(ShopMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < ShopMenu.this.selectedRecipeIndex.get() || ShopMenu.this.container.getItem(0).getCount() < recipes.get(ShopMenu.this.selectedRecipeIndex.get()).itemInCount)
                     return false;
 
                 return super.mayPickup(pPlayer);
@@ -69,7 +69,7 @@ public class ShopMenu extends AbstractContainerMenu {
             public void onTake(Player player, ItemStack stack) {
                 stack.onCraftedBy(player.level, player, stack.getCount());
                 ShopMenu.this.resultContainer.awardUsedRecipes(player);
-                ItemStack itemstack = ShopMenu.this.inputSlot.remove(recipes.get(ShopMenu.this.selectedRecipeIndex.get()).ingredientCount);
+                ItemStack itemstack = ShopMenu.this.inputSlot.remove(recipes.get(ShopMenu.this.selectedRecipeIndex.get()).itemInCount);
                 if (!itemstack.isEmpty()) {
                     ShopMenu.this.setupResultSlot();
                 }
@@ -151,8 +151,8 @@ public class ShopMenu extends AbstractContainerMenu {
         }
         if (!pStack.isEmpty()) {
             this.recipes = this.level.getRecipeManager().getRecipesFor(ShopRecipe.Type.INSTANCE, pContainer, this.level);
-            this.recipes = this.recipes.stream().filter((craftingRecipe) -> {
-                return container.getItem(0).getCount() >= craftingRecipe.ingredientCount;
+            this.recipes = this.recipes.stream().filter((recipe) -> {
+                return container.getItem(0).getCount() >= recipe.itemInCount;
             }).toList();
         }
         if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1)

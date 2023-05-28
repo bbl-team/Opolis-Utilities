@@ -2,7 +2,6 @@ package com.benbenlaw.opolisutilities.block.entity.client;
 
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -1,13 +1,9 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 public interface IAdvancedItemHandlerModifiable extends IItemHandlerModifiable {

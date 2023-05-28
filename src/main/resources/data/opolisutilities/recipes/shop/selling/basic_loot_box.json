@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "opolisutilities:b_bucks"
   },
-  "ingredient_count": 3,
+  "itemInCount": 3,
   "result": "opolisutilities:basic_loot_box",
-  "count": 1
+  "itemOutCount": 1
 }

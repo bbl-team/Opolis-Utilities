@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;

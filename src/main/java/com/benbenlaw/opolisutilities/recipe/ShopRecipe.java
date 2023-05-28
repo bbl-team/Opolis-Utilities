@@ -8,18 +8,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class ShopRecipe extends SingleItemRecipe {
 
-    public ShopRecipe(ResourceLocation pId, String pGroup, Ingredient pIngredient, ItemStack pResult, int ingredientCount) {
+    public ShopRecipe(ResourceLocation pId, String pGroup, Ingredient pIngredient, ItemStack pResult, int itemInCount) {
         super(Type.INSTANCE, ModRecipes.SHOP_SERIALIZER.get(), pId, pGroup, pIngredient, pResult);
-        this.ingredientCount = ingredientCount;
+        this.itemInCount = itemInCount;
     }
 
-    public int ingredientCount;
+    public int itemInCount;
 
 
     @Override
@@ -29,12 +32,12 @@ public class ShopRecipe extends SingleItemRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ShopRecipe.Serializer.INSTANCE;
+        return Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ShopRecipe.Type.INSTANCE;
+        return Type.INSTANCE;
     }
 
     public static class Type implements RecipeType<ShopRecipe> {
@@ -53,7 +56,7 @@ public class ShopRecipe extends SingleItemRecipe {
             String group = GsonHelper.getAsString(pJson, "group", "");
 
             Ingredient ingredient;
-            int ingredient_count = GsonHelper.getAsInt(pJson, "ingredient_count", 1);
+            int itemInCount = GsonHelper.getAsInt(pJson, "itemInCount", 1);
             if (GsonHelper.isArrayNode(pJson, "ingredient")) {
                 ingredient = Ingredient.fromJson(GsonHelper.getAsJsonArray(pJson, "ingredient"));
             } else {
@@ -61,10 +64,10 @@ public class ShopRecipe extends SingleItemRecipe {
             }
 
             String result = GsonHelper.getAsString(pJson, "result");
-            int count = GsonHelper.getAsInt(pJson, "count", 1);
+            int count = GsonHelper.getAsInt(pJson, "itemOutCount", 1);
             ItemStack itemstack = new ItemStack(Registry.ITEM.get(new ResourceLocation(result)), count);
 
-            return new ShopRecipe(pRecipeId, group, ingredient, itemstack, ingredient_count);
+            return new ShopRecipe(pRecipeId, group, ingredient, itemstack, itemInCount);
         }
 
         @Override
@@ -73,9 +76,9 @@ public class ShopRecipe extends SingleItemRecipe {
             String group = pBuffer.readUtf();
             Ingredient ingredient = Ingredient.fromNetwork(pBuffer);
             ItemStack result = pBuffer.readItem();
-            int ingredient_count = pBuffer.readInt();
+            int itemInCount = pBuffer.readInt();
 
-            return new ShopRecipe(pRecipeId, group, ingredient, result, ingredient_count);
+            return new ShopRecipe(pRecipeId, group, ingredient, result, itemInCount);
         }
 
         @Override
@@ -84,7 +87,7 @@ public class ShopRecipe extends SingleItemRecipe {
             pBuffer.writeUtf(pRecipe.group);
             pRecipe.ingredient.toNetwork(pBuffer);
             pBuffer.writeItem(pRecipe.result);
-            pBuffer.writeInt(pRecipe.ingredientCount);
+            pBuffer.writeInt(pRecipe.itemInCount);
         }
     }
 

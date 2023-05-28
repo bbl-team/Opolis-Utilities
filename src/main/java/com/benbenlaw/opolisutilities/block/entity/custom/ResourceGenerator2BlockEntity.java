@@ -1,35 +1,25 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
-import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.ResourceGenerator2Block;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.integration.jei.ResourceGeneratorRecipeCategory;
-import com.benbenlaw.opolisutilities.recipe.*;
+import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
+import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
+import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import com.benbenlaw.opolisutilities.util.ModTags;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.registries.tags.ITag;
-
-import java.util.Optional;
 
 
 public class ResourceGenerator2BlockEntity extends BlockEntity {
@@ -102,7 +92,7 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
             }
         }
 
-        if (entity.counter % tickRate == 0) {
+        if (entity.counter % tickRate == 0 && isValidStructure) {
 
             if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR_2.get())) {
 

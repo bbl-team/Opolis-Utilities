@@ -2,17 +2,11 @@ package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
-import com.benbenlaw.opolisutilities.block.custom.ResourceGenerator2Block;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class RedstoneClockBlockEntity extends BlockEntity {
     // Add a counter variable

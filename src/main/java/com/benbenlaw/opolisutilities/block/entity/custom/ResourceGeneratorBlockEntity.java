@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider  {
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
@@ -69,7 +68,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = 220;
 
     public ResourceGeneratorBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.RESOURCE_GENERATOR_BLOCK_ENTITY.get(), blockPos, blockState);

@@ -3,22 +3,15 @@ package com.benbenlaw.opolisutilities.commands;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.Message;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.internal.TextComponentMessageFormatHandler;
-import org.apache.logging.log4j.message.StringFormattedMessage;
-
-import java.awt.*;
 
 public class DiscordCommand {
 
