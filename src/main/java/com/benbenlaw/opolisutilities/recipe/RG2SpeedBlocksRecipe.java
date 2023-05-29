@@ -105,7 +105,7 @@ public class RG2SpeedBlocksRecipe implements Recipe<NoInventoryRecipe> {
         @Override
         public void toNetwork(FriendlyByteBuf buf, RG2SpeedBlocksRecipe recipe) {
 
-            buf.writeUtf(recipe.getGroup(), Short.MAX_VALUE);
+            buf.writeUtf(recipe.getBlock(), Short.MAX_VALUE);
             buf.writeInt(recipe.getTickRate());
 
         }

@@ -6,6 +6,11 @@ Changelog Opolis Utilities
 //Todo: Added recipe for guide book
 //Todo: Magnet?
 
+1.22.3
+
+Fixed basic loot bag loot table not working
+Fixed RG2 recipe not being shown in JEI on servers
+
 1.22.2
 
 Fixed resource generator 2 working with all blocks (hopefully)

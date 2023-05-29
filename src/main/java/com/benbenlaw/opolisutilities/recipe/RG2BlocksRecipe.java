@@ -96,7 +96,7 @@ public class RG2BlocksRecipe implements Recipe<NoInventoryRecipe> {
         @Override
         public void toNetwork(FriendlyByteBuf buf, RG2BlocksRecipe recipe) {
 
-            buf.writeUtf(recipe.getGroup(), Short.MAX_VALUE);
+            buf.writeUtf(recipe.getBlock(), Short.MAX_VALUE);
         }
 
         public RecipeSerializer<?> setRegistryName(ResourceLocation name) {

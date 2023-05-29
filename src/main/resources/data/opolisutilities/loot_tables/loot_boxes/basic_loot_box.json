@@ -7,7 +7,7 @@
       },
       "entries": [
 		{"type": "minecraft:item", "weight": 5, "functions":
-		[{"function": "minecraft:set_count","count": {"type": "minecraft:uniform", "min": 1.0, "max": 2.0}, "add": false}], "name": "minecraft:cobblestone"}
+		[{"function": "minecraft:set_count","count": {"type": "minecraft:uniform", "min": 1.0, "max": 2.0}, "add": false}], "name": "minecraft:cobblestone"},
 
         {"type": "minecraft:item", "weight": 1, "name": "opolisutilities:b_bucks"},
 

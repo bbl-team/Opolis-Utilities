@@ -26,6 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -46,34 +47,31 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
     }
 
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
     @Override
-    public RecipeType<RG2BlocksRecipe> getRecipeType() {
+    public @NotNull RecipeType<RG2BlocksRecipe> getRecipeType() {
         return new RecipeType<>(ModRecipes.RG2_BLOCKS_SERIALIZER.getId(), RG2BlocksRecipe.class);
     }
 
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         return Component.literal("Resource Generator 2");
     }
 
     @Override
-    public IDrawable getBackground() {
+    public @NotNull IDrawable getBackground() {
         return this.background;
     }
 
     @Override
-    public IDrawable getIcon() {
+    public @NotNull IDrawable getIcon() {
         return this.icon;
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, RG2BlocksRecipe recipe, IFocusGroup focusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RG2BlocksRecipe recipe, @NotNull IFocusGroup focusGroup) {
 
         String blockName = recipe.getBlock();
+        @Deprecated
         Block rgBlock = Registry.BLOCK.get(new ResourceLocation(blockName));
         TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
 
@@ -82,7 +80,9 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
         if (rgBlock == Blocks.AIR) {
             builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 24).addIngredients(Ingredient.of(itemTag));
-        } else {
+        }
+
+        else {
             builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 24).addItemStack(new ItemStack(rgBlock.asItem()));
 
         }
@@ -98,7 +98,7 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
     }
 
     @Override
-    public void draw(RG2BlocksRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(@NotNull RG2BlocksRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX, double mouseY) {
 
         @Nonnull final Minecraft minecraft = Minecraft.getInstance();
 

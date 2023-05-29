@@ -45,10 +45,6 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
     }
 
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
     @Override
     public RecipeType<RG2SpeedBlocksRecipe> getRecipeType() {
         return new RecipeType<>(ModRecipes.RG2_SPEED_BLOCKS_SERIALIZER.getId(), RG2SpeedBlocksRecipe.class);
