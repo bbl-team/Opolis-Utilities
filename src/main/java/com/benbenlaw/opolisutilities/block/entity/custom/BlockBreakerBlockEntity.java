@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -45,7 +46,7 @@ import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACIN
 
 public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -220,8 +221,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
             ItemStack tool = itemHandler.getStackInSlot(0);
             int damageValue = this.itemHandler.getStackInSlot(0).getDamageValue();
 
-
-            if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState())) {
+            if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) && this.itemHandler.getStackInSlot(1).isEmpty() && this.itemHandler.getStackInSlot(2).isEmpty()) {
 
                 blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) level, placeHere, this.level.getBlockEntity(pPos), null, tool);
                 SoundType blockSounds = level.getBlockState(placeHere).getBlock().getSoundType(level.getBlockState(placeHere).getBlock().defaultBlockState(), level, pPos, null);
@@ -244,6 +244,52 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                     pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
                 }
 
+            }
+
+            else if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) && this.itemHandler.getStackInSlot(1).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(2).isEmpty()) {
+                blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) level, placeHere, this.level.getBlockEntity(pPos), null, tool);
+                SoundType blockSounds = level.getBlockState(placeHere).getBlock().getSoundType(level.getBlockState(placeHere).getBlock().defaultBlockState(), level, pPos, null);
+
+                level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
+
+                for (ItemStack drop : blockDrops) {
+                    spawnBlockAsEntity(level, placeHere, drop);
+
+                }
+
+                if (tool.isDamageableItem()) {
+                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                    pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
+
+
+                }
+                if (damageValue + 1 == tool.getMaxDamage()) {
+                    this.itemHandler.extractItem(0, 1, false);
+                    pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
+                }
+            }
+
+            else if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) && !this.itemHandler.getStackInSlot(2).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(1).isEmpty()) {
+                blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) level, placeHere, this.level.getBlockEntity(pPos), null, tool);
+                SoundType blockSounds = level.getBlockState(placeHere).getBlock().getSoundType(level.getBlockState(placeHere).getBlock().defaultBlockState(), level, pPos, null);
+
+                level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
+
+                for (ItemStack drop : blockDrops) {
+                    spawnBlockAsEntity(level, placeHere, drop);
+
+                }
+
+                if (tool.isDamageableItem()) {
+                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                    pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
+
+
+                }
+                if (damageValue + 1 == tool.getMaxDamage()) {
+                    this.itemHandler.extractItem(0, 1, false);
+                    pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
+                }
             }
         }
     }

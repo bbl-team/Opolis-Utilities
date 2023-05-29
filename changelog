@@ -6,6 +6,10 @@ Changelog Opolis Utilities
 //Todo: Added recipe for guide book
 //Todo: Magnet?
 
+1.22.4
+
+Added white and blacklisting for the block breaker
+
 1.22.3
 
 Fixed basic loot bag loot table not working

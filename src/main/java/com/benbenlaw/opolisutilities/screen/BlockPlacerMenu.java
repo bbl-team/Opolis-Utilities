@@ -18,7 +18,7 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public BlockPlacerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
     public BlockPlacerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
