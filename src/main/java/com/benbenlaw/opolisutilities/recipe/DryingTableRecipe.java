@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -36,13 +37,14 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         }
         return false;
     }
+
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return recipeItems;
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer p_44001_) {
+    public ItemStack assemble(SimpleContainer p_44001_, RegistryAccess p_267165_) {
         return output;
     }
 
@@ -52,7 +54,7 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess p_267052_) {
         return output.copy();
     }
 
@@ -126,7 +128,8 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);
             }
-            buf.writeItemStack(recipe.getResultItem(), false);
+
+            buf.writeItemStack(recipe.output, false);
         }
 
 
@@ -148,8 +151,4 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
             return (Class<G>)cls;
         }
     }
-
-
-
-
 }

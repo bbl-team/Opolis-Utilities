@@ -20,14 +20,14 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public ItemRepairerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public ItemRepairerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.ITEM_REPAIRER_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((ItemRepairerBlockEntity) entity);
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.data = data;
 
         addPlayerInventory(inventory);

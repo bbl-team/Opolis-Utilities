@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +30,14 @@ public class DryingTableBlock extends BaseEntityBlock {
 
     public static final VoxelShape SHAPE = Block.box(0,0,0,16,16,16);
 
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return SHAPE;
+    }
+
+
     /* BLOCK ENTITY */
 
     @Override
@@ -36,6 +46,7 @@ public class DryingTableBlock extends BaseEntityBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
@@ -47,6 +58,7 @@ public class DryingTableBlock extends BaseEntityBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
                                           Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
@@ -66,22 +78,12 @@ public class DryingTableBlock extends BaseEntityBlock {
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new DryingTableBlockEntity(pPos, pState);
     }
-    /*
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(),
-                DryingTableBlockEntity::tick);
-    }
-
-     */
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> ((DryingTableBlockEntity) blockEntity).tick());
+                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
     }
 
 }

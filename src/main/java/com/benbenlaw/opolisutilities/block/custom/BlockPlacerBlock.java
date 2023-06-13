@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,12 +51,10 @@ public class BlockPlacerBlock extends BaseEntityBlock {
         pBuilder.add(FACING);
     }
 
-    public static final VoxelShape SHAPE = Block.box(0,0,0,16,16,16);
-
     /* BLOCK ENTITY */
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
     }
 
@@ -73,12 +70,12 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                          Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public @NotNull InteractionResult use(@NotNull BlockState pState, Level pLevel, BlockPos pPos,
+                                          @NotNull Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof BlockPlacerBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (BlockPlacerBlockEntity)entity, pPos);
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (BlockPlacerBlockEntity) entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -89,7 +86,7 @@ public class BlockPlacerBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         return new BlockPlacerBlockEntity(pPos, pState);
     }
 
@@ -98,7 +95,7 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, ModBlockEntities.BLOCK_PLACER_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> ((BlockPlacerBlockEntity) blockEntity).tick());
+                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
     }
 
 }

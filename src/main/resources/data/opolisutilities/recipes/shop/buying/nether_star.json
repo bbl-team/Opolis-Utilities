@@ -1,9 +1,0 @@
-{
-  "type": "opolisutilities:shop",
-  "ingredient": {
-    "item": "minecraft:nether_star"
-  },
-  "itemInCount": 1,
-  "result": "opolisutilities:b_bucks",
-  "itemOutCount": 50
-}

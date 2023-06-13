@@ -14,7 +14,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -129,13 +128,13 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
 
             if(stack.hasTag()) {
 
-                components.add(Component.literal(String.valueOf("X: " + stack.getTag().getFloat("x")))
+                components.add(Component.literal("X: " + stack.getTag().getFloat("x"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Y: " + stack.getTag().getFloat("y")))
+                components.add(Component.literal("Y: " + stack.getTag().getFloat("y"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Z: " + stack.getTag().getFloat("z")))
+                components.add(Component.literal("Z: " + stack.getTag().getFloat("z"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Dimension: " + stack.getTag().getString("dimension")))
+                components.add(Component.literal("Dimension: " + stack.getTag().getString("dimension"))
                         .withStyle(ChatFormatting.GREEN));
 
             }

@@ -25,7 +25,7 @@ public final class ConfigFile {
                 .define("Home Stone Durability", true);
 
         discordURL = BUILDER.comment("URL for your discord")
-                .define("Discord URL", "https://discord.gg/UpJknJ8");
+                .define("Discord URL", "https://discord.gg/benbenlaw");
 
         modpackName = BUILDER.comment("Modpack name")
                 .define("Modpack name", "TESTMODPACK");

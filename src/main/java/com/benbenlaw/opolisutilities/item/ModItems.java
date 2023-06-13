@@ -21,70 +21,70 @@ public class ModItems {
             () -> new MiniCoalItem(true));
 
     public static final RegistryObject<Item> WALLET = ITEMS.register("wallet",
-            () -> new WalletItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES).stacksTo(1)));
+            () -> new WalletItem(new Item.Properties()));
 
     public static final RegistryObject<Item> BASIC_LOOT_BOX = ITEMS.register("basic_loot_box",
-            () -> new BasicLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new BasicLootBoxItem(new Item.Properties()));
 
     public static final RegistryObject<Item> ADVANCED_LOOT_BOX = ITEMS.register("advanced_loot_box",
-            () -> new AdvancedLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new AdvancedLootBoxItem(new Item.Properties()));
 
     public static final RegistryObject<Item> ELITE_LOOT_BOX = ITEMS.register("elite_loot_box",
-            () -> new EliteLootBoxItem(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new EliteLootBoxItem(new Item.Properties()));
 
     public static final RegistryObject<Item> B_BUCKS = ITEMS.register("b_bucks",
-            () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> LEAFY_STRING = ITEMS.register("leafy_string",
-            () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
-            () -> new Item(new Item.Properties().tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> WOODEN_SHEARS = ITEMS.register("wooden_shears",
             () -> new ShearsItem(new Item.Properties().durability(96)
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> HOME_STONE = ITEMS.register("home_stone",
             () -> new HomeStoneItem(new Item.Properties().durability(32)
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> ADVANCED_HOME_STONE = ITEMS.register("advanced_home_stone",
             () -> new AdvancedHomeStoneItem(new Item.Properties().durability(32)
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> SUPER_HOME_STONE = ITEMS.register("super_home_stone",
             () -> new SuperHomeStoneItem(new Item.Properties().durability(32)
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> DEATH_STONE = ITEMS.register("death_stone",
             () -> new DeathStoneItem(new Item.Properties().durability(32)
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",
             () -> new FloatingBlockItem(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> BUNDLED_FLESH = ITEMS.register("bundled_flesh",
             () -> new Item(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> ENDER_PEARL_FRAGMENT = ITEMS.register("ender_pearl_fragment",
             () -> new Item(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> JERKY = ITEMS.register("jerky",
             () -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> SOAKED_PAPER = ITEMS.register("soaked_paper",
             () -> new Item(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static final RegistryObject<Item> LOG_SHEET = ITEMS.register("log_sheet",
             () -> new Item(new Item.Properties()
-                    .tab(ModCreativeModTab.OPOLIS_UTILITIES)));
+                    ));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

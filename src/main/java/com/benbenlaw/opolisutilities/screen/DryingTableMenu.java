@@ -20,14 +20,14 @@ public class DryingTableMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public DryingTableMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public DryingTableMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.DRYING_TABLE_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((DryingTableBlockEntity) entity);
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.data = data;
 
         addPlayerInventory(inventory);

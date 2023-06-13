@@ -41,7 +41,7 @@ public class EnderScramblerBlock extends Block {
         return this.defaultBlockState().setValue(POWERED, false);
     }
 
-    private int i = 0;
+    private final int i = 0;
 
     @Override
     public @NotNull InteractionResult use(BlockState pState, @NotNull Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
@@ -52,7 +52,7 @@ public class EnderScramblerBlock extends Block {
             pLevel.setBlockAndUpdate(pPos, this.defaultBlockState().setValue(EnderScramblerBlock.POWERED, true));
         }
 
-        /* TODO: Makes this player configurable
+        /* TODO: SAVE FOR ANOTHER DAY!
 
         if(pPlayer.isCrouching() && pHand.equals(ModItems.ENDER_PEARL_FRAGMENT.get())) {
             int range = i + 1;

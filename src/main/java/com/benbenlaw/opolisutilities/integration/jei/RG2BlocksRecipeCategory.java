@@ -4,18 +4,14 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -26,10 +22,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
 
 public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_blocks");
@@ -72,7 +66,7 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
         String blockName = recipe.getBlock();
         @Deprecated
-        Block rgBlock = Registry.BLOCK.get(new ResourceLocation(blockName));
+        Block rgBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
         TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
 
         builder.addSlot(RecipeIngredientRole.INPUT, 140, 5).addItemStack(
@@ -83,6 +77,7 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
         }
 
         else {
+            assert rgBlock != null;
             builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 24).addItemStack(new ItemStack(rgBlock.asItem()));
 
         }
@@ -96,6 +91,8 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
         builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addIngredients(Ingredient.of(itemTag));
 
     }
+
+    /*
 
     @Override
     public void draw(@NotNull RG2BlocksRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX, double mouseY) {
@@ -111,4 +108,6 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
 
     }
+    */
 }
+

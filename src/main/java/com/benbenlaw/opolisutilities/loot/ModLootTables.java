@@ -7,8 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Collections;
 import java.util.Set;
 
-//Thanks foliet
-
 public class ModLootTables {
 
     private static ResourceLocation register(String string) {
@@ -16,8 +14,6 @@ public class ModLootTables {
     }
 
     private static final Set<ResourceLocation> LOCATIONS = Sets.newHashSet();
-  //  public static final ResourceLocation FLOWER_LOOT_BOX = register("loot_boxes/flower_loot_box");
- //   public static final ResourceLocation SAPLING_LOOT_BOX = register("loot_boxes/sapling_loot_box");
     public static final ResourceLocation BASIC_LOOT_BOX = register("loot_boxes/basic_loot_box");
     public static final ResourceLocation ADVANCED_LOOT_BOX = register("loot_boxes/advanced_loot_box");
     public static final ResourceLocation ELITE_LOOT_BOX = register("loot_boxes/elite_loot_box");

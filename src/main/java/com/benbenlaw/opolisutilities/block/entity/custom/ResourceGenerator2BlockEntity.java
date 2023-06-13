@@ -9,7 +9,6 @@ import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -20,6 +19,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 
 public class ResourceGenerator2BlockEntity extends BlockEntity {
@@ -33,6 +35,7 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
     }
 
     public void tick() {
+
         // Increment the counter
         Level pLevel = this.level;
         BlockPos blockPos = this.worldPosition;
@@ -41,18 +44,20 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
         entity.counter++;
         int tickRate = 220;
 
-        //Check For Speed Block and apply correct tickrate
-
         if (!level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
 
             for (RG2SpeedBlocksRecipe match : level.getRecipeManager().getRecipesFor(RG2SpeedBlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
 
                 String blockName = match.getBlock();
-                Block speedBlock = Registry.BLOCK.get(new ResourceLocation(blockName));
+                Block speedBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
+
+
+                //1.19.2
+                //Block speedBlock = Registry.BLOCK.get(new ResourceLocation(blockName));
                 TagKey<Block> speedBlockTag = BlockTags.create(new ResourceLocation(blockName));
 
                 if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(speedBlockTag) ||
-                        level.getBlockState(blockPos.above(2)).is(speedBlock)) {
+                        level.getBlockState(blockPos.above(2)).is(Objects.requireNonNull(speedBlock))) {
                     tickRate = match.getTickRate();
                 }
             }
@@ -65,7 +70,10 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
             for (RG2BlocksRecipe genBlocks : level.getRecipeManager().getRecipesFor(RG2BlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
 
                 String genBlock = genBlocks.getBlock();
-                Block genBlockBlock = Registry.BLOCK.get(new ResourceLocation(genBlock));
+                Block genBlockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(genBlock));
+
+                //1.19.2
+                //Block genBlockBlock = Registry.BLOCK.get(new ResourceLocation(genBlock));
                 TagKey<Block> genBlockTag = BlockTags.create(new ResourceLocation(genBlock));
 
 
@@ -85,7 +93,7 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
 
         //Update Blockstate
 
-        if(level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR_2.get())) {
+        if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR_2.get())) {
 
             if (!isValidStructure) {
                 level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGenerator2Block.LIT, false));
@@ -96,26 +104,25 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
 
             if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR_2.get())) {
 
-                    if (level.getBlockEntity(blockPos.below()) != null) {
+                if (level.getBlockEntity(blockPos.below()) != null) {
 
-                        BlockEntity ent = level.getBlockEntity(blockPos.below());
-                        Block blockAbove = level.getBlockState(blockPos.above()).getBlock();
-                        assert ent != null;
-                        ent.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN).ifPresent(itemHandler -> {
+                    BlockEntity ent = level.getBlockEntity(blockPos.below());
+                    Block blockAbove = level.getBlockState(blockPos.above()).getBlock();
+                    assert ent != null;
+                    ent.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN).ifPresent(itemHandler -> {
 
-                                    ItemStack stack = new ItemStack(blockAbove.asItem());
+                                ItemStack stack = new ItemStack(blockAbove.asItem());
 
-                                    for (int i = 0; i < itemHandler.getSlots(); i++) {
-                                        if (itemHandler.isItemValid(i, stack) && itemHandler.insertItem(i, stack, true).isEmpty()) {
-                                            itemHandler.insertItem(i, stack, false);
-                                            break;
-                                        }
+                                for (int i = 0; i < itemHandler.getSlots(); i++) {
+                                    if (itemHandler.isItemValid(i, stack) && itemHandler.insertItem(i, stack, true).isEmpty()) {
+                                        itemHandler.insertItem(i, stack, false);
+                                        break;
                                     }
                                 }
-                        );
-                    }
+                            }
+                    );
                 }
             }
-
+        }
     }
 }

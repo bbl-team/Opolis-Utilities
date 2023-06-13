@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.recipe;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -40,7 +41,7 @@ public class RG2SpeedBlocksRecipe implements Recipe<NoInventoryRecipe> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv) {
+    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv, RegistryAccess p_267165_) {
         return ItemStack.EMPTY;
     }
 
@@ -50,7 +51,7 @@ public class RG2SpeedBlocksRecipe implements Recipe<NoInventoryRecipe> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem(RegistryAccess p_267052_) {
         return ItemStack.EMPTY;
     }
 

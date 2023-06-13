@@ -94,11 +94,11 @@ public class HomeStoneItem extends Item {
 
             if(stack.hasTag()) {
 
-                components.add(Component.literal(String.valueOf("X: " + stack.getTag().getFloat("x")))
+                components.add(Component.literal("X: " + stack.getTag().getFloat("x"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Y: " + stack.getTag().getFloat("y")))
+                components.add(Component.literal("Y: " + stack.getTag().getFloat("y"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Z: " + stack.getTag().getFloat("z")))
+                components.add(Component.literal("Z: " + stack.getTag().getFloat("z"))
                         .withStyle(ChatFormatting.GREEN));
             }
             if(!stack.hasTag()) {

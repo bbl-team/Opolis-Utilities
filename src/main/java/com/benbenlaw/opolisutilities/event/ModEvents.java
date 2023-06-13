@@ -42,7 +42,7 @@ public class ModEvents {
                 for (int y = -7; y <= 7; y++) {
                     for (int z = -7; z <= 7; z++) {
                         BlockPos p = pos.offset(x, y, z);
-                        BlockState state = entity.getLevel().getBlockState(p);
+                        BlockState state = entity.level().getBlockState(p);
                         if (state.is(ModBlocks.ENDER_SCRAMBLER.get())) {
                             if (state.getValue(EnderScramblerBlock.POWERED).equals(true)) {
                                 event.setCanceled(true);
@@ -63,7 +63,7 @@ public class ModEvents {
 
         if (entity instanceof ServerPlayer) {
             globalEntity = entity.position();
-            globalLevel = entity.getLevel();
+            globalLevel = entity.level();
         }
 
     }
@@ -73,7 +73,7 @@ public class ModEvents {
     public static void addDeathStoneOnPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 
         Player player = event.getEntity();
-        Level level = player.getLevel();
+        Level level = player.level();
 
         ItemStack deathStoneItem = new ItemStack(ModItems.DEATH_STONE.get());
         CompoundTag nbt = new CompoundTag();
@@ -113,7 +113,7 @@ public class ModEvents {
     public static void addLootBoxesToEntities(LivingDeathEvent event) {
 
         Vec3 entityPos = event.getEntity().position();
-        Level world = event.getEntity().getLevel();
+        Level world = event.getEntity().level();
         Entity e = event.getEntity();
 
         if (!(e instanceof ServerPlayer) && Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
@@ -122,6 +122,5 @@ public class ModEvents {
         }
     }
 }
-
 
 

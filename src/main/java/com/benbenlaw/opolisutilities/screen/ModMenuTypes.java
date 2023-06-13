@@ -34,25 +34,9 @@ public class ModMenuTypes {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
 
-
-
-//SHOP
-
-
-    public static DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, OpolisUtilities.MOD_ID);
-
-    public static final RegistryObject<MenuType<ShopMenu>> SHOP_MENU =
-            CONTAINERS.register("shop_menu",
-                    () -> IForgeMenuType.create(((windowId, inv, data) -> {
-                        return new ShopMenu(windowId, inv);
-                    })));
-
-
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);
-        CONTAINERS.register(eventBus);
+
 
     }
-
-
 }

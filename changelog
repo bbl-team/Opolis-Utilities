@@ -4,7 +4,23 @@ Changelog Opolis Utilities
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
 //Todo: 1.20 MC Update, Fabric and Forge
 //Todo: Added recipe for guide book
-//Todo: Magnet?
+
+2.0.0
+
+test
+
+Updated to minecraft 1.20
+Removed shop
+Cleaned a lot of code
+Most 1.19 features should be in and working
+Resource generator 1 now uses a duration in its recipes
+Current missing wardens smite
+Default /discord command now links to this discord
+
+1.22.5
+
+Fixed client crash with block placer and block breaker when chunks are unloaded to quick
+
 
 1.22.4
 
