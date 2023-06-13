@@ -19,14 +19,14 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public ResourceGeneratorMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((ResourceGeneratorBlockEntity) entity);
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.data = data;
 
         addPlayerInventory(inventory);

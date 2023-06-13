@@ -94,7 +94,7 @@ public class WalletItem extends Item {
 
             if(stack.hasTag()) {
 
-                components.add(Component.literal(String.valueOf("This wallet contains " + stack.getTag().getInt("b_bucks_amount") + " B Bucks"))
+                components.add(Component.literal("This wallet contains " + stack.getTag().getInt("b_bucks_amount") + " B Bucks")
                         .withStyle(ChatFormatting.GREEN));
             }
             if(!stack.hasTag()) {

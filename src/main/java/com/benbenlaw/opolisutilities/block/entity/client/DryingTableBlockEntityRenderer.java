@@ -5,15 +5,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+
+import java.util.Objects;
 
 public class DryingTableBlockEntityRenderer implements BlockEntityRenderer<DryingTableBlockEntity> {
     public DryingTableBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -31,8 +34,11 @@ public class DryingTableBlockEntityRenderer implements BlockEntityRenderer<Dryin
 
         pPoseStack.translate(0.5f, 0.5f, 0.5);  //x, y, x pos
         pPoseStack.scale(1.25f, 1.25f, 1.25f); //size
-        itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.GROUND, getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()),
-                OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 1);
+        BakedModel model = itemRenderer.getModel(itemStack, null, null, 0);
+
+        itemRenderer.render(itemStack, ItemDisplayContext.GROUND, true, pPoseStack, pBufferSource, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()),
+                OverlayTexture.NO_OVERLAY, model);
+
 
         pPoseStack.popPose();
     }

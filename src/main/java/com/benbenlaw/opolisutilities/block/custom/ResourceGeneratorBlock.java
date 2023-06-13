@@ -70,6 +70,7 @@ public class ResourceGeneratorBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, ModBlockEntities.RESOURCE_GENERATOR_BLOCK_ENTITY.get(),
-                ResourceGeneratorBlockEntity::tick);
+                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
     }
+
 }

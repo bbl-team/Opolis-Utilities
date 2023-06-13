@@ -3,7 +3,6 @@ package com.benbenlaw.opolisutilities.screen;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.BlacklistMaxStackSizeOneSlot;
-import com.benbenlaw.opolisutilities.screen.slot.MaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.WhitelistMaxStackSizeOneSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,14 +20,14 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public BlockBreakerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
+        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
     }
 
     public BlockBreakerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.BLOCK_BREAKER_MENU.get(), containerID);
         checkContainerSize(inventory, 3);
         blockEntity = ((BlockBreakerBlockEntity) entity);
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.data = data;
 
         addPlayerInventory(inventory);

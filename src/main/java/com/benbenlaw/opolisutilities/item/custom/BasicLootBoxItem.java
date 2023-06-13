@@ -8,12 +8,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class BasicLootBoxItem extends Item {
@@ -28,15 +29,13 @@ public class BasicLootBoxItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!world.isClientSide) {
-            LootTable table = world.getServer().getLootTables().get(ModLootTables.BASIC_LOOT_BOX);
-            LootContext generatedItems = (new LootContext.Builder((ServerLevel) world))
-                    .withLuck(player.getLuck())
-                    .withParameter(LootContextParams.THIS_ENTITY, player)
-                    .withParameter(LootContextParams.ORIGIN, player.position())
-                    .create(LootContextParamSets.GIFT);
-            List<ItemStack> loot = table.getRandomItems(generatedItems);
-            for (int i = 0; i < loot.size(); i++) {
-                GiveItem(player, loot.get(i));
+
+            LootParams lootparams = (new LootParams.Builder((ServerLevel) player.level())).withParameter(LootContextParams.THIS_ENTITY, player).withParameter(LootContextParams.ORIGIN, player.position()).create(LootContextParamSets.GIFT);
+            LootTable table = Objects.requireNonNull(world.getServer()).getLootData().getLootTable((ModLootTables.BASIC_LOOT_BOX));
+
+            List<ItemStack> loot = table.getRandomItems(lootparams);
+            for (ItemStack stack : loot) {
+                GiveItem(player, stack);
             }
             itemstack.shrink(1);
         }
@@ -52,6 +51,4 @@ public class BasicLootBoxItem extends Item {
             return false;
         }
     }
-
-
 }

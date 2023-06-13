@@ -23,16 +23,11 @@ public class FloatingBlockItem extends Item {
 
         if (!level.isClientSide && hand == InteractionHand.MAIN_HAND) {
 
+            int xPos = (int) (player.getX() + 3 * player.getLookAngle().x);
+            int yPos = (int) (1.5 + player.getY() + 3 * player.getLookAngle().y);
+            int zPos = (int) (player.getZ() + 3 * player.getLookAngle().z);
 
-            double xPos = player.getX() + 3 * player.getLookAngle().x;
-            double yPos = 1.5 + player.getY() + 3 * player.getLookAngle().y;
-            double zPos = player.getZ() + 3 * player.getLookAngle().z;
-
-        BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
-    //    if (level.getBlockState(blockPos).is(Blocks.WATER) || !level.getBlockState(blockPos).is(Blocks.AIR) ) {
-    //        player.sendSystemMessage(Component.translatable("tooltips.floating_block.place_in_air")
-    //                .withStyle(ChatFormatting.RED));
-    //   }
+            BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
 
             if (level.getBlockState(blockPos).is(Blocks.WATER)) {
                 level.setBlockAndUpdate(blockPos, ModBlocks.FLOATING_BLOCK.get().defaultBlockState());

@@ -18,9 +18,6 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_SERIALIZER =
             SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
 
-    public static final RegistryObject<RecipeSerializer<ShopRecipe>> SHOP_SERIALIZER =
-            SERIALIZER.register("shop", () -> ShopRecipe.Serializer.INSTANCE);
-
     public static final RegistryObject<RecipeSerializer<RG2SpeedBlocksRecipe>> RG2_SPEED_BLOCKS_SERIALIZER =
             SERIALIZER.register("rg2_speed_blocks", () -> RG2SpeedBlocksRecipe.Serializer.INSTANCE);
 

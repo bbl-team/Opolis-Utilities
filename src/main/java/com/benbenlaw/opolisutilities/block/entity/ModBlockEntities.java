@@ -13,15 +13,15 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, OpolisUtilities.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<BlockBreakerBlockEntity>> BLOCK_BREAKER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("block_breaker_block_entity", () ->
-                    BlockEntityType.Builder.of(BlockBreakerBlockEntity::new,
-                            ModBlocks.BLOCK_BREAKER.get()).build(null));
-
     public static final RegistryObject<BlockEntityType<BlockPlacerBlockEntity>> BLOCK_PLACER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("block_placer_block_entity", () ->
                     BlockEntityType.Builder.of(BlockPlacerBlockEntity::new,
                             ModBlocks.BLOCK_PLACER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BlockBreakerBlockEntity>> BLOCK_BREAKER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("block_breaker_block_entity", () ->
+                    BlockEntityType.Builder.of(BlockBreakerBlockEntity::new,
+                            ModBlocks.BLOCK_BREAKER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<DryingTableBlockEntity>> DRYING_TABLE_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("drying_table_block_entity", () ->

@@ -1,9 +1,0 @@
-{
-  "type": "opolisutilities:shop",
-  "ingredient": {
-    "item": "minecraft:emerald"
-  },
-  "itemInCount": 12,
-  "result": "opolisutilities:b_bucks",
-  "itemOutCount": 1
-}

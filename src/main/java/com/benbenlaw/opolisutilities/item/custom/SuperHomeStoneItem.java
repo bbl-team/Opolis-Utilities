@@ -72,12 +72,14 @@ public class SuperHomeStoneItem extends SimpleFoiledItem {
         //If location set then teleport
         else if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND){
 
-            ResourceKey<Level> dimension = ResourceKey.create(ResourceKey.createRegistryKey(
-                    new ResourceLocation(nbt.getString("namespacemod"), "dimension")),
-                    new ResourceLocation(nbt.getString("namespace"), nbt.getString("path")));
+           ResourceKey<Level> dimension = ResourceKey.create(ResourceKey.createRegistryKey(
+                   new ResourceLocation("minecraft", "dimension")),
+                   new ResourceLocation(nbt.getString("namespace"), nbt.getString("path")));
 
             MinecraftServer minecraftserver = player.getServer();
+            assert minecraftserver != null;
             ServerLevel destinationWorld = minecraftserver.getLevel(dimension);
+            assert destinationWorld != null;
             player.changeDimension(destinationWorld, new ModTeleport(destinationWorld));
 
 
@@ -115,13 +117,13 @@ public class SuperHomeStoneItem extends SimpleFoiledItem {
 
             if(stack.hasTag()) {
 
-                components.add(Component.literal(String.valueOf("X: " + stack.getTag().getFloat("x")))
+                components.add(Component.literal("X: " + stack.getTag().getFloat("x"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Y: " + stack.getTag().getFloat("y")))
+                components.add(Component.literal("Y: " + stack.getTag().getFloat("y"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Z: " + stack.getTag().getFloat("z")))
+                components.add(Component.literal("Z: " + stack.getTag().getFloat("z"))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Dimension: " + stack.getTag().getString("dimension")))
+                components.add(Component.literal("Dimension: " + stack.getTag().getString("dimension"))
                         .withStyle(ChatFormatting.GREEN));
 
             }

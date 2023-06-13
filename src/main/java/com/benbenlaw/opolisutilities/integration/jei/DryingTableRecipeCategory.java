@@ -4,7 +4,6 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -15,66 +14,74 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table");
-    public final static ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_drying_table.png");
+public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRecipe>{
 
-    static final RecipeType<DryingTableRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "drying_table",
-            DryingTableRecipe.class);
+        public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table");
+        public final static ResourceLocation TEXTURE =
+                new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_drying_table.png");
 
-    private final IDrawable background;
-    private final IDrawable icon;
+        static final RecipeType<DryingTableRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "drying_table",
+                DryingTableRecipe.class);
 
-    public DryingTableRecipeCategory(IGuiHelper helper) {
+        private final IDrawable background;
+        private final IDrawable icon;
+
+        public DryingTableRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 120, 19);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.DRYING_TABLE.get()));
     }
 
-    public ResourceLocation getUid() {
+        public ResourceLocation getUid () {
         return UID;
     }
 
-    @Override
-    public RecipeType<DryingTableRecipe> getRecipeType() {
-        return new RecipeType<>(ModRecipes.DRYING_TABLE_SERIALIZER.getId(), DryingTableRecipe.class);
+        @Override
+        public RecipeType<DryingTableRecipe> getRecipeType () {
+            return new RecipeType<>(ModRecipes.DRYING_TABLE_SERIALIZER.getId(), DryingTableRecipe.class);
     }
 
-    @Override
-    public Component getTitle() {
+        @Override
+        public Component getTitle () {
         return Component.literal("Drying Table");
     }
 
-    @Override
-    public IDrawable getBackground() {
+        @Override
+        public IDrawable getBackground () {
         return this.background;
     }
 
-    @Override
-    public IDrawable getIcon() {
+        @Override
+        public IDrawable getIcon () {
         return this.icon;
     }
 
-    @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, DryingTableRecipe recipe, IFocusGroup focusGroup) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getIngredients().get(0));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 2).addItemStack(recipe.getResultItem());
+        @Override
+        public void setRecipe (IRecipeLayoutBuilder builder, DryingTableRecipe recipe, IFocusGroup focusGroup){
+         builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getIngredients().get(0));
+
+
+            assert false;
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 2).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     }
 
+
+
     @Override
-    public void draw(DryingTableRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(DryingTableRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         @Nonnull final Minecraft minecraft = Minecraft.getInstance();
 
         int duration = recipe.getDuration();
 
-        minecraft.font.draw(stack, Component.literal(String.valueOf(duration/20 +"s")), 95, 6, Color.gray.getRGB());
-
+        guiGraphics.drawString(minecraft.font.self(), Component.literal(duration / 20 + "s"), 95, 6, Color.WHITE.getRGB());
     }
 }
+

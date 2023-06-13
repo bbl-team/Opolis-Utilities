@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
 import com.benbenlaw.opolisutilities.block.entity.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
@@ -9,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,6 +46,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            assert level != null;
             if (!level.isClientSide()) {
                 ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
@@ -108,19 +112,19 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             }
 
             public int getCount() {
-                return 2;
+                return 1;
             }
         };
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("Block Placer");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
+    public AbstractContainerMenu createMenu(int containerID, @NotNull Inventory inventory, @NotNull Player player) {
         return new BlockPlacerMenu(containerID, inventory, this, this.data);
     }
 
@@ -167,7 +171,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     @Override
-    public void load(CompoundTag nbt) {
+    public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("block_placer.progress");
@@ -179,6 +183,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 
+        assert this.level != null;
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
@@ -188,23 +193,31 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         BlockPos pPos = this.worldPosition;
         assert pLevel != null;
         BlockPlacerBlockEntity pBlockEntity = this;
-        ItemStack itemStackInSlot = pBlockEntity.getItemStackHandler().getStackInSlot(0);
-        Direction direction = pLevel.getBlockState(pPos).getValue(FACING);
-        BlockPos placeHere = pPos.relative(direction);
+        BlockState blockState = pLevel.getBlockState(pPos);
         this.counter++;
 
-        if (!itemStackInSlot.isEmpty() && this.counter % 40 == 0) {
+        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel) {
 
-            Item item = itemStackInSlot.getItem();
+            ItemStack itemStackInSlot = pBlockEntity.getItemStackHandler().getStackInSlot(0);
+            Direction direction = pLevel.getBlockState(pPos).getValue(FACING);
+            BlockPos placeHere = pPos.relative(direction);
 
-            if (item instanceof BlockItem && level.getBlockState(placeHere).isAir()) {
-                BlockState itemToBlockState = ((BlockItem) itemStackInSlot.getItem().asItem()).getBlock().defaultBlockState();
-                SoundType blockSounds = itemToBlockState.getBlock().getSoundType(itemToBlockState.getBlock().defaultBlockState(), level, pPos, null);
+            if (blockState.hasProperty(BlockBreakerBlock.FACING)) {
 
-                if (!itemToBlockState.isAir()) {
-                    this.itemHandler.getStackInSlot(0).shrink(1);
-                    pLevel.playSound(null, pPos, blockSounds.getPlaceSound(), SoundSource.BLOCKS, 1, 1);
-                    level.setBlockAndUpdate(placeHere, itemToBlockState);
+                if (!itemStackInSlot.isEmpty() && this.counter % 40 == 0) {
+
+                    Item item = itemStackInSlot.getItem();
+
+                    if (item instanceof BlockItem && level.getBlockState(placeHere).isAir()) {
+                        BlockState itemToBlockState = ((BlockItem) itemStackInSlot.getItem().asItem()).getBlock().defaultBlockState();
+                        SoundType blockSounds = itemToBlockState.getBlock().getSoundType(itemToBlockState.getBlock().defaultBlockState(), level, pPos, null);
+
+                        if (!itemToBlockState.isAir()) {
+                            this.itemHandler.getStackInSlot(0).shrink(1);
+                            pLevel.playSound(null, pPos, blockSounds.getPlaceSound(), SoundSource.BLOCKS, 1, 1);
+                            level.setBlockAndUpdate(placeHere, itemToBlockState);
+                        }
+                    }
                 }
             }
         }

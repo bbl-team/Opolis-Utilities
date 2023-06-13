@@ -18,14 +18,14 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public BlockPlacerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
     public BlockPlacerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.BLOCK_PLACER_MENU.get(), containerID);
         checkContainerSize(inventory, 1);
         blockEntity = ((BlockPlacerBlockEntity) entity);
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.data = data;
 
         addPlayerInventory(inventory);
@@ -33,9 +33,6 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 18));
-      //      this.addSlot(new ModResultSlot(handler, 1, 80, 60));
-      //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
-      //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));
         });
 
         addDataSlots(data);

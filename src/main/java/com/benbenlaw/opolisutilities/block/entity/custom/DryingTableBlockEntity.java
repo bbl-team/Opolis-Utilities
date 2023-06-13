@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
 import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
 import com.benbenlaw.opolisutilities.screen.DryingTableMenu;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -186,6 +187,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 
+        assert this.level != null;
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
@@ -196,7 +198,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         assert pLevel != null;
         BlockState pState = pLevel.getBlockState(pPos);
         DryingTableBlockEntity pBlockEntity = this;
-
 
         if(hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
@@ -217,13 +218,15 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
 
+        assert level != null;
         Optional<DryingTableRecipe> match = level.getRecipeManager()
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
         match.ifPresent(recipe -> maxProgress = recipe.getDuration());
 
-        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
+        if (match.isEmpty() || !canInsertAmountIntoOutputSlot(inventory)) return false;
+        assert Minecraft.getInstance().level != null;
+        return canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Minecraft.getInstance().level.registryAccess()))
                 && hasDuration(match.get());
 
     }
@@ -240,7 +243,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         if(match.isPresent()) {
 
             entity.itemHandler.extractItem(0,1, false);
-            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem().getItem(),
+            assert Minecraft.getInstance().level != null;
+            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Minecraft.getInstance().level.registryAccess()).getItem(),
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
 
             entity.resetProgress();
@@ -262,4 +266,6 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
+
+
 }

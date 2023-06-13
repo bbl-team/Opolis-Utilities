@@ -4,18 +4,14 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -25,9 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlocksRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_speed_blocks");
@@ -69,12 +63,13 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
     public void setRecipe(IRecipeLayoutBuilder builder, RG2SpeedBlocksRecipe recipe, IFocusGroup focusGroup) {
 
         String blockName = recipe.getBlock();
-        Block rgBlock = Registry.BLOCK.get(new ResourceLocation(blockName));
+        Block rgBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
         TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
 
         if (rgBlock == Blocks.AIR) {
             builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 5).addIngredients(Ingredient.of(itemTag));
         } else {
+            assert rgBlock != null;
             builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 5).addItemStack(new ItemStack(rgBlock.asItem()));
 
         }
@@ -83,6 +78,8 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
         builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addIngredients(Ingredient.of(itemTag));
 
     }
+
+    /*
 
     @Override
     public void draw(RG2SpeedBlocksRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
@@ -100,4 +97,9 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
 
 
     }
+
+     */
+
 }
+
+
