@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+		"north": "opolisutilities:block/fluid_generator_working",
+		"east": "opolisutilities:block/fluid_generator_working",
+		"south": "opolisutilities:block/fluid_generator_working",
+		"west": "opolisutilities:block/fluid_generator_working",
+		"up": "opolisutilities:block/machine_top",
+		"down": "opolisutilities:block/machine_top",
+		"particle": "opolisutilities:block/fluid_generator_working"
+	}
+}

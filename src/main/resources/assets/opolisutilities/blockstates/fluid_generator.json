@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "opolisutilities:block/fluid_generator"
+    },
+    "lit=true": {
+       "model": "opolisutilities:block/fluid_generator_working"
+    }
+  }
+}

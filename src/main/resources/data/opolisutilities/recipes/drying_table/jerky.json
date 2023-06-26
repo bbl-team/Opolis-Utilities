@@ -1,12 +1,14 @@
 {
   "type": "opolisutilities:drying_table",
-    "ingredients": [
+    "ingredient": [
       {
         "tag": "forge:foods/meat/raw"
       }
     ],
+  "count": 1,
   "duration": 160,
   "output": {
-    "item": "opolisutilities:jerky"
+    "item": "opolisutilities:jerky",
+    "count": 1
   }
 }

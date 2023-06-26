@@ -1,0 +1,9 @@
+{
+  "type": "opolisutilities:catalogue",
+  "ingredient": {
+    "item": "minecraft:andesite"
+  },
+  "itemInCount": 8,
+  "result": "opolisutilities:b_bucks",
+  "itemOutCount": 1
+}

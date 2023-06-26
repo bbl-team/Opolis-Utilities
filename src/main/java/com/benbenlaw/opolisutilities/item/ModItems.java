@@ -14,6 +14,9 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
         DeferredRegister.create(ForgeRegistries.ITEMS, OpolisUtilities.MOD_ID);
 
+    public static final RegistryObject<Item> JEI_NULL_ITEM = ITEMS.register("jei_null_item",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> MINI_COAL = ITEMS.register("mini_coal",
             () -> new MiniCoalItem(true));
 

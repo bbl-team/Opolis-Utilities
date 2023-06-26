@@ -197,7 +197,6 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             setChanged(pLevel, pPos, pState);
             if(pBlockEntity.progress > pBlockEntity.maxProgress) {
 
-
                 if (!isDamaged) {
                     pBlockEntity.itemHandler.getStackInSlot(0).hurt(-1, RandomSource.create(), null);
                     pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
@@ -210,10 +209,19 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             }
         }
 
-        if(inputAsStack.isDamageableItem() && damageValue == 0 && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty()) {
+        if(inputAsStack.isDamageableItem() && damageValue == 0 && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty() ) {
 
             pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
             pBlockEntity.itemHandler.extractItem(0, 1, false);
+            pBlockEntity.resetProgress();
+            setChanged(pLevel, pPos, pState);
+
+        }
+
+        if(!inputAsStack.isDamageableItem() && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty() ) {
+
+            pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
+            pBlockEntity.itemHandler.extractItem(0, copiedStack.getCount(), false);
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
 

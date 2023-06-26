@@ -1,12 +1,13 @@
 {
   "type": "opolisutilities:drying_table",
-    "ingredients": [
+    "ingredient":
       {
         "item": "minecraft:stone_bricks"
-      }
-    ],
+      },
+  "count": 1,
   "duration": 160,
   "output": {
-    "item": "minecraft:cracked_stone_bricks"
+    "item": "minecraft:cracked_stone_bricks",
+    "count": 1
   }
 }

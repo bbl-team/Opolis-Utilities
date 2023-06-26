@@ -82,10 +82,16 @@ public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
         public static final String ID = "resource_generator";
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static class Serializer implements RecipeSerializer<ResourceGeneratorRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"resource_generator");
+                new ResourceLocation(OpolisUtilities.MOD_ID, "resource_generator");
+
 
         @Override
         public ResourceGeneratorRecipe fromJson(ResourceLocation id, JsonObject json) {
@@ -125,28 +131,5 @@ public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
 
             buf.writeItemStack(recipe.output, false);
         }
-
-
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
-        }
     }
-
-
-
-
 }

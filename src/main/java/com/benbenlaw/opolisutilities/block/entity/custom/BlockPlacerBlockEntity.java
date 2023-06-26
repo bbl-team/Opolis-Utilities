@@ -56,7 +56,12 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     private int counter = 0;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
-            Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+            Map.of(
+
+            //        Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+
+                    Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
 
                     Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),

@@ -16,7 +16,7 @@ public class ModEnchantments {
 
     public static RegistryObject<Enchantment> WARDEN_SMITE =
             ENCHANTMENTS.register("warden_smite", () ->
-                    new WardenSmiteEnchantment(Enchantment.Rarity.RARE,
+                    new WardenSmiteEnchantment(Enchantment.Rarity.UNCOMMON,
                             EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
 
 

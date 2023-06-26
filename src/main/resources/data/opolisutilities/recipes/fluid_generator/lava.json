@@ -1,0 +1,5 @@
+{
+  "type": "opolisutilities:fluid_generator",
+  "fluid": "minecraft:lava",
+  "fluidAmount": 25
+}

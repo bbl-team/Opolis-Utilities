@@ -36,11 +36,16 @@ public class ModEvents {
     public static void cancelEndermanTeleportation(EntityTeleportEvent event) {
         Entity entity = event.getEntity();
 
+
         if (entity instanceof EnderMan) {
             BlockPos pos = entity.getOnPos();
-            for (int x = -7; x <= 7; x++) {
-                for (int y = -7; y <= 7; y++) {
-                    for (int z = -7; z <= 7; z++) {
+
+            int r = 7;
+
+
+            for (int x = -r; x <= r; x++) {
+                for (int y = -r; y <= r; y++) {
+                    for (int z = -r; z <= r; z++) {
                         BlockPos p = pos.offset(x, y, z);
                         BlockState state = entity.level().getBlockState(p);
                         if (state.is(ModBlocks.ENDER_SCRAMBLER.get())) {

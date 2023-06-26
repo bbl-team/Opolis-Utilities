@@ -225,30 +225,45 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         match.ifPresent(recipe -> maxProgress = recipe.getDuration());
 
         if (match.isEmpty() || !canInsertAmountIntoOutputSlot(inventory)) return false;
-        assert Minecraft.getInstance().level != null;
-        return canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Minecraft.getInstance().level.registryAccess()))
-                && hasDuration(match.get());
+
+
+        if (Minecraft.getInstance().level != null) {
+            return canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Minecraft.getInstance().level.registryAccess()))
+                    && hasOutputSpaceMaking(entity, match.get())
+                    && hasCorrectCountInInputSlot(entity, match.get())
+                    && hasDuration(match.get());
+        } else {
+
+            return false;
+        }
 
     }
 
     private static void craftItem(@NotNull DryingTableBlockEntity entity) {
+
         Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-        Optional<DryingTableRecipe> match = level.getRecipeManager()
-                .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
-        if(match.isPresent()) {
+        assert level != null;
+        if(!level.isClientSide()) {
 
-            entity.itemHandler.extractItem(0,1, false);
-            assert Minecraft.getInstance().level != null;
-            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Minecraft.getInstance().level.registryAccess()).getItem(),
-                    entity.itemHandler.getStackInSlot(1).getCount() + 1));
+            SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+            for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+                inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+            }
 
-            entity.resetProgress();
+            Optional<DryingTableRecipe> match = level.getRecipeManager()
+                    .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
+            if (match.isPresent()) {
+
+                entity.itemHandler.extractItem(0, match.get().getCount(), false);
+                assert Minecraft.getInstance().level != null;
+                entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Minecraft.getInstance().level.registryAccess()).getItem(),
+                        entity.itemHandler.getStackInSlot(1).getCount() + match.get().getResultItem(Minecraft.getInstance().level.registryAccess()).getCount()));
+
+                entity.resetProgress();
+
+            }
         }
     }
     private void resetProgress() {
@@ -266,6 +281,18 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
+
+    private static boolean hasCorrectCountInInputSlot(DryingTableBlockEntity entity, DryingTableRecipe recipe) {
+        return entity.itemHandler.getStackInSlot(0).getCount() >= recipe.getCount();
+    }
+
+    private static boolean hasOutputSpaceMaking(DryingTableBlockEntity entity, DryingTableRecipe recipe) {
+        assert Minecraft.getInstance().level != null;
+        return entity.itemHandler.getStackInSlot(1).getCount() + recipe.getResultItem(Minecraft.getInstance().level.registryAccess()).getCount() - 1 <
+                entity.itemHandler.getStackInSlot(1).getMaxStackSize();
+    }
+
+
 
 
 }

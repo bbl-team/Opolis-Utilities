@@ -11,6 +11,7 @@
   "item.opolisutilities.ender_pearl_fragment": "Ender Pearl Fragment",
   "item.opolisutilities.b_bucks": "B Bucks",
   "item.opolisutilities.leafy_string": "Leafy String",
+  "item.opolisutilities.jei_null_item": "JEI Null Item",
 
   "item.opolisutilities.basic_loot_box": "Basic Loot Box",
   "item.opolisutilities.advanced_loot_box": "Advanced Loot Box",
@@ -27,6 +28,7 @@
   "block.opolisutilities.drying_table": "Drying Table",
   "block.opolisutilities.resource_generator": "Resource Generator",
   "block.opolisutilities.resource_generator_2": "Resource Generator 2",
+  "block.opolisutilities.fluid_generator": "Fluid Generator",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
   "block.opolisutilities.redstone_clock": "Redstone Clock",
@@ -34,7 +36,7 @@
   "block.opolisutilities.item_repairer": "Item Repairer",
   "block.opolisutilities.block_placer": "Block Placer",
   "block.opolisutilities.block_breaker": "Block Breaker",
-  "block.opolisutilities.shop": "Shop",
+  "block.opolisutilities.catalogue": "Catalogue",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",
@@ -65,9 +67,13 @@
   "jei.recipes.resource_generator_2_chest_1": "Puts the generated block",
   "jei.recipes.resource_generator_2_chest_2": "into any inventory below!",
 
+  "jei.recipes.resource_generator_2_tank_1": "Inserts fluid into",
+  "jei.recipes.resource_generator_2_tank_2": "any tank below!",
+
   "jei.recipes.resource_generator_2_speed_blocks_line_1": "Placing a speed block",
   "jei.recipes.resource_generator_2_speed_blocks_line_2": "above the resource",
   "jei.recipes.resource_generator_2_speed_blocks_line_3": "generator 2 will increase",
+  "jei.recipes.resource_generator_2_speed_blocks_line_4": "the speed!",
   "jei.recipes.resource_generator_2_speed_blocks_line_4": "the speed!",
 
   "jei.recipes.resource_generator_2_speed_blocks_line": "Ticks per block",

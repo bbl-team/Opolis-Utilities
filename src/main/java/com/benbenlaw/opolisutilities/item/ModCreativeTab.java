@@ -35,6 +35,8 @@ public class ModCreativeTab {
                 output.accept(ModItems.JERKY.get());
                 output.accept(ModItems.MINI_CHARCOAL.get());
                 output.accept(ModItems.MINI_COAL.get());
+                output.accept(ModItems.LEAFY_STRING.get());
+                output.accept(ModItems.SOAKED_PAPER.get());
 
                 output.accept(ModBlocks.DRYING_TABLE.get());
                 output.accept(ModItems.FLOATING_BLOCK.get());

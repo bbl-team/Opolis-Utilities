@@ -2,16 +2,22 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
+import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
 import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
+import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -22,6 +28,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 
 public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlocksRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_speed_blocks");
@@ -79,27 +88,19 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
 
     }
 
-    /*
-
     @Override
-    public void draw(RG2SpeedBlocksRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-
+    public void draw(RG2SpeedBlocksRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         @Nonnull final Minecraft minecraft = Minecraft.getInstance();
 
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_1"), 5, 7, Color.black.getRGB());
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_2"), 5, 15, Color.black.getRGB());
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_3"), 5, 23, Color.black.getRGB());
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_4"), 5, 31, Color.black.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_1"), 5, 7, Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_2"), 5, 15,  Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_3"), 5, 23,  Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_4"), 5, 31,  Color.WHITE.getRGB());
 
-
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line"), 5, 60, Color.black.getRGB());
-        minecraft.font.draw(stack, Component.literal(recipe.getTickRate() + ""), 5, 68, Color.black.getRGB());
-
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line"), 5, 60,  Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.literal(recipe.getTickRate() + " Lower is better!"), 5, 68, Color.WHITE.getRGB());
 
     }
-
-     */
-
 }
 
 

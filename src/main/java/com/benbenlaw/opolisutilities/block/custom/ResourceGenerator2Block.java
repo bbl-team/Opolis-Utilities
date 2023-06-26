@@ -27,6 +27,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ResourceGenerator2Block extends BaseEntityBlock {
@@ -42,12 +44,10 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
         p_55484_.add(LIT);
     }
 
-    private int tickRate;
-
     @Override
-    public InteractionResult use(BlockState pState, Level level, BlockPos blockPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public @NotNull InteractionResult use(BlockState pState, Level level, BlockPos blockPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
 
-        tickRate = 220;
+        int tickRate = 220;
 
         //Check for Cap and apply correct tickrate
         if (!level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
@@ -56,14 +56,15 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
 
                 String blockName = match.getBlock();
                 TagKey<Block> speedBlock = BlockTags.create(new ResourceLocation(blockName));
+                Block speedBlockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
 
-                if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(speedBlock)) {
+                if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(speedBlock) || level.getBlockState(blockPos.above(2)).is(speedBlockBlock)) {
                     tickRate = match.getTickRate();
                 }
             }
         }
 
-        if(!level.isClientSide()) {
+        if (!level.isClientSide()) {
             if (pHand.equals(InteractionHand.MAIN_HAND)){
                 if (pState.getValue(ResourceGenerator2Block.LIT)) {
 
@@ -71,7 +72,7 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
                     Block translatedBlock = block.getBlock();
                     String translatedName = translatedBlock.getName().getString();
 
-                    if (tickRate == 80){
+                    if (tickRate == 220){
                         pPlayer.sendSystemMessage(Component.literal("No speed block detected, place a valid block above the resource block").withStyle(ChatFormatting.RED));
                     }
                     pPlayer.sendSystemMessage(Component.literal("Current tick rate is " + tickRate).withStyle(ChatFormatting.GREEN));

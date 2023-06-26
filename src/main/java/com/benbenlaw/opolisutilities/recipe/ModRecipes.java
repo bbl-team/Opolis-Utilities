@@ -24,6 +24,12 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<RG2BlocksRecipe>> RG2_BLOCKS_SERIALIZER =
             SERIALIZER.register("rg2_blocks", () -> RG2BlocksRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<FluidGeneratorRecipe>> FLUID_GENERATOR_SERIALIZER =
+            SERIALIZER.register("fluid_generator", () -> FluidGeneratorRecipe.Serializer.INSTANCE);
+
+    public static final RegistryObject<RecipeSerializer<CatalogueRecipe>> CATALOGUE_SERIALIZER =
+            SERIALIZER.register("catalogue", () -> CatalogueRecipe.Serializer.INSTANCE);
+
 
     public static void register(IEventBus eventBus) {
         SERIALIZER.register(eventBus);

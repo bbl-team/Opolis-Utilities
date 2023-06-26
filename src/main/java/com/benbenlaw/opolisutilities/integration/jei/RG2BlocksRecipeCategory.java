@@ -4,14 +4,18 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
+import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -24,6 +28,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 
 public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_blocks");
@@ -92,22 +99,15 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
     }
 
-    /*
 
     @Override
-    public void draw(@NotNull RG2BlocksRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX, double mouseY) {
-
+    public void draw(RG2BlocksRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         @Nonnull final Minecraft minecraft = Minecraft.getInstance();
 
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_line_1"), 5, 7, Color.black.getRGB());
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_line_2"), 5, 15, Color.black.getRGB());
-
-
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_chest_1"), 5, 60, Color.black.getRGB());
-        minecraft.font.draw(stack, Component.translatable("jei.recipes.resource_generator_2_chest_2"), 5, 68, Color.black.getRGB());
-
-
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_line_1"), 5, 7, Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_line_2"), 5, 15,  Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_chest_1"), 5, 60,  Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_chest_2"), 5, 68,  Color.WHITE.getRGB());
     }
-    */
 }
 

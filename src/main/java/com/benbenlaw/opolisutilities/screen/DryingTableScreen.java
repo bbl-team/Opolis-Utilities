@@ -17,9 +17,6 @@ public class DryingTableScreen extends AbstractContainerScreen<DryingTableMenu> 
         super(pMenu, pPlayerInventory, pTitle);
     }
 
-
-
-
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);

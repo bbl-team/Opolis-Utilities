@@ -43,6 +43,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(ResourceGenerator2BlockEntity::new,
                             ModBlocks.RESOURCE_GENERATOR_2.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<FluidGeneratorBlockEntity>> FLUID_GENERATOR_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("fluid_generator_block_entity", () ->
+                    BlockEntityType.Builder.of(FluidGeneratorBlockEntity::new,
+                            ModBlocks.FLUID_GENERATOR.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<RedstoneClockBlockEntity>> REDSTONE_CLOCK_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("redstone_clock_block_entity", () ->
                     BlockEntityType.Builder.of(RedstoneClockBlockEntity::new,

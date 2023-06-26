@@ -2,10 +2,8 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
-import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
-import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
-import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
+import com.benbenlaw.opolisutilities.block.custom.FluidGeneratorBlock;
+import com.benbenlaw.opolisutilities.recipe.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -36,7 +34,8 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), ResourceGeneratorRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), RG2BlocksRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
-    //    registration.addRecipeCatalyst(new ItemStack(ModBlocks.SHOP.get()), ShopRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), FluidGeneratorRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
     }
 
     @Override
@@ -53,6 +52,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 RG2SpeedBlocksRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new
+                FluidGeneratorRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
     //    registration.addRecipeCategories(new
     //            ShopRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -73,6 +75,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         List<RG2SpeedBlocksRecipe> recipes5 = rm.getAllRecipesFor(RG2SpeedBlocksRecipe.Type.INSTANCE);
         registration.addRecipes(new RecipeType<>(RG2SpeedBlocksRecipeCategory.UID, RG2SpeedBlocksRecipe.class), recipes5);
+
+        List<FluidGeneratorRecipe> recipes6 = rm.getAllRecipesFor(FluidGeneratorRecipe.Type.INSTANCE);
+        registration.addRecipes(new RecipeType<>(FluidGeneratorRecipeCategory.UID, FluidGeneratorRecipe.class), recipes6);
 
     //    List<ShopRecipe> recipes6 = rm.getAllRecipesFor(ShopRecipe.Type.INSTANCE);
     //    registration.addRecipes(new RecipeType<>(ShopRecipeCategory.UID, ShopRecipe.class), recipes6);

@@ -57,6 +57,16 @@ public class ModBlocks {
                     .strength(2.0f,2.0f)
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> FLUID_GENERATOR = registerBlock("fluid_generator",
+            () -> new FluidGeneratorBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()));
+
+    public static final RegistryObject<Block> CATALOGUE = registerBlock("catalogue",
+            () -> new CatalogueBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()));
+
     public static final RegistryObject<Block> REDSTONE_CLOCK = registerBlock("redstone_clock",
             () -> new RedstoneClockBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f,2.0f)
