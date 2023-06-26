@@ -197,7 +197,6 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             setChanged(pLevel, pPos, pState);
             if(pBlockEntity.progress > pBlockEntity.maxProgress) {
 
-
                 if (!isDamaged) {
                     pBlockEntity.itemHandler.getStackInSlot(0).hurt(-1, RandomSource.create(), null);
                     pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);

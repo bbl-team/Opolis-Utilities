@@ -9,8 +9,6 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
     }
-
-
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -106,17 +104,6 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-/*
-    maven {
-        name 'prog'
-        url 'https://dvs1.progwml6.com/files/maven'
-        content {
-            includeGroup 'mezz.jei'
-        }
-    }
-
- */
-
     maven {
         url "https://cursemaven.com"
         content {
@@ -126,20 +113,14 @@ repositories {
 
     maven { url 'https://maven.blamejared.com' }
 
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
 }
 
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.20-46.0.12'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.0.1'
+
 
 //    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 //    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")

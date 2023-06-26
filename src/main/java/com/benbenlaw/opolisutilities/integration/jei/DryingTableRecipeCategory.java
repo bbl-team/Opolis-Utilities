@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import mezz.jei.api.constants.VanillaTypes;
@@ -18,6 +19,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -66,8 +69,9 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
 
         @Override
         public void setRecipe (IRecipeLayoutBuilder builder, DryingTableRecipe recipe, IFocusGroup focusGroup){
-         builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getIngredients().get(0));
 
+            builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getRecipeInput());
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 2).addItemStack(new ItemStack(ModItems.JEI_NULL_ITEM.get(),  recipe.getCount()));
 
             assert false;
             builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 2).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));

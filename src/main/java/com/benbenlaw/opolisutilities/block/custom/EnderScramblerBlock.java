@@ -41,8 +41,6 @@ public class EnderScramblerBlock extends Block {
         return this.defaultBlockState().setValue(POWERED, false);
     }
 
-    private final int i = 0;
-
     @Override
     public @NotNull InteractionResult use(BlockState pState, @NotNull Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pState.getValue(EnderScramblerBlock.POWERED).equals(true) && !pPlayer.isCrouching()) {

@@ -1,12 +1,11 @@
 {
   "type": "opolisutilities:drying_table",
-    "ingredients": [
-      {
-        "item": "opolisutilities:bundled_flesh"
-      }
-    ],
+   "ingredient":{
+        "item": "opolisutilities:bundled_flesh" },
+  "count": 1,
   "duration": 80,
   "output": {
-    "item": "minecraft:leather"
+    "item": "minecraft:leather",
+    "count": 2
   }
 }

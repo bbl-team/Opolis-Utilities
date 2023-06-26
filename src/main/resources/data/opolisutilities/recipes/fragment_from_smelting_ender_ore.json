@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "opolisutilities:ender_ore"
+  },
+  "result": "opolisutilities:ender_pearl_fragment",
+  "experience": 0.35,
+  "cookingtime": 200
+}

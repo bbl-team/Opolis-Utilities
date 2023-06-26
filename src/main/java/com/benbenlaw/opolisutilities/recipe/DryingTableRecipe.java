@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.recipe;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -19,28 +20,33 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
-    private final NonNullList<Ingredient> recipeItems;
+    private final Ingredient recipeInput;
+    private final int count;
     private final int duration;
 
-    public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
+    public DryingTableRecipe(ResourceLocation id, ItemStack output, Ingredient recipeInput, int count, int duration) {
         this.id = id;
         this.output = output;
-        this.recipeItems = recipeItems;
+        this.recipeInput = recipeInput;
+        this.count = count;
         this.duration = duration;
     }
 
     @Override
     public boolean matches(SimpleContainer pContainer, @NotNull Level pLevel) {
 
-        if(recipeItems.get(0).test(pContainer.getItem(0))){
+        if(recipeInput.test(pContainer.getItem(0))){
             return duration >= 0;
         }
         return false;
     }
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return recipeItems;
+    public Ingredient getRecipeInput() {
+        return recipeInput;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     @Override
@@ -97,58 +103,34 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         public DryingTableRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
-            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
+            JsonElement jsonelement = (GsonHelper.isArrayNode(json, "ingredient") ? GsonHelper.getAsJsonArray(json, "ingredient") : GsonHelper.getAsJsonObject(json, "ingredient"));
+            Ingredient ingredient = Ingredient.fromJson(jsonelement);
+            int count = GsonHelper.getAsInt(json, "count", 1);
+
             int duration = GsonHelper.getAsInt(json, "duration");
 
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            return new DryingTableRecipe(id, output, inputs, duration);
+            return new DryingTableRecipe(id, output, ingredient, count, duration);
         }
 
         @Override
         public DryingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+            Ingredient ingredient = Ingredient.fromNetwork(buf);
+
+            int count = buf.readInt();
             int duration = buf.readInt();
 
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf));
-            }
-
             ItemStack output = buf.readItem();
-            return new DryingTableRecipe(id, output, inputs, duration);
+            return new DryingTableRecipe(id, output, ingredient, count, duration);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, DryingTableRecipe recipe) {
-            buf.writeInt(recipe.getIngredients().size());
+
             buf.writeInt(recipe.getDuration());
-            for (Ingredient ing : recipe.getIngredients()) {
-                ing.toNetwork(buf);
-            }
+            buf.writeInt(recipe.getCount());
+            recipe.getRecipeInput().toNetwork(buf);
 
             buf.writeItemStack(recipe.output, false);
-        }
-
-
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
         }
     }
 }

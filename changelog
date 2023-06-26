@@ -4,11 +4,42 @@ Changelog Opolis Utilities
 //Todo: 1.20 MC Update, Make shears work in dispensers (vanilla style)
 //Todo: 1.20 MC Update, Fabric and Forge
 //Todo: Added recipe for guide book
+//TODO customixzable scrabler range
+//TODO Fluid resource generators
+
+
+2.0.1
+
+Added JEI null item for use in JEI integration with the mod
+block placer side are now all import sides
+Resource gen 2 now shows correct tick rate on non tag speed block in world
+Readded emerald and diamond blocks to the resource generator speed blocks
+Fixed sdrying table sometimes showing an extra item briefly during crafting recipes
+Added a invisible JEI null item to display item stack amounts over tags ingredients
+Ender ore can be smelted and blasting now
+Ender ore now drops 1-3 fragments instead of just 1 when broken
+Fixed pickaxe block tag being broken
+Improved block interactions with vanilla mechanics
+Updated dev environment to 1.20.1
+Drying table now supports counts in inputs and outputs meaning you can make recipe like 3 sticks to 10 diamonds now example below
+New recipe json looks like this count above duration is input count; (all recipes in opolis utlities added to this and leather now gives 2 instead of 1)
+{
+  "type": "opolisutilities:drying_table",
+    "ingredient": [
+      {
+        "tag": "forge:stone"
+      }
+    ],
+  "count": 20,
+  "duration": 20,
+  "output": {
+    "item": "opolisutilities:jerky",
+    "count": 2
+  }
+}
 
 2.0.0
-asdasd
 
-test
 Updated to minecraft 1.20
 Removed shop
 Cleaned a lot of code
