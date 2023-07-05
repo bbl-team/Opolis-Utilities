@@ -4,9 +4,11 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.supermartijn642.core.gui.widget.premade.TextFieldWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -17,8 +19,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
@@ -39,6 +44,8 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
     private boolean scrolling;
     private int startIndex;
     private boolean displayRecipes;
+    private EditBox searchBar;
+    private int selectedRecipeIndex = -1;
 
     public CatalogueScreen(CatalogueMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -47,11 +54,49 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         this.titleLabelX = 4;
         this.inventoryLabelY = 100000;
         this.inventoryLabelX = 9;
+
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        this.font = this.getMinecraft().font;
+        this.searchBar = new EditBox(this.font, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Component.literal(""));
+        this.searchBar.setMaxLength(50);
+        this.addWidget(this.searchBar);
+        this.searchBar.setFocused(true); // Manually set the focus to the search bar
+
+    }
+    public void setSelectedRecipeIndex(int index) {
+        this.selectedRecipeIndex = index;
+    }
+
+    public int getSelectedRecipeIndex() {
+        return selectedRecipeIndex;
     }
 
     public void render(@NotNull GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         this.renderTooltip(guiGraphics, pMouseX, pMouseY);
+        this.searchBar.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (this.searchBar.keyPressed(keyCode, scanCode, modifiers)) {
+            // Handle search bar input here
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean charTyped(char charTyped, int keyCode) {
+        if (this.searchBar.charTyped(charTyped, keyCode)) {
+            // Handle search bar input here
+            return true;
+        }
+        return super.charTyped(charTyped, keyCode);
     }
 
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float pPartialTick, int pX, int pY) {
@@ -171,6 +216,11 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
     }
 
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+
+        if (this.searchBar.mouseClicked(pMouseX, pMouseY, pButton)) {
+            return true;
+        }
+
         this.scrolling = false;
         if (this.displayRecipes) {
             int i = this.leftPos + RECIPES_X;
