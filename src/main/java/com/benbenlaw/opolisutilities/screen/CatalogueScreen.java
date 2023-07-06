@@ -54,7 +54,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         this.titleLabelX = 4;
         this.inventoryLabelY = 100000;
         this.inventoryLabelX = 9;
-
     }
 
     @Override
@@ -64,15 +63,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         this.searchBar = new EditBox(this.font, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Component.literal(""));
         this.searchBar.setMaxLength(50);
         this.addWidget(this.searchBar);
-        this.searchBar.setFocused(true); // Manually set the focus to the search bar
-
-    }
-    public void setSelectedRecipeIndex(int index) {
-        this.selectedRecipeIndex = index;
-    }
-
-    public int getSelectedRecipeIndex() {
-        return selectedRecipeIndex;
     }
 
     public void render(@NotNull GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
@@ -93,7 +83,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
     @Override
     public boolean charTyped(char charTyped, int keyCode) {
         if (this.searchBar.charTyped(charTyped, keyCode)) {
-            // Handle search bar input here
             return true;
         }
         return super.charTyped(charTyped, keyCode);
@@ -177,7 +166,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
             guiGraphics.pose().pushPose();
 
         }
-
     }
 
     private void renderRecipes(GuiGraphics guiGraphics, int pLeft, int pTop, int pRecipeIndexOffsetMax) {
@@ -206,7 +194,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
             guiGraphics.renderItemDecorations(this.font, stack, this.leftPos + 142, this.topPos + 32);
 
         }
-
     }
 
     @Override
@@ -291,9 +278,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         return (this.menu.getNumRecipes() + RECIPES_COLUMNS - 1) / RECIPES_COLUMNS - 3;
     }
 
-    /**
-     * Called every time this screen's container is changed (is marked as dirty).
-     */
     private void containerChanged() {
         this.displayRecipes = this.menu.hasInputItem();
         if (!this.displayRecipes) {

@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,19 +54,19 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         this.inputSlot = this.addSlot(new Slot(this.container, 0, 26, 44));
         this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 142, 56) {
 
-            public boolean mayPlace(ItemStack p_40362_) {
+            public boolean mayPlace(@NotNull ItemStack p_40362_) {
                 return false;
             }
 
             @Override
-            public boolean mayPickup(Player pPlayer) {
+            public boolean mayPickup(@NotNull Player pPlayer) {
                 if(CatalogueMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get() || CatalogueMenu.this.container.getItem(0).getCount() < recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount)
                     return false;
 
                 return super.mayPickup(pPlayer);
             }
 
-            public void onTake(Player player, ItemStack stack) {
+            public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
                 stack.onCraftedBy(player.level(), player, stack.getCount());
                 CatalogueMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
                 ItemStack itemstack = CatalogueMenu.this.inputSlot.remove(recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
@@ -121,11 +122,11 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         return this.inputSlot.hasItem() && !this.recipes.isEmpty();
     }
 
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(@NotNull Player pPlayer) {
         return stillValid(this.access, pPlayer, ModBlocks.CATALOGUE.get());
     }
 
-    public boolean clickMenuButton(Player pPlayer, int pId) {
+    public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {
         if (this.isValidRecipeIndex(pId)) {
             this.selectedRecipeIndex.set(pId);
             this.setupResultSlot();
@@ -138,7 +139,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         return pRecipeIndex >= 0 && pRecipeIndex < this.recipes.size();
     }
 
-    public void slotsChanged(Container pInventory) {
+    public void slotsChanged(@NotNull Container pInventory) {
         ItemStack itemstack = this.inputSlot.getItem();
         this.setupRecipeList(pInventory, itemstack);
         this.input = itemstack.copy();
@@ -156,9 +157,8 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         }
         if (!pStack.isEmpty()) {
             this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, pContainer, this.level);
-            this.recipes = this.recipes.stream().filter((recipe) -> {
-                return container.getItem(0).getCount() >= recipe.itemInCount;
-            }).toList();
+            this.recipes = this.recipes.stream().filter((recipe) ->
+                    container.getItem(0).getCount() >= recipe.itemInCount).toList();
         }
         if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1)
         {
@@ -176,7 +176,6 @@ public class CatalogueMenu extends   AbstractContainerMenu {
             if(this.lastInput.is(Items.AIR))
                 setupResultSlot();
         }
-
     }
 
     void setupResultSlot() {
@@ -193,7 +192,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         this.broadcastChanges();
     }
 
-    public MenuType<?> getType() {
+    public @NotNull MenuType<?> getType() {
         return ModMenuTypes.CATALOGUE_MENU.get();
     }
 
@@ -201,14 +200,14 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         this.slotUpdateListener = pListener;
     }
 
-    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
+    public boolean canTakeItemForPickAll(@NotNull ItemStack pStack, Slot pSlot) {
         return pSlot.container != this.resultContainer && super.canTakeItemForPickAll(pStack, pSlot);
     }
 
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             Item item = itemstack1.getItem();
             itemstack = itemstack1.copy();
@@ -251,7 +250,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         return itemstack;
     }
 
-    public void removed(Player pPlayer) {
+    public void removed(@NotNull Player pPlayer) {
         super.removed(pPlayer);
         this.selectedRecipeIndex.set(-1);
         this.resultContainer.removeItemNoUpdate(1);
