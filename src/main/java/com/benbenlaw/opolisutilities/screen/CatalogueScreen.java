@@ -171,14 +171,16 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                 int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH + 2;
                 int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
                 if (pX >= j1 && pX < j1 + RECIPES_IMAGE_SIZE_WIDTH && pY >= k1 && pY < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
-                    int recipeIndex = this.startIndex + l;
+                    CatalogueRecipe recipe = list.get(l);
+                    ItemStack result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+                    assert Minecraft.getInstance().level != null;
+                    guiGraphics.renderTooltip(this.font, result, pX, pY);
 
-                    if (recipeIndex >= 0 && recipeIndex < menu.getRecipes().size()) {
-                        CatalogueRecipe recipe = menu.getRecipes().get(recipeIndex);
-                        ItemStack result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
-                        assert Minecraft.getInstance().level != null;
-                        guiGraphics.renderTooltip(this.font, result, pX, pY);
+                    if (!searchBarFocused) {
+                        this.selectedRecipeIndex = this.menu.getRecipes().indexOf(recipe);
                     }
+
+                    return;
                 }
             }
         }
@@ -262,7 +264,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
             guiGraphics.renderItemDecorations(this.font, stack, this.leftPos + 142, this.topPos + 32);
         }
     }
-
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (this.searchBar.mouseClicked(pMouseX, pMouseY, pButton)) {
             return true;
@@ -279,7 +280,7 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                 double d1 = pMouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 3);
 
                 if (d0 >= 0.0D && d1 >= 0.0D && d0 < RECIPES_IMAGE_SIZE_WIDTH && d1 < RECIPES_IMAGE_SIZE_HEIGHT) {
-                    int recipeIndex = this.startIndex + l;
+                    int recipeIndex = this.startIndex + i1;
 
                     if (recipeIndex >= 0 && recipeIndex < filteredRecipes.size()) {
                         CatalogueRecipe recipe = filteredRecipes.get(recipeIndex);
@@ -293,6 +294,11 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                                 assert this.minecraft.gameMode != null;
                                 this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, originalIndex);
                                 selectedRecipeIndex = originalIndex;
+
+                                // Reset the search bar value
+                                this.searchBar.setValue("");
+                                filteredRecipes = menu.getRecipes();
+                                startIndex = 0;
                                 return true;
                             }
                         }
@@ -318,7 +324,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
-
 
 
 
