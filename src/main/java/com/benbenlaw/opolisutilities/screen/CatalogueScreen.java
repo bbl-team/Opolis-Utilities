@@ -264,6 +264,7 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
             guiGraphics.renderItemDecorations(this.font, stack, this.leftPos + 142, this.topPos + 32);
         }
     }
+
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (this.searchBar.mouseClicked(pMouseX, pMouseY, pButton)) {
             return true;
@@ -295,9 +296,9 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                                 this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, originalIndex);
                                 selectedRecipeIndex = originalIndex;
 
-                                // Reset the search bar value
+                                // Reset the search bar value and clear the filtered recipes
                                 this.searchBar.setValue("");
-                                filteredRecipes = menu.getRecipes();
+                                filteredRecipes = new ArrayList<>(menu.getRecipes());
                                 startIndex = 0;
                                 return true;
                             }
