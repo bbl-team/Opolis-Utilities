@@ -63,7 +63,22 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
     protected void init() {
         super.init();
         this.font = this.getMinecraft().font;
-        this.searchBar = new EditBox(this.font, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Component.literal(""));
+        this.searchBar = new EditBox(this.font, this.width / 2 - 21, this.height / 2 - 77, 100, 14, Component.literal("")) {
+            @Override
+            public boolean mouseClicked(double mouseX, double mouseY, int button) {
+                boolean result = super.mouseClicked(mouseX, mouseY, button);
+                if (button == 1) { // Right-click
+                    if (isMouseOver(mouseX, mouseY)) {
+                        setValue(""); // Clear the search bar
+                        return true;
+                    }
+                }
+                this.setFocused(result);
+                return result;
+            }
+
+        };
+
         this.searchBar.setMaxLength(50);
         this.addWidget(this.searchBar);
         filteredRecipes = menu.getRecipes();
@@ -156,8 +171,14 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                 int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH + 2;
                 int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
                 if (pX >= j1 && pX < j1 + RECIPES_IMAGE_SIZE_WIDTH && pY >= k1 && pY < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
-                    assert Minecraft.getInstance().level != null;
-                    guiGraphics.renderTooltip(this.font, list.get(l).getResultItem(Minecraft.getInstance().level.registryAccess()), pX, pY);
+                    int recipeIndex = this.startIndex + l;
+
+                    if (recipeIndex >= 0 && recipeIndex < menu.getRecipes().size()) {
+                        CatalogueRecipe recipe = menu.getRecipes().get(recipeIndex);
+                        ItemStack result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+                        assert Minecraft.getInstance().level != null;
+                        guiGraphics.renderTooltip(this.font, result, pX, pY);
+                    }
                 }
             }
         }
@@ -166,6 +187,10 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
             guiGraphics.renderTooltip(this.font, Component.translatable("Price"), pX, pY);
         }
     }
+
+
+
+
 
 
 
@@ -197,12 +222,10 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                 }
 
                 guiGraphics.blit(TEXTURE, k, i1 - 1, xOffset, 122 + j1 + 50, 22, 22);
-
-                guiGraphics.pose().pushPose();
+                guiGraphics.pose();
             }
         }
     }
-
 
     private void renderRecipes(GuiGraphics guiGraphics, int pLeft, int pTop, int pRecipeIndexOffsetMax) {
         List<CatalogueRecipe> list = this.menu.getRecipes();
@@ -244,7 +267,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         if (this.searchBar.mouseClicked(pMouseX, pMouseY, pButton)) {
             return true;
         }
-
         this.scrolling = false;
         if (this.displayRecipes) {
             int i = this.leftPos + RECIPES_X;
@@ -257,20 +279,23 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                 double d1 = pMouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 3);
 
                 if (d0 >= 0.0D && d1 >= 0.0D && d0 < RECIPES_IMAGE_SIZE_WIDTH && d1 < RECIPES_IMAGE_SIZE_HEIGHT) {
-                    CatalogueRecipe recipe;
-                    if (l < filteredRecipes.size()) {
-                        recipe = filteredRecipes.get(l);
-                    } else {
-                        recipe = menu.getRecipes().get(l);
-                    }
+                    int recipeIndex = this.startIndex + l;
 
-                    ItemStack result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+                    if (recipeIndex >= 0 && recipeIndex < filteredRecipes.size()) {
+                        CatalogueRecipe recipe = filteredRecipes.get(recipeIndex);
+                        int originalIndex = menu.getRecipes().indexOf(recipe);
 
-                    if (!result.isEmpty()) {
-                        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-                        assert this.minecraft.gameMode != null;
-                        this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, l);
-                        return true;
+                        if (originalIndex >= 0) {
+                            ItemStack result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+
+                            if (!result.isEmpty()) {
+                                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                                assert this.minecraft.gameMode != null;
+                                this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, originalIndex);
+                                selectedRecipeIndex = originalIndex;
+                                return true;
+                            }
+                        }
                     }
                 }
             }
@@ -291,7 +316,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                 }
             }
         }
-
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 

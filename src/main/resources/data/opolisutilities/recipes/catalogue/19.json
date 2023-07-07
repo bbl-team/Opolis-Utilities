@@ -1,0 +1,9 @@
+{
+  "type": "opolisutilities:catalogue",
+  "ingredient": {
+    "item": "minecraft:beacon"
+  },
+  "itemInCount": 3,
+  "result": "minecraft:stone",
+  "itemOutCount": 10
+}
