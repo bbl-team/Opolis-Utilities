@@ -49,7 +49,7 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
 
         @Override
         public RecipeType<DryingTableRecipe> getRecipeType () {
-            return new RecipeType<>(ModRecipes.DRYING_TABLE_SERIALIZER.getId(), DryingTableRecipe.class);
+            return JEIOpolisUtilitiesPlugin.DRYING_TABLE;
     }
 
         @Override
@@ -70,8 +70,8 @@ public class DryingTableRecipeCategory implements IRecipeCategory<DryingTableRec
         @Override
         public void setRecipe (IRecipeLayoutBuilder builder, DryingTableRecipe recipe, IFocusGroup focusGroup){
 
-            builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getRecipeInput());
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 2).addItemStack(new ItemStack(ModItems.JEI_NULL_ITEM.get(),  recipe.getCount()));
+            builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.getIngredients().get(0));
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 2).addItemStack(new ItemStack(ModItems.JEI_NULL_ITEM.get(), recipe.getCount()));
 
             assert false;
             builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 2).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));

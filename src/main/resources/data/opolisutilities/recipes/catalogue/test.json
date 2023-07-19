@@ -1,9 +1,0 @@
-{
-  "type": "opolisutilities:catalogue",
-  "ingredient": {
-    "item": "minecraft:diamond"
-  },
-  "itemInCount": 8,
-  "result": "opolisutilities:b_bucks",
-  "itemOutCount": 1
-}

@@ -51,7 +51,7 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
 
     @Override
     public @NotNull RecipeType<FluidGeneratorRecipe> getRecipeType() {
-        return new RecipeType<>(ModRecipes.FLUID_GENERATOR_SERIALIZER.getId(), FluidGeneratorRecipe.class);
+        return JEIOpolisUtilitiesPlugin.FLUID_GENERATOR;
     }
 
     @Override
@@ -92,7 +92,6 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
 
     }
 
-
     @Override
     public void draw(FluidGeneratorRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         @Nonnull final Minecraft minecraft = Minecraft.getInstance();
@@ -101,6 +100,9 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_line_2"), 5, 15,  Color.WHITE.getRGB());
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_tank_1"), 5, 60,  Color.WHITE.getRGB());
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_tank_2"), 5, 68,  Color.WHITE.getRGB());
+
     }
+
+
 }
 

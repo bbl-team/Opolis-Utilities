@@ -50,7 +50,7 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
     @Override
     public @NotNull RecipeType<RG2BlocksRecipe> getRecipeType() {
-        return new RecipeType<>(ModRecipes.RG2_BLOCKS_SERIALIZER.getId(), RG2BlocksRecipe.class);
+        return JEIOpolisUtilitiesPlugin.RG2_BLOCKS;
     }
 
     @Override
@@ -72,7 +72,6 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
     public void setRecipe(IRecipeLayoutBuilder builder, RG2BlocksRecipe recipe, @NotNull IFocusGroup focusGroup) {
 
         String blockName = recipe.getBlock();
-        @Deprecated
         Block rgBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
         TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
 
@@ -108,6 +107,9 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_line_2"), 5, 15,  Color.WHITE.getRGB());
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_chest_1"), 5, 60,  Color.WHITE.getRGB());
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_chest_2"), 5, 68,  Color.WHITE.getRGB());
+
     }
+
+
 }
 

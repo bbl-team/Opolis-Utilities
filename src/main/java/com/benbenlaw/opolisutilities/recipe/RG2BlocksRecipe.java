@@ -78,7 +78,7 @@ public class RG2BlocksRecipe implements Recipe<NoInventoryRecipe> {
     public static class Serializer implements RecipeSerializer<RG2BlocksRecipe> {
         public static final RG2BlocksRecipe.Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"rg2_blocks");
+                new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_blocks");
 
         @Override
         public RG2BlocksRecipe fromJson(ResourceLocation id, JsonObject json) {
@@ -99,24 +99,5 @@ public class RG2BlocksRecipe implements Recipe<NoInventoryRecipe> {
 
             buf.writeUtf(recipe.getBlock(), Short.MAX_VALUE);
         }
-
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return RG2BlocksRecipe.Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
-        }
     }
-
 }

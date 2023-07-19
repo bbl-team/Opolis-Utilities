@@ -1,9 +1,0 @@
-{
-  "type": "opolisutilities:catalogue",
-  "ingredient": {
-    "item": "minecraft:beacon"
-  },
-  "itemInCount": 7,
-  "result": "minecraft:leather",
-  "itemOutCount": 12
-}

@@ -50,7 +50,7 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
 
     @Override
     public RecipeType<RG2SpeedBlocksRecipe> getRecipeType() {
-        return new RecipeType<>(ModRecipes.RG2_SPEED_BLOCKS_SERIALIZER.getId(), RG2SpeedBlocksRecipe.class);
+        return JEIOpolisUtilitiesPlugin.RG2_SPEED_BLOCKS;
     }
 
     @Override
@@ -99,6 +99,8 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
 
         guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line"), 5, 60,  Color.WHITE.getRGB());
         guiGraphics.drawString(minecraft.font.self(), Component.literal(recipe.getTickRate() + " Lower is better!"), 5, 68, Color.WHITE.getRGB());
+
+
 
     }
 }

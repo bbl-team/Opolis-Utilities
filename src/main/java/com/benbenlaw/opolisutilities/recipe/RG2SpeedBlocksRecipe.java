@@ -84,7 +84,7 @@ public class RG2SpeedBlocksRecipe implements Recipe<NoInventoryRecipe> {
     public static class Serializer implements RecipeSerializer<RG2SpeedBlocksRecipe> {
         public static final RG2SpeedBlocksRecipe.Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"rg2_speed_blocks");
+                new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_speed_blocks");
 
         @Override
         public RG2SpeedBlocksRecipe fromJson(ResourceLocation id, JsonObject json) {
@@ -110,25 +110,5 @@ public class RG2SpeedBlocksRecipe implements Recipe<NoInventoryRecipe> {
             buf.writeInt(recipe.getTickRate());
 
         }
-
-
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return RG2SpeedBlocksRecipe.Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
-        }
     }
-
 }

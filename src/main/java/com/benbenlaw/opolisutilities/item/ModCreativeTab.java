@@ -2,13 +2,18 @@ package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import mezz.jei.api.constants.ModIds;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Objects;
 
 public class ModCreativeTab {
 
@@ -42,10 +47,12 @@ public class ModCreativeTab {
                 output.accept(ModItems.FLOATING_BLOCK.get());
                 output.accept(ModBlocks.RESOURCE_GENERATOR.get());
                 output.accept(ModBlocks.RESOURCE_GENERATOR_2.get());
+                output.accept(ModBlocks.FLUID_GENERATOR.get());
                 output.accept(ModBlocks.ENDER_ORE.get());
                 output.accept(ModBlocks.DEEPSLATE_ENDER_ORE.get());
                 output.accept(ModBlocks.REDSTONE_CLOCK.get());
                 output.accept(ModBlocks.ENDER_SCRAMBLER.get());
+                output.accept(ModBlocks.CATALOGUE.get());
                 output.accept(ModBlocks.ITEM_REPAIRER.get());
                 output.accept(ModBlocks.BLOCK_BREAKER.get());
                 output.accept(ModBlocks.BLOCK_PLACER.get());

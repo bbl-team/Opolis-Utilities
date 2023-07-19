@@ -28,7 +28,7 @@
   "block.opolisutilities.drying_table": "Drying Table",
   "block.opolisutilities.resource_generator": "Resource Generator",
   "block.opolisutilities.resource_generator_2": "Resource Generator 2",
-  "block.opolisutilities.fluid_generator": "Fluid Generator",
+  "block.opolisutilities.fluid_generator": "Fluid Generator (BETA)",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
   "block.opolisutilities.redstone_clock": "Redstone Clock",
@@ -36,7 +36,7 @@
   "block.opolisutilities.item_repairer": "Item Repairer",
   "block.opolisutilities.block_placer": "Block Placer",
   "block.opolisutilities.block_breaker": "Block Breaker",
-  "block.opolisutilities.catalogue": "Catalogue",
+  "block.opolisutilities.catalogue": "Catalogue (BETA)",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",

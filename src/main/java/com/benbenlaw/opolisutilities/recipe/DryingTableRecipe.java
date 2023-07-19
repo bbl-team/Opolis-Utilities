@@ -20,14 +20,14 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
-    private final Ingredient recipeInput;
-    private final int count;
-    private final int duration;
+    private final NonNullList<Ingredient> inputItems;
+    public final int count;
+    public final int duration;
 
-    public DryingTableRecipe(ResourceLocation id, ItemStack output, Ingredient recipeInput, int count, int duration) {
+    public DryingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputItems, int count, int duration) {
         this.id = id;
         this.output = output;
-        this.recipeInput = recipeInput;
+        this.inputItems = inputItems;
         this.count = count;
         this.duration = duration;
     }
@@ -35,14 +35,15 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     @Override
     public boolean matches(SimpleContainer pContainer, @NotNull Level pLevel) {
 
-        if(recipeInput.test(pContainer.getItem(0))){
+        if(inputItems.get(0).test(pContainer.getItem(0))){
             return duration >= 0;
         }
         return false;
     }
 
-    public Ingredient getRecipeInput() {
-        return recipeInput;
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return inputItems;
     }
 
     public int getCount() {
@@ -65,7 +66,7 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
     }
 
     public int getDuration() {
-        return duration;
+        return this.duration;
     }
 
     @Override
@@ -103,32 +104,43 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         public DryingTableRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
-            JsonElement jsonelement = (GsonHelper.isArrayNode(json, "ingredient") ? GsonHelper.getAsJsonArray(json, "ingredient") : GsonHelper.getAsJsonObject(json, "ingredient"));
-            Ingredient ingredient = Ingredient.fromJson(jsonelement);
-            int count = GsonHelper.getAsInt(json, "count", 1);
+            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredient");
+            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
 
+            int count = GsonHelper.getAsInt(json, "count", 1);
             int duration = GsonHelper.getAsInt(json, "duration");
 
-            return new DryingTableRecipe(id, output, ingredient, count, duration);
+            for (int i = 0; i < inputs.size(); i++) {
+                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
+            }
+
+            return new DryingTableRecipe(id, output, inputs, count, duration);
         }
 
         @Override
         public DryingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            Ingredient ingredient = Ingredient.fromNetwork(buf);
-
-            int count = buf.readInt();
+            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
             int duration = buf.readInt();
+            int count = buf.readInt();
+
+            for (int i = 0; i < inputs.size(); i++) {
+                inputs.set(i, Ingredient.fromNetwork(buf));
+            }
 
             ItemStack output = buf.readItem();
-            return new DryingTableRecipe(id, output, ingredient, count, duration);
+            return new DryingTableRecipe(id, output, inputs, count, duration);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, DryingTableRecipe recipe) {
 
+            buf.writeInt(recipe.getIngredients().size());
             buf.writeInt(recipe.getDuration());
             buf.writeInt(recipe.getCount());
-            recipe.getRecipeInput().toNetwork(buf);
+
+            for (Ingredient ing : recipe.getIngredients()) {
+                ing.toNetwork(buf);
+            }
 
             buf.writeItemStack(recipe.output, false);
         }

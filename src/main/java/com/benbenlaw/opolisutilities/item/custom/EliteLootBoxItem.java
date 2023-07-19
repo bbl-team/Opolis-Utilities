@@ -30,7 +30,7 @@ public class EliteLootBoxItem extends Item {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!world.isClientSide) {
             LootParams lootparams = (new LootParams.Builder((ServerLevel) player.level())).withParameter(LootContextParams.THIS_ENTITY, player).withParameter(LootContextParams.ORIGIN, player.position()).create(LootContextParamSets.GIFT);
-            LootTable table = Objects.requireNonNull(world.getServer()).getLootData().getLootTable((ModLootTables.BASIC_LOOT_BOX));
+            LootTable table = Objects.requireNonNull(world.getServer()).getLootData().getLootTable((ModLootTables.ELITE_LOOT_BOX));
 
             List<ItemStack> loot = table.getRandomItems(lootparams);
             for (ItemStack stack : loot) {

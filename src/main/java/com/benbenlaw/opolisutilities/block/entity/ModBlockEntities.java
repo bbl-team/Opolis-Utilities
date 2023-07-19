@@ -54,8 +54,6 @@ public class ModBlockEntities {
                             ModBlocks.REDSTONE_CLOCK.get()).build(null));
 
 
-
-
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

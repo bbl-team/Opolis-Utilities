@@ -1,17 +1,17 @@
 {
-	"name": "Shop",
-	"icon": "opolisutilities:shop",
+	"name": "Catalogue",
+	"icon": "opolisutilities:catalogue",
 	"category": "opolisutilities:advanced_items",
 	"sortnum": 11,
 	"pages": [
 		{
     		"type": "spotlight",
-    		"item": "opolisutilities:shop",
+    		"item": "opolisutilities:catalogue",
     		"text": "Can be used to buy and sell items for b bucks.$(br2)Uses JSON recipes handy for modpack devs.$(br2)Has full JEI support."
     	},
 		{
 			"type": "crafting",
-			"recipe": "opolisutilities:shop",
+			"recipe": "opolisutilities:catalogue",
 			"text": "The Stock Market!"
 		}
 	]

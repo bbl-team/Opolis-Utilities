@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SBS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "B": {
+      "item": "opolisutilities:b_bucks"
+    }
+  },
+  "result": {
+    "item": "opolisutilities:catalogue"
+  }
+}

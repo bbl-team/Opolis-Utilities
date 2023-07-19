@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
@@ -188,12 +189,11 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         if (match.isEmpty() || !canInsertAmountIntoOutputSlot(inventory)) return false;
         assert Minecraft.getInstance().level != null;
         return
-                // TODO SAVE FOR ANOTHER DAY!
-                // canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Minecraft.getInstance().level.registryAccess())) &&
+                canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess())) &&
          hasDuration(match.get());
     }
 
-    private static void craftItem(ResourceGeneratorBlockEntity entity) {
+    private void craftItem(ResourceGeneratorBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
@@ -210,7 +210,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             assert Minecraft.getInstance().level != null;
-            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Minecraft.getInstance().level.registryAccess()).getItem(),
+            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
                     entity.itemHandler.getStackInSlot(1).getCount() + 1));
 
             entity.resetProgress();
@@ -221,15 +221,15 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         this.progress = 0;
     }
 
-    private static boolean hasDuration(ResourceGeneratorRecipe recipe) {
+    private boolean hasDuration(ResourceGeneratorRecipe recipe) {
         return 0 <= recipe.getDuration();
     }
 
-    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
+    private boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
         return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
     }
 
-    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
+    private boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
 

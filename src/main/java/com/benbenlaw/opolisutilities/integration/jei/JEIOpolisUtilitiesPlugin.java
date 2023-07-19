@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,6 +23,24 @@ import java.util.Objects;
 
 @JeiPlugin
 public class JEIOpolisUtilitiesPlugin implements IModPlugin {
+
+    public static RecipeType<CatalogueRecipe> CATALOGUE_RECIPE =
+            new RecipeType<>(CatalogueRecipeCategory.UID, CatalogueRecipe.class);
+
+    public static RecipeType<ResourceGeneratorRecipe> RESOURCE_GENERATOR =
+            new RecipeType<>(ResourceGeneratorRecipeCategory.UID, ResourceGeneratorRecipe.class);
+
+    public static RecipeType<RG2BlocksRecipe> RG2_BLOCKS =
+            new RecipeType<>(RG2BlocksRecipeCategory.UID, RG2BlocksRecipe.class);
+
+    public static RecipeType<RG2SpeedBlocksRecipe> RG2_SPEED_BLOCKS =
+            new RecipeType<>(RG2SpeedBlocksRecipeCategory.UID, RG2SpeedBlocksRecipe.class);
+
+    public static RecipeType<FluidGeneratorRecipe> FLUID_GENERATOR =
+            new RecipeType<>(FluidGeneratorRecipeCategory.UID, FluidGeneratorRecipe.class);
+
+    public static RecipeType<DryingTableRecipe> DRYING_TABLE =
+            new RecipeType<>(DryingTableRecipeCategory.UID, DryingTableRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -36,6 +55,7 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), FluidGeneratorRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), CatalogueRecipeCategory.RECIPE_TYPE);
     }
 
     @Override
@@ -56,8 +76,8 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCategories(new
                 FluidGeneratorRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
-    //    registration.addRecipeCategories(new
-    //            ShopRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                CatalogueRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
@@ -79,8 +99,8 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         List<FluidGeneratorRecipe> recipes6 = rm.getAllRecipesFor(FluidGeneratorRecipe.Type.INSTANCE);
         registration.addRecipes(new RecipeType<>(FluidGeneratorRecipeCategory.UID, FluidGeneratorRecipe.class), recipes6);
 
-    //    List<ShopRecipe> recipes6 = rm.getAllRecipesFor(ShopRecipe.Type.INSTANCE);
-    //    registration.addRecipes(new RecipeType<>(ShopRecipeCategory.UID, ShopRecipe.class), recipes6);
+        List<CatalogueRecipe> recipes7 = rm.getAllRecipesFor(CatalogueRecipe.Type.INSTANCE);
+        registration.addRecipes(new RecipeType<>(CatalogueRecipeCategory.UID, CatalogueRecipe.class), recipes7);
 
     }
 }

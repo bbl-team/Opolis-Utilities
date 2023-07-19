@@ -3,28 +3,21 @@ package com.benbenlaw.opolisutilities.screen;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.supermartijn642.core.gui.widget.premade.TextFieldWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,7 +96,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                                 .getHoverName().getString().toLowerCase().contains(searchQuery))
                         .collect(Collectors.toList());
             }
-
             startIndex = 0;
             selectedRecipeIndex = -1;
 
@@ -244,11 +236,10 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
 
                 if (searchBar.getValue().isEmpty()) {
                     recipe = list.get(i);
-                    result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
                 } else {
                     recipe = filteredRecipes.get(i);
-                    result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
                 }
+                result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
 
                 guiGraphics.renderItem(result, k, i1);
                 guiGraphics.renderItemDecorations(this.font, result, k, i1);
@@ -296,10 +287,8 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                                 this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, originalIndex);
                                 selectedRecipeIndex = originalIndex;
 
-                                // Reset the search bar value and clear the filtered recipes
+                                // Reset the search bar value
                                 this.searchBar.setValue("");
-                                filteredRecipes = new ArrayList<>(menu.getRecipes());
-                                startIndex = 0;
                                 return true;
                             }
                         }
@@ -325,7 +314,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
-
 
 
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {

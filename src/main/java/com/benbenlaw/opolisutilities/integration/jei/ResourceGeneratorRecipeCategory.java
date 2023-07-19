@@ -39,13 +39,9 @@ public class ResourceGeneratorRecipeCategory implements IRecipeCategory<Resource
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()));
     }
 
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
     @Override
     public RecipeType<ResourceGeneratorRecipe> getRecipeType() {
-        return new RecipeType<>(ModRecipes.RESOURCE_GENERATOR_SERIALIZER.getId(), ResourceGeneratorRecipe.class);
+        return JEIOpolisUtilitiesPlugin.RESOURCE_GENERATOR;
     }
 
     @Override

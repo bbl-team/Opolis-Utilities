@@ -119,22 +119,17 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.20.1-47.0.1'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.1.0'
 
-
-//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-
-    implementation fg.deobf("curse.maven:portable-tanks-503920:4595672")
-    implementation fg.deobf("curse.maven:supermartijn642s-core-lib-454372:4601830")
-    implementation fg.deobf("curse.maven:supermartijn642s-config-lib-438332:4571905")
-  //  implementation fg.deobf("curse.maven:Polymorph-388800:4119087")
-
+  //  implementation fg.deobf("curse.maven:portable-tanks-503920:4595672")
+  //  implementation fg.deobf("curse.maven:supermartijn642s-core-lib-454372:4601830")
+  //  implementation fg.deobf("curse.maven:supermartijn642s-config-lib-438332:4571905")
 
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    runtimeOnly fg.deobf("curse.maven:patchouli-306770:4633797")
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")

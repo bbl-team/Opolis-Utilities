@@ -1,9 +1,0 @@
-{
-  "type": "opolisutilities:catalogue",
-  "ingredient": {
-    "item": "minecraft:copper_ingot"
-  },
-  "itemInCount": 8,
-  "result": "opolisutilities:b_bucks",
-  "itemOutCount": 1
-}
