@@ -2,18 +2,13 @@ package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import mezz.jei.api.constants.ModIds;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.Objects;
 
 public class ModCreativeTab {
 
@@ -36,6 +31,7 @@ public class ModCreativeTab {
                 output.accept(ModItems.WOODEN_SHEARS.get());
                 output.accept(ModItems.ENDER_PEARL_FRAGMENT.get());
                 output.accept(ModItems.B_BUCKS.get());
+                output.accept(ModItems.WALLET.get());
                 output.accept(ModItems.BUNDLED_FLESH.get());
                 output.accept(ModItems.JERKY.get());
                 output.accept(ModItems.MINI_CHARCOAL.get());

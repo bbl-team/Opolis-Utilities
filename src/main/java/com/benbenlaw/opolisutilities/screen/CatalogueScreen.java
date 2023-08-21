@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
@@ -81,6 +82,19 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         this.renderTooltip(guiGraphics, pMouseX, pMouseY);
         this.searchBar.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
+    }
+
+    private void updateFilteredRecipes() {
+        String searchQuery = searchBar.getValue().toLowerCase();
+
+        if (searchQuery.isEmpty()) {
+            filteredRecipes = menu.getRecipes(); // Show all recipes if the search query is empty
+        } else {
+            filteredRecipes = menu.getRecipes().stream()
+                    .filter(recipe -> recipe.getResultItem(Minecraft.getInstance().level.registryAccess())
+                            .getHoverName().getString().toLowerCase().contains(searchQuery))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
@@ -283,6 +297,7 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
 
                             if (!result.isEmpty()) {
                                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                                assert Objects.requireNonNull(this.minecraft).gameMode != null;
                                 assert this.minecraft.gameMode != null;
                                 this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, originalIndex);
                                 selectedRecipeIndex = originalIndex;
@@ -314,7 +329,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
-
 
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
         if (this.scrolling && this.isScrollBarActive()) {
@@ -359,5 +373,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
             this.startIndex = 0;
         }
 
+        updateFilteredRecipes();
     }
 }

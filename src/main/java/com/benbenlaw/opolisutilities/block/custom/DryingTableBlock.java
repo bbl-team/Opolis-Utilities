@@ -7,15 +7,22 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -23,12 +30,28 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DryingTableBlock extends BaseEntityBlock {
+public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public DryingTableBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final VoxelShape SHAPE = Block.box(0,0,0,16,16,16);
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext pContext) {
+        return this.defaultBlockState().setValue(WATERLOGGED, false);
+    }
+
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_56932_) {
+        p_56932_.add(WATERLOGGED);
+    }
+
+    public FluidState getFluidState(BlockState p_56969_) {
+        return p_56969_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_56969_);
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -36,7 +59,6 @@ public class DryingTableBlock extends BaseEntityBlock {
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return SHAPE;
     }
-
 
     /* BLOCK ENTITY */
 

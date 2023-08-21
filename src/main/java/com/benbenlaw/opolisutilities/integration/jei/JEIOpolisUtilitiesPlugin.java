@@ -2,7 +2,6 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.FluidGeneratorBlock;
 import com.benbenlaw.opolisutilities.recipe.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -14,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -42,6 +40,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
     public static RecipeType<DryingTableRecipe> DRYING_TABLE =
             new RecipeType<>(DryingTableRecipeCategory.UID, DryingTableRecipe.class);
 
+    public static RecipeType<SoakingTableRecipe> SOAKING_TABLE =
+            new RecipeType<>(SoakingTableRecipeCategory.UID, SoakingTableRecipe.class);
+
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(OpolisUtilities.MOD_ID, "jei_plugin");
@@ -50,6 +51,7 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.DRYING_TABLE.get()), DryingTableRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.DRYING_TABLE.get()), SoakingTableRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), ResourceGeneratorRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), RG2BlocksRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
@@ -63,6 +65,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 DryingTableRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new
+                SoakingTableRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
         registration.addRecipeCategories(new
                 ResourceGeneratorRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -101,6 +106,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         List<CatalogueRecipe> recipes7 = rm.getAllRecipesFor(CatalogueRecipe.Type.INSTANCE);
         registration.addRecipes(new RecipeType<>(CatalogueRecipeCategory.UID, CatalogueRecipe.class), recipes7);
+
+        List<SoakingTableRecipe> recipes8 = rm.getAllRecipesFor(SoakingTableRecipe.Type.INSTANCE);
+        registration.addRecipes(new RecipeType<>(SoakingTableRecipeCategory.UID, SoakingTableRecipe.class), recipes8);
 
     }
 }

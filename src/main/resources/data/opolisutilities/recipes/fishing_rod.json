@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  S",
+    " SL",
+    "S L"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "L": {
+      "item": "opolisutilities:leafy_string"
+    }
+  },
+  "result": {
+    "item": "minecraft:fishing_rod"
+  }
+}

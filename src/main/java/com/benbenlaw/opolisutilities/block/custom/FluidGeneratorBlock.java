@@ -2,7 +2,6 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.FluidGeneratorBlockEntity;
-import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGenerator2BlockEntity;
 import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
 import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import net.minecraft.ChatFormatting;

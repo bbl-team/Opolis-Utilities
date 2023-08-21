@@ -1,6 +1,26 @@
 Changelog Opolis Utilities
 
 //TODO customizable scrambler range
+//TODO Make wallet work with catalogue
+
+2.3.0
+
+Added fishing rod recipe from leafy string
+Drying table can now be waterlogged, recipes that are "drying table" now require a non waterlogged drying table
+New recipe type "soaking table" follows the same recipe structure as drying table recipes but requires a water logged drying table instead
+Drying table can now dry sponge
+Soaking table recipes include wet sponge from dry sponge and mud from dirt
+Updated guide book with soaking table information
+
+2.2.12
+
+Re enabled Catalogue JEI integration
+
+2.2.11
+
+Re enabled wallet
+Catalogue block now updates the search when the item is placed into the buying slot
+Catalogue now has a texture
 
 2.2.10
 

@@ -14,31 +14,38 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
+public class SoakingTableRecipe implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
-    private final NonNullList<Ingredient> recipeItems;
+    private final NonNullList<Ingredient> inputItems;
+    public final int count;
     public final int duration;
 
-
-    public ResourceGeneratorRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int duration) {
+    public SoakingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputItems, int count, int duration) {
         this.id = id;
         this.output = output;
-        this.recipeItems = recipeItems;
+        this.inputItems = inputItems;
+        this.count = count;
         this.duration = duration;
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        if(recipeItems.get(0).test(pContainer.getItem(0))){
+    public boolean matches(SimpleContainer pContainer, @NotNull Level pLevel) {
+
+        if(inputItems.get(0).test(pContainer.getItem(0))){
             return duration >= 0;
         }
         return false;
     }
+
     @Override
     public NonNullList<Ingredient> getIngredients() {
-        return recipeItems;
+        return inputItems;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     @Override
@@ -52,7 +59,7 @@ public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess p_267052_) {
+    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess p_267052_) {
         return output.copy();
     }
 
@@ -75,55 +82,60 @@ public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<ResourceGeneratorRecipe> {
-        private Type() { }
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "resource_generator";
-    }
-
     @Override
     public boolean isSpecial() {
         return true;
     }
 
-    public static class Serializer implements RecipeSerializer<ResourceGeneratorRecipe> {
+    public static class Type implements RecipeType<SoakingTableRecipe> {
+        private Type() { }
+        public static final Type INSTANCE = new Type();
+        public static final String ID = "soaking_table";
+    }
+
+    public static class Serializer implements RecipeSerializer<SoakingTableRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID, "resource_generator");
-
+                new ResourceLocation(OpolisUtilities.MOD_ID,"soaking_table");
 
         @Override
-        public ResourceGeneratorRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public SoakingTableRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
-            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
+            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredient");
             NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
+
+            int count = GsonHelper.getAsInt(json, "count", 1);
             int duration = GsonHelper.getAsInt(json, "duration");
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new ResourceGeneratorRecipe(id, output, inputs, duration);
+            return new SoakingTableRecipe(id, output, inputs, count, duration);
         }
 
         @Override
-        public ResourceGeneratorRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public SoakingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
             int duration = buf.readInt();
+            int count = buf.readInt();
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buf));
             }
 
             ItemStack output = buf.readItem();
-            return new ResourceGeneratorRecipe(id, output, inputs, duration);
+            return new SoakingTableRecipe(id, output, inputs, count, duration);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, ResourceGeneratorRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, SoakingTableRecipe recipe) {
+
             buf.writeInt(recipe.getIngredients().size());
             buf.writeInt(recipe.getDuration());
+            buf.writeInt(recipe.getCount());
+
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);
             }

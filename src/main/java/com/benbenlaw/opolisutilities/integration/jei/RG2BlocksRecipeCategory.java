@@ -2,9 +2,7 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
-import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
