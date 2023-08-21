@@ -15,6 +15,9 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<DryingTableRecipe>> DRYING_TABLE_SERIALIZER =
             SERIALIZER.register("drying_table", () -> DryingTableRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<SoakingTableRecipe>> SOAKING_TABLE_SERIALIZER =
+            SERIALIZER.register("soaking_table", () -> SoakingTableRecipe.Serializer.INSTANCE);
+
     public static final RegistryObject<RecipeSerializer<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_SERIALIZER =
             SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
 

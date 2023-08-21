@@ -1,0 +1,14 @@
+{
+  "type": "opolisutilities:soaking_table",
+  "ingredient":[
+  {
+    "item": "minecraft:dirt"
+  }
+  ],
+  "count": 1,
+  "duration": 120,
+  "output": {
+    "item": "minecraft:mud",
+    "count": 1
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "opolisutilities:catalogue",
+
+  "ingredient": {
+    "item": "opolisutilities:b_bucks"
+  },
+  "itemInCount": 2,
+  "result": "opolisutilities:basic_loot_box",
+  "itemOutCount": 1
+}

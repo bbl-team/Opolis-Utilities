@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
 import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
+import com.benbenlaw.opolisutilities.recipe.SoakingTableRecipe;
 import com.benbenlaw.opolisutilities.screen.DryingTableMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -34,6 +35,8 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.benbenlaw.opolisutilities.block.custom.DryingTableBlock.WATERLOGGED;
 
 public class DryingTableBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
@@ -124,7 +127,10 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Drying Table");
+        if (this.getBlockState().getValue(WATERLOGGED)) {
+            return Component.literal("Soaking Table");
+        }
+        else return Component.literal("Drying Table");
     }
 
     @Nullable
@@ -223,14 +229,32 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         Optional<DryingTableRecipe> match = level.getRecipeManager()
                 .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
-        match.ifPresent(recipe -> maxProgress = recipe.getDuration());
+        Optional<SoakingTableRecipe> matchSoaking = level.getRecipeManager()
+                .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);
 
-        if (match.isEmpty() || !canInsertAmountIntoOutputSlot(inventory)) return false;
 
+        if (!entity.getBlockState().getValue(WATERLOGGED) && match.isPresent()) {
+
+            maxProgress = match.get().getDuration();
             return canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
                     && hasOutputSpaceMaking(entity, match.get())
                     && hasCorrectCountInInputSlot(entity, match.get())
                     && hasDuration(match.get());
+        }
+
+
+        if (entity.getBlockState().getValue(WATERLOGGED) && matchSoaking.isPresent()) {
+
+            maxProgress = matchSoaking.get().getDuration();
+
+            return canInsertItemIntoOutputSlot(inventory, matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
+                    && hasOutputSpaceMakingSoaking(entity, matchSoaking.get())
+                    && hasCorrectCountInInputSlotSoaking(entity, matchSoaking.get())
+                    && hasDurationSoaking(matchSoaking.get());
+        }
+
+        return false;
+
     }
 
     private void craftItem(@NotNull DryingTableBlockEntity entity) {
@@ -245,6 +269,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                 inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
             }
 
+            //DRYING
+
             Optional<DryingTableRecipe> match = level.getRecipeManager()
                     .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
@@ -258,6 +284,22 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                 entity.resetProgress();
 
             }
+
+            //SOKAING
+
+            Optional<SoakingTableRecipe> matchSoaking = level.getRecipeManager()
+                    .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);
+
+            if (matchSoaking.isPresent()) {
+
+                entity.itemHandler.extractItem(0, matchSoaking.get().getCount(), false);
+                assert Minecraft.getInstance().level != null;
+                entity.itemHandler.setStackInSlot(1, new ItemStack(matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
+                        entity.itemHandler.getStackInSlot(1).getCount() + matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount()));
+
+                entity.resetProgress();
+
+            }
         }
     }
     private void resetProgress() {
@@ -265,6 +307,10 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     private boolean hasDuration(DryingTableRecipe recipe) {
+        return 0 <= recipe.getDuration();
+    }
+
+    private boolean hasDurationSoaking(SoakingTableRecipe recipe) {
         return 0 <= recipe.getDuration();
     }
 
@@ -280,7 +326,17 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         return entity.itemHandler.getStackInSlot(0).getCount() >= recipe.getCount();
     }
 
+    private boolean hasCorrectCountInInputSlotSoaking(DryingTableBlockEntity entity, SoakingTableRecipe recipe) {
+        return entity.itemHandler.getStackInSlot(0).getCount() >= recipe.getCount();
+    }
+
     private boolean hasOutputSpaceMaking(DryingTableBlockEntity entity, DryingTableRecipe recipe) {
+        assert Minecraft.getInstance().level != null;
+        return entity.itemHandler.getStackInSlot(1).getCount() + recipe.getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount() - 1 <
+                entity.itemHandler.getStackInSlot(1).getMaxStackSize();
+    }
+
+    private boolean hasOutputSpaceMakingSoaking(DryingTableBlockEntity entity, SoakingTableRecipe recipe) {
         assert Minecraft.getInstance().level != null;
         return entity.itemHandler.getStackInSlot(1).getCount() + recipe.getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount() - 1 <
                 entity.itemHandler.getStackInSlot(1).getMaxStackSize();
