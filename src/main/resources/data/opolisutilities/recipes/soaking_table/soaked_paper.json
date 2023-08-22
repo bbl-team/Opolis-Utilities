@@ -1,0 +1,14 @@
+{
+  "type": "opolisutilities:soaking_table",
+  "ingredient":[
+  {
+    "item": "opolisutilities:log_sheet"
+  }
+  ],
+  "count": 1,
+  "duration": 200,
+  "output": {
+    "item": "opolisutilities:soaked_paper",
+    "count": 1
+  }
+}

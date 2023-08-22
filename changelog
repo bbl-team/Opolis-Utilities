@@ -2,8 +2,12 @@ Changelog Opolis Utilities
 
 //TODO customizable scrambler range
 //TODO Make wallet work with catalogue
+//change book recipe to shapeless and use a book in the recipe
 
-2.3
+2.3.1
+
+Changed soaked paper recipe
+Drying paper recipe duration increased
 
 2.3.0
 
