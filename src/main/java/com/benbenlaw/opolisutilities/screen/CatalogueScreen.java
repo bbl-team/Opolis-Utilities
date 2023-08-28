@@ -196,12 +196,6 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
         }
     }
 
-
-
-
-
-
-
     public static boolean isHovering(double mouseX, double mouseY, double x, double y, double width, double height) {
         return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
     }
@@ -293,6 +287,7 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                         int originalIndex = menu.getRecipes().indexOf(recipe);
 
                         if (originalIndex >= 0) {
+                            assert Minecraft.getInstance().level != null;
                             ItemStack result = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
 
                             if (!result.isEmpty()) {

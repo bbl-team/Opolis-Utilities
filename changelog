@@ -4,6 +4,10 @@ Changelog Opolis Utilities
 //TODO Make wallet work with catalogue
 //change book recipe to shapeless and use a book in the recipe
 
+2.3.2
+
+Added logs to sticks and logs to chest recipes
+
 2.3.1
 
 Changed soaked paper recipe
