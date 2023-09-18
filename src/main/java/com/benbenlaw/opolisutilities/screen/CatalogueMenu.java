@@ -62,7 +62,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
 
             @Override
             public boolean mayPickup(@NotNull Player pPlayer) {
-                if(CatalogueMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get() || getBBucks(CatalogueMenu.this.container.getItem(0)).getCount() < recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount)
+                if(CatalogueMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get() || getTotalBBucks(CatalogueMenu.this.container.getItem(0)) < recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount)
                     return false;
 
                 return super.mayPickup(pPlayer);
@@ -168,7 +168,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         if (!pStack.isEmpty()) {
             this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, isWallet(pStack) ? new SimpleContainer(getBBucks(pStack)) : pContainer, this.level);
             this.recipes = this.recipes.stream().filter((recipe) ->
-                    getBBucks(container.getItem(0)).getCount() >= recipe.itemInCount).toList();
+                    getTotalBBucks(pContainer.getItem(0)) >= recipe.itemInCount).toList();
         }
         if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1)
         {
@@ -206,6 +206,13 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         if (stack.getItem() instanceof WalletItem walletItem)
             return new ItemStack(ModItems.B_BUCKS.get(), Math.min(walletItem.getBBucksStored(stack), 64));
         return stack;
+    }
+
+    public int getTotalBBucks(ItemStack stack) {
+        if (stack.getItem() instanceof WalletItem walletItem)
+            return walletItem.getBBucksStored(stack);
+
+        return stack.getCount();
     }
 
     public boolean isWallet(ItemStack stack) {
