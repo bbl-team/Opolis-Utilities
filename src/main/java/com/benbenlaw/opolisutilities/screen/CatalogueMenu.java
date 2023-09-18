@@ -100,6 +100,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
 
         for(int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(pPlayerInventory, i, 8 + i * 18, 144));
+
         }
 
         this.addDataSlot(this.selectedRecipeIndex);
