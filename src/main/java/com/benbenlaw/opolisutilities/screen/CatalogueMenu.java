@@ -62,7 +62,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
 
             @Override
             public boolean mayPickup(@NotNull Player pPlayer) {
-                if(CatalogueMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get() || getTotalBBucks(CatalogueMenu.this.container.getItem(0)) < recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount)
+                if(CatalogueMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get() || getTotalWalletCurrency(CatalogueMenu.this.container.getItem(0)) < recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount)
                     return false;
 
                 return super.mayPickup(pPlayer);
@@ -74,8 +74,8 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                 ItemStack input = CatalogueMenu.this.inputSlot.getItem();
                 ItemStack itemstack;
                 if (input.getItem() instanceof WalletItem walletItem) {
-                    walletItem.extractBucks(input, recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
-                    itemstack = getBBucks(input);
+                    walletItem.extractCurrency(input, recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
+                    itemstack = getCurrencyItemStack(input);
                     CatalogueMenu.this.inputSlot.setChanged();
                 } else {
                     itemstack = CatalogueMenu.this.inputSlot.remove(recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
@@ -166,9 +166,9 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                 this.lastInput = this.input;
         }
         if (!pStack.isEmpty()) {
-            this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, isWallet(pStack) ? new SimpleContainer(getBBucks(pStack)) : pContainer, this.level);
+            this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, isWallet(pStack) ? new SimpleContainer(getCurrencyItemStack(pStack)) : pContainer, this.level);
             this.recipes = this.recipes.stream().filter((recipe) ->
-                    getTotalBBucks(pContainer.getItem(0)) >= recipe.itemInCount).toList();
+                    getTotalWalletCurrency(pContainer.getItem(0)) >= recipe.itemInCount).toList();
         }
         if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1)
         {
@@ -202,15 +202,15 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         this.broadcastChanges();
     }
 
-    public ItemStack getBBucks(ItemStack stack) {
+    public ItemStack getCurrencyItemStack(ItemStack stack) {
         if (stack.getItem() instanceof WalletItem walletItem)
-            return new ItemStack(ModItems.B_BUCKS.get(), Math.min(walletItem.getBBucksStored(stack), 64));
+            return new ItemStack(walletItem.getCurrencyItem(), Math.min(walletItem.getCurrencyStored(stack), 64));
         return stack;
     }
 
-    public int getTotalBBucks(ItemStack stack) {
+    public int getTotalWalletCurrency(ItemStack stack) {
         if (stack.getItem() instanceof WalletItem walletItem)
-            return walletItem.getBBucksStored(stack);
+            return walletItem.getCurrencyStored(stack);
 
         return stack.getCount();
     }

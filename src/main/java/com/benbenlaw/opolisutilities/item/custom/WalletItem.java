@@ -16,18 +16,43 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class WalletItem extends Item {
+    private static String WALLET_NBT = "amount";
+    private static String OLD_WALLET_NBT = "b_bucks_amount";
+    public static CompoundTag getOrCreateTag(ItemStack wallet) {
+        CompoundTag nbt = wallet.getOrCreateTag();
+        if (nbt.isEmpty()) {
+            nbt.putInt(WALLET_NBT, 0);
+        }
+
+        // Migrate from OLD -> NEW
+        if (!nbt.isEmpty()) {
+            if (nbt.contains(OLD_WALLET_NBT)) {
+                nbt.putInt(WALLET_NBT, nbt.getInt(OLD_WALLET_NBT));
+                nbt.remove(OLD_WALLET_NBT);
+            }
+        }
+
+        return nbt;
+    }
+    private final Supplier<Item> currencyItem;
 
     public WalletItem(Properties properties) {
+        this(properties, ModItems.B_BUCKS);
+    }
+
+    public WalletItem(Properties properties, Supplier<Item> currencyItem) {
         super(properties);
+        this.currencyItem = currencyItem;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, InteractionHand hand) {
 
         ItemStack itemstack = player.getOffhandItem();
-        CompoundTag nbt = itemstack.getOrCreateTag();
+        CompoundTag nbt = getOrCreateTag(itemstack);
 
         //Check wallet in off hand and b bucks in main hand
 
@@ -36,17 +61,13 @@ public class WalletItem extends Item {
 
             if (!level.isClientSide() && player.getOffhandItem().is(this)) {
 
-                if (player.getMainHandItem().is(ModItems.B_BUCKS.get())) {
+                if (player.getMainHandItem().is(currencyItem.get())) {
 
                     player.getMainHandItem().shrink(1);
 
-                    if (nbt.isEmpty()) {
-                        nbt.putInt("b_bucks_amount", 0);
-                    }
-
                     if (!nbt.isEmpty()) {
-                        int totalBucks = nbt.getInt("b_bucks_amount");
-                        nbt.putInt("b_bucks_amount", totalBucks + 1);
+                        int totalCurrency = nbt.getInt(WALLET_NBT);
+                        nbt.putInt(WALLET_NBT, totalCurrency + 1);
                     }
 
                     itemstack.setTag(nbt);
@@ -57,16 +78,16 @@ public class WalletItem extends Item {
         if (player.isCrouching()) {
             if (!level.isClientSide() && player.getOffhandItem().is(this)) {
 
-                if (player.getMainHandItem().is(ModItems.B_BUCKS.get()) || player.getMainHandItem().isEmpty()) {
+                if (player.getMainHandItem().is(currencyItem.get()) || player.getMainHandItem().isEmpty()) {
 
-                    if (!nbt.isEmpty() && nbt.getInt("b_bucks_amount") > 0) {
-                        int totalBucks = nbt.getInt("b_bucks_amount");
-                        nbt.putInt("b_bucks_amount", totalBucks - 1);
-                        player.addItem(new ItemStack(ModItems.B_BUCKS.get()));
+                    if (!nbt.isEmpty() && nbt.getInt(WALLET_NBT) > 0) {
+                        int totalCurrency = nbt.getInt(WALLET_NBT);
+                        nbt.putInt(WALLET_NBT, totalCurrency - 1);
+                        player.addItem(new ItemStack(currencyItem.get()));
                     }
 
-                    if (nbt.getInt("b_bucks_amount") <= 0) {
-                        player.sendSystemMessage(Component.translatable("tooltips.wallet.no_b_bucks").withStyle(ChatFormatting.RED));
+                    if (nbt.getInt(WALLET_NBT) <= 0) {
+                        player.sendSystemMessage(Component.translatable("tooltips.wallet.no_currency", getCurrencyName()).withStyle(ChatFormatting.RED));
                     }
 
                     itemstack.setTag(nbt);
@@ -76,36 +97,44 @@ public class WalletItem extends Item {
         return super.use(level, player, hand);
     }
 
-    public void insertBucks(ItemStack wallet, int amount) {
-        CompoundTag nbt = wallet.getOrCreateTag();
+    public void insertCurrency(ItemStack wallet, int amount) {
+        CompoundTag nbt = getOrCreateTag(wallet);
         if (nbt.isEmpty()) {
-            nbt.putInt("b_bucks_amount", 0);
+            nbt.putInt(WALLET_NBT, 0);
         }
         if (!nbt.isEmpty()) {
-            int totalBucks = nbt.getInt("b_bucks_amount");
-            nbt.putInt("b_bucks_amount", totalBucks + amount);
+            int totalBucks = nbt.getInt(WALLET_NBT);
+            nbt.putInt(WALLET_NBT, totalBucks + amount);
         }
     }
 
 
-    public void extractBucks(ItemStack wallet, int amount) {
-        CompoundTag nbt = wallet.getOrCreateTag();
+    public void extractCurrency(ItemStack wallet, int amount) {
+        CompoundTag nbt = getOrCreateTag(wallet);
         if (nbt.isEmpty()) {
-            nbt.putInt("b_bucks_amount", 0);
+            nbt.putInt(WALLET_NBT, 0);
         }
-        if (!nbt.isEmpty() && nbt.getInt("b_bucks_amount") > amount - 1) {
-            int totalBucks = nbt.getInt("b_bucks_amount");
-            nbt.putInt("b_bucks_amount", totalBucks - amount);
+        if (!nbt.isEmpty() && nbt.getInt(WALLET_NBT) > amount - 1) {
+            int totalBucks = nbt.getInt(WALLET_NBT);
+            nbt.putInt(WALLET_NBT, totalBucks - amount);
         }
     }
 
-    public int getBBucksStored(ItemStack wallet) {
-        CompoundTag nbt = wallet.getOrCreateTag();
+    public int getCurrencyStored(ItemStack wallet) {
+        CompoundTag nbt = getOrCreateTag(wallet);
         if (nbt.isEmpty()) {
-            nbt.putInt("b_bucks_amount", 0);
+            nbt.putInt(WALLET_NBT, 0);
             return 0;
         }
-        return nbt.getInt("b_bucks_amount");
+        return nbt.getInt(WALLET_NBT);
+    }
+
+    public String getCurrencyName() {
+        return getCurrencyItem().getDefaultInstance().getDisplayName().getString();
+    }
+
+    public Item getCurrencyItem() {
+        return currencyItem.get();
     }
 
     //Tooltip
@@ -114,7 +143,7 @@ public class WalletItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
 
         if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.wallet.shift.held")
+            components.add(Component.translatable("tooltips.wallet.shift.held", getCurrencyName(), getCurrencyName())
                     .withStyle(ChatFormatting.GREEN));
         }
         else {
@@ -125,11 +154,11 @@ public class WalletItem extends Item {
 
             if(stack.hasTag()) {
 
-                components.add(Component.literal("This wallet contains " + stack.getTag().getInt("b_bucks_amount") + " B Bucks")
+                components.add(Component.literal("This wallet contains %s %s".formatted(getCurrencyStored(stack), getCurrencyName()))
                         .withStyle(ChatFormatting.GREEN));
             }
             if(!stack.hasTag()) {
-                components.add(Component.translatable("This Wallet Is Empty")
+                components.add(Component.literal("This Wallet Is Empty")
                         .withStyle(ChatFormatting.RED));
             }
         }
