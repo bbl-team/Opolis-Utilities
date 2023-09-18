@@ -1,0 +1,10 @@
+{
+  "type": "opolisutilities:catalogue",
+
+  "ingredient": {
+    "item": "opolisutilities:b_bucks"
+  },
+  "itemInCount": 100,
+  "result": "minecraft:obsidian",
+  "itemOutCount": 1
+}

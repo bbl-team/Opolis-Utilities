@@ -66,6 +66,7 @@ public class OpolisUtilities {
                 MenuScreens.register(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
                 MenuScreens.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
                 MenuScreens.register(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
+
             });
         }
     }

@@ -10,6 +10,7 @@
     "opolisutilities:ender_scrambler",
     "opolisutilities:item_repairer",
     "opolisutilities:block_breaker",
-    "opolisutilities:block_placer"
+    "opolisutilities:block_placer",
+    "opolisutilities:catalogue"
   ]
 }

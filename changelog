@@ -3,6 +3,11 @@ Changelog Opolis Utilities
 //TODO customizable scrambler range
 //TODO Make wallet work with catalogue
 //change book recipe to shapeless and use a book in the recipe
+//todo remove beta from catalogue and fluid absorber
+
+2.3.3
+
+Fixed catalogue not having loot table
 
 2.3.2
 

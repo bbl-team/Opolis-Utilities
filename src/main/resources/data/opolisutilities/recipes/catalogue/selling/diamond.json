@@ -1,0 +1,10 @@
+{
+  "type": "opolisutilities:catalogue",
+
+  "ingredient": {
+    "item": "minecraft:diamond"
+  },
+  "itemInCount": 5,
+  "result": "minecraft:emerald",
+  "itemOutCount": 3
+}

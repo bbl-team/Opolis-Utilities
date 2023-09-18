@@ -75,7 +75,8 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
 
 
             assert fluid != null;
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 24).addFluidStack(fluid, recipe.getFluidAmount()).setFluidRenderer(recipe.getFluidAmount(), true, 16,16);
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 24).addFluidStack(fluid, recipe.getFluidAmount())
+                    .setFluidRenderer(recipe.getFluidAmount(), true, 16,16);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 140, 43).addItemStack(new ItemStack(ModBlocks.FLUID_GENERATOR.get()));
         builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 62).addItemStack(new ItemStack(Blocks.GLASS).setHoverName(Component.literal("Tank")));
