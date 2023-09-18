@@ -27,8 +27,7 @@ public class WalletItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, InteractionHand hand) {
 
         ItemStack itemstack = player.getOffhandItem();
-        CompoundTag nbt = itemstack.getTag();
-        if (nbt == null) nbt = new CompoundTag();
+        CompoundTag nbt = itemstack.getOrCreateTag();
 
         //Check wallet in off hand and b bucks in main hand
 
@@ -75,6 +74,38 @@ public class WalletItem extends Item {
             }
         }
         return super.use(level, player, hand);
+    }
+
+    public void insertBucks(ItemStack wallet, int amount) {
+        CompoundTag nbt = wallet.getOrCreateTag();
+        if (nbt.isEmpty()) {
+            nbt.putInt("b_bucks_amount", 0);
+        }
+        if (!nbt.isEmpty()) {
+            int totalBucks = nbt.getInt("b_bucks_amount");
+            nbt.putInt("b_bucks_amount", totalBucks + amount);
+        }
+    }
+
+
+    public void extractBucks(ItemStack wallet, int amount) {
+        CompoundTag nbt = wallet.getOrCreateTag();
+        if (nbt.isEmpty()) {
+            nbt.putInt("b_bucks_amount", 0);
+        }
+        if (!nbt.isEmpty() && nbt.getInt("b_bucks_amount") > amount - 1) {
+            int totalBucks = nbt.getInt("b_bucks_amount");
+            nbt.putInt("b_bucks_amount", totalBucks - amount);
+        }
+    }
+
+    public int getBBucksStored(ItemStack wallet) {
+        CompoundTag nbt = wallet.getOrCreateTag();
+        if (nbt.isEmpty()) {
+            nbt.putInt("b_bucks_amount", 0);
+            return 0;
+        }
+        return nbt.getInt("b_bucks_amount");
     }
 
     //Tooltip
@@ -196,9 +227,6 @@ public class WalletItem extends Item {
 }
 
 */
-
-
-
 
 
 
