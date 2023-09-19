@@ -53,6 +53,8 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
     private final IDrawable background;
     private final IDrawable icon;
+    private final int tabs = 1;
+    private int tabs_used = 0;
 
     public RG2BlocksRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 166, 58);
@@ -62,6 +64,11 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
     @Override
     public @NotNull RecipeType<RG2BlocksRecipe> getRecipeType() {
         return JEIOpolisUtilitiesPlugin.RG2_BLOCKS;
+    }
+
+    @Override
+    public boolean isHandled(RG2BlocksRecipe recipe) {
+        return tabs_used == 0;
     }
 
     @Override
@@ -81,8 +88,9 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RG2BlocksRecipe recipe, @NotNull IFocusGroup focusGroup) {
+        tabs_used++;
 
-        List<RG2BlocksRecipe> recipes = Minecraft.getInstance().level.getRecipeManager().getRecipesFor(RG2BlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, Minecraft.getInstance().level);
+        List<RG2BlocksRecipe> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RG2BlocksRecipe.Type.INSTANCE);
 
         for (int i = 0; i < recipes.size(); i++) {
             final int slotX = 39 + (i % 7 * 18);
