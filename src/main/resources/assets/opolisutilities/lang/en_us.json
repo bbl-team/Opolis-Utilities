@@ -60,7 +60,7 @@
 
   "tooltips.floating_block.place_in_air": "Place in the air or inside water!",
 
-  "jei.opolisutilities.resource_generator": "Place a block from the resource_generator_blocks tag above the resource generator. Then place a inventory like a chest or a hopper underneath",
+  "jei.opolisutilities.resource_generator_2.information": "The resource generator 2 is a block that will duplicate items like cobblestone and stone.\n\nAny block that can store items can be placed underneath the resource generator 2 including hoppers and chests.\n\nWhen working the resource generator 2 will turn blue and start to provide items to the inventory below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the resource generator 2 will show all blocks that it can mine as well as any blocks that can effect its speed.\n\nAt a base speed it will collect 1 block every 11 seconds.",
 
   "jei.recipes.resource_generator_2_line_1": "Place the blocks in",
   "jei.recipes.resource_generator_2_line_2": "world as shown!",

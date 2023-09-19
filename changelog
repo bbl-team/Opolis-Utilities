@@ -5,6 +5,14 @@ Changelog Opolis Utilities
 //change book recipe to shapeless and use a book in the recipe
 //todo remove beta from catalogue and fluid absorber
 
+2.4.0
+
+Wallet now work in the Catalog in place of b bucks
+Catalogue recipes that use b bucks can go over 64 now
+ToDo: Wallet now accepts any items ???? WIP
+Speed blocks now show in the JEI above the resource generator as well as in there own category
+ToDo: Shift Click Support for the wallet item in the catalogue
+
 2.3.3
 
 Fixed catalogue not having loot table

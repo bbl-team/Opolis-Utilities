@@ -31,7 +31,7 @@ import java.awt.*;
 public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlocksRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_speed_blocks");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_resource_generator_2.png");
+            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_speed_blocks.png");
 
     static final RecipeType<RG2SpeedBlocksRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "rg2_speed_blocks",
             RG2SpeedBlocksRecipe.class);
@@ -40,7 +40,7 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
     private final IDrawable icon;
 
     public RG2SpeedBlocksRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 119, 19);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
     }
 
@@ -72,10 +72,10 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
         TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
 
         if (rgBlock == Blocks.AIR) {
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 5).addIngredients(Ingredient.of(itemTag));
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 2).addIngredients(Ingredient.of(itemTag));
         } else {
             assert rgBlock != null;
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 5).addItemStack(new ItemStack(rgBlock.asItem()));
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 2).addItemStack(new ItemStack(rgBlock.asItem()));
 
         }
 
@@ -88,15 +88,9 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
     public void draw(RG2SpeedBlocksRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         @Nonnull final Minecraft minecraft = Minecraft.getInstance();
 
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_1"), 5, 7, Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_2"), 5, 15,  Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_3"), 5, 23,  Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line_4"), 5, 31,  Color.WHITE.getRGB());
+        int duration = recipe.getTickRate();
 
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_speed_blocks_line"), 5, 60,  Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.literal(recipe.getTickRate() + " Lower is better!"), 5, 68, Color.WHITE.getRGB());
-
-
+        guiGraphics.drawString(minecraft.font.self(), Component.literal(duration / 20 + "s / " + duration + " ticks"), 40, 6, Color.WHITE.getRGB());
 
     }
 }

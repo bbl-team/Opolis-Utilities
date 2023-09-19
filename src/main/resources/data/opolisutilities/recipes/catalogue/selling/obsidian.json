@@ -4,7 +4,7 @@
   "ingredient": {
     "item": "opolisutilities:b_bucks"
   },
-  "itemInCount": 100,
+  "itemInCount": 64,
   "result": "minecraft:obsidian",
   "itemOutCount": 1
 }
