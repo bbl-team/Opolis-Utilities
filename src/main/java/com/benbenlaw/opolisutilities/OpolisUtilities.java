@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.capabillties.Capabilities;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.enchantment.ModEnchantments;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
@@ -38,6 +39,7 @@ public class OpolisUtilities {
         ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
         ModEnchantments.register(modEventBus);
+        Capabilities.register(MinecraftForge.EVENT_BUS);
 
         modEventBus.addListener(this::commonSetup);
 

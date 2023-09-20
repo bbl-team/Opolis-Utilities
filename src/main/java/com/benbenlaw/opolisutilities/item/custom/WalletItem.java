@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.capabillties.Capabilities;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
