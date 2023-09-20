@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.integration.jei;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.FluidGeneratorRecipe;
+import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -18,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,26 +27,34 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.List;
 
 public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGeneratorRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "fluid_generator");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_resource_generator_2.png");
+            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_rg.png");
 
     static final RecipeType<FluidGeneratorRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "fluid_generator",
             FluidGeneratorRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
+    private final int tabs = 1;
+    private int tabs_used = 0;
 
     public FluidGeneratorRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 175, 57);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
     }
 
     @Override
     public @NotNull RecipeType<FluidGeneratorRecipe> getRecipeType() {
         return JEIOpolisUtilitiesPlugin.FLUID_GENERATOR;
+    }
+
+    @Override
+    public boolean isHandled(FluidGeneratorRecipe recipe) {
+        return tabs_used == 0;
     }
 
     @Override
@@ -65,38 +75,19 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, FluidGeneratorRecipe recipe, @NotNull IFocusGroup focusGroup) {
 
-        String fluidAsString = recipe.getFluid();
-        @Deprecated
-        Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidAsString));
+        tabs_used++;
+        List<FluidGeneratorRecipe> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(FluidGeneratorRecipe.Type.INSTANCE);
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 140, 5).addItemStack(
-                new ItemStack(Items.SUGAR.asItem()).setHoverName(Component.literal("Speed blocks can be placed on top to increase speed!")));
+        for (int i = 0; i < recipes.size(); i++) {
+            final int slotX = 4 + (i % 9 * 19);
+            final int slotY = 2 + i / 9 * 19;
 
-
+            String fluidAsString = recipes.get(i).getFluid();
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidAsString));
 
             assert fluid != null;
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 24).addFluidStack(fluid, recipe.getFluidAmount())
-                    .setFluidRenderer(recipe.getFluidAmount(), true, 16,16);
-
-        builder.addSlot(RecipeIngredientRole.INPUT, 140, 43).addItemStack(new ItemStack(ModBlocks.FLUID_GENERATOR.get()));
-        builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 140, 62).addItemStack(new ItemStack(Blocks.GLASS).setHoverName(Component.literal("Tank")));
-
-        builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addFluidStack(fluid, recipe.getFluidAmount());
-        builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addFluidStack(fluid, recipe.getFluidAmount());
-
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, slotX, slotY).addFluidStack(fluid, recipes.get(i).getFluidAmount())
+                    .setFluidRenderer(recipes.get(i).getFluidAmount(), true, 16, 16);
+        }
     }
-
-    @Override
-    public void draw(FluidGeneratorRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        @Nonnull final Minecraft minecraft = Minecraft.getInstance();
-
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_line_1"), 5, 7, Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_line_2"), 5, 15,  Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_tank_1"), 5, 60,  Color.WHITE.getRGB());
-        guiGraphics.drawString(minecraft.font.self(), Component.translatable("jei.recipes.resource_generator_2_tank_2"), 5, 68,  Color.WHITE.getRGB());
-
-    }
-
-
 }
-

@@ -28,7 +28,7 @@
   "block.opolisutilities.drying_table": "Drying Table",
   "block.opolisutilities.resource_generator": "Resource Generator",
   "block.opolisutilities.resource_generator_2": "Resource Generator 2",
-  "block.opolisutilities.fluid_generator": "Fluid Generator (BETA)",
+  "block.opolisutilities.fluid_generator": "Fluid Generator",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
   "block.opolisutilities.redstone_clock": "Redstone Clock",
@@ -36,7 +36,7 @@
   "block.opolisutilities.item_repairer": "Item Repairer",
   "block.opolisutilities.block_placer": "Block Placer",
   "block.opolisutilities.block_breaker": "Block Breaker",
-  "block.opolisutilities.catalogue": "Catalogue (BETA)",
+  "block.opolisutilities.catalogue": "Catalogue",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",
@@ -61,22 +61,7 @@
   "tooltips.floating_block.place_in_air": "Place in the air or inside water!",
 
   "jei.opolisutilities.resource_generator_2.information": "The resource generator 2 is a block that will duplicate items like cobblestone and stone.\n\nAny block that can store items can be placed underneath the resource generator 2 including hoppers and chests.\n\nWhen working the resource generator 2 will turn blue and start to provide items to the inventory below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the resource generator 2 will show all blocks that it can mine as well as any blocks that can effect its speed.\n\nAt a base speed it will collect 1 block every 11 seconds.",
-
-  "jei.recipes.resource_generator_2_line_1": "Place the blocks in",
-  "jei.recipes.resource_generator_2_line_2": "world as shown!",
-  "jei.recipes.resource_generator_2_chest_1": "Puts the generated block",
-  "jei.recipes.resource_generator_2_chest_2": "into any inventory below!",
-
-  "jei.recipes.resource_generator_2_tank_1": "Inserts fluid into",
-  "jei.recipes.resource_generator_2_tank_2": "any tank below!",
-
-  "jei.recipes.resource_generator_2_speed_blocks_line_1": "Placing a speed block",
-  "jei.recipes.resource_generator_2_speed_blocks_line_2": "above the resource",
-  "jei.recipes.resource_generator_2_speed_blocks_line_3": "generator 2 will increase",
-  "jei.recipes.resource_generator_2_speed_blocks_line_4": "the speed!",
-  "jei.recipes.resource_generator_2_speed_blocks_line_4": "the speed!",
-
-  "jei.recipes.resource_generator_2_speed_blocks_line": "Ticks per block",
+  "jei.opolisutilities.fluid_generator.information": "The fluid generator is a block that will create fluids and output the fluid into a tank below.\n\nAny block that can store fluids can be placed underneath the fluid generator.\n\nWhen working the fluid generator 2 will turn blue and start to provide fluid to the tank below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the fluid generator will show all fluid that it can collect as well as any blocks that can effect its speed.\n\nAt a base speed it will collect a certain amount (shown in JEI) of fluid every 11 seconds.",
 
   "enchantment.opolisutilities.warden_smite": "Warden Smite",
 

@@ -57,7 +57,7 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
     private int tabs_used = 0;
 
     public RG2BlocksRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 166, 58);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 175, 57);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
     }
 
@@ -93,59 +93,23 @@ public class RG2BlocksRecipeCategory implements IRecipeCategory<RG2BlocksRecipe>
         List<RG2BlocksRecipe> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RG2BlocksRecipe.Type.INSTANCE);
 
         for (int i = 0; i < recipes.size(); i++) {
-            final int slotX = 39 + (i % 7 * 18);
-            final int slotY = 3 + i / 7 * 18;
+            final int slotX = 4 + (i % 9 * 19);
+            final int slotY = 2 + i / 9 * 19;
 
             String blockName = recipes.get(i).getBlock();
             Block rgBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
             TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
 
-            if (rgBlock != null) {
-                builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem()));
-                builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem()));
-            } else {
+            if (rgBlock == Blocks.AIR ) {
                 builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addIngredients(Ingredient.of(itemTag));
                 builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addIngredients(Ingredient.of(itemTag));
-            }
-        }
-    }
-/*
-
-        String blockName = recipe.getBlock();
-
-        // Check if the blockName is valid or if it represents an AIR block
-        if (blockName != null && !blockName.isEmpty()) {
-            // Retrieve the block corresponding to the blockName
-            Block rgBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
-
-            // Create a tag for the item with the blockName
-            TagKey<Item> itemTag = ItemTags.create(new ResourceLocation(blockName));
-
-            // Define the initial Y-coordinate for the slots
-            int slotY = 2;
-
-            // Check if the block exists
-            if (rgBlock != null) {
-                // Add an input slot for the block
-                builder.addSlot(RecipeIngredientRole.INPUT, 4, slotY).addItemStack(new ItemStack(rgBlock.asItem()));
-                // Add an output slot for the block
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 4, slotY).addItemStack(new ItemStack(rgBlock.asItem()));
             } else {
-                // If the block doesn't exist, add slots for the item tag
-                builder.addSlot(RecipeIngredientRole.INPUT, 4, slotY).addIngredients(Ingredient.of(itemTag));
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 4, slotY).addIngredients(Ingredient.of(itemTag));
+                assert rgBlock != null;
+                builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem()));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem()));
             }
-
-            // Increment the Y-coordinate for the next set of slots
-            slotY += 20; // Adjust this value as needed to control the spacing between slots
         }
     }
-
- */
-
-
-
-
         //OLD SET RECIPE METHOD
     /*
     @Override

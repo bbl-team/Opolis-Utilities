@@ -20,6 +20,7 @@ public class InformationJEI implements IModPlugin {
     public void registerRecipes(IRecipeRegistration reg) {
 
         reg.addIngredientInfo(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), VanillaTypes.ITEM_STACK, Component.translatable("jei.opolisutilities.resource_generator_2.information"));
+        reg.addIngredientInfo(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), VanillaTypes.ITEM_STACK, Component.translatable("jei.opolisutilities.fluid_generator.information"));
 
     }
 }
