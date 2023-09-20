@@ -54,7 +54,7 @@ public class WalletItem extends Item {
 
         ItemStack itemstack = player.getOffhandItem();
         CompoundTag nbt = getOrCreateTag(itemstack);
-
+          Capabilities.test(player);
         //Check wallet in off hand and b bucks in main hand
 
         if (!player.isCrouching()) {
