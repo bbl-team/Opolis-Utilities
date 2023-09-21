@@ -23,6 +23,6 @@ public class WhitelistItemInputSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getCount() <= maxStackSizeForSlot && !stack.is(this.item);
+        return stack.getCount() <= maxStackSizeForSlot && stack.is(this.item);
     }
 }
