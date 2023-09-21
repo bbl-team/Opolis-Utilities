@@ -1,4 +1,4 @@
-package com.benbenlaw.opolisutilities.block.entity;
+package com.benbenlaw.opolisutilities.util.inventory;
 
 import net.minecraftforge.items.ItemStackHandler;
 

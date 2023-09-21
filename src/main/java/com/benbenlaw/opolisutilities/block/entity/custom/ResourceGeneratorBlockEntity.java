@@ -1,9 +1,10 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
-import com.benbenlaw.opolisutilities.block.entity.IInventoryHandlingBlockEntity;
+import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
+import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

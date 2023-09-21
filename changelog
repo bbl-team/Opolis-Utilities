@@ -2,9 +2,9 @@ Changelog Opolis Utilities
 
 //TODO customizable scrambler range
 //change book recipe to shapeless and use a book in the recipe
-//todo remove beta from catalogue and fluid absorber
 
-2.4.0
+
+2.4.0 (BETA BUILD FOR INTERNAL USAGE)
 
 Wallet now work in the Catalog in place of b bucks
 Catalogue recipes that use b bucks can go over 64 now
@@ -13,6 +13,8 @@ Reworked JEI compat
     -RG2 blocks now show in a list showing the blocks that are compatible
     -Fluid Generator fluids now show in a list showing the fluids that are compatible
     -Information with how the RG2 and Fluid gen shown in JEI Information Tab
+Fluid absorber and catalogue out of BETA
+Added 4 new slot classes for use in other mods
 
 ToDo: Wallet now accepts any items ???? WIP
 ToDo: Shift Click Support for the wallet item in the catalogue

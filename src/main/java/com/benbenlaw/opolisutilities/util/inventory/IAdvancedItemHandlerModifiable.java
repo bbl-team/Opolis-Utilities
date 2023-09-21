@@ -1,4 +1,4 @@
-package com.benbenlaw.opolisutilities.block.entity.custom;
+package com.benbenlaw.opolisutilities.util.inventory;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;

@@ -1,6 +1,6 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
-import com.benbenlaw.opolisutilities.block.entity.IInventoryHandlingBlockEntity;
+import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
