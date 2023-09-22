@@ -1,19 +1,34 @@
 package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.item.custom.*;
+import com.benbenlaw.opolisutilities.registry.EnumBlockItem;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.EnumMap;
+
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
         DeferredRegister.create(ForgeRegistries.ITEMS, OpolisUtilities.MOD_ID);
+
+    public static final ColorableBlocks.Instance INSTANCE = new ColorableBlocks.Instance(ModBlocks.BLOCKS, ITEMS);
+
+    public static final EnumMap<ColorableBlocks, EnumMap<EnumBlockItem, RegistryObject<?>>> COLORABLE = ColorableBlocks.register(
+            "test",
+            INSTANCE,
+            () -> new Block(BlockBehaviour.Properties.of()),
+            new Item.Properties().stacksTo(32)
+    );
 
     public static final RegistryObject<Item> JEI_NULL_ITEM = ITEMS.register("jei_null_item",
             () -> new Item(new Item.Properties()));

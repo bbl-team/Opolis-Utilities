@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.capabillties;
 
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -11,10 +12,8 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.network.NetworkEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +56,7 @@ public class Capabilities {
                     o -> o instanceof Player,
                     new ResourceLocation("key"),
                         () -> {
-                            class Provider implements ICapabilityProvider {
+                            class Provider implements ICapabilitySerializable<CompoundTag> {
                                 private final ITesting TESTING = new TestingCap();
                                 private final LazyOptional<ITesting> TEST = LazyOptional.of(() -> TESTING);
                                 @Override
@@ -70,6 +69,18 @@ public class Capabilities {
                                     if (cap == Capabilities.TESTING)
                                         return TEST.cast();
                                     return LazyOptional.empty();
+                                }
+
+                                @Override
+                                public CompoundTag serializeNBT() {
+                                    CompoundTag tag = new CompoundTag();
+                                    ;
+                                    return tag;
+                                }
+
+                                @Override
+                                public void deserializeNBT(CompoundTag nbt) {
+
                                 }
                             }
                             return new Provider();
