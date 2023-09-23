@@ -34,8 +34,8 @@ public enum ColorableBlocks {
         public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(String id, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, Function<ColorableBlocks, Supplier<L>> supplierFunctionB) {
             EnumMap<ColorableBlocks, DualRegistryObject<I, L>> MAP = new EnumMap<>(ColorableBlocks.class);
             for (ColorableBlocks color : ColorableBlocks.values()) {
-                RegistryObject<I> A = ADR.register("%s_%s".formatted(color.id, id), supplierFunctionA.apply(color));
-                RegistryObject<L> B = BDR.register("%s_%s".formatted(color.id, id), supplierFunctionB.apply(color));
+                RegistryObject<I> A = ADR.register(id.formatted(color.id), supplierFunctionA.apply(color));
+                RegistryObject<L> B = BDR.register(id.formatted(color.id), supplierFunctionB.apply(color));
                 MAP.put(color, new DualRegistryObject<>(A, B));
             }
             return MAP;
