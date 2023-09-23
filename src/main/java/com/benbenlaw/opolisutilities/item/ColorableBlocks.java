@@ -1,19 +1,11 @@
 package com.benbenlaw.opolisutilities.item;
 
-import com.benbenlaw.opolisutilities.registry.EnumBlockItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-
 import java.util.EnumMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import static com.benbenlaw.opolisutilities.block.ModBlocks.BLOCKS;
 
 public enum ColorableBlocks {
     WHITE("white"),
@@ -38,16 +30,16 @@ public enum ColorableBlocks {
         this.id = id;
     }
 
-    public record Instance(DeferredRegister<Block> BLOCKS, DeferredRegister<Item> ITEMS) {}
-
-    public static EnumMap<ColorableBlocks, EnumMap<EnumBlockItem, RegistryObject<?>>> register(String id, Instance instance, Function<ColorableBlocks, Supplier<Block>> block, Function<ColorableBlocks, Supplier<Item>> item) {
-        EnumMap<ColorableBlocks, EnumMap<EnumBlockItem, RegistryObject<?>>> MAP = new EnumMap<>(ColorableBlocks.class);
-        for (ColorableBlocks color : ColorableBlocks.values()) {
-            var REG_MAP = MAP.computeIfAbsent(color, (c) -> new EnumMap<>(EnumBlockItem.class));
-            RegistryObject<Block> blockRO = instance.BLOCKS.register("%s_%s".formatted(color.id, id), block.apply(color));
-            REG_MAP.put(EnumBlockItem.BLOCK, blockRO);
-            REG_MAP.put(EnumBlockItem.ITEM, instance.ITEMS.register("%s_%s".formatted(color.id, id), item.apply(color)));
+    public record Instance<T, X>(DeferredRegister<T> ADR, DeferredRegister<X> BDR) {
+        public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(String id, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, Function<ColorableBlocks, Supplier<L>> supplierFunctionB) {
+            EnumMap<ColorableBlocks, DualRegistryObject<I, L>> MAP = new EnumMap<>(ColorableBlocks.class);
+            for (ColorableBlocks color : ColorableBlocks.values()) {
+                RegistryObject<I> A = ADR.register("%s_%s".formatted(color.id, id), supplierFunctionA.apply(color));
+                RegistryObject<L> B = BDR.register("%s_%s".formatted(color.id, id), supplierFunctionB.apply(color));
+                MAP.put(color, new DualRegistryObject<>(A, B));
+            }
+            return MAP;
         }
-        return MAP;
     }
+    public record DualRegistryObject<T, X>(RegistryObject<T> A, RegistryObject<X> B) {}
 }
