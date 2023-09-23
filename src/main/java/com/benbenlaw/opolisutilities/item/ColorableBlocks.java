@@ -1,19 +1,12 @@
 package com.benbenlaw.opolisutilities.item;
 
-import com.benbenlaw.opolisutilities.registry.EnumBlockItem;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-
 import java.util.EnumMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static com.benbenlaw.opolisutilities.block.ModBlocks.BLOCKS;
 
 public enum ColorableBlocks {
     WHITE("white"),
@@ -39,14 +32,29 @@ public enum ColorableBlocks {
     }
 
     public record Instance(DeferredRegister<Block> BLOCKS, DeferredRegister<Item> ITEMS) {}
+    public static class DualInstance<T, X> {
+        private final RegistryObject<T> A;
+        private final RegistryObject<X> B;
+        public DualInstance(RegistryObject<T> A, RegistryObject<X> B) {
+            this.A = A;
+            this.B = B;
+        }
 
-    public static EnumMap<ColorableBlocks, EnumMap<EnumBlockItem, RegistryObject<?>>> register(String id, Instance instance, Function<ColorableBlocks, Supplier<Block>> block, Function<ColorableBlocks, Supplier<Item>> item) {
-        EnumMap<ColorableBlocks, EnumMap<EnumBlockItem, RegistryObject<?>>> MAP = new EnumMap<>(ColorableBlocks.class);
+        public RegistryObject<T> getA() {
+            return A;
+        }
+
+        public RegistryObject<X> getB() {
+            return B;
+        }
+    }
+
+    public static EnumMap<ColorableBlocks, DualInstance<Block, Item>> register(String id, Instance instance, Function<ColorableBlocks, Supplier<Block>> block, Function<ColorableBlocks, Supplier<Item>> item) {
+        EnumMap<ColorableBlocks, DualInstance<Block, Item>> MAP = new EnumMap<>(ColorableBlocks.class);
         for (ColorableBlocks color : ColorableBlocks.values()) {
-            var REG_MAP = MAP.computeIfAbsent(color, (c) -> new EnumMap<>(EnumBlockItem.class));
             RegistryObject<Block> blockRO = instance.BLOCKS.register("%s_%s".formatted(color.id, id), block.apply(color));
-            REG_MAP.put(EnumBlockItem.BLOCK, blockRO);
-            REG_MAP.put(EnumBlockItem.ITEM, instance.ITEMS.register("%s_%s".formatted(color.id, id), item.apply(color)));
+            RegistryObject<Item> itemRO = instance.ITEMS.register("%s_%s".formatted(color.id, id), item.apply(color));
+            MAP.computeIfAbsent(color, (c) -> new DualInstance<>(blockRO, itemRO));
         }
         return MAP;
     }
