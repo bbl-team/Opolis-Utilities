@@ -4,6 +4,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import java.util.EnumMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public enum ColorableBlocks {
@@ -29,16 +30,16 @@ public enum ColorableBlocks {
         this.id = id;
     }
 
-    public record Instance<T, X>(DeferredRegister<T> BLOCKS, DeferredRegister<X> ITEMS) {}
-    public record DualRegistryObject<T, X>(RegistryObject<T> A, RegistryObject<X> B) {};
-
-    public static <T, X> EnumMap<ColorableBlocks, DualRegistryObject<T, X>> register(String id, Instance<T, X> instance, Function<ColorableBlocks, Supplier<T>> block, Function<ColorableBlocks, Supplier<X>> item) {
-        EnumMap<ColorableBlocks, DualRegistryObject<T, X>> MAP = new EnumMap<>(ColorableBlocks.class);
-        for (ColorableBlocks color : ColorableBlocks.values()) {
-            RegistryObject<T> blockRO = instance.BLOCKS.register("%s_%s".formatted(color.id, id), block.apply(color));
-            RegistryObject<X> itemRO = instance.ITEMS.register("%s_%s".formatted(color.id, id), item.apply(color));
-            MAP.computeIfAbsent(color, (c) -> new DualRegistryObject<>(blockRO, itemRO));
+    public record Instance<T, X>(DeferredRegister<T> ADR, DeferredRegister<X> BDR) {
+        public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(String id, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, Function<ColorableBlocks, Supplier<L>> supplierFunctionB) {
+            EnumMap<ColorableBlocks, DualRegistryObject<I, L>> MAP = new EnumMap<>(ColorableBlocks.class);
+            for (ColorableBlocks color : ColorableBlocks.values()) {
+                RegistryObject<I> A = ADR.register("%s_%s".formatted(color.id, id), supplierFunctionA.apply(color));
+                RegistryObject<L> B = BDR.register("%s_%s".formatted(color.id, id), supplierFunctionB.apply(color));
+                MAP.put(color, new DualRegistryObject<>(A, B));
+            }
+            return MAP;
         }
-        return MAP;
     }
+    public record DualRegistryObject<T, X>(RegistryObject<T> A, RegistryObject<X> B) {}
 }
