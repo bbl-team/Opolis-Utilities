@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import java.util.EnumMap;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -31,11 +32,11 @@ public enum ColorableBlocks {
     }
 
     public record Instance<T, X>(DeferredRegister<T> ADR, DeferredRegister<X> BDR) {
-        public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(String id, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, Function<ColorableBlocks, Supplier<L>> supplierFunctionB) {
+        public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(String id, BiFunction<String, String, String> idMaker, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, Function<ColorableBlocks, Supplier<L>> supplierFunctionB) {
             EnumMap<ColorableBlocks, DualRegistryObject<I, L>> MAP = new EnumMap<>(ColorableBlocks.class);
             for (ColorableBlocks color : ColorableBlocks.values()) {
-                RegistryObject<I> A = ADR.register(id.formatted(color.id), supplierFunctionA.apply(color));
-                RegistryObject<L> B = BDR.register(id.formatted(color.id), supplierFunctionB.apply(color));
+                RegistryObject<I> A = ADR.register(idMaker.apply(id, color.id), supplierFunctionA.apply(color));
+                RegistryObject<L> B = BDR.register(idMaker.apply(id, color.id), supplierFunctionB.apply(color));
                 MAP.put(color, new DualRegistryObject<>(A, B));
             }
             return MAP;
