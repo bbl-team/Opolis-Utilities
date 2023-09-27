@@ -2,21 +2,17 @@ package com.benbenlaw.opolisutilities.networking.packets;
 
 import com.benbenlaw.opolisutilities.capabillties.CapabillitySyncronizer;
 import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
-import com.benbenlaw.opolisutilities.capabillties.ICapabilitySyncHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class PacketCapabilitySyncToClient {
     private final ICapabilitySync capabilitySync;
-    private final ICapabilitySyncHandler handler;
 
     private final int id;
     private final Capability<?> capability;
@@ -28,7 +24,6 @@ public class PacketCapabilitySyncToClient {
 
     public PacketCapabilitySyncToClient(ICapabilitySync capabilitySync, Capability<?> cap, BlockPos pos, int id) {
         this.capabilitySync = capabilitySync;
-        this.handler = null;
         this.id = id;
         this.capability = cap;
         this.pos = pos;
@@ -42,7 +37,6 @@ public class PacketCapabilitySyncToClient {
          * BLOCKPOS/PLAYER
          */
         this.capabilitySync = null;
-        this.handler = null;
 
         this.id = buf.readInt();
         this.capability = CapabillitySyncronizer.get(buf.readResourceLocation());
@@ -74,7 +68,8 @@ public class PacketCapabilitySyncToClient {
                 });
             } else if (id == 1) {
                 if (Minecraft.getInstance().player == null) return;
-                Minecraft.getInstance().player.getCapability(capability).ifPresent(e -> {
+
+                Minecraft.getInstance().player.getOffhandItem().getCapability(capability).ifPresent(e -> {
                     if (e instanceof ICapabilitySync<?> sync)
                         sync.handle(context, sync.fromNetwork(buf).cast());
                 });

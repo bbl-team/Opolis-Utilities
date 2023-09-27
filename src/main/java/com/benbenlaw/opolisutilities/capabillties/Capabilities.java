@@ -2,7 +2,6 @@ package com.benbenlaw.opolisutilities.capabillties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -49,43 +47,6 @@ public class Capabilities {
                 (old, newC) -> {
                     newC.setValue(old.getValue());
                 }
-        );
-
-        ATTACHER.register(Capabilities.TESTING,
-                CapabilityAttacher.Attacher.create(
-                    o -> o instanceof Player,
-                    new ResourceLocation("key"),
-                        () -> {
-                            class Provider implements ICapabilitySerializable<CompoundTag> {
-                                private final ITesting TESTING = new TestingCap();
-                                private final LazyOptional<ITesting> TEST = LazyOptional.of(() -> TESTING);
-                                @Override
-                                public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-                                    return getCapability(cap);
-                                }
-
-                                @Override
-                                public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-                                    if (cap == Capabilities.TESTING)
-                                        return TEST.cast();
-                                    return LazyOptional.empty();
-                                }
-
-                                @Override
-                                public CompoundTag serializeNBT() {
-                                    CompoundTag tag = new CompoundTag();
-                                    ;
-                                    return tag;
-                                }
-
-                                @Override
-                                public void deserializeNBT(CompoundTag nbt) {
-
-                                }
-                            }
-                            return new Provider();
-                        }
-                )
         );
     }
 

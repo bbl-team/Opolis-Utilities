@@ -20,7 +20,6 @@ public class CapabillitySyncronizer {
         register(new ResourceLocation("forge", "fluid"), ForgeCapabilities.FLUID_HANDLER);
         register(new ResourceLocation("forge", "energy"), ForgeCapabilities.ENERGY);
         register(new ResourceLocation("forge", "fluid_item"), ForgeCapabilities.FLUID_HANDLER_ITEM);
-        register(new ResourceLocation("forge", "test"), Capabilities.TESTING);
     }
 
     public static ResourceLocation get(Capability<?> capability) {
