@@ -16,7 +16,7 @@ public class CommandEventBusEvents {
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<ItemStack> event) {
         if (event.getObject().getItem() instanceof WalletItem)
-            event.addCapability(WalletItem.WALLET_CAP, new WalletItem.CapabilityProvider());
+            event.addCapability(WalletItem.WALLET_CAP, new WalletItem.CapabilityProvider(event.getObject()));
     }
 
 

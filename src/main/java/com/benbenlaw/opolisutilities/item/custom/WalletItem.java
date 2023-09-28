@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.capabillties.CapabillitySyncronizer;
 import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
@@ -75,49 +76,33 @@ public class WalletItem extends Item {
     }
 
     public static class CapabilityProvider implements ICapabilitySerializable<CompoundTag> {
-        public static class WalletItemHandler implements IItemHandler, INBTSerializable<CompoundTag>, ICapabilitySync<WalletItemHandler.Data> {
-            @Override
-            public void toNetwork(FriendlyByteBuf buf) {
-                buf.writeNbt(serializeNBT());
-            }
-
-            @Override
-            public LazyOptional<Data> fromNetwork(FriendlyByteBuf buf) {
-                return LazyOptional.of(() -> new Data(buf.readNbt()));
-            }
-
-            @Override
-            public void handle(NetworkEvent.Context context, LazyOptional<Data> data) {
-                data.ifPresent(e -> {
-                    deserializeNBT(e.getTag());
-                });
-            }
-
-            @Override
-            public Capability<?> getCap() {
-                return ForgeCapabilities.ITEM_HANDLER;
-            }
-
-            public static class Data {
-                final CompoundTag tag;
-
-                public Data(CompoundTag tag) {
-                    this.tag = tag;
-                }
-
-                public CompoundTag getTag() {
-                    return tag;
-                }
-            }
-
+        public static class WalletItemHandler implements IItemHandler {
+            final ItemStack stack;
             final ArrayList<WalletSlot> ITEMS = new ArrayList<>();
 
+            private WalletItemHandler(ItemStack stack) {
+                this.stack = stack;
+            }
 
             public void setChanged() {
-                ModMessages.sendToClients(new PacketCapabilitySyncToClient(this, getCap()));
+                CompoundTag tag = stack.getOrCreateTag();
+                tag.putBoolean("dirty", true);
+                tag.put("data", serializeNBT());
             }
+
+            public void checkChanged() {
+                CompoundTag tag = stack.getOrCreateTag();
+                if (tag.contains("dirty") && tag.getBoolean("dirty")) {
+                    if (tag.contains("data")) {
+                        deserializeNBT(tag.getCompound("data"));
+                        tag.putBoolean("dirty", false);
+                    }
+                }
+            }
+
             @Override
             public int getSlots() {
+                checkChanged();
                 return ITEMS.size();
             }
 
@@ -135,6 +120,7 @@ public class WalletItem extends Item {
 
             @Override
             public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+                checkChanged();
                 Optional<WalletSlot> SLOT = ITEMS.stream().filter(e -> e.isSame(stack)).findAny();
                 WalletSlot walletSlot;
                 if (SLOT.isPresent()) {
@@ -156,6 +142,7 @@ public class WalletItem extends Item {
 
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                checkChanged();
                 if (slot <= ITEMS.size()) {
                     WalletSlot walletSlot = ITEMS.get(slot);
                     if (walletSlot.getAmount() >= amount && walletSlot.getItem() != null) {
@@ -174,6 +161,7 @@ public class WalletItem extends Item {
 
             @Override
             public int getSlotLimit(int slot) {
+                checkChanged();
                 return ITEMS.size() + 1;
             }
 
@@ -182,7 +170,6 @@ public class WalletItem extends Item {
                 return true;
             }
 
-            @Override
             public CompoundTag serializeNBT() {
                 CompoundTag tag = new CompoundTag();
                 CompoundTag list = new CompoundTag();
@@ -197,7 +184,7 @@ public class WalletItem extends Item {
                 return tag;
             }
 
-            @Override
+
             public void deserializeNBT(CompoundTag nbt) {
                 ITEMS.clear();
                 CompoundTag list = nbt.getCompound("list");
@@ -209,9 +196,13 @@ public class WalletItem extends Item {
                 });
             }
         }
+        private final WalletItemHandler handler;
+        private final LazyOptional<IItemHandler> ITEMLO;
 
-        private final WalletItemHandler handler = new WalletItemHandler();
-        private final LazyOptional<IItemHandler> ITEMLO = LazyOptional.of(() -> handler);
+        public CapabilityProvider(ItemStack stack) {
+            this.handler = new WalletItemHandler(stack);
+            this.ITEMLO = LazyOptional.of(() -> handler);
+        }
 
         @Override
         public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
