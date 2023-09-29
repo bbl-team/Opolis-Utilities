@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketCapabilitySyncToClient;
+import com.benbenlaw.opolisutilities.util.ModTags;
 import com.mojang.datafixers.types.templates.CompoundList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -69,6 +70,7 @@ public class WalletItem extends Item {
         }
 
 
+
         // Returns null if item doesn't exist
         public Item getItem() {
             return ForgeRegistries.ITEMS.getValue(RL);
@@ -120,23 +122,26 @@ public class WalletItem extends Item {
 
             @Override
             public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-                checkChanged();
-                Optional<WalletSlot> SLOT = ITEMS.stream().filter(e -> e.isSame(stack)).findAny();
-                WalletSlot walletSlot;
-                if (SLOT.isPresent()) {
-                    walletSlot = SLOT.get();
-                } else {
-                    walletSlot = new WalletSlot(stack);
-                    ITEMS.add(walletSlot);
-                }
 
-                if (simulate) {
-                    return ItemStack.EMPTY;
-                }
+                if (stack.is(ModTags.Items.WALLET_ITEM)) {
+                    checkChanged();
+                    Optional<WalletSlot> SLOT = ITEMS.stream().filter(e -> e.isSame(stack)).findAny();
+                    WalletSlot walletSlot;
+                    if (SLOT.isPresent()) {
+                        walletSlot = SLOT.get();
+                    } else {
+                        walletSlot = new WalletSlot(stack);
+                        ITEMS.add(walletSlot);
+                    }
 
-                walletSlot.setAmount(walletSlot.getAmount() + stack.getCount());
-                stack.shrink(stack.getCount());
-                setChanged();
+                    if (simulate) {
+                        return ItemStack.EMPTY;
+                    }
+                    walletSlot.setAmount(walletSlot.getAmount() + stack.getCount());
+                    stack.shrink(stack.getCount());
+                    setChanged();
+                    return stack;
+                }
                 return stack;
             }
 
@@ -260,7 +265,6 @@ public class WalletItem extends Item {
 
     public void insertCurrency(ItemStack wallet, int amount) {
     }
-
 
     public void extractCurrency(ItemStack wallet, int amount) {
     }

@@ -3,6 +3,24 @@ Changelog Opolis Utilities
 //TODO customizable scrambler range
 //change book recipe to shapeless and use a book in the recipe
 
+TODO: Wallet now accepts any items ???? WIP
+TODO: Shift Click Support for the wallet item in the catalogue
+TODO: Customizable scrambler range
+TODO: Customizable redstone clock timer
+
+2.4.5 (internal)
+
+2.4.4 (internal)
+
+2.4.3 (internal)
+
+2.4.2 (internal)
+
+Colorful blocks helpers
+
+2.4.1
+
+Fixed Whitelist slots
 
 2.4.0 (BETA BUILD FOR INTERNAL USAGE)
 
@@ -16,8 +34,6 @@ Reworked JEI compat
 Fluid absorber and catalogue out of BETA
 Added 4 new slot classes for use in other mods
 
-ToDo: Wallet now accepts any items ???? WIP
-ToDo: Shift Click Support for the wallet item in the catalogue
 
 2.3.3
 
