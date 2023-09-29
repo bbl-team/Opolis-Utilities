@@ -1,18 +1,36 @@
 package com.benbenlaw.opolisutilities.capabillties;
 
+import com.benbenlaw.opolisutilities.capabillties.handlers.BlockDataHandler;
+import com.benbenlaw.opolisutilities.capabillties.handlers.SidedDataHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.HashMap;
+import java.util.Optional;
+
+import static com.benbenlaw.opolisutilities.OpolisUtilities.MOD_ID;
 
 public class CapabillitySyncronizer {
+    public static class Types {
+        public static final ResourceLocation BLOCKS = new ResourceLocation(MOD_ID, "blocks");
+        public static final ResourceLocation ITEMS = new ResourceLocation(MOD_ID, "items");
+
+        public static final SidedDataHandler BLOCK_DATA_HANDLER = SidedDataHandler.create(new BlockDataHandler.Server(), new BlockDataHandler.Client());
+    }
+
     private static final HashMap<Capability<?>, ResourceLocation> CAPS = new HashMap<>();
     private static final HashMap<ResourceLocation, Capability<?>> REVERSE_CAPS = new HashMap<>();
+    private static final HashMap<ResourceLocation, SidedDataHandler> DATA_HANDLERS = new HashMap<>();
 
     public static void register(ResourceLocation resourceLocation, Capability<?> capability) {
         CAPS.put(capability, resourceLocation);
         REVERSE_CAPS.put(resourceLocation, capability);
+    }
+
+    public static void registerDataHandler(ResourceLocation ID, SidedDataHandler handler) {
+        if (DATA_HANDLERS.containsKey(ID)) throw new IllegalStateException("ID: %s already exists".formatted(ID));
+        DATA_HANDLERS.put(ID, handler);
     }
 
     static {
@@ -20,7 +38,12 @@ public class CapabillitySyncronizer {
         register(new ResourceLocation("forge", "fluid"), ForgeCapabilities.FLUID_HANDLER);
         register(new ResourceLocation("forge", "energy"), ForgeCapabilities.ENERGY);
         register(new ResourceLocation("forge", "fluid_item"), ForgeCapabilities.FLUID_HANDLER_ITEM);
-        register(new ResourceLocation("forge", "test"), Capabilities.TESTING);
+
+        registerDataHandler(Types.BLOCKS, Types.BLOCK_DATA_HANDLER);
+    }
+
+    public static Optional<SidedDataHandler> getDataHandler(ResourceLocation ID) {
+        return DATA_HANDLERS.containsKey(ID) ? Optional.of(DATA_HANDLERS.get(ID)) : Optional.empty();
     }
 
     public static ResourceLocation get(Capability<?> capability) {
