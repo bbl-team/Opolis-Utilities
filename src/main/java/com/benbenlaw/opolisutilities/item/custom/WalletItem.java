@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -120,9 +121,16 @@ public class WalletItem extends Item {
                 return ITEMS.get(slot);
             }
 
+            public int getSlotByItem(Item item) {
+                return ITEMS.indexOf(getWalletSlotByItem(item));
+            }
+
+            public WalletSlot getWalletSlotByItem(Item item) {
+                return ITEMS.stream().filter(e -> e.getItem() == item).findAny().orElse(null);
+            }
+
             @Override
             public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-
                 if (stack.is(ModTags.Items.WALLET_ITEM)) {
                     checkChanged();
                     Optional<WalletSlot> SLOT = ITEMS.stream().filter(e -> e.isSame(stack)).findAny();
@@ -148,7 +156,7 @@ public class WalletItem extends Item {
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 checkChanged();
-                if (slot <= ITEMS.size()) {
+                if (ITEMS.size() >= slot && !ITEMS.isEmpty()) {
                     WalletSlot walletSlot = ITEMS.get(slot);
                     if (walletSlot.getAmount() >= amount && walletSlot.getItem() != null) {
                         if (simulate)
@@ -263,13 +271,37 @@ public class WalletItem extends Item {
         return super.use(level, player, hand);
     }
 
-    public void insertCurrency(ItemStack wallet, int amount) {
+    private CapabilityProvider.WalletItemHandler getHandler(ItemStack wallet) {
+
+        var LO = wallet.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve();
+        if (LO.isPresent()) {
+            var handler = LO.get();
+            if (handler instanceof CapabilityProvider.WalletItemHandler walletItemHandler)
+                return walletItemHandler;
+        }
+
+        return null;
     }
 
-    public void extractCurrency(ItemStack wallet, int amount) {
+    public void insertCurrency(ItemStack wallet, Item item, int amount) {
+        var handler = getHandler(wallet);
     }
 
-    public int getCurrencyStored(ItemStack wallet) {
+    public void extractCurrency(ItemStack wallet, Item item, int amount) {
+        var handler = getHandler(wallet);
+        if (handler == null) return;
+        var slot = handler.getSlotByItem(item);
+        if (slot == -1) return;
+        handler.extractItem(slot, amount, false);
+    }
+
+    public int getCurrencyStored(ItemStack wallet, Item item) {
+        var handler = getHandler(wallet);
+        if (handler != null) {
+            var slot = handler.getWalletSlotByItem(item);
+            if (slot == null) return 0;
+            return slot.getAmount();
+        }
         return 0;
     }
 

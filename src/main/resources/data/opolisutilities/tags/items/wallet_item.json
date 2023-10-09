@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "opolisutilities:b_bucks"
+    "opolisutilities:b_bucks",
+    "minecraft:diamond"
   ]
 }

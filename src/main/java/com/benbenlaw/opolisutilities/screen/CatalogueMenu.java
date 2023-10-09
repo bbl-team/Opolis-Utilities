@@ -62,8 +62,16 @@ public class CatalogueMenu extends   AbstractContainerMenu {
 
             @Override
             public boolean mayPickup(@NotNull Player pPlayer) {
-                if(CatalogueMenu.this.selectedRecipeIndex.get() == -1 || recipes.isEmpty() || recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get() || getTotalWalletCurrency(CatalogueMenu.this.container.getItem(0)) < recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount)
+
+                if (CatalogueMenu.this.selectedRecipeIndex.get() == -1)
                     return false;
+                if (recipes.isEmpty())
+                    return false;
+                if (recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get())
+                    return false;
+
+
+
 
                 return super.mayPickup(pPlayer);
             }
@@ -71,18 +79,25 @@ public class CatalogueMenu extends   AbstractContainerMenu {
             public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
                 stack.onCraftedBy(player.level(), player, stack.getCount());
                 CatalogueMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
-                ItemStack input = CatalogueMenu.this.inputSlot.getItem();
-                ItemStack itemstack;
+                ItemStack input = CatalogueMenu.this.inputSlot.getItem(); // Could be wallet or Currency!
+
                 if (input.getItem() instanceof WalletItem walletItem) {
-                    walletItem.extractCurrency(input, recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
-                    itemstack = getCurrencyItemStack(input);
+                    var recipe = CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get());
+                    var rItem = recipe.getIngredients().get(0).getItems()[0].getItem();
+
+
+                    walletItem.extractCurrency(input, rItem, recipe.itemInCount);
+
+
                     CatalogueMenu.this.inputSlot.setChanged();
+                    CatalogueMenu.this.setupResultSlot();
                 } else {
-                    itemstack = CatalogueMenu.this.inputSlot.remove(recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
-                }
-                if (!itemstack.isEmpty()) {
+                    // Deal with normally
+                    input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
+                    CatalogueMenu.this.inputSlot.setChanged();
                     CatalogueMenu.this.setupResultSlot();
                 }
+
 
                 pAccess.execute((p_40364_, p_40365_) -> {
                     long l = p_40364_.getGameTime();
@@ -90,8 +105,8 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                         p_40364_.playSound(null, p_40365_, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.4F, 1.0F);
                         CatalogueMenu.this.lastSoundTime = l;
                     }
-
                 });
+
                 CatalogueMenu.this.slotsChanged(CatalogueMenu.this.container);
                 super.onTake(player, stack);
             }
@@ -166,9 +181,19 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                 this.lastInput = this.input;
         }
         if (!pStack.isEmpty()) {
-            this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, isWallet(pStack) ? new SimpleContainer(getCurrencyItemStack(pStack)) : pContainer, this.level);
-            this.recipes = this.recipes.stream().filter((recipe) ->
-                    getTotalWalletCurrency(pContainer.getItem(0)) >= recipe.itemInCount).toList();
+            if (pStack.getItem() instanceof WalletItem walletItem) {
+
+
+                this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE).stream()
+                        .filter(recipe -> {
+                            var rItem = recipe.getIngredients().get(0).getItems()[0].getItem();
+                            return walletItem.getCurrencyStored(pStack, rItem) >= recipe.itemInCount;
+                        })
+                        .toList();
+
+            } else {
+                this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, pContainer, this.level);
+            }
         }
         if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1)
         {
@@ -202,17 +227,11 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         this.broadcastChanges();
     }
 
-    public ItemStack getCurrencyItemStack(ItemStack stack) {
-        if (stack.getItem() instanceof WalletItem walletItem)
-            return new ItemStack(walletItem.getCurrencyItem(), Math.min(walletItem.getCurrencyStored(stack), 64));
-        return stack;
-    }
+    public int getTotalWalletCurrency(ItemStack wallet, Item item) {
+        if (wallet.getItem() instanceof WalletItem walletItem)
+            return walletItem.getCurrencyStored(wallet, item);
 
-    public int getTotalWalletCurrency(ItemStack stack) {
-        if (stack.getItem() instanceof WalletItem walletItem)
-            return walletItem.getCurrencyStored(stack);
-
-        return stack.getCount();
+        return 0;
     }
 
     public boolean isWallet(ItemStack stack) {

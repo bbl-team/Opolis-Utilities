@@ -93,6 +93,7 @@ public class CatalogueRecipe extends SingleItemRecipe {
     }
 
     public boolean matches(Container p_44483_, Level p_44484_) {
-        return this.ingredient.test(p_44483_.getItem(0));
+        var itemIn = p_44483_.getItem(0);
+        return this.ingredient.test(itemIn) && itemIn.getCount() >= this.itemInCount;
     }
 }
