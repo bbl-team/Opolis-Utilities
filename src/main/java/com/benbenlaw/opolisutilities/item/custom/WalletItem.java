@@ -155,10 +155,14 @@ public class WalletItem extends Item {
             }
 
             @Override
-            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            public @NotNull ItemStack extractItem(int slot, int maxamount, boolean simulate) {
                 checkChanged();
+                int amount = maxamount;
                 if (ITEMS.size() >= slot && !ITEMS.isEmpty()) {
                     WalletSlot walletSlot = ITEMS.get(slot);
+                    if (walletSlot.getAmount() < amount)
+                        amount = walletSlot.getAmount();
+
                     if (walletSlot.getAmount() >= amount && walletSlot.getItem() != null) {
                         if (simulate)
                             return new ItemStack(walletSlot.getItem(), amount);
@@ -282,10 +286,6 @@ public class WalletItem extends Item {
         }
 
         return null;
-    }
-
-    public void insertCurrency(ItemStack wallet, Item item, int amount) {
-        var handler = getHandler(wallet);
     }
 
     public void extractCurrency(ItemStack wallet, Item item, int amount) {
