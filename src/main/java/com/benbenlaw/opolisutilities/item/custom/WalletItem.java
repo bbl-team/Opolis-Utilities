@@ -126,6 +126,7 @@ public class WalletItem extends Item {
             }
 
             public WalletSlot getWalletSlotByItem(Item item) {
+                checkChanged();
                 return ITEMS.stream().filter(e -> e.getItem() == item).findAny().orElse(null);
             }
 

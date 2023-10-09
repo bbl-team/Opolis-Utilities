@@ -86,14 +86,16 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                     var rItem = recipe.getIngredients().get(0).getItems()[0].getItem();
 
 
-                    walletItem.extractCurrency(input, rItem, recipe.itemInCount);
+                    if (!level.isClientSide)
+                        walletItem.extractCurrency(input, rItem, recipe.itemInCount);
 
 
                     CatalogueMenu.this.inputSlot.setChanged();
                     CatalogueMenu.this.setupResultSlot();
                 } else {
                     // Deal with normally
-                    input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
+                    if (!level.isClientSide)
+                        input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).itemInCount);
                     CatalogueMenu.this.inputSlot.setChanged();
                     CatalogueMenu.this.setupResultSlot();
                 }
