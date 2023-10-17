@@ -53,6 +53,13 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(RedstoneClockBlockEntity::new,
                             ModBlocks.REDSTONE_CLOCK.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<EnderScramblerBlockEntity>> ENDER_SCRAMBLER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("ender_scrambler_block_entity", () ->
+                    BlockEntityType.Builder.of(EnderScramblerBlockEntity::new,
+                            ModBlocks.ENDER_SCRAMBLER.get()).build(null));
+
+
+
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

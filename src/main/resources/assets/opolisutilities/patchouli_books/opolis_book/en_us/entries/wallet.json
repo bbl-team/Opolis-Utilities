@@ -6,7 +6,7 @@
 	"pages": [
 		{
 			"type": "text",
-			"text": "Used to store B Bucks."
+			"text": "Used to store B Bucks and other items in the wallet_item tag!"
 		}
 	]
 }

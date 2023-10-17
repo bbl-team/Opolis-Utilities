@@ -264,7 +264,6 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                 if (!this.moveItemStackTo(itemstack1, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }
-
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (pIndex == 0) {
                 if (!this.moveItemStackTo(itemstack1, 2, 38, false)) {

@@ -29,6 +29,7 @@ public class ModCreativeTab {
                 output.accept(ModItems.ELITE_LOOT_BOX.get());
                 output.accept(ModItems.COPPER_NUGGET.get());
                 output.accept(ModItems.LOG_SHEET.get());
+                output.accept(ModItems.CROOK.get());
                 output.accept(ModItems.WOODEN_SHEARS.get());
                 output.accept(ModItems.ENDER_PEARL_FRAGMENT.get());
                 output.accept(ModItems.B_BUCKS.get());
@@ -49,7 +50,9 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.DEEPSLATE_ENDER_ORE.get());
                 output.accept(ModBlocks.REDSTONE_CLOCK.get());
                 output.accept(ModBlocks.ENDER_SCRAMBLER.get());
+                output.accept(ModItems.ENDER_SCRAMBLER_CONFIGURATOR.get());
                 output.accept(ModBlocks.CATALOGUE.get());
+                output.accept(ModItems.CATALOGUE_BOOK.get());
                 output.accept(ModBlocks.ITEM_REPAIRER.get());
                 output.accept(ModBlocks.BLOCK_BREAKER.get());
                 output.accept(ModBlocks.BLOCK_PLACER.get());

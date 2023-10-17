@@ -1,12 +1,36 @@
 Changelog Opolis Utilities
 
-//TODO customizable scrambler range
-//change book recipe to shapeless and use a book in the recipe
-
-TODO: Wallet now accepts any items ???? WIP
 TODO: Shift Click Support for the wallet item in the catalogue
-TODO: Customizable scrambler range
 TODO: Customizable redstone clock timer
+
+2.6.0
+
+Added crook by default rolls the leaves loot table 3 additional times when used to break leaves (can be increased and decreased in config)
+    leaves are broken instantly
+Added the Catalogue Book portable version of the catalogue right click to open the catalogue
+Added all the items into the guide book and updated some old guide book information about wallets
+Fixed guide book sometimes making a error on a world reload
+Removed dev catalogue recipes
+Wallet now stacks to 1
+Added Ender Scrambler Configurator used to configure the Ender Scrambler
+Ender Scrambler range can be increased and decreased using the configurator
+Ender Scrambler can be disabled and enabled using the configurator
+
+
+2.5.0
+
+Wallet now functions correctly inside the catalogue again with support for multiple currencies
+    by default B Bucks and Diamonds can be used as currency but by adding items to the "opolisutilities:wallet_items" tag any item can be stored inside the wallet.
+Items can now be removed from the wallets correctly, fixed the lang translation saying the wrong thing about how to add and remove items from the wallet
+Catalogue recipes can now use more than 64 of a item in there recipes (requires using the wallet)
+Reworked JEI compat
+    -Speed Blocks now show a lot clearer than before and show more blocks per page than before
+    -RG2 blocks now show in a list showing the blocks that are compatible
+    -Fluid Generator fluids now show in a list showing the fluids that are compatible
+    -Information with how the RG2 and Fluid gen shown in JEI Information Tab
+Fluid absorber and catalogue now out of BETA
+
+2.4.6 (internal)
 
 2.4.5 (internal)
 

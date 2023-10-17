@@ -10,8 +10,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.EnumMap;
-
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
         DeferredRegister.create(ForgeRegistries.ITEMS, OpolisUtilities.MOD_ID);
@@ -26,7 +24,7 @@ public class ModItems {
             () -> new MiniCoalItem(true));
 
     public static final RegistryObject<Item> WALLET = ITEMS.register("wallet",
-            () -> new WalletItem(new Item.Properties()));
+            () -> new WalletItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> BASIC_LOOT_BOX = ITEMS.register("basic_loot_box",
             () -> new BasicLootBoxItem(new Item.Properties()));
@@ -47,49 +45,47 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> WOODEN_SHEARS = ITEMS.register("wooden_shears",
-            () -> new ShearsItem(new Item.Properties().durability(96)
-                    ));
+            () -> new ShearsItem(new Item.Properties().durability(96)));
 
     public static final RegistryObject<Item> HOME_STONE = ITEMS.register("home_stone",
-            () -> new HomeStoneItem(new Item.Properties().durability(32)
-                    ));
+            () -> new HomeStoneItem(new Item.Properties().durability(32)));
 
     public static final RegistryObject<Item> ADVANCED_HOME_STONE = ITEMS.register("advanced_home_stone",
-            () -> new AdvancedHomeStoneItem(new Item.Properties().durability(32)
-                    ));
+            () -> new AdvancedHomeStoneItem(new Item.Properties().durability(32)));
 
     public static final RegistryObject<Item> SUPER_HOME_STONE = ITEMS.register("super_home_stone",
-            () -> new SuperHomeStoneItem(new Item.Properties().durability(32)
-                    ));
+            () -> new SuperHomeStoneItem(new Item.Properties().durability(32)));
 
     public static final RegistryObject<Item> DEATH_STONE = ITEMS.register("death_stone",
-            () -> new DeathStoneItem(new Item.Properties().durability(32)
-                    ));
+            () -> new DeathStoneItem(new Item.Properties().durability(32)));
 
     public static final RegistryObject<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",
-            () -> new FloatingBlockItem(new Item.Properties()
-                    ));
+            () -> new FloatingBlockItem(new Item.Properties()));
 
     public static final RegistryObject<Item> BUNDLED_FLESH = ITEMS.register("bundled_flesh",
-            () -> new Item(new Item.Properties()
-                    ));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ENDER_PEARL_FRAGMENT = ITEMS.register("ender_pearl_fragment",
-            () -> new Item(new Item.Properties()
-                    ));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> JERKY = ITEMS.register("jerky",
             () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())
-                    ));
+                    .food(new FoodProperties.Builder().nutrition(4).saturationMod(7.0F).build())));
 
     public static final RegistryObject<Item> SOAKED_PAPER = ITEMS.register("soaked_paper",
-            () -> new Item(new Item.Properties()
-                    ));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> LOG_SHEET = ITEMS.register("log_sheet",
-            () -> new Item(new Item.Properties()
-                    ));
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> CROOK = ITEMS.register("crook",
+            () -> new CrookItem(new Item.Properties().durability(54)));
+
+    public static final RegistryObject<Item> CATALOGUE_BOOK = ITEMS.register("catalogue_book",
+            () -> new CatalogueBook(new Item.Properties()));
+
+    public static final RegistryObject<Item> ENDER_SCRAMBLER_CONFIGURATOR = ITEMS.register("ender_scrambler_configurator",
+            () -> new ScramblerItem(new Item.Properties().stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

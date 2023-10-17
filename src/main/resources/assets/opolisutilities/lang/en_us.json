@@ -23,6 +23,11 @@
   "item.opolisutilities.stone_core": "Stone Core",
   "item.opolisutilities.mini_coal": "Mini Coal",
   "item.opolisutilities.mini_charcoal": "Mini Charcoal",
+  "item.opolisutilities.catalogue_book": "Catalogue Book (BETA)",
+  "item.opolisutilities.crook": "Crook (BETA)",
+  "item.opolisutilities.ender_scrambler_configurator": "Ender Scrambler Configurator (BETA)",
+
+
 
   "block.opolisutilities.floating_block_block": "Floating Block",
   "block.opolisutilities.drying_table": "Drying Table",
@@ -48,17 +53,19 @@
   "tooltips.home_stone.going_saved_location": "Going to saved location!",
   "tooltips.home_stone.no_location": "No Location Set!",
   "tooltips.home_stone.location_set": "Location Set!",
-
   "tooltips.death_stone.how": "How did you get this!",
   "tooltips.death_stone.going_saved_location": "Returning to your latest death",
   "tooltips.death_stone.shift.held": "Right click to return to your latest death point. Works across any dimension",
   "tooltips.ender_scrambler.shift.held": "Place down to prevent enderman from teleporting away!",
-
   "tooltips.wallet.hover.shift": "Press SHIFT for more info",
-  "tooltips.wallet.shift.held": "With the wallet in your off hand, right click %s in your main hand to add them to your wallet! Sneak right click to remove %s!",
+  "tooltips.wallet.shift.held": "With the wallet in your off hand, shift right click %s in your main hand to add them to your wallet! Right click to remove %s!",
   "tooltips.wallet.no_b_bucks": "Your wallet is empty!",
-
   "tooltips.floating_block.place_in_air": "Place in the air or inside water!",
+
+  "tooltips.scrambler_item.shift.held": "Used to control the Ender Scrambler! Right click in main hand to increase range, Shift right click in main hand to decrease range, Right click in off hand to toggle between on and off!",
+  "tooltips.scrambler_item.hover.shift": "Press SHIFT for more info",
+
+  "hover_effects.ender_scrambler.range": "Range: ",
 
   "jei.opolisutilities.resource_generator_2.information": "The resource generator 2 is a block that will duplicate items like cobblestone and stone.\n\nAny block that can store items can be placed underneath the resource generator 2 including hoppers and chests.\n\nWhen working the resource generator 2 will turn blue and start to provide items to the inventory below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the resource generator 2 will show all blocks that it can mine as well as any blocks that can effect its speed.\n\nAt a base speed it will collect 1 block every 11 seconds.",
   "jei.opolisutilities.fluid_generator.information": "The fluid generator is a block that will create fluids and output the fluid into a tank below.\n\nAny block that can store fluids can be placed underneath the fluid generator.\n\nWhen working the fluid generator 2 will turn blue and start to provide fluid to the tank below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the fluid generator will show all fluid that it can collect as well as any blocks that can effect its speed.\n\nAt a base speed it will collect a certain amount (shown in JEI) of fluid every 11 seconds.",

@@ -218,7 +218,6 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
             if (blockState.hasProperty(FACING)) {
 
-
                 Direction direction = blockState.getValue(FACING);
                 BlockPos placeHere = pPos.relative(direction);
                 List<ItemStack> blockDrops;
@@ -235,15 +234,13 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                     for (ItemStack drop : blockDrops) {
                         spawnBlockAsEntity(level, placeHere, drop);
-
                     }
 
                     if (tool.isDamageableItem()) {
                         this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
                         pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
-
-
                     }
+
                     if (damageValue + 1 == tool.getMaxDamage()) {
                         this.itemHandler.extractItem(0, 1, false);
                         pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
@@ -278,15 +275,13 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                     for (ItemStack drop : blockDrops) {
                         spawnBlockAsEntity(level, placeHere, drop);
-
                     }
 
                     if (tool.isDamageableItem()) {
                         this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
                         pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
-
-
                     }
+
                     if (damageValue + 1 == tool.getMaxDamage()) {
                         this.itemHandler.extractItem(0, 1, false);
                         pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
