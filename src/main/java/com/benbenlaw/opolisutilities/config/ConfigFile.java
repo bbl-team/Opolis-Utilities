@@ -14,6 +14,7 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<String> modpackVersion;
     public static final ForgeConfigSpec.ConfigValue<String> modpackName;
     public static final ForgeConfigSpec.ConfigValue<Double> basicLootBoxDropChance;
+    public static final ForgeConfigSpec.ConfigValue<Integer> crookBoost;
 
     static {
         BUILDER.push("Opolis Utilities Config File");
@@ -35,6 +36,9 @@ public final class ConfigFile {
 
         basicLootBoxDropChance = BUILDER.comment("Mobs basic loot bag drop chance 0.0 = always, 1.0 = never, 0.5 = 50% chance, default = 0.75")
                 .define("Mob Drop Chance", 0.95);
+
+        crookBoost = BUILDER.comment("Additional rolls when using the crook on leaves")
+                .define("Additional Crook Rolls", 3);
 
 
         BUILDER.pop();

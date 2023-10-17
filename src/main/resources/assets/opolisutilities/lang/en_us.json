@@ -23,6 +23,11 @@
   "item.opolisutilities.stone_core": "Stone Core",
   "item.opolisutilities.mini_coal": "Mini Coal",
   "item.opolisutilities.mini_charcoal": "Mini Charcoal",
+  "item.opolisutilities.catalogue_book": "Catalogue Book (BETA)",
+  "item.opolisutilities.crook": "Crook (BETA)",
+  "item.opolisutilities.ender_scrambler_configurator": "Ender Scrambler Configurator (BETA)",
+
+
 
   "block.opolisutilities.floating_block_block": "Floating Block",
   "block.opolisutilities.drying_table": "Drying Table",
@@ -55,7 +60,7 @@
   "tooltips.ender_scrambler.shift.held": "Place down to prevent enderman from teleporting away!",
 
   "tooltips.wallet.hover.shift": "Press SHIFT for more info",
-  "tooltips.wallet.shift.held": "With the wallet in your off hand, right click %s in your main hand to add them to your wallet! Sneak right click to remove %s!",
+  "tooltips.wallet.shift.held": "With the wallet in your off hand, shift right click %s in your main hand to add them to your wallet! Right click to remove %s!",
   "tooltips.wallet.no_b_bucks": "Your wallet is empty!",
 
   "tooltips.floating_block.place_in_air": "Place in the air or inside water!",

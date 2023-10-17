@@ -1,22 +1,19 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "conditions": [
      {
        "type": "forge:mod_loaded",
        "modid": "patchouli"
     }
   ],
-  "pattern": [
-    "B"
-  ],
-  "key": {
-    "B": {
+  "ingredients": [
+    {
       "tag": "forge:nuggets/copper"
     }
-  },
-    "result": {
+  ],
+  "result": {
     "item": "patchouli:guide_book",
     "count": 1,
     "nbt": {"patchouli:book":"opolisutilities:opolis_book"}
-    }
+  }
 }
