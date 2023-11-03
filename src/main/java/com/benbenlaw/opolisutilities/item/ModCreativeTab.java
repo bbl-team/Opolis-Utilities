@@ -40,6 +40,7 @@ public class ModCreativeTab {
                 output.accept(ModItems.MINI_COAL.get());
                 output.accept(ModItems.LEAFY_STRING.get());
                 output.accept(ModItems.SOAKED_PAPER.get());
+                output.accept(ModItems.SAPLING_GROWER.get());
 
                 output.accept(ModBlocks.DRYING_TABLE.get());
                 output.accept(ModItems.FLOATING_BLOCK.get());
@@ -50,7 +51,7 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.DEEPSLATE_ENDER_ORE.get());
                 output.accept(ModBlocks.REDSTONE_CLOCK.get());
                 output.accept(ModBlocks.ENDER_SCRAMBLER.get());
-                output.accept(ModItems.ENDER_SCRAMBLER_CONFIGURATOR.get());
+                output.accept(ModItems.OPOLIS_WRENCH.get());
                 output.accept(ModBlocks.CATALOGUE.get());
                 output.accept(ModItems.CATALOGUE_BOOK.get());
                 output.accept(ModBlocks.ITEM_REPAIRER.get());

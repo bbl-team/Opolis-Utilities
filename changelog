@@ -2,6 +2,12 @@ Changelog Opolis Utilities
 
 TODO: Shift Click Support for the wallet item in the catalogue
 TODO: Customizable redstone clock timer
+TODO: Customizable block placer speed
+TODO: Customizable block breaker speed
+
+2.6.1
+
+Fixed server crash on startup?
 
 2.6.0
 
@@ -12,10 +18,12 @@ Added all the items into the guide book and updated some old guide book informat
 Fixed guide book sometimes making a error on a world reload
 Removed dev catalogue recipes
 Wallet now stacks to 1
-Added Ender Scrambler Configurator used to configure the Ender Scrambler
-Ender Scrambler range can be increased and decreased using the configurator
-Ender Scrambler can be disabled and enabled using the configurator
-
+Added opolis wrench used to configure the Ender Scrambler(and other stuff)
+Ender Scrambler range can be increased and decreased using the opolis wrench
+Ender Scrambler can be disabled and enabled using the opolis wrench
+Added Sapling Grower, right click saplings to grow in world!
+Various opolis utilities block now display information when holding the opolis wrench
+Block breaker now runs every 40 ticks not every tick
 
 2.5.0
 

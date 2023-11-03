@@ -59,20 +59,6 @@ public class DryingTableMenu extends AbstractContainerMenu {
 
 
 
-    public int getScaledProgress(Level world, BlockPos pos) {
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof DryingTableBlockEntity) {
-            DryingTableBlockEntity dryingTable = (DryingTableBlockEntity) tileEntity;
-            int progress = this.data.get(0);
-            int maxProgress = this.data.get(1);
-            int progressArrowSize = 26;
-
-            return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
-        }
-        return 0;
-    }
-
-
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;

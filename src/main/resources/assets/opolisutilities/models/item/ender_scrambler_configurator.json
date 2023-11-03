@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "opolisutilities:item/ender_scrambler_configurator"
-  }
-}

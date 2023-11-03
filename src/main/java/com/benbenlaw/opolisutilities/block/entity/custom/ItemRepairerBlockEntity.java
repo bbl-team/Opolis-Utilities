@@ -203,10 +203,8 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                     pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
 
                 }
-
                 pBlockEntity.resetProgress();
                 setChanged(pLevel, pPos, pState);
-
             }
         }
 
@@ -216,18 +214,14 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             pBlockEntity.itemHandler.extractItem(0, 1, false);
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
-
         }
 
         if(!inputAsStack.isDamageableItem() && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty() ) {
-
             pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
             pBlockEntity.itemHandler.extractItem(0, copiedStack.getCount(), false);
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
-
         }
-
     }
 
     private void resetProgress() {

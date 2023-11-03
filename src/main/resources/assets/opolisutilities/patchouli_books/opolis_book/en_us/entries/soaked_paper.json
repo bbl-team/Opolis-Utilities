@@ -6,17 +6,12 @@
 	"pages": [
 		{
 			"type": "text",
-			"text": "Soaked paper can be dried in a drying table to make paper."
+			"text": "Soaked paper can be dried in a drying table to make paper. Soaked paper can be made in a Soaking Table (Waterlogged Drying Table)"
 		},
 		{
         	"type": "crafting",
         	"recipe": "opolisutilities:log_sheet",
         	"text": "Used to make soaked paper."
-        },
-		{
-        	"type": "crafting",
-        	"recipe": "opolisutilities:soaked_paper",
-        	"text": "Can be used to make paper."
         }
 	]
 }

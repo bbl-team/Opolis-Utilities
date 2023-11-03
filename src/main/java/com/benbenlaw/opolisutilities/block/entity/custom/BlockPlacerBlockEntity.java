@@ -227,5 +227,8 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
                 }
             }
         }
+        if (!level.isClientSide) {
+            ModMessages.sendToClients(new PacketSyncItemStackToClient(this.itemHandler, this.worldPosition));
+        }
     }
 }

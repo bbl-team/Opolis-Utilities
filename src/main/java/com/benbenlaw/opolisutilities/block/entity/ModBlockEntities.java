@@ -52,13 +52,13 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("redstone_clock_block_entity", () ->
                     BlockEntityType.Builder.of(RedstoneClockBlockEntity::new,
                             ModBlocks.REDSTONE_CLOCK.get()).build(null));
-/*
-    public static final RegistryObject<BlockEntityType<EnderScramblerBlockEntity>> ENDER_SCRAMBLER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("ender_scrambler_block_entity", () ->
-                    BlockEntityType.Builder.of(EnderScramblerBlockEntity::new,
-                            ModBlocks.ENDER_SCRAMBLER.get()).build(null));
 
- */
+    public static final RegistryObject<BlockEntityType<FanBlockEntity>> FAN_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("fan_block_entity", () ->
+                    BlockEntityType.Builder.of(FanBlockEntity::new,
+                            ModBlocks.FAN.get()).build(null));
+
+
 
     public static final RegistryObject<BlockEntityType<EnderScramblerBlockEntity>> ENDER_SCRAMBLER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("ender_scrambler_block_entity", () ->

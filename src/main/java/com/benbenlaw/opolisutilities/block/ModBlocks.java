@@ -99,6 +99,12 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)));
 
+    public static final RegistryObject<Block> FAN = registerBlock("fan",
+            () -> new FanBlock(BlockBehaviour.Properties.of()
+                    .strength(4.5f,3.0f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE)));
+
 
 
 

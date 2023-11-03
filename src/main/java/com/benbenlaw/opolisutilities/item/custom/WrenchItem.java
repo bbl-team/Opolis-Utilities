@@ -28,8 +28,8 @@ import java.util.List;
 
 import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.*;
 
-public class ScramblerItem extends Item {
-    public ScramblerItem(Properties p_41383_) {
+public class WrenchItem extends Item {
+    public WrenchItem(Properties p_41383_) {
         super(p_41383_);
     }
 
@@ -50,17 +50,17 @@ public class ScramblerItem extends Item {
 
                         int currentRange = blockState.getValue(SCRAMBLER_RANGE);
 
-                        if (hand.equals(InteractionHand.MAIN_HAND) && player.getItemInHand(hand).is(ModItems.ENDER_SCRAMBLER_CONFIGURATOR.get())) {
+                        if (hand.equals(InteractionHand.MAIN_HAND) && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get())) {
 
-                            if (!player.isCrouching() && player.getItemInHand(hand).is(ModItems.ENDER_SCRAMBLER_CONFIGURATOR.get()) && currentRange < maxRange) {
+                            if (!player.isCrouching() && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get()) && currentRange < maxRange) {
                                 level.setBlockAndUpdate(blockPos, blockState.setValue(EnderScramblerBlock.SCRAMBLER_RANGE, currentRange + 1));
                                 return InteractionResultHolder.success(this.getDefaultInstance());
-                            } else if (player.isCrouching() && player.getItemInHand(hand).is(ModItems.ENDER_SCRAMBLER_CONFIGURATOR.get()) && currentRange > minRange) {
+                            } else if (player.isCrouching() && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get()) && currentRange > minRange) {
                                 level.setBlockAndUpdate(blockPos, blockState.setValue(EnderScramblerBlock.SCRAMBLER_RANGE, currentRange - 1));
                                 return InteractionResultHolder.success(this.getDefaultInstance());
                             }
                         }
-                        else if (hand.equals(InteractionHand.OFF_HAND) && player.getItemInHand(hand).is(ModItems.ENDER_SCRAMBLER_CONFIGURATOR.get())) {
+                        else if (hand.equals(InteractionHand.OFF_HAND) && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get())) {
                             if (blockState.getValue(POWERED).equals(true)) {
                                 level.setBlockAndUpdate(blockPos, blockState.setValue(POWERED, false));
                                 return InteractionResultHolder.success(this.getDefaultInstance());

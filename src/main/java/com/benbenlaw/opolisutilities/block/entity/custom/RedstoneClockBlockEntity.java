@@ -23,12 +23,10 @@ public class RedstoneClockBlockEntity extends BlockEntity {
         // Only execute the rest of the code if the counter is a multiple of 20
 
         int tickRate = 80;
-
         if (entity.counter % tickRate == 0 && blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {
 
             level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.POWERED, true));
         }
-
         else if (entity.counter % tickRate == 40 && blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {
 
             level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.POWERED, false));

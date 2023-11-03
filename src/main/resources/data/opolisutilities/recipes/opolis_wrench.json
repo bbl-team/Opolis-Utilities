@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "FFF",
-    "FSF",
-    "FFF"
+    "EEE",
+    "ESE",
+    "EEE"
   ],
   "key": {
     "S": {
       "tag": "forge:rods/wooden"
     },
-    "F": {
+    "E": {
       "item": "opolisutilities:ender_pearl_fragment"
     }
   },
   "result": {
-    "item": "opolisutilities:ender_scrambler_configurator"
+    "item": "opolisutilities:ender_scrambler"
   }
 }

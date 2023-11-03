@@ -84,8 +84,11 @@ public class ModItems {
     public static final RegistryObject<Item> CATALOGUE_BOOK = ITEMS.register("catalogue_book",
             () -> new CatalogueBook(new Item.Properties()));
 
-    public static final RegistryObject<Item> ENDER_SCRAMBLER_CONFIGURATOR = ITEMS.register("ender_scrambler_configurator",
-            () -> new ScramblerItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> OPOLIS_WRENCH = ITEMS.register("opolis_wrench",
+            () -> new WrenchItem(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> SAPLING_GROWER = ITEMS.register("sapling_grower",
+            () -> new SaplingGrower(new Item.Properties().stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

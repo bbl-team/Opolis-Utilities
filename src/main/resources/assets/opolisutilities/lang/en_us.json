@@ -25,7 +25,8 @@
   "item.opolisutilities.mini_charcoal": "Mini Charcoal",
   "item.opolisutilities.catalogue_book": "Catalogue Book (BETA)",
   "item.opolisutilities.crook": "Crook (BETA)",
-  "item.opolisutilities.ender_scrambler_configurator": "Ender Scrambler Configurator (BETA)",
+  "item.opolisutilities.opolis_wrench": "Opolis Wrench (BETA)",
+  "item.opolisutilities.sapling_grower": "Sapling Grower (BETA)",
 
 
 
@@ -57,6 +58,7 @@
   "tooltips.death_stone.going_saved_location": "Returning to your latest death",
   "tooltips.death_stone.shift.held": "Right click to return to your latest death point. Works across any dimension",
   "tooltips.ender_scrambler.shift.held": "Place down to prevent enderman from teleporting away!",
+  "tooltips.ender_scrambler.shift.held": "Place down to push entities in a certain direction!",
   "tooltips.wallet.hover.shift": "Press SHIFT for more info",
   "tooltips.wallet.shift.held": "With the wallet in your off hand, shift right click %s in your main hand to add them to your wallet! Right click to remove %s!",
   "tooltips.wallet.no_b_bucks": "Your wallet is empty!",
