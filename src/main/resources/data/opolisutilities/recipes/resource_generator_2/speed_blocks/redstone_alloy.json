@@ -1,0 +1,14 @@
+{
+  "conditions": [
+     {
+        "type": "forge:not",
+        "value": {
+           "type": "forge:tag_empty",
+           "tag": "forge:storage_blocks/redstone_alloy"
+        }
+     }
+  ],
+  "type": "opolisutilities:rg2_speed_blocks",
+  "block": "forge:storage_blocks/redstone_alloy",
+  "tickRate": 70
+}

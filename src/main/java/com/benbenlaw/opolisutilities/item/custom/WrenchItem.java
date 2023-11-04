@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -33,48 +34,44 @@ public class WrenchItem extends Item {
         super(p_41383_);
     }
 
-
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+
+        Level level = pContext.getLevel();
+        Player player = pContext.getPlayer();
 
         if (!level.isClientSide()) {
 
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.screen == null) {
-                HitResult hitResult = minecraft.hitResult;
-                if (hitResult instanceof BlockHitResult hit) {
-                    BlockPos blockPos = hit.getBlockPos();
-                    BlockState blockState = minecraft.level.getBlockState(blockPos);
+            BlockPos blockPos = pContext.getClickedPos();
+            BlockState blockState = level.getBlockState(blockPos);
 
-                    if (blockState.is(ModBlocks.ENDER_SCRAMBLER.get())) {
+            if (blockState.is(ModBlocks.ENDER_SCRAMBLER.get())) {
 
-                        int currentRange = blockState.getValue(SCRAMBLER_RANGE);
+                int currentRange = blockState.getValue(SCRAMBLER_RANGE);
 
-                        if (hand.equals(InteractionHand.MAIN_HAND) && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get())) {
+                assert player != null;
+                if (player.getMainHandItem().is(ModItems.OPOLIS_WRENCH.get())) {
 
-                            if (!player.isCrouching() && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get()) && currentRange < maxRange) {
-                                level.setBlockAndUpdate(blockPos, blockState.setValue(EnderScramblerBlock.SCRAMBLER_RANGE, currentRange + 1));
-                                return InteractionResultHolder.success(this.getDefaultInstance());
-                            } else if (player.isCrouching() && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get()) && currentRange > minRange) {
-                                level.setBlockAndUpdate(blockPos, blockState.setValue(EnderScramblerBlock.SCRAMBLER_RANGE, currentRange - 1));
-                                return InteractionResultHolder.success(this.getDefaultInstance());
-                            }
-                        }
-                        else if (hand.equals(InteractionHand.OFF_HAND) && player.getItemInHand(hand).is(ModItems.OPOLIS_WRENCH.get())) {
-                            if (blockState.getValue(POWERED).equals(true)) {
-                                level.setBlockAndUpdate(blockPos, blockState.setValue(POWERED, false));
-                                return InteractionResultHolder.success(this.getDefaultInstance());
-                            } else if (blockState.getValue(POWERED).equals(false)) {
-                                level.setBlockAndUpdate(blockPos, blockState.setValue(POWERED, true));
-                                return InteractionResultHolder.success(this.getDefaultInstance());
-                            }
-                        }
+                    if (!player.isCrouching() && currentRange < maxRange) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(EnderScramblerBlock.SCRAMBLER_RANGE, currentRange + 1));
+                        return InteractionResult.SUCCESS;
+                    } else if (player.isCrouching() && currentRange > minRange) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(EnderScramblerBlock.SCRAMBLER_RANGE, currentRange - 1));
+                        return InteractionResult.SUCCESS;
+                    }
+                } else if (player.getOffhandItem().is(ModItems.OPOLIS_WRENCH.get())) {
+                    if (blockState.getValue(POWERED).equals(true)) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(POWERED, false));
+                        return InteractionResult.SUCCESS;
+                    } else if (blockState.getValue(POWERED).equals(false)) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(POWERED, true));
+                        return InteractionResult.SUCCESS;
                     }
                 }
             }
         }
 
-        return super.use(level, player, hand);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

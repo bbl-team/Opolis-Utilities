@@ -5,6 +5,27 @@ TODO: Customizable redstone clock timer
 TODO: Customizable block placer speed
 TODO: Customizable block breaker speed
 
+2.6.5
+
+Fixed wrong texture for rg2 recipes
+
+2.6.4
+
+Fixed rendering for rg2 recipes
+
+2.6.3
+
+Fixed sapling grower on servers
+Added more speed blocks for resource generators 2
+    Nether Star Blocks, Blutonium, Compressed Iron, Conductive Iron, Cyanite, Graphite, Glowstone, Obsidian, Pulsating Alloy, Redstone Alloy, Yellorium,
+    End Steel, Soularium, Energetic Alloy, Vibrant Alloy, Dark Steel
+Speed Caps now render in JEI like the resource generators to make it easy to view all blocks
+
+
+2.6.2
+
+Fixed ender scrambler not being configurable on a server
+
 2.6.1
 
 Fixed server crash on startup?
