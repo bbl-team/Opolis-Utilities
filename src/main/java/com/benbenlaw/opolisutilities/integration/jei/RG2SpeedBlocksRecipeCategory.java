@@ -31,6 +31,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlocksRecipe> {
@@ -80,7 +83,10 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
     public void setRecipe(IRecipeLayoutBuilder builder, RG2SpeedBlocksRecipe recipe, IFocusGroup focusGroup) {
         tabs_used++;
 
-        List<RG2SpeedBlocksRecipe> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RG2SpeedBlocksRecipe.Type.INSTANCE);
+        List<RG2SpeedBlocksRecipe> recipes = new ArrayList<>(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RG2SpeedBlocksRecipe.Type.INSTANCE));
+
+        // Sort the recipes by duration
+        Collections.sort(recipes, Comparator.comparingInt(RG2SpeedBlocksRecipe::getTickRate));
 
         for (int i = 0; i < recipes.size(); i++) {
             final int slotX = 4 + (i % 9 * 19);
@@ -102,6 +108,7 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
             }
         }
     }
+
 
 
     @Contract(pure = true)
