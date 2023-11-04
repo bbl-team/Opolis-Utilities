@@ -35,27 +35,6 @@ public class SaplingGrower extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
-        if (!level.isClientSide()) {
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.screen == null) {
-                HitResult hitResult = minecraft.hitResult;
-                if (hitResult instanceof BlockHitResult hit) {
-                    BlockPos blockPos = hit.getBlockPos();
-                    assert minecraft.level != null;
-                    BlockState blockState = minecraft.level.getBlockState(blockPos);
-                    if (blockState.is(BlockTags.SAPLINGS)) {
-                        applyBonemeal(player.getItemInHand(hand), level, blockPos, player);
-                        return InteractionResultHolder.success(this.getDefaultInstance());
-                    }
-                }
-            }
-        }
-        return super.use(level, player, hand);
-    }
-
-    @Override
     public @NotNull InteractionResult useOn(UseOnContext pContext) {
 
         Level level = pContext.getLevel();
@@ -76,8 +55,6 @@ public class SaplingGrower extends Item {
         }
         return InteractionResult.FAIL;
     }
-
-
 
     public static void applyBonemeal(ItemStack stack, Level level, BlockPos blockPos, Player player) {
         BlockState blockstate = level.getBlockState(blockPos);
