@@ -167,7 +167,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
     }
 
     public void slotsChanged(@NotNull Container pInventory) {
-        ItemStack itemstack = this.inputSlot.getItem();
+        ItemStack itemstack = this.inputSlot.getItem().copy();
         this.setupRecipeList(pInventory, itemstack);
         this.input = itemstack.copy();
 

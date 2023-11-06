@@ -4,9 +4,11 @@ TODO: Shift Click Support for the wallet item in the catalogue
 TODO: Customizable redstone clock timer
 TODO: Customizable block placer speed
 TODO: Customizable block breaker speed
+
 2.6.7
 
-Fix scrambler tooltip (NYI)
+Fixed scrambler tooltip
+Fixed wallet not working correctly in catalogues on servers
 
 2.6.6
 

@@ -46,9 +46,11 @@ import static com.benbenlaw.opolisutilities.OpolisUtilities.MOD_ID;
 
 public class WalletItem extends Item {
     public static final ResourceLocation WALLET_CAP = new ResourceLocation(MOD_ID, "wallet");
+
     public static class WalletSlot {
         private final ResourceLocation RL;
         private final AtomicInteger integer;
+
         public WalletSlot(ResourceLocation RL) {
             this.RL = RL;
             this.integer = new AtomicInteger();
@@ -69,8 +71,6 @@ public class WalletItem extends Item {
         public boolean isSame(ItemStack stack) {
             return getItem() != null && stack.is(getItem());
         }
-
-
 
         // Returns null if item doesn't exist
         public Item getItem() {
@@ -109,8 +109,6 @@ public class WalletItem extends Item {
                 return ITEMS.size();
             }
 
-            // Only Insert/Extract
-            // Use getItemInSlot() instead.
             @Override
             public @NotNull ItemStack getStackInSlot(int slot) {
                 return ItemStack.EMPTY;
@@ -214,6 +212,7 @@ public class WalletItem extends Item {
                 });
             }
         }
+
         private final WalletItemHandler handler;
         private final LazyOptional<IItemHandler> ITEMLO;
 
@@ -319,19 +318,18 @@ public class WalletItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
 
-        if(Screen.hasShiftDown()) {
+        if (Screen.hasShiftDown()) {
             components.add(Component.translatable("tooltips.wallet.shift.held", getCurrencyName(), getCurrencyName())
                     .withStyle(ChatFormatting.GREEN));
-        }
-        else {
+        } else {
             components.add(Component.translatable("tooltips.wallet.hover.shift").withStyle(ChatFormatting.BLUE));
         }
 
-        if(Screen.hasShiftDown()) {
+        if (Screen.hasShiftDown()) {
 
             LazyOptional<IItemHandler> handlerLazyOptional = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
 
-            if(handlerLazyOptional.isPresent()) {
+            if (handlerLazyOptional.isPresent()) {
                 handlerLazyOptional.ifPresent(e -> {
                     if (e.getSlots() > 0) {
                         components.add(Component.literal("This wallet contains:").withStyle(ChatFormatting.GREEN));
@@ -349,92 +347,7 @@ public class WalletItem extends Item {
                 components.add(Component.literal("This Wallet Is Empty")
                         .withStyle(ChatFormatting.RED));
             }
-        }
-        else {
-            components.add(Component.translatable("tooltips.home_stone.hover.alt")
-                    .withStyle(ChatFormatting.BLUE));
-        }
-
-        super.appendHoverText(stack, level, components, flag);
-    }
-
-
-
-
-}
-
-        /*
-
-            //set x,y and x inside item nbt and playsound and print message
-
-            nbt.putFloat("b_bucks_amount", player.getOnPos().getX());
-
-
-          //  nbt.putString("dimension", player.getLevel().dimension().toString());
-
-            itemstack.setTag(nbt);
-            player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.2f,1);
-            player.sendSystemMessage(Component.translatable("tooltip.home_stone.location_set").withStyle(ChatFormatting.GREEN));
-        }
-
-        //Checks Location set if not nothing and send message
-
-        if (!level.isClientSide() && level.dimension().equals(Level.OVERWORLD) && hand == InteractionHand.MAIN_HAND && !nbt.contains("x")) {
-            player.playNotifySound(SoundEvents.SHIELD_BLOCK, SoundSource.AMBIENT, 0.2f,1);
-            player.sendSystemMessage(Component.translatable("tooltip.home_stone.no_location").withStyle(ChatFormatting.RED));
-        }
-
-        //If location Set tps
-        else if (!level.isClientSide() && level.dimension().equals(Level.OVERWORLD) && hand == InteractionHand.MAIN_HAND){
-
-            player.teleportTo(nbt.getFloat("x") + 0.5, nbt.getFloat("y")+ 1, nbt.getFloat("z")+ 0.5);
-
-            player.getCooldowns().addCooldown(this, ConfigFile.homeStoneCooldown.get());
-
-            player.playNotifySound(SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.2f,1);
-            player.sendSystemMessage(Component.translatable("tooltip.home_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
-
-            if(ConfigFile.homeStoneTakesDamage.get().equals(true)) {
-
-                player.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, player,
-                        (damage) -> player.broadcastBreakEvent(player.getUsedItemHand()));
-            }
-
-        }
-        return super.use(level, player, hand);
-    }
-
-
-    //Tooltip
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-
-        if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.home_stone.shift.held")
-                    .withStyle(ChatFormatting.GREEN));
-            }
-        else {
-            components.add(Component.translatable("tooltips.home_stone.hover.shift").withStyle(ChatFormatting.BLUE));
-        }
-
-        if(Screen.hasAltDown()) {
-
-            if(stack.hasTag()) {
-
-                components.add(Component.literal(String.valueOf("X: " + stack.getTag().getFloat("x")))
-                        .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Y: " + stack.getTag().getFloat("y")))
-                        .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal(String.valueOf("Z: " + stack.getTag().getFloat("z")))
-                        .withStyle(ChatFormatting.GREEN));
-            }
-            if(!stack.hasTag()) {
-                components.add(Component.translatable("tooltips.home_stone.no_location_set")
-                        .withStyle(ChatFormatting.RED));
-            }
-        }
-        else {
+        } else {
             components.add(Component.translatable("tooltips.home_stone.hover.alt")
                     .withStyle(ChatFormatting.BLUE));
         }
@@ -443,7 +356,6 @@ public class WalletItem extends Item {
     }
 }
 
-*/
 
 
 
