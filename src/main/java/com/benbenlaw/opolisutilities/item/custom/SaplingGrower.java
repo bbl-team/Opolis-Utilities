@@ -65,9 +65,10 @@ public class SaplingGrower extends Item {
             if (bonemealableblock.isValidBonemealTarget(level, blockPos, blockstate, level.isClientSide)) {
                 if (level instanceof ServerLevel) {
                     if (bonemealableblock.isBonemealSuccess(level, level.random, blockPos, blockstate)) {
-                        bonemealableblock.performBonemeal((ServerLevel)level, level.random, blockPos, blockstate);
+                        bonemealableblock.performBonemeal((ServerLevel) level, level.random, blockPos, blockstate);
                     }
-                    stack.shrink(1);
+
+                    //Dont remove till 2.3.0
                 }
             }
         }
