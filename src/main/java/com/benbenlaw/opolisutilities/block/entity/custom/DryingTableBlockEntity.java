@@ -244,7 +244,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         }
 
 
-        if (entity.getBlockState().getValue(WATERLOGGED) && matchSoaking.isPresent()) {
+        else if (entity.getBlockState().getValue(WATERLOGGED) && matchSoaking.isPresent()) {
 
             maxProgress = matchSoaking.get().getDuration();
 
@@ -275,7 +275,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             Optional<DryingTableRecipe> match = level.getRecipeManager()
                     .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
-            if (match.isPresent()) {
+            if (match.isPresent() && !entity.getBlockState().getValue(WATERLOGGED)) {
 
                 entity.itemHandler.extractItem(0, match.get().getCount(), false);
                 assert Minecraft.getInstance().level != null;
@@ -291,7 +291,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             Optional<SoakingTableRecipe> matchSoaking = level.getRecipeManager()
                     .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);
 
-            if (matchSoaking.isPresent()) {
+            if (matchSoaking.isPresent() && entity.getBlockState().getValue(WATERLOGGED)) {
 
                 entity.itemHandler.extractItem(0, matchSoaking.get().getCount(), false);
                 assert Minecraft.getInstance().level != null;

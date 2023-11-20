@@ -129,6 +129,8 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
+    runtimeOnly fg.deobf("curse.maven:caveopolis-mod-639186:4844960")
+
 //    runtimeOnly fg.deobf("curse.maven:patchouli-306770:4636289")
 
     // Examples using mod jars from ./libs

@@ -17,6 +17,7 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<Integer> crookBoost;
     public static final ForgeConfigSpec.ConfigValue<Integer> maxScramblerRange;
     public static final ForgeConfigSpec.ConfigValue<Integer> minScramblerRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> totalGrowthAttempts;
 
     static {
         BUILDER.push("Opolis Utilities Config File");
@@ -47,6 +48,9 @@ public final class ConfigFile {
 
         minScramblerRange = BUILDER.comment("The min range of the Ender Scrambler")
                 .define("(WIP)Min Ender Scrambler Range", 8);
+
+        totalGrowthAttempts = BUILDER.comment("The number of attempts to grow a sapling per right right")
+                .define("(WIP)Total Attempts for Sapling Grower", 128);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
