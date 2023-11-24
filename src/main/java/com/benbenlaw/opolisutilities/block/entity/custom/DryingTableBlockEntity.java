@@ -278,11 +278,16 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             if (match.isPresent() && !entity.getBlockState().getValue(WATERLOGGED)) {
 
                 entity.itemHandler.extractItem(0, match.get().getCount(), false);
-                assert Minecraft.getInstance().level != null;
-                entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
-                        entity.itemHandler.getStackInSlot(1).getCount() + match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount()));
 
-                entity.resetProgress();
+                ItemStack resultItem = new ItemStack(match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
+                        entity.itemHandler.getStackInSlot(1).getCount() + 1);
+                CompoundTag resultItemNBT = match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getTag();
+
+                if (resultItemNBT != null) {
+                    resultItem.setTag(resultItemNBT);
+                }
+
+                entity.itemHandler.setStackInSlot(1, resultItem);
 
             }
 
@@ -294,11 +299,16 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             if (matchSoaking.isPresent() && entity.getBlockState().getValue(WATERLOGGED)) {
 
                 entity.itemHandler.extractItem(0, matchSoaking.get().getCount(), false);
-                assert Minecraft.getInstance().level != null;
-                entity.itemHandler.setStackInSlot(1, new ItemStack(matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
-                        entity.itemHandler.getStackInSlot(1).getCount() + matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount()));
 
-                entity.resetProgress();
+                ItemStack resultItem = new ItemStack(matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
+                        entity.itemHandler.getStackInSlot(1).getCount() + 1);
+                CompoundTag resultItemNBT = matchSoaking.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getTag();
+
+                if (resultItemNBT != null) {
+                    resultItem.setTag(resultItemNBT);
+                }
+
+                entity.itemHandler.setStackInSlot(1, resultItem);
 
             }
         }

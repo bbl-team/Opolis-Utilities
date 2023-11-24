@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,10 +27,12 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.io.Console;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -170,8 +173,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
-
-
     }
 
     private boolean hasRecipe(ResourceGeneratorBlockEntity entity) {
@@ -191,7 +192,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         assert Minecraft.getInstance().level != null;
         return
                 canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess())) &&
-         hasDuration(match.get());
+                hasDuration(match.get());
     }
 
     private void craftItem(ResourceGeneratorBlockEntity entity) {
@@ -206,15 +207,19 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 .getRecipeFor(ResourceGeneratorRecipe.Type.INSTANCE, inventory, level);
 
         if (match.isPresent()) {
-            if (entity.itemHandler.getStackInSlot(0).hurt(1, level.random, null)) {
-                entity.itemHandler.extractItem(0, 1, false);
-            }
 
             assert Minecraft.getInstance().level != null;
-            entity.itemHandler.setStackInSlot(1, new ItemStack(match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
-                    entity.itemHandler.getStackInSlot(1).getCount() + 1));
+            ItemStack resultItem = new ItemStack(match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
+                    entity.itemHandler.getStackInSlot(1).getCount() + 1);
+            CompoundTag resultItemNBT = match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getTag();
 
+            if (resultItemNBT != null) {
+                resultItem.setTag(resultItemNBT);
+            }
+
+            entity.itemHandler.setStackInSlot(1, resultItem);
             entity.resetProgress();
+
         }
     }
 
@@ -246,5 +251,9 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         for (int i = 0; i < handler.getSlots(); i++) {
             itemHandler.setStackInSlot(i, handler.getStackInSlot(i));
         }
+    }
+
+    public boolean inputItemHasCorrectNBT(SimpleContainer inventory, ResourceGeneratorRecipe recipe) {
+        return recipe.getIngredients().get(0).getItems()[0].getTag() == inventory.getItem(0).getTag();
     }
 }
