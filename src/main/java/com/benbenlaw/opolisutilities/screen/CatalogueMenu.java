@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CatalogueMenu extends   AbstractContainerMenu {
@@ -197,8 +198,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                 this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, pContainer, this.level);
             }
         }
-        if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1)
-        {
+        if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1) {
             for(int i = 0; i < this.recipes.size(); i++){
                 if(this.recipes.get(i) == this.lastUsedRecipe) {
                     this.selectedRecipeIndex.set(i);
@@ -206,6 +206,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
                 }
             }
         }
+        this.recipes = this.recipes.stream().sorted(Comparator.comparing(r -> r.getId().toString())).toList();
         this.recipesSize = this.recipes.size();
 
         if(!this.input.is(pStack.getItem()) || pStack.getCount() != this.input.getCount()) {
