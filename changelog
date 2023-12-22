@@ -8,6 +8,36 @@ TODO: Sapling grower damage
 TODO: Fix config file (1.21)
 TODO: add catalogue nbt
 TODO: add recipe input nbts (1.21)
+TODO: Banned in Item repairer tag
+TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
+
+2.7.1
+
+TODO: Remove BETA branding
+
+2.7.0
+
+
+Added KubeJS Support for all recipes in Opolis Utilities
+    Examples:
+    //DRYING TABLE (output, input, in count, ticks
+    event.recipes.opolisutilities.drying_table("minecraft:dirt", "minecraft:diamond_block", 10, 100)
+    //SOAKING TABLE (output, input, in count, ticks
+    event.recipes.opolisutilities.soaking_table("minecraft:diamond_block", "minecraft:emerald_block", 13, 100)
+    //Resource Generator 2 Blocks (block)
+    event.recipes.opolisutilities.rg2_blocks("minecraft:dirt")
+    //Resource Generator Items (output, input, ticks)
+    event.recipes.opolisutilities.resource_generator("minecraft:diamond", "minecraft:emerald", 300)
+    //Fluid Generator (fluid, amount produced)
+    event.recipes.opolisutilities.fluid_generator("minecraft:water", 400)
+    //Speed Blocks (block, tick rate)
+    event.recipes.opolisutilities.rg2_speed_blocks("minecraft:gravel", 100)
+    //Catalogue (output, input, in_count, out_count
+    event.recipes.opolisutilities.catalogue("minecraft:gravel", "minecraft:emerald", 2, 4)
+
+2.6.11
+
+Using the wallet in the catalogue now displays the recipe in the correct order and selects the correct item
 
 2.6.10
 

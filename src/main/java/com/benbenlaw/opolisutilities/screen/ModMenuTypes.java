@@ -14,7 +14,6 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, OpolisUtilities.MOD_ID);
 
-
     public static final RegistryObject<MenuType<BlockBreakerMenu>> BLOCK_BREAKER_MENU =
             registerMenuType(BlockBreakerMenu::new, "block_breaker_menu");
 

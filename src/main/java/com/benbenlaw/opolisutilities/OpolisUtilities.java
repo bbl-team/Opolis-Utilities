@@ -22,11 +22,14 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 @Mod(OpolisUtilities.MOD_ID)
 public class OpolisUtilities {
     public static final String MOD_ID = "opolisutilities";
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public OpolisUtilities() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -39,6 +42,7 @@ public class OpolisUtilities {
         ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
         ModEnchantments.register(modEventBus);
+
         Capabilities.register(MinecraftForge.EVENT_BUS);
 
         modEventBus.addListener(this::commonSetup);
