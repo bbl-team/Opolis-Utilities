@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RedstoneClockBlockEntity extends BlockEntity {
-    // Add a counter variable
     private int counter = 0;
 
     public RedstoneClockBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -19,8 +18,6 @@ public class RedstoneClockBlockEntity extends BlockEntity {
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, RedstoneClockBlockEntity entity) {
         // Increment the counter
         entity.counter++;
-
-        // Only execute the rest of the code if the counter is a multiple of 20
 
         int tickRate = 80;
         if (entity.counter % tickRate == 0 && blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {

@@ -15,6 +15,10 @@ TODO: Make recipes more consistent with values (eg. ingredient and ingredients) 
 
 TODO: Remove BETA branding
 
+2.7.1
+
+Fixed Drying Table and Soaking Table progress not being reset correctly
+
 2.7.0
 
 

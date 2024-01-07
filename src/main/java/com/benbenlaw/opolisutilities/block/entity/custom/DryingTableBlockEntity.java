@@ -45,6 +45,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            assert level != null;
             if(!level.isClientSide()) {
                 ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
@@ -291,7 +292,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
             }
 
-            //SOKAING
+            //SOAKING
 
             Optional<SoakingTableRecipe> matchSoaking = level.getRecipeManager()
                     .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);
@@ -311,6 +312,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                 entity.itemHandler.setStackInSlot(1, resultItem);
 
             }
+
+            resetProgress();
         }
     }
     private void resetProgress() {
