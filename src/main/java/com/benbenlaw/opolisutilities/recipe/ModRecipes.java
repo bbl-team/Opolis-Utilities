@@ -30,6 +30,9 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<FluidGeneratorRecipe>> FLUID_GENERATOR_SERIALIZER =
             SERIALIZER.register("fluid_generator", () -> FluidGeneratorRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<UpgradeRecipeUtil>> UPGRADE_RECIPE_UTIL_SERIALIZER =
+            SERIALIZER.register("upgrades", () -> UpgradeRecipeUtil.Serializer.INSTANCE);
+
     public static final RegistryObject<RecipeSerializer<CatalogueRecipe>> CATALOGUE_SERIALIZER =
             SERIALIZER.register("catalogue", () -> CatalogueRecipe.Serializer.INSTANCE);
 

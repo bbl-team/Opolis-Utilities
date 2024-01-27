@@ -43,6 +43,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
     public static RecipeType<SoakingTableRecipe> SOAKING_TABLE =
             new RecipeType<>(SoakingTableRecipeCategory.UID, SoakingTableRecipe.class);
 
+    public static RecipeType<UpgradeRecipeUtil> UPGRADE_RECIPE_UTIL =
+            new RecipeType<>(UpgradeRecipeUtilCategory.UID, UpgradeRecipeUtil.class);
+
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(OpolisUtilities.MOD_ID, "jei_plugin");
@@ -58,6 +61,8 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), FluidGeneratorRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), CatalogueRecipeCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), UpgradeRecipeUtilCategory.RECIPE_TYPE);
     }
 
     @Override
@@ -83,6 +88,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 CatalogueRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new
+                UpgradeRecipeUtilCategory(registration.getJeiHelpers().getGuiHelper()));
     }
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
@@ -109,6 +117,9 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         List<SoakingTableRecipe> recipes8 = rm.getAllRecipesFor(SoakingTableRecipe.Type.INSTANCE);
         registration.addRecipes(new RecipeType<>(SoakingTableRecipeCategory.UID, SoakingTableRecipe.class), recipes8);
+
+        List<UpgradeRecipeUtil> recipes9 = rm.getAllRecipesFor(UpgradeRecipeUtil.Type.INSTANCE);
+        registration.addRecipes(new RecipeType<>(UpgradeRecipeUtilCategory.UID, UpgradeRecipeUtil.class), recipes9);
 
     }
 }
