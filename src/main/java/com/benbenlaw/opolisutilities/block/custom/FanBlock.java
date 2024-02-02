@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.block.entity.custom.EnderScramblerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.FanBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.stream.FactoryConfigurationError;
 import java.util.List;
 
 public class FanBlock extends BaseEntityBlock {

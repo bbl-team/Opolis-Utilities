@@ -2,18 +2,25 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +28,8 @@ import java.util.Objects;
 
 @JeiPlugin
 public class JEIOpolisUtilitiesPlugin implements IModPlugin {
+
+    public static IDrawableStatic slotDrawable;
 
     public static RecipeType<CatalogueRecipe> CATALOGUE_RECIPE =
             new RecipeType<>(CatalogueRecipeCategory.UID, CatalogueRecipe.class);
@@ -62,11 +71,15 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), CatalogueRecipeCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), UpgradeRecipeUtilCategory.RECIPE_TYPE);
+        //Empty Catalyst (No upgrade compatible machines in opolis utilities yet)
+        registration.addRecipeCatalyst(new ItemStack(ModItems.UPGRADE_BASE.get()) , UpgradeRecipeUtilCategory.RECIPE_TYPE);
+
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+
+        IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
 
         registration.addRecipeCategories(new
                 DryingTableRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -91,6 +104,8 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 UpgradeRecipeUtilCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        slotDrawable = guiHelper.getSlotDrawable();
     }
     @Override
     public void registerRecipes(IRecipeRegistration registration) {

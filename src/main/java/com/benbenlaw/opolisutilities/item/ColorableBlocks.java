@@ -1,18 +1,11 @@
 package com.benbenlaw.opolisutilities.item;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+
 import java.util.EnumMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public enum ColorableBlocks {
@@ -33,7 +26,7 @@ public enum ColorableBlocks {
     RED("red"),
     BLACK("black");
 
-    private String id;
+    private final String id;
     ColorableBlocks(String id) {
         this.id = id;
     }

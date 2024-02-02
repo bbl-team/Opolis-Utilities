@@ -2,16 +2,12 @@ package com.benbenlaw.opolisutilities.networking.packets;
 
 import com.benbenlaw.opolisutilities.capabillties.CapabillitySyncronizer;
 import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class PacketCapabilitySyncToClient {

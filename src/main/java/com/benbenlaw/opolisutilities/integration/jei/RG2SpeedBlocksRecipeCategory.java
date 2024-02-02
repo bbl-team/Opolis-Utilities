@@ -2,20 +2,17 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
 import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -29,8 +26,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,17 +34,18 @@ import java.util.List;
 public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlocksRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(OpolisUtilities.MOD_ID, "rg2_speed_blocks");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_speed_blocks.png");
+            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/jei_dynamic.png");
 
     static final RecipeType<RG2SpeedBlocksRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "rg2_speed_blocks",
             RG2SpeedBlocksRecipe.class);
 
-    private final IDrawable background;
+    private IDrawable background;
     private final IDrawable icon;
-    private final int tabs = 1;
+    private final IGuiHelper helper;
     private int tabs_used = 0;
 
     public RG2SpeedBlocksRecipeCategory(IGuiHelper helper) {
+        this.helper = helper;
         this.background = helper.createDrawable(TEXTURE, 0, 0, 175, 114);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
     }
@@ -88,6 +84,14 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
         // Sort the recipes by duration
         Collections.sort(recipes, Comparator.comparingInt(RG2SpeedBlocksRecipe::getTickRate));
 
+        // Background Size
+        int numRows = (int) Math.ceil((double) recipes.size() / 9);
+        int numCols = Math.min(9, recipes.size()); // Maximum of 9 columns
+        int backgroundWidth = 4 + numCols * 19;
+        int backgroundHeight = 2 + numRows * 19;
+
+        background = helper.createDrawable(TEXTURE, 0, 0, backgroundWidth, backgroundHeight);
+
         for (int i = 0; i < recipes.size(); i++) {
             final int slotX = 4 + (i % 9 * 19);
             final int slotY = 2 + i / 9 * 19;
@@ -100,11 +104,15 @@ public class RG2SpeedBlocksRecipeCategory implements IRecipeCategory<RG2SpeedBlo
 
             if (rgBlock == Blocks.AIR ) {
                 builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addIngredients(Ingredient.of(itemTag)).addTooltipCallback(durationTime(duration));
-                builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addIngredients(Ingredient.of(itemTag)).addTooltipCallback(durationTime(duration));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addIngredients(Ingredient.of(itemTag)).addTooltipCallback(durationTime(duration))
+
+                        .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, slotX - (i % 9 * 19) - 5, slotY - (2 + i / 9 * 19)  - 1);
             } else {
                 assert rgBlock != null;
                 builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem())).addTooltipCallback(durationTime(duration));
-                builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem())).addTooltipCallback(durationTime(duration));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addItemStack(new ItemStack(rgBlock.asItem())).addTooltipCallback(durationTime(duration))
+
+                        .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, slotX - (i % 9 * 19) - 5, slotY - (2 + i / 9 * 19)  - 1);
             }
         }
     }

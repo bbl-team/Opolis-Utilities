@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -41,6 +40,7 @@ public class ModCreativeTab {
                 output.accept(ModItems.LEAFY_STRING.get());
                 output.accept(ModItems.SOAKED_PAPER.get());
                 output.accept(ModItems.SAPLING_GROWER.get());
+                output.accept(ModItems.UPGRADE_BASE.get());
 
                 output.accept(ModBlocks.DRYING_TABLE.get());
                 output.accept(ModItems.FLOATING_BLOCK.get());

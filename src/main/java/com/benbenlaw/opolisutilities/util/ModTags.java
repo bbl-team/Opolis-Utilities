@@ -28,6 +28,7 @@ public class ModTags {
     public static class Items {
 
         public static final TagKey<Item> WALLET_ITEM = tag("wallet_item");
+        public static final TagKey<Item> UPGRADES = tag("upgrades");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));

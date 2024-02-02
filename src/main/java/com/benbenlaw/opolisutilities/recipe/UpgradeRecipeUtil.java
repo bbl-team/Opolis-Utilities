@@ -1,16 +1,17 @@
 package com.benbenlaw.opolisutilities.recipe;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,21 +19,35 @@ public class UpgradeRecipeUtil implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack upgradeItem;
-    private final double outputIncrease;
-    private final double duration;
-    private final double rfPerTick;
+    private final double outputIncreaseChance;
+    private final int outputIncreaseAmount;
+    private final double durationMultiplier;
+    private final int durationSetAmount;
+    private final double rfPerTickMultiplier;
+    private final int rfPerTickAmount;
     private final double meshUseChance;
+    private final int meshExtraDamage;
     private final double inputItemConsumeChance;
+    private final int inputItemExtraAmount;
 
-
-    public UpgradeRecipeUtil(ResourceLocation id, ItemStack upgradeItem, double outputIncrease, double duration, double rfPerTick,  double meshUseChance, double inputItemConsumeChance) {
+    public UpgradeRecipeUtil(ResourceLocation id, ItemStack upgradeItem,
+                             double outputIncreaseChance, int outputIncreaseAmount,
+                             double durationMultiplier, int durationSetAmount,
+                             double rfPerTickMultiplier, int rfPerTickAmount,
+                             double meshUseChance, int meshExtraDamage,
+                             double inputItemConsumeChance, int inputItemExtraAmount) {
         this.id = id;
         this.upgradeItem = upgradeItem;
-        this.outputIncrease = outputIncrease;
-        this.duration = duration;
-        this.rfPerTick = rfPerTick;
+        this.outputIncreaseChance = outputIncreaseChance;
+        this.outputIncreaseAmount = outputIncreaseAmount;
+        this.durationMultiplier = durationMultiplier;
+        this.durationSetAmount = durationSetAmount;
+        this.rfPerTickMultiplier = rfPerTickMultiplier;
+        this.rfPerTickAmount = rfPerTickAmount;
         this.meshUseChance = meshUseChance;
+        this.meshExtraDamage = meshExtraDamage;
         this.inputItemConsumeChance = inputItemConsumeChance;
+        this.inputItemExtraAmount = inputItemExtraAmount;
     }
 
     @Override
@@ -44,12 +59,16 @@ public class UpgradeRecipeUtil implements Recipe<SimpleContainer> {
         return upgradeItem;
     }
 
-    public double getOutputIncrease() {
-        return outputIncrease;
+    public double getOutputIncreaseChance() {
+        return outputIncreaseChance;
+    }
+
+    public int getOutputIncreaseAmount() {
+        return outputIncreaseAmount;
     }
 
     public double getRFPerTick() {
-        return rfPerTick;
+        return rfPerTickMultiplier;
     }
 
     public double getMeshUseChance() {
@@ -60,8 +79,21 @@ public class UpgradeRecipeUtil implements Recipe<SimpleContainer> {
         return inputItemConsumeChance;
     }
 
-    public double getDuration() {
-        return this.duration;
+    public double getDurationMultiplier() {
+        return this.durationMultiplier;
+    }
+
+    public int getDurationSetAmount() {
+        return this.durationSetAmount;
+    }
+    public int getRfPerTickAmount() {
+        return this.rfPerTickAmount;
+    }
+    public int getMeshExtraDamage() {
+        return this.meshExtraDamage;
+    }
+    public int getInputItemExtraAmount() {
+        return this.inputItemExtraAmount;
     }
 
     @Override
@@ -113,35 +145,52 @@ public class UpgradeRecipeUtil implements Recipe<SimpleContainer> {
         @Override
         public UpgradeRecipeUtil fromJson(ResourceLocation id, JsonObject json) {
             ItemStack upgradeItem = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "item"));
-            double outputIncrease = GsonHelper.getAsDouble(json, "output_increase", 1);
-            double duration = GsonHelper.getAsDouble(json, "duration", 1);
-            double rfPerTick = GsonHelper.getAsDouble(json, "rf_per_tick", 1);
-            double meshUseChance = GsonHelper.getAsDouble(json, "mesh_use_chance", 1);
-            double inputItemConsumeChance = GsonHelper.getAsDouble(json, "input_item_consume_chance", 1);
+            double outputIncreaseChance = GsonHelper.getAsDouble(json, "output_increase_chance", 0.0);
+            int outputIncreaseAmount = GsonHelper.getAsInt(json, "output_increase_amount", 0);
+            double durationMultiplier = GsonHelper.getAsDouble(json, "duration_multiplier", 0.0);
+            int durationSetAmount = GsonHelper.getAsInt(json, "duration_set_amount", 0);
+            double rfPerTickMultiplier = GsonHelper.getAsDouble(json, "rf_per_tick_multiplier", 0.0);
+            int rfPerTickAmount = GsonHelper.getAsInt(json, "rf_per_tick_amount", 0);
+            double meshUseChance = GsonHelper.getAsDouble(json, "mesh_use_chance", 0.0);
+            int meshExtraDamage = GsonHelper.getAsInt(json, "mesh_extra_damage", 0);
+            double inputItemConsumeChance = GsonHelper.getAsDouble(json, "input_item_consume_chance", 0.0);
+            int inputItemExtraAmount = GsonHelper.getAsInt(json, "input_item_extra_amount", 0);
 
-            return new UpgradeRecipeUtil(id, upgradeItem, outputIncrease, duration, rfPerTick, meshUseChance, inputItemConsumeChance);
+            return new UpgradeRecipeUtil(id, upgradeItem, outputIncreaseChance, outputIncreaseAmount, durationMultiplier, durationSetAmount, rfPerTickMultiplier,
+                    rfPerTickAmount, meshUseChance, meshExtraDamage, inputItemConsumeChance, inputItemExtraAmount);
         }
 
         @Override
         public UpgradeRecipeUtil fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             ItemStack upgradeItem = buf.readItem();
-            double outputIncrease = buf.readDouble();
-            double duration = buf.readDouble();
-            double rfPerTick = buf.readDouble();
+            double outputIncreaseChance = buf.readDouble();
+            int outputIncreaseAmount = buf.readInt();
+            double durationMultiplier = buf.readDouble();
+            int durationSetAmount = buf.readInt();
+            double rfPerTickMultiplier = buf.readDouble();
+            int rfPerTickAmount = buf.readInt();
             double meshUseChance = buf.readDouble();
+            int meshExtraDamage = buf.readInt();
             double inputItemConsumeChance = buf.readDouble();
+            int inputItemExtraAmount = buf.readInt();
 
-            return new UpgradeRecipeUtil(id, upgradeItem, outputIncrease, duration, rfPerTick, meshUseChance, inputItemConsumeChance);
+            return new UpgradeRecipeUtil(id, upgradeItem, outputIncreaseChance, outputIncreaseAmount, durationMultiplier, durationSetAmount, rfPerTickMultiplier,
+                    rfPerTickAmount, meshUseChance, meshExtraDamage, inputItemConsumeChance, inputItemExtraAmount);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, UpgradeRecipeUtil recipe) {
             buf.writeItem(recipe.upgradeItem);
-            buf.writeDouble(recipe.outputIncrease);
-            buf.writeDouble(recipe.duration);
-            buf.writeDouble(recipe.rfPerTick);
+            buf.writeDouble(recipe.outputIncreaseChance);
+            buf.writeInt(recipe.outputIncreaseAmount);
+            buf.writeDouble(recipe.durationMultiplier);
+            buf.writeInt(recipe.durationSetAmount);
+            buf.writeDouble(recipe.rfPerTickMultiplier);
+            buf.writeInt(recipe.rfPerTickAmount);
             buf.writeDouble(recipe.meshUseChance);
+            buf.writeInt(recipe.meshExtraDamage);
             buf.writeDouble(recipe.inputItemConsumeChance);
+            buf.writeInt(recipe.inputItemExtraAmount);
         }
     }
 }

@@ -11,9 +11,58 @@ TODO: add recipe input nbts (1.21)
 TODO: Banned in Item repairer tag
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 
-2.7.2
+2.9.0 (PUBLIC
 
+Improved JEI visuals for various recipe types
+Added upgrade Base, Added Upgrade API, Added Upgrade Tag
+Imports Optimized
 TODO: Remove BETA branding
+
+2.8.13
+
+Optimized imports JEI Changes
+
+
+2.8.12
+
+null
+
+2.8.11
+
+Improved JEI support for all upgrades and RSG2 recipes
+
+2.8.10
+
+Added upgrade tag
+
+2.8.9
+
+JEI part 2
+
+2.8.8
+
+JEI STUFF
+
+2.8.6
+
+Added upgrade Base
+
+2.8.4, 2.8.5
+
+API
+
+2.8.3
+
+Added 2 new upgrade fields
+
+2.8.2
+
+Fixed getOutoutIncrease Chance not returning a int
+
+2.8.1
+
+Added more upgrade options
+If any field in the upgrade is missing its value is 0
 
 2.8.0
 

@@ -90,6 +90,10 @@ public class ModItems {
     public static final RegistryObject<Item> SAPLING_GROWER = ITEMS.register("sapling_grower",
             () -> new SaplingGrower(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> UPGRADE_BASE = ITEMS.register("upgrade_base",
+            () -> new Item(new Item.Properties()));
+
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

@@ -1,11 +1,9 @@
 package com.benbenlaw.opolisutilities.client;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.client.DryingTableBlockEntityRenderer;
 import com.benbenlaw.opolisutilities.event.HoverInWorldEvents;
-import com.benbenlaw.opolisutilities.event.ModEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;

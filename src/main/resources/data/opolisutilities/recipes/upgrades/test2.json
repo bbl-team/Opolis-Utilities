@@ -1,16 +1,16 @@
 {
   "type": "opolisutilities:upgrades",
   "item": {
-    "item": "minecraft:coal_ore"
+    "item": "minecraft:diamond_ore"
   },
-  "output_increase_chance" : 0.0,
+  "output_increase_chance" : 0.2,
   "output_increase_amount" : 0,
-  "duration_multiplier": 1.8,
+  "duration_multiplier": 1.0,
   "duration_set_amount": 0,
   "rf_per_tick_multiplier": 0.0,
   "rf_per_tick_amount": 0,
   "mesh_use_chance": 0.0,
   "mesh_extra_damage": 0,
-  "input_item_consume_chance": 1.0,
-  "input_item_extra_amount": 10
+  "input_item_consume_chance": 0.5,
+  "input_item_extra_amount": -1
 }

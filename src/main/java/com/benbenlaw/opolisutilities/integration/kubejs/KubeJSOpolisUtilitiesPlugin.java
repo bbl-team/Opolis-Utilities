@@ -1,8 +1,6 @@
 package com.benbenlaw.opolisutilities.integration.kubejs;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
-import com.benbenlaw.opolisutilities.recipe.RG2BlocksRecipe;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.recipe.schema.RegisterRecipeSchemasEvent;
