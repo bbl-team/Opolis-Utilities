@@ -2,7 +2,9 @@ package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
+import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
+import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class ItemRepairerMenu extends AbstractContainerMenu {
     private final ItemRepairerBlockEntity blockEntity;
@@ -34,7 +35,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 80, 18));
+            this.addSlot(new BlacklistTagInputSlot(handler, 0, 80, 18, ModTags.Items.BANNED_IN_ITEM_REPAIRER, 1));
             this.addSlot(new ModResultSlot(handler, 1, 80, 60));
       //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
       //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));

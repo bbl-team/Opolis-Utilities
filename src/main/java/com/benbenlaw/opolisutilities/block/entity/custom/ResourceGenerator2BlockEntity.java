@@ -9,6 +9,7 @@ import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -20,13 +21,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 
 public class ResourceGenerator2BlockEntity extends BlockEntity {
-    // Add a counter variable
-    private int counter = 0;
+    private int progress = 0;
+    private int maxProgress = 220;
+    public String resource;
     private boolean isValidStructure = false;
 
 
@@ -41,8 +44,7 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
         BlockPos blockPos = this.worldPosition;
         assert pLevel != null;
         ResourceGenerator2BlockEntity entity = this;
-        entity.counter++;
-        int tickRate = 220;
+        entity.progress++;
 
         if (!level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
 
@@ -51,21 +53,19 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
                 String blockName = match.getBlock();
                 Block speedBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
 
-
-                //1.19.2
-                //Block speedBlock = Registry.BLOCK.get(new ResourceLocation(blockName));
                 TagKey<Block> speedBlockTag = BlockTags.create(new ResourceLocation(blockName));
 
                 if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(speedBlockTag) ||
                         level.getBlockState(blockPos.above(2)).is(Objects.requireNonNull(speedBlock))) {
-                    tickRate = match.getTickRate();
+                    maxProgress = match.getTickRate();
+
                 }
             }
         }
 
         //Check valid structure
 
-        if (entity.counter % 5 == 0) {
+        if (entity.progress % 5 == 0) {
 
             for (RG2BlocksRecipe genBlocks : level.getRecipeManager().getRecipesFor(RG2BlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
 
@@ -80,14 +80,20 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
                 if (level.getBlockState(blockPos.above(1)).getBlockHolder().containsTag(genBlockTag) && !(genBlockTag == ModTags.Blocks.EMPTY)) {
                     isValidStructure = level.getBlockState(blockPos.above(1)).getBlockHolder().containsTag(genBlockTag);
                     level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGenerator2Block.LIT, true));
+                    resource = level.getBlockState(blockPos.above(1)).getBlock().toString();
                     break;
                 }
 
                 if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
                     isValidStructure = level.getBlockState(blockPos.above(1)).is(genBlockBlock) && !(genBlockBlock == Blocks.AIR);
                     level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGenerator2Block.LIT, true));
+                    resource = level.getBlockState(blockPos.above(1)).getBlock().toString();
+
                     break;
-                } else isValidStructure = false;
+                } else {
+                    isValidStructure = false;
+                    resource = "";
+                }
             }
         }
 
@@ -100,7 +106,8 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
             }
         }
 
-        if (entity.counter % tickRate == 0 && isValidStructure) {
+        if (progress >= maxProgress && isValidStructure) {
+            progress = 0;
 
             if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR_2.get())) {
 
@@ -124,5 +131,33 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
                 }
             }
         }
+    }
+
+    public int getTickrate() {
+        return maxProgress;
+    }
+    public int getProgress() {
+        return progress;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag tag) {
+        tag.putInt("resource_generator_2.progress", progress);
+        tag.putInt("resource_generator_2.maxProgress", maxProgress);
+        tag.putString("resource", resource);
+        super.saveAdditional(tag);
+    }
+
+    @Override
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
+        progress = nbt.getInt("resource_generator_2.progress");
+        maxProgress = nbt.getInt("resource_generator_2.maxProgress");
+        resource = nbt.getString("resource");
     }
 }

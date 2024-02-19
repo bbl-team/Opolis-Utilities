@@ -146,7 +146,7 @@ dependencies {
     implementation fg.deobf("dev.latvian.mods:rhino-forge:$rhino_version")
 
     //Patchouli
-    //runtimeOnly fg.deobf("curse.maven:patchouli-306770:4636289")
+    runtimeOnly fg.deobf("curse.maven:patchouli-306770:4966125")
 
 }
 

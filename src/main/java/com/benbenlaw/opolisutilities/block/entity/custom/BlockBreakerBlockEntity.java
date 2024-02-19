@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
@@ -58,7 +59,6 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
         }
     };
 
-    private int counter = 0;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(
@@ -157,6 +157,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+
     }
 
     @Override
@@ -174,6 +175,8 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("block_breaker.progress", progress);
+        tag.putInt("block_breaker.maxProgress", maxProgress);
+
         super.saveAdditional(tag);
     }
 
@@ -182,6 +185,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("block_breaker.progress");
+        maxProgress = nbt.getInt("block_breaker.maxProgress");
     }
 
     public void drops() {
@@ -211,95 +215,98 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
     public void tick() {
 
-        Level pLevel = this.level;
-        BlockPos pPos = this.worldPosition;
-        assert pLevel != null;
-        BlockState blockState = pLevel.getBlockState(pPos);
-        this.counter++;
+        Level level = this.level;
+        BlockPos pos = this.worldPosition;
+        assert level != null;
+        BlockState blockState = level.getBlockState(pos);
+        maxProgress = this.getBlockState().getValue(BlockBreakerBlock.TIMER);
 
-        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel) {
+        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && level instanceof ServerLevel) {
 
             if (blockState.hasProperty(FACING)) {
 
-
                 Direction direction = blockState.getValue(FACING);
-                BlockPos placeHere = pPos.relative(direction);
+                BlockPos placeHere = pos.relative(direction);
                 List<ItemStack> blockDrops;
-                final Block block = level.getBlockState(placeHere).getBlock();
+                final Block block = this.level.getBlockState(placeHere).getBlock();
                 ItemStack tool = itemHandler.getStackInSlot(0);
                 int damageValue = this.itemHandler.getStackInSlot(0).getDamageValue();
-                float destroySpeed = level.getBlockState(placeHere).getBlock().defaultBlockState().getDestroySpeed(level, placeHere);
-
-                if (this.counter % 60 == 0) {
-
-                    if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) && this.itemHandler.getStackInSlot(1).isEmpty() && this.itemHandler.getStackInSlot(2).isEmpty()) {
-
-                        blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) level, placeHere, this.level.getBlockEntity(pPos), null, tool);
-                        SoundType blockSounds = level.getBlockState(placeHere).getBlock().getSoundType(level.getBlockState(placeHere).getBlock().defaultBlockState(), level, pPos, null);
-
-                        level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
-
-                        for (ItemStack drop : blockDrops) {
-                            spawnBlockAsEntity(level, placeHere, drop);
-                        }
-
-                        if (tool.isDamageableItem()) {
-                            this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
-                            pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
-                        }
-
-                        if (damageValue + 1 == tool.getMaxDamage()) {
-                            this.itemHandler.extractItem(0, 1, false);
-                            pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
-                        }
-
-                    } else if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) && this.itemHandler.getStackInSlot(1).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(2).isEmpty()) {
-                        blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) level, placeHere, this.level.getBlockEntity(pPos), null, tool);
-                        SoundType blockSounds = level.getBlockState(placeHere).getBlock().getSoundType(level.getBlockState(placeHere).getBlock().defaultBlockState(), level, pPos, null);
-
-                        level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
-
-                        for (ItemStack drop : blockDrops) {
-                            spawnBlockAsEntity(level, placeHere, drop);
-
-                        }
-
-                        if (tool.isDamageableItem()) {
-                            this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
-                            pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
 
 
-                        }
-                        if (damageValue + 1 == tool.getMaxDamage()) {
-                            this.itemHandler.extractItem(0, 1, false);
-                            pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
-                        }
-                    } else if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) && !this.itemHandler.getStackInSlot(2).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(1).isEmpty()) {
-                        blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) level, placeHere, this.level.getBlockEntity(pPos), null, tool);
-                        SoundType blockSounds = level.getBlockState(placeHere).getBlock().getSoundType(level.getBlockState(placeHere).getBlock().defaultBlockState(), level, pPos, null);
+                blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) this.level, placeHere, this.level.getBlockEntity(pos), null, tool);
+                SoundType blockSounds = this.level.getBlockState(placeHere).getBlock().getSoundType(this.level.getBlockState(placeHere).getBlock().defaultBlockState(), this.level, pos, null);
 
-                        level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
 
-                        for (ItemStack drop : blockDrops) {
-                            spawnBlockAsEntity(level, placeHere, drop);
-                        }
+                if (level.getBlockState(placeHere).getBlock() != Blocks.AIR && !blockState.is(Blocks.VOID_AIR) && !blockState.isAir()) {
 
-                        if (tool.isDamageableItem()) {
-                            this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
-                            pLevel.playSound(null, pPos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
+                    this.progress++;
+                    if (progress >= maxProgress) {
+                        progress = 0;
 
-                        }
+                        if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) || !block.defaultBlockState().requiresCorrectToolForDrops()) {
 
-                        if (damageValue + 1 == tool.getMaxDamage()) {
-                            this.itemHandler.extractItem(0, 1, false);
-                            pLevel.playSound(null, pPos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
+                            if (this.itemHandler.getStackInSlot(1).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(2).isEmpty()) {
 
+                                this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
+
+
+                                for (ItemStack drop : blockDrops) {
+                                    spawnBlockAsEntity(this.level, placeHere, drop);
+                                }
+                                if (tool.isDamageableItem()) {
+                                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                                    level.playSound(null, pos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
+                                }
+                                if (damageValue + 1 == tool.getMaxDamage()) {
+                                    this.itemHandler.extractItem(0, 1, false);
+                                    level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
+                                }
+
+                            }
+
+                            else if (!this.itemHandler.getStackInSlot(2).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(1).isEmpty()) {
+
+                                this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
+
+
+                                for (ItemStack drop : blockDrops) {
+                                    spawnBlockAsEntity(this.level, placeHere, drop);
+                                }
+                                if (tool.isDamageableItem()) {
+                                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                                    level.playSound(null, pos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
+                                }
+                                if (damageValue + 1 == tool.getMaxDamage()) {
+                                    this.itemHandler.extractItem(0, 1, false);
+                                    level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
+                                }
+
+                            }
+
+                            else if (this.itemHandler.getStackInSlot(1).isEmpty() && this.itemHandler.getStackInSlot(2).isEmpty()) {
+                                //break block with/ without the needing the tool (no filter)
+
+                                this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
+
+
+                                for (ItemStack drop : blockDrops) {
+                                    spawnBlockAsEntity(this.level, placeHere, drop);
+                                }
+                                if (tool.isDamageableItem()) {
+                                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                                    level.playSound(null, pos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
+                                }
+                                if (damageValue + 1 == tool.getMaxDamage()) {
+                                    this.itemHandler.extractItem(0, 1, false);
+                                    level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1, 1);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        if (!level.isClientSide) {
+        if (!this.level.isClientSide()) {
             ModMessages.sendToClients(new PacketSyncItemStackToClient(this.itemHandler, this.worldPosition));
         }
     }

@@ -1,9 +1,6 @@
 Changelog Opolis Utilities
 
 TODO: Shift Click Support for the wallet item in the catalogue
-TODO: Customizable redstone clock timer
-TODO: Customizable block placer speed
-TODO: Customizable block breaker speed
 TODO: Sapling grower damage
 TODO: Fix config file (1.21)
 TODO: add catalogue nbt
@@ -11,17 +8,42 @@ TODO: add recipe input nbts (1.21)
 TODO: Banned in Item repairer tag
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 
-2.9.0 (PUBLIC
+2.9.0 (PUBLIC)
 
 Improved JEI visuals for various recipe types
 Added upgrade Base, Added Upgrade API, Added Upgrade Tag
 Imports Optimized
-TODO: Remove BETA branding
+Fixed catalog only showing one item from a tag in recipe
+Redstone Clock now has a configurable timer using the wrench (hover over holding the wrench to configure)
+
+Block Breaker no longer needs a tool if the block is breakable by hand
+Block Breaker speed can now be changed with the wrench
+
+Block Placer no longer allows saplings and crops to be placed on non dirt blocks
+Block Placer speed can now be changed with the wrench
+Added "banned_in_block_placer" tag for items that can't be placed by the block placer, this items will no longer be
+    allowed inside the placer either (includes doors, redstone, etc)
+
+Improved in world wrench information for all blocks that support overlays in world
+
+Added MouseUtil to the API
+Remove BETA from items that are now longer in beta
+Pressing "U" on a catalogue book now displays the recipe for the catalogue
+Various machines now save there current progress and max progress to the block entity between world loads improving consistency
+Fixed wernech shift information
+Added a banned in item repairer tag, items in this tag will not be allowed to be repaired in the item repairer
+
+TODO: Book infomration
+
+
+2.8.14
+
+Fixed catalog only showing one item from a tag in recipe
 
 2.8.13
 
-Optimized imports JEI Changes
-
+Optimized imports
+JEI Changes
 
 2.8.12
 

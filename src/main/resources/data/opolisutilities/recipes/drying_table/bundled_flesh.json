@@ -12,7 +12,3 @@
     "count": 2
   }
 }
-
-{"type":"opolisutilities:drying_table",
-"output":{"item":"minecraft:dirt","count":1},
-"ingredient":{"item":"minecraft:diamond_block"},"count":10,"duration":100}

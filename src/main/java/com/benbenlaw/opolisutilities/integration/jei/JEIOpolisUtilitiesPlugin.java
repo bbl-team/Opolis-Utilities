@@ -14,13 +14,9 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -70,6 +66,7 @@ public class JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), FluidGeneratorRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), RG2SpeedBlocksRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), CatalogueRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.CATALOGUE_BOOK.get()), CatalogueRecipeCategory.RECIPE_TYPE);
 
         //Empty Catalyst (No upgrade compatible machines in opolis utilities yet)
         registration.addRecipeCatalyst(new ItemStack(ModItems.UPGRADE_BASE.get()) , UpgradeRecipeUtilCategory.RECIPE_TYPE);

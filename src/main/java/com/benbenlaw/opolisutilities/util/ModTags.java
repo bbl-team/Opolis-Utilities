@@ -13,6 +13,8 @@ public class ModTags {
     public static class Blocks {
 
         public static final TagKey<Block> EMPTY = tag("empty");
+        public static final TagKey<Block> BANNED_IN_BLOCK_PLACER = tag("banned_in_block_placer");
+        public static final TagKey<Block> BANNED_IN_ITEM_REPAIRER = tag("banned_in_item_repairer");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
@@ -29,6 +31,10 @@ public class ModTags {
 
         public static final TagKey<Item> WALLET_ITEM = tag("wallet_item");
         public static final TagKey<Item> UPGRADES = tag("upgrades");
+        public static final TagKey<Item> BANNED_IN_BLOCK_PLACER = tag("banned_in_block_placer");
+        public static final TagKey<Item> BANNED_IN_ITEM_REPAIRER = tag("banned_in_item_repairer");
+
+
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));

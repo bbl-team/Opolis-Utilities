@@ -1,10 +1,12 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
+import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
 import com.benbenlaw.opolisutilities.screen.BlockPlacerMenu;
+import com.benbenlaw.opolisutilities.util.ModTags;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
 import net.minecraft.core.BlockPos;
@@ -13,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -24,8 +27,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -54,7 +56,6 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         }
     };
 
-    private int counter = 0;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(
@@ -62,22 +63,23 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             //        Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
 
                     Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER))),
+
 
                     Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER))),
 
                     Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER))),
 
                     Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER))),
 
                     Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER))),
 
                     Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack)))
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER)))
             );
 
 
@@ -173,6 +175,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("block_placer.progress", progress);
+        tag.putInt("block_placer.maxProgress", maxProgress);
         super.saveAdditional(tag);
     }
 
@@ -181,6 +184,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("block_placer.progress");
+        maxProgress = nbt.getInt("block_placer.maxProgress");
     }
 
     public void drops() {
@@ -200,7 +204,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         assert pLevel != null;
         BlockPlacerBlockEntity pBlockEntity = this;
         BlockState blockState = pLevel.getBlockState(pPos);
-        this.counter++;
+        maxProgress = this.getBlockState().getValue(BlockPlacerBlock.TIMER);
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel) {
 
@@ -208,20 +212,36 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             Direction direction = pLevel.getBlockState(pPos).getValue(FACING);
             BlockPos placeHere = pPos.relative(direction);
 
-            if (blockState.hasProperty(BlockBreakerBlock.FACING)) {
+            if (!itemStackInSlot.isEmpty() && blockState.hasProperty(BlockBreakerBlock.FACING) && level.getBlockState(placeHere).isAir()) {
 
-                if (!itemStackInSlot.isEmpty() && this.counter % 40 == 0) {
+                this.progress++;
+                if (progress >= maxProgress) {
+                    progress = 0;
 
                     Item item = itemStackInSlot.getItem();
 
-                    if (item instanceof BlockItem && level.getBlockState(placeHere).isAir()) {
+                    if (item instanceof BlockItem) {
                         BlockState itemToBlockState = ((BlockItem) itemStackInSlot.getItem().asItem()).getBlock().defaultBlockState();
                         SoundType blockSounds = itemToBlockState.getBlock().getSoundType(itemToBlockState.getBlock().defaultBlockState(), level, pPos, null);
 
                         if (!itemToBlockState.isAir()) {
-                            this.itemHandler.getStackInSlot(0).shrink(1);
-                            pLevel.playSound(null, pPos, blockSounds.getPlaceSound(), SoundSource.BLOCKS, 1, 1);
-                            level.setBlockAndUpdate(placeHere, itemToBlockState);
+
+                            if (itemToBlockState.getBlock() instanceof BushBlock ||
+                                    itemToBlockState.getBlock() instanceof SaplingBlock ||
+                                    itemToBlockState.getBlock() instanceof RedStoneWireBlock ||
+                                    itemToBlockState.getBlock().defaultBlockState().is(ModTags.Blocks.BANNED_IN_BLOCK_PLACER)) {
+
+                                if (level.getBlockState(placeHere.below()).is(BlockTags.DIRT)) {
+                                    this.itemHandler.getStackInSlot(0).shrink(1);
+                                    level.setBlockAndUpdate(placeHere, itemToBlockState);
+                                }
+                            }
+
+                            else {
+                                this.itemHandler.getStackInSlot(0).shrink(1);
+                                pLevel.playSound(null, pPos, blockSounds.getPlaceSound(), SoundSource.BLOCKS, 1, 1);
+                                level.setBlockAndUpdate(placeHere, itemToBlockState);
+                            }
                         }
                     }
                 }

@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
 import com.benbenlaw.opolisutilities.screen.ItemRepairerMenu;
+import com.benbenlaw.opolisutilities.util.ModTags;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
 import net.minecraft.core.BlockPos;
@@ -52,19 +53,19 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
 
                     Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER))),
 
                     Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER))),
 
                     Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER))),
 
                     Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER))),
 
                     Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
-                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack)))
+                            (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER)))
             );
 
 
