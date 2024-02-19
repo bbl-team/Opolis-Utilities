@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -27,28 +28,33 @@ public class BlockBreakerBlock extends BaseEntityBlock {
         super(properties);
     }
 
+    public static final int maxTimer = 1200; // 1 minute
+    public static final int minTimer = 10; // 0.5 seconds
+
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final IntegerProperty TIMER = IntegerProperty.create("timer", minTimer, maxTimer);
+
 
     /* FACING */
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getNearestLookingDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, pContext.getNearestLookingDirection().getOpposite()).setValue(TIMER, minTimer);
     }
 
     @Override
     public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {
-        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
+        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING))).setValue(TIMER, minTimer);
     }
 
     @Override
     public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING))).setValue(TIMER, minTimer);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING);
+        pBuilder.add(FACING, TIMER);
     }
 
     /* BLOCK ENTITY */

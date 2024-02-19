@@ -3,7 +3,7 @@
   "item": {
     "item": "minecraft:iron_ore"
   },
-  "output_increase_chance" : 0.2,
+  "output_increase_chance" : 0.6,
   "output_increase_amount" : 0,
   "duration_multiplier": 0.8,
   "duration_set_amount": 0,

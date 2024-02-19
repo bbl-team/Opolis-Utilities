@@ -39,7 +39,7 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
 
     public FluidGeneratorBlock(Properties p_49795_) {
         super(p_49795_);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
+        this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.FALSE));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {

@@ -180,6 +180,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("drying_table.progress", progress);
+        tag.putInt("drying_table.maxProgress", maxProgress);
         super.saveAdditional(tag);
     }
 
@@ -188,6 +189,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("drying_table.progress");
+        maxProgress = nbt.getInt("drying_table.maxProgress");
+
     }
 
     public void drops() {

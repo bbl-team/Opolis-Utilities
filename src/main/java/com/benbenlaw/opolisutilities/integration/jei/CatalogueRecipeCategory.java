@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -56,8 +57,12 @@ public class CatalogueRecipeCategory implements IRecipeCategory<CatalogueRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CatalogueRecipe recipe, IFocusGroup focusGroup) {
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addItemStack(
-                new ItemStack(recipe.getIngredients().get(0).getItems()[0].getItem(), recipe.itemInCount));
+        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(
+                recipe.getIngredients().get(0));
+
+        builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 2).addItemStack(new ItemStack(ModItems.JEI_NULL_ITEM.get(),
+                recipe.itemInCount));
+
         builder.addSlot(RecipeIngredientRole.OUTPUT, 51, 2).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
 
     }

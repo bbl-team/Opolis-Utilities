@@ -1,7 +1,10 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
+import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
+import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -20,7 +23,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.POWERED;
 import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.*;
+import static com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock.*;
 
 public class WrenchItem extends Item {
     public WrenchItem(Properties p_41383_) {
@@ -62,6 +67,74 @@ public class WrenchItem extends Item {
                     }
                 }
             }
+
+            if (blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {
+
+                int currentRange = blockState.getValue(CLOCK_TIMER);
+
+                assert player != null;
+                if (player.getMainHandItem().is(ModItems.OPOLIS_WRENCH.get())) {
+
+                    if (!player.isCrouching() && !Screen.hasControlDown() && currentRange < maxTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange + 10));
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    else if (!player.isCrouching() && Screen.hasControlDown() && currentRange < maxTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange + 50));
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    else if (player.isCrouching() && !Screen.hasControlDown() && currentRange > minTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange - 10));
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    else if (player.isCrouching() && Screen.hasControlDown() && currentRange > minTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange - 50));
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            }
+
+            if (blockState.is(ModBlocks.BLOCK_BREAKER.get())) {
+
+                int currentRange = blockState.getValue(BlockBreakerBlock.TIMER);
+
+                assert player != null;
+                if (player.getMainHandItem().is(ModItems.OPOLIS_WRENCH.get())) {
+
+                    if (player.isCrouching() && !Screen.hasControlDown() && currentRange < BlockBreakerBlock.maxTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(BlockBreakerBlock.TIMER, currentRange + 10));
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    else if (player.isCrouching() && Screen.hasControlDown() && currentRange > BlockBreakerBlock.minTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(BlockBreakerBlock.TIMER, currentRange - 10));
+                        return InteractionResult.SUCCESS;
+                    }
+
+                }
+            }
+
+            if (blockState.is(ModBlocks.BLOCK_PLACER.get())) {
+
+                int currentRange = blockState.getValue(BlockPlacerBlock.TIMER);
+
+                assert player != null;
+                if (player.getMainHandItem().is(ModItems.OPOLIS_WRENCH.get())) {
+
+                    if (player.isCrouching() && !Screen.hasControlDown() && currentRange < BlockPlacerBlock.maxTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(BlockPlacerBlock.TIMER, currentRange + 10));
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    else if (player.isCrouching() && Screen.hasControlDown() && currentRange > BlockPlacerBlock.minTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(BlockPlacerBlock.TIMER, currentRange - 10));
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            }
         }
 
         return InteractionResult.SUCCESS;
@@ -71,7 +144,7 @@ public class WrenchItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
 
         if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.scrambler_item.shift.held")
+            components.add(Component.translatable("tooltips.wrench_item.shift.held")
                     .withStyle(ChatFormatting.GREEN));
         }
         else {

@@ -1,9 +1,7 @@
 package com.benbenlaw.opolisutilities.integration.jei;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.item.ModItems;
-import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import com.benbenlaw.opolisutilities.recipe.UpgradeRecipeUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -18,18 +16,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -47,7 +38,6 @@ public class UpgradeRecipeUtilCategory implements IRecipeCategory<UpgradeRecipeU
     private final IGuiHelper helper;
     private int tabs_used = 0;
 
-
     public UpgradeRecipeUtilCategory(IGuiHelper helper) {
         this.helper = helper;
         this.background = helper.createDrawable(TEXTURE, 0, 0, 175, 114);
@@ -55,57 +45,57 @@ public class UpgradeRecipeUtilCategory implements IRecipeCategory<UpgradeRecipeU
     }
 
     @Override
-    public RecipeType<UpgradeRecipeUtil> getRecipeType() {
+    public @NotNull RecipeType<UpgradeRecipeUtil> getRecipeType() {
         return JEIOpolisUtilitiesPlugin.UPGRADE_RECIPE_UTIL;
     }
 
     @Override
-    public boolean isHandled(UpgradeRecipeUtil recipe) {
+    public boolean isHandled(@NotNull UpgradeRecipeUtil recipe) {
         return tabs_used == 0;
     }
 
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         return Component.literal("Upgrades");
     }
 
     @Override
-    public IDrawable getBackground() {
+    public @NotNull IDrawable getBackground() {
         return this.background;
     }
 
     @Override
-    public IDrawable getIcon() {
+    public @NotNull IDrawable getIcon() {
         return this.icon;
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, UpgradeRecipeUtil recipe, IFocusGroup focusGroup) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull UpgradeRecipeUtil recipe, @NotNull IFocusGroup focusGroup) {
         tabs_used++;
 
-        List<UpgradeRecipeUtil> recipes = new ArrayList<>(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(UpgradeRecipeUtil.Type.INSTANCE));
-        recipes.sort(Comparator.comparingDouble(UpgradeRecipeUtil::getDurationMultiplier));
+        assert Minecraft.getInstance().level != null;
+        List<UpgradeRecipeUtil> durationRecipes = new ArrayList<>(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(UpgradeRecipeUtil.Type.INSTANCE));
+        durationRecipes.sort(Comparator.comparingDouble(UpgradeRecipeUtil::getDurationMultiplier));
 
         // Background Size
-        int numRows = (int) Math.ceil((double) recipes.size() / 9);
-        int numCols = Math.min(9, recipes.size()); // Maximum of 9 columns
+        int numRows = (int) Math.ceil((double) durationRecipes.size() / 9);
+        int numCols = Math.min(9, durationRecipes.size()); // Maximum of 9 columns
         int backgroundWidth = 4 + numCols * 19;
         int backgroundHeight = 2 + numRows * 19;
 
         background = helper.createDrawable(TEXTURE, 0, 0, backgroundWidth, backgroundHeight);
 
-        for (int i = 0; i < recipes.size(); i++) {
+        for (int i = 0; i < durationRecipes.size(); i++) {
             final int slotX = 4 + (i % 9 * 19); // Calculate X position based on i % 9
             final int slotY = 2 + (i / 9 * 19); // Calculate Y position based on i / 9
-            ItemStack stack = new ItemStack(recipes.get(i).getUpgradeItem().getItem());
+            ItemStack stack = new ItemStack(durationRecipes.get(i).getUpgradeItem().getItem());
 
             builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY)
                     .addItemStack(stack)
-                    .addTooltipCallback(informationTooltip(recipe))
-                    .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, slotX - (i % 9 * 19) - 5, slotY - (2 + i / 9 * 19)  - 1);
+                    .addTooltipCallback(informationTooltip(durationRecipes.get(i)))
+                    .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, slotX - (i % 9 * 19) - 5, slotY - (2 + i / 9 * 19) - 1);
         }
     }
-
 
     private IRecipeSlotTooltipCallback informationTooltip(UpgradeRecipeUtil recipe) {
         return (chance, addTooltip) -> {
@@ -119,11 +109,14 @@ public class UpgradeRecipeUtilCategory implements IRecipeCategory<UpgradeRecipeU
                 String string = ("Duration Modifier: x" + recipe.getDurationMultiplier() + (" (Slower)"));
                 addTooltip.add(Component.literal(string).withStyle(ChatFormatting.RED));
             }
+            /*
 
             if (recipe.getDurationMultiplier() == 1.0) {
                 String string = ("Duration Modifier: x" + recipe.getDurationMultiplier() + (" (Same)"));
                 addTooltip.add(Component.literal(string).withStyle(ChatFormatting.WHITE));
             }
+
+             */
 
             if (recipe.getDurationSetAmount() != 0) {
                 addTooltip.add(Component.literal("Duration Set Amount: " + recipe.getDurationSetAmount()));
@@ -205,8 +198,4 @@ public class UpgradeRecipeUtilCategory implements IRecipeCategory<UpgradeRecipeU
             }
         };
     }
-
-
-
-
 }
