@@ -147,6 +147,17 @@ public class HoverInWorldEvents {
 
                         }
                     }
+                    if (lookingAtBlock.is(ModBlocks.CRAFTER.get().asItem())) {
+                        CrafterBlockEntity entity = (CrafterBlockEntity) level.getBlockEntity(blockPos);
+
+                        if (entity != null) {
+                            graphics.renderTooltip(minecraft.font, getCrafterInformation(entity), Optional.empty(), window.getX() + 2 , window.getY() + 2);
+                            graphics.pose().pushPose();
+                            graphics.pose().scale(0.75F, 0.75F, 1F);
+                            graphics.pose().popPose();
+
+                        }
+                    }
                 }
             }
         }
@@ -339,6 +350,27 @@ public class HoverInWorldEvents {
         Component instructions3 = Component.literal("Offhand Right Click to Enable/Disable");
 
         return List.of(informationTitle, empty, running, instructions1, instructions2,instructions3, allowed);
+    }
+    public static List<Component> getCrafterInformation(CrafterBlockEntity entity) {
+
+        boolean isRunning = entity.getBlockState().getValue(CrafterBlock.POWERED);
+
+        Item itemCrafted = entity.getItemStackHandler().getStackInSlot(9).getItem();
+        String itemCraftedTranslated = itemCrafted.getName(itemCrafted.getDefaultInstance()).getString();
+
+        Component instructions1 = Component.literal("Crafting: Nothing (Turn on by Shift Right Clicking with the wrench)").withStyle(ChatFormatting.RED);
+
+        if (isRunning) {
+            instructions1 = Component.literal("Crafting: " + itemCraftedTranslated ).withStyle(ChatFormatting.GREEN);
+        }
+
+        Component informationTitle = Component.literal("Crafter Information").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
+        Component empty = Component.literal("");
+        Component currentTickrate = Component.literal("Ticks Per Craft Break: " + entity.getBlockState().getValue(CrafterBlock.TIMER));
+        Component increaseBy10 = Component.literal("Shift Right Click in Off Hand: Increase by 10").withStyle(ChatFormatting.GREEN);
+        Component decreaseBy10 = Component.literal("Shift Ctrl Right Click in Off Hand: Decrease by 10").withStyle(ChatFormatting.RED);
+
+        return List.of(informationTitle, empty, currentTickrate, increaseBy10, decreaseBy10, instructions1);
     }
 
 }

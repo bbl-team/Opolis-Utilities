@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RedstoneClockBlock extends BaseEntityBlock {
 
-    public static final int maxTimer = 1200; // 1 minute
+    public static final int maxTimer = 600; // 30 Seconds
     public static final int minTimer = 10; // 0.5 seconds
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

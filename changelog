@@ -8,9 +8,13 @@ TODO: add recipe input nbts (1.21)
 TODO: Banned in Item repairer tag
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 
-2.3.0
+2.10.0
 
-Added auto crafter maybe who knows this could be insane
+Added Crafter, new block that can auto craft for crafting recipes
+Can be configured with the wrench, on/off and speed of crafting
+Requires a minimum of 2 items in input slots to craft, this acts as a filter to prevent the crafter from crafting items that are not wanted
+Inputs items all sides and top, outputs from the bottom (Marked as BETA)
+
 
 2.9.1
 

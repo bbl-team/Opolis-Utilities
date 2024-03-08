@@ -1,10 +1,7 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
-import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
-import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
-import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
+import com.benbenlaw.opolisutilities.block.custom.*;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -23,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.benbenlaw.opolisutilities.block.custom.CrafterBlock.TIMER;
 import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.POWERED;
 import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.*;
 import static com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock.*;
@@ -134,6 +132,35 @@ public class WrenchItem extends Item {
                         return InteractionResult.SUCCESS;
                     }
                 }
+            }
+
+            if (blockState.is(ModBlocks.CRAFTER.get())) {
+
+                int currentTimer = blockState.getValue(TIMER);
+
+                assert player != null;
+
+                if (player.getMainHandItem().is(this)) {
+
+                    if (blockState.getValue(CrafterBlock.POWERED).equals(true)) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.POWERED, false));
+                    } else if (blockState.getValue(CrafterBlock.POWERED).equals(false)) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.POWERED, true));
+                    }
+                }
+
+                if (player.getOffhandItem().is(this)) {
+
+                    if (!Screen.hasControlDown() && currentTimer > minTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.TIMER, currentTimer + 10));
+                        return InteractionResult.SUCCESS;
+                    } else if (Screen.hasControlDown() && currentTimer < maxTimer) {
+                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.TIMER, currentTimer - 10));
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+
+
             }
         }
 

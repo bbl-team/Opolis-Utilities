@@ -4,6 +4,10 @@
       "model": "opolisutilities:block/block_breaker_vertical",
       "x": 180
     },
+    "facing=down": {
+      "model": "opolisutilities:block/block_breaker_vertical",
+      "x": 180
+    },
     "facing=east": {
       "model": "opolisutilities:block/block_breaker",
       "y": 90

@@ -4,7 +4,10 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.BlacklistMaxStackSizeOneSlot;
+import com.benbenlaw.opolisutilities.screen.slot.MaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.WhitelistMaxStackSizeOneSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.WhitelistItemInputSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +48,7 @@ public class CrafterMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 7, 48, 53)); // table
             this.addSlot(new SlotItemHandler(handler, 8, 66, 53)); // table
 
-            this.addSlot(new SlotItemHandler(handler, 9, 124, 35)); //result
+            this.addSlot(new ModResultSlot(handler, 9, 124, 35)); //result
 
         });
 
