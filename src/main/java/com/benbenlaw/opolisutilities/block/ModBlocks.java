@@ -32,6 +32,11 @@ public class ModBlocks {
                     .strength(2.0f,2.0f)
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> CRAFTER = registerBlock("crafter",
+            () -> new CrafterBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()));
+
     public static final RegistryObject<Block> BLOCK_PLACER = registerBlock("block_placer",
             () -> new BlockPlacerBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f,2.0f)

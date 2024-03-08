@@ -8,6 +8,14 @@ TODO: add recipe input nbts (1.21)
 TODO: Banned in Item repairer tag
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 
+2.3.0
+
+Added auto crafter maybe who knows this could be insane
+
+2.9.1
+
+Item Repairer now shows as that and not the drying table in overlay
+
 2.9.0 (PUBLIC)
 
 Improved JEI visuals for various recipe types
@@ -32,9 +40,6 @@ Pressing "U" on a catalogue book now displays the recipe for the catalogue
 Various machines now save there current progress and max progress to the block entity between world loads improving consistency
 Fixed wernech shift information
 Added a banned in item repairer tag, items in this tag will not be allowed to be repaired in the item repairer
-
-TODO: Book infomration
-
 
 2.8.14
 

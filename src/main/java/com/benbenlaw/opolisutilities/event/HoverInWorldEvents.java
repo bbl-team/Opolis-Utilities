@@ -314,7 +314,7 @@ public class HoverInWorldEvents {
             stats = Component.literal("Repaired: " + translatedRepaired);
         }
 
-        Component informationTitle = Component.literal("Drying Table Information").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
+        Component informationTitle = Component.literal("Item Repairer Information").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
         Component empty = Component.literal("");
 
         return List.of(informationTitle, empty, repairer, stats);

@@ -57,6 +57,7 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.ITEM_REPAIRER.get());
                 output.accept(ModBlocks.BLOCK_BREAKER.get());
                 output.accept(ModBlocks.BLOCK_PLACER.get());
+                output.accept(ModBlocks.CRAFTER.get());
 
 
             }).build());

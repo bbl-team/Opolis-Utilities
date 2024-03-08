@@ -29,6 +29,9 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU =
             registerMenuType(ResourceGeneratorMenu::new, "resource_generator_menu");
 
+    public static final RegistryObject<MenuType<CrafterMenu>> CRAFTER_MENU =
+            registerMenuType(CrafterMenu::new, "crafter_menu");
+
    public static final RegistryObject<MenuType<CatalogueMenu>> CATALOGUE_MENU =
            MENUS.register("catalogue",
                    () -> IForgeMenuType.create(((windowId, inv, data) -> new CatalogueMenu(windowId, inv))));

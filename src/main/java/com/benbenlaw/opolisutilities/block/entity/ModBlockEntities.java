@@ -13,6 +13,11 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, OpolisUtilities.MOD_ID);
 
+    public static final RegistryObject<BlockEntityType<CrafterBlockEntity>> CRAFTER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("crafter_block_entity", () ->
+                    BlockEntityType.Builder.of(CrafterBlockEntity::new,
+                            ModBlocks.CRAFTER.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<BlockPlacerBlockEntity>> BLOCK_PLACER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("block_placer_block_entity", () ->
                     BlockEntityType.Builder.of(BlockPlacerBlockEntity::new,
