@@ -65,8 +65,13 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         @Override
         public @NotNull ItemStack insertItem(int i, @NotNull ItemStack itemStack, boolean b) {
             if (!itemStack.isEmpty()) {
-                itemStack.shrink(2);
-                super.insertItem(i, new ItemStack(itemStack.getItem(), 2), b);
+                int shrinkAmount = Math.min(2, itemStack.getCount());
+
+                super.insertItem(i, new ItemStack(itemStack.getItem(), shrinkAmount), b);
+                if (itemStack.getCount() == 2)
+                    return ItemStack.EMPTY;
+                else
+                    itemStack.shrink(shrinkAmount);
             }
             return itemStack;
         }
