@@ -61,6 +61,15 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
                 ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
         }
+
+        @Override
+        public @NotNull ItemStack insertItem(int i, @NotNull ItemStack itemStack, boolean b) {
+            if (!itemStack.isEmpty()) {
+                itemStack.shrink(2);
+                super.insertItem(i, new ItemStack(itemStack.getItem(), 2), b);
+            }
+            return itemStack;
+        }
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -73,13 +82,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
                                 if (index >= 0 && index <= 8 && itemHandler.isItemValid(index, stack)) {
                                     ItemStack slotStack = itemHandler.getStackInSlot(index);
                                     if (!slotStack.isEmpty() && ItemStack.isSameItem(slotStack, stack) && slotStack.getCount() < 2) {
-
-                                        if (stack.getCount() + slotStack.getCount() > 2) {
-                                            return false;
-                                        } else {
                                         return true;  // Allow insertion if the item matches and count is less than 2
                                     }
-                                        }
                                 }
                                 return false;
                             })),
