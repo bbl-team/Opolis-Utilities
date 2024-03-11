@@ -355,7 +355,8 @@ public class HoverInWorldEvents {
 
         boolean isRunning = entity.getBlockState().getValue(CrafterBlock.POWERED);
 
-        Item itemCrafted = entity.getItemStackHandler().getStackInSlot(9).getItem();
+    //    Item itemCrafted = entity.getItemStackHandler().getStackInSlot(9).getItem();
+        Item itemCrafted = entity.craftingItem.getItem();
         String itemCraftedTranslated = itemCrafted.getName(itemCrafted.getDefaultInstance()).getString();
 
         Component instructions1 = Component.literal("Crafting: Nothing (Turn on by Shift Right Clicking with the wrench)").withStyle(ChatFormatting.RED);

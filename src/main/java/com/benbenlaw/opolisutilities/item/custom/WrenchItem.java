@@ -151,10 +151,10 @@ public class WrenchItem extends Item {
 
                 if (player.getOffhandItem().is(this)) {
 
-                    if (!Screen.hasControlDown() && currentTimer > minTimer) {
+                    if (!Screen.hasControlDown() && currentTimer < CrafterBlock.maxTimer) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.TIMER, currentTimer + 10));
                         return InteractionResult.SUCCESS;
-                    } else if (Screen.hasControlDown() && currentTimer < maxTimer) {
+                    } else if (Screen.hasControlDown() && currentTimer > CrafterBlock.minTimer) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.TIMER, currentTimer - 10));
                         return InteractionResult.SUCCESS;
                     }

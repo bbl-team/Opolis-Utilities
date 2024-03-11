@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.BlacklistMaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.MaxStackSizeOneSlot;
+import com.benbenlaw.opolisutilities.screen.slot.MaxStackSizeTwoSlot;
 import com.benbenlaw.opolisutilities.screen.slot.WhitelistMaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.WhitelistItemInputSlot;
@@ -27,6 +28,19 @@ public class CrafterMenu extends AbstractContainerMenu {
         this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(10));
     }
 
+    public boolean isCrafting() {
+        return data.get(0) > 0 ;
+    }
+
+    public int getScaledProgress() {
+
+        int progress = this.data.get(0);
+        int maxProgress = this.data.get(1);  // Max Progress
+        int progressArrowSize = 26; // This is the height in pixels of your arrow
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+
+    }
     public CrafterMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.CRAFTER_MENU.get(), containerID);
         checkContainerSize(inventory, 10);
@@ -38,9 +52,9 @@ public class CrafterMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 30, 17)); // table
-            this.addSlot(new SlotItemHandler(handler, 1, 48, 17)); // table
-            this.addSlot(new SlotItemHandler(handler, 2, 66, 17)); // table
+            this.addSlot(new MaxStackSizeTwoSlot(handler, 0, 30, 17)); // table
+            this.addSlot(new MaxStackSizeTwoSlot(handler, 1, 48, 17)); // table
+            this.addSlot(new MaxStackSizeTwoSlot(handler, 2, 66, 17)); // table
             this.addSlot(new SlotItemHandler(handler, 3, 30, 35)); // table
             this.addSlot(new SlotItemHandler(handler, 4, 48, 35)); // table
             this.addSlot(new SlotItemHandler(handler, 5, 66, 35)); // table

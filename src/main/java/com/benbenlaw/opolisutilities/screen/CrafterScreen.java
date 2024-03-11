@@ -32,6 +32,11 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
+        if(menu.isCrafting()) {
+            guiGraphics.blit(TEXTURE, x + 89, y + 33, 176, 30, menu.getScaledProgress(), 16);
+
+        }
+
     }
 
     @Override
