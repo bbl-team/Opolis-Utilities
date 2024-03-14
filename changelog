@@ -10,8 +10,8 @@ TODO: Make recipes more consistent with values (eg. ingredient and ingredients) 
 
 1.10.2
 
-FIX ORE TAGS
-FIX Crafter recipes check now only happens every 20 ticks instead of every tick
+Ender ore now tagged with "forge:ores" not just "forge:ores/ender"
+Crafter recipes check now only happens every 20 ticks instead of every tick dramatically improving performance of the crafter
 
 2.10.1
 

@@ -135,6 +135,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
 
     public final ContainerData data;
+    private int recipeChecker = 0;
     private int progress = 0;
     private int maxProgress = 80;
     public ItemStack craftingItem = ItemStack.EMPTY;
@@ -230,6 +231,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("crafter.progress", progress);
         tag.putInt("crafter.maxProgress", maxProgress);
+        tag.putInt("crafter.recipeChecker", recipeChecker);
 
         super.saveAdditional(tag);
     }
@@ -240,6 +242,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("crafter.progress");
         maxProgress = nbt.getInt("crafter.maxProgress");
+        recipeChecker = nbt.getInt("crafter.recipeChecker");
     }
 
 
@@ -254,13 +257,18 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
     public void tick() {
 
+        recipeChecker++;
+
         Level pLevel = this.level;
         BlockPos pPos  = this.worldPosition;
         assert pLevel != null;
         BlockState pState = pLevel.getBlockState(pPos);
         CrafterBlockEntity pBlockEntity = this;
 
-        updateRecipe();
+        if (recipeChecker >= 20) {
+            recipeChecker = 0;
+            updateRecipe();
+        }
         maxProgress = this.getBlockState().getValue(CrafterBlock.TIMER);
 
         assert level != null;
