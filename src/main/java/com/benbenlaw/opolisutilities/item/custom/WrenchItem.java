@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.*;
+import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -137,6 +138,7 @@ public class WrenchItem extends Item {
             if (blockState.is(ModBlocks.CRAFTER.get())) {
 
                 int currentTimer = blockState.getValue(TIMER);
+                CrafterBlockEntity entity = (CrafterBlockEntity) level.getBlockEntity(blockPos);
 
                 assert player != null;
 
@@ -144,6 +146,7 @@ public class WrenchItem extends Item {
 
                     if (blockState.getValue(CrafterBlock.POWERED).equals(true)) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.POWERED, false));
+
                     } else if (blockState.getValue(CrafterBlock.POWERED).equals(false)) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.POWERED, true));
                     }

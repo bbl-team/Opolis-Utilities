@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.block.custom;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
+import com.benbenlaw.opolisutilities.item.custom.WrenchItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -67,6 +68,7 @@ public class CrafterBlock extends BaseEntityBlock {
         pBuilder.add(FACING, POWERED, TIMER);
     }
 
+
     /* BLOCK ENTITY */
 
     @Override
@@ -92,7 +94,8 @@ public class CrafterBlock extends BaseEntityBlock {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof CrafterBlockEntity) {
                 NetworkHooks.openScreen(((ServerPlayer)pPlayer), (CrafterBlockEntity)entity, pPos);
-            } else {
+            }
+            else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }

@@ -367,7 +367,7 @@ public class HoverInWorldEvents {
 
         Component informationTitle = Component.literal("Crafter Information").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
         Component empty = Component.literal("");
-        Component currentTickrate = Component.literal("Ticks Per Craft Break: " + entity.getBlockState().getValue(CrafterBlock.TIMER));
+        Component currentTickrate = Component.literal("Ticks Per Craft: " + entity.getBlockState().getValue(CrafterBlock.TIMER));
         Component increaseBy10 = Component.literal("Shift Right Click in Off Hand: Increase by 10").withStyle(ChatFormatting.GREEN);
         Component decreaseBy10 = Component.literal("Shift Ctrl Right Click in Off Hand: Decrease by 10").withStyle(ChatFormatting.RED);
 

@@ -8,12 +8,18 @@ TODO: add recipe input nbts (1.21)
 TODO: Banned in Item repairer tag
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 
+1.10.2
+
+FIX ORE TAGS
+FIX Crafter recipes check now only happens every 20 ticks instead of every tick
+
 2.10.1
 
 Fixed wrench not setting time on a crafter correctly
 Reverted redstone clock timer back to 1 minute
 Overlay now shows the correct item being crafted instead of always showing air if the output is empty
 Arrow now renders correctly in the crafter GUI
+Crafter now works correctly with pipes
 
 2.10.0
 
