@@ -11,6 +11,7 @@
     "opolisutilities:item_repairer",
     "opolisutilities:block_breaker",
     "opolisutilities:block_placer",
-    "opolisutilities:catalogue"
+    "opolisutilities:catalogue",
+    "opolisutilities:crafter"
   ]
 }

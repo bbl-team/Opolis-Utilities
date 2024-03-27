@@ -211,6 +211,9 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         BlockState pState = pLevel.getBlockState(pPos);
         DryingTableBlockEntity pBlockEntity = this;
 
+        ModMessages.sendToClients(new PacketSyncItemStackToClient(itemHandler, worldPosition));
+
+
         if(hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);

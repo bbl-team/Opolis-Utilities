@@ -23,7 +23,7 @@ import java.util.Objects;
 
 
 @JeiPlugin
-public class JEIOpolisUtilitiesPlugin implements IModPlugin {
+public class  JEIOpolisUtilitiesPlugin implements IModPlugin {
 
     public static IDrawableStatic slotDrawable;
 

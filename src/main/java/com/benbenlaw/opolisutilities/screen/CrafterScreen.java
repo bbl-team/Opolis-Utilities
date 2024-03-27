@@ -55,7 +55,9 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+
         renderBackground(guiGraphics);
+        /*
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, SET_RECIPE_BUTTON, (p_289630_) -> {
 
             this.menu.blockEntity.updateRecipe();
@@ -68,8 +70,12 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
             p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
         }));
 
+         */
+
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
+
+
 
 
     }

@@ -5,8 +5,20 @@ TODO: Sapling grower damage
 TODO: Fix config file (1.21)
 TODO: add catalogue nbt
 TODO: add recipe input nbts (1.21)
-TODO: Banned in Item repairer tag
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
+
+2.10.4
+
+Added RenderUtils helper class for strainers fluid rendering
+FIXED drying table now displaying items after world reload unless interacted with
+
+2.10.3
+
+FIXED crafter not having a loot table
+FIXED upgrade base causing errors in logs
+FIXED a few internal opolis utilities tags
+FIXED crafter not having a preferred tool
+REMOVED recipe book icon from the crafter (May come back)
 
 1.10.2
 
