@@ -7,6 +7,15 @@ TODO: add catalogue nbt
 TODO: add recipe input nbts (1.21)
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 
+2.10.6
+
+FIXED Crashes with item renderers for drying table and soaking table
+
+2.10.5
+
+FIXED Fluid Generator reporting incorrect right click information
+FIXED Drying table when placed in water destroying the water block instead of waterlogging the drying table
+
 2.10.4
 
 Added RenderUtils helper class for strainers fluid rendering

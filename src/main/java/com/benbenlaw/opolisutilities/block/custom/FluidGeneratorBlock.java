@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.FluidGeneratorBlockEntity;
 import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
 import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
+import com.mojang.serialization.Decoder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -15,10 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Properties;
 
 public class FluidGeneratorBlock extends BaseEntityBlock {
 
@@ -72,7 +71,13 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
 
                     BlockState block = level.getBlockState(blockPos.above(1));
                     Block translatedBlock = block.getBlock();
-                    String translatedName = translatedBlock.getName().getString();
+                    String translatedName;
+
+                    if (block.getBlock() instanceof SimpleWaterloggedBlock) {
+                        translatedName = "Water";
+                    } else {
+                        translatedName = translatedBlock.getName().getString();
+                    }
 
                     if (tickRate == 220){
                         pPlayer.sendSystemMessage(Component.literal("No speed block detected, place a valid block above the resource block").withStyle(ChatFormatting.RED));

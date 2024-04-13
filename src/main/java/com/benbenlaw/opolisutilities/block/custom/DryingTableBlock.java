@@ -10,10 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -29,6 +28,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static net.minecraft.world.level.block.SlabBlock.TYPE;
 
 public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public DryingTableBlock(Properties properties) {
@@ -42,7 +43,15 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
     @Nullable
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(WATERLOGGED, false);
+
+        BlockPos pos = pContext.getClickedPos();
+        BlockState state = pContext.getLevel().getBlockState(pos);
+
+        if (state.is(Blocks.WATER)) {
+            return this.defaultBlockState().setValue(WATERLOGGED, true);
+        } else {
+            return this.defaultBlockState().setValue(WATERLOGGED, false);
+        }
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_56932_) {
@@ -52,6 +61,7 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
     public FluidState getFluidState(BlockState p_56969_) {
         return p_56969_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_56969_);
     }
+
 
     @SuppressWarnings("deprecation")
     @Override
