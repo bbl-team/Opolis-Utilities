@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.networking;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.networking.packets.PacketCapabilitySyncToClient;
+import com.benbenlaw.opolisutilities.networking.packets.PacketCrafterOnOffButton;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -33,12 +34,23 @@ public class ModMessages {
                 .encoder(PacketSyncItemStackToClient::toBytes)
                 .consumerMainThread(PacketSyncItemStackToClient::handle)
                 .add();
+
         net.messageBuilder(PacketCapabilitySyncToClient.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketCapabilitySyncToClient::new)
                 .encoder(PacketCapabilitySyncToClient::toBytes)
                 .consumerMainThread(PacketCapabilitySyncToClient::handle)
                 .add();
 
+        net.messageBuilder(PacketCrafterOnOffButton.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketCrafterOnOffButton::new)
+                .encoder(PacketCrafterOnOffButton::toBytes)
+                .consumerMainThread(PacketCrafterOnOffButton::handle)
+                .add();
+
+    }
+
+    public static <MSG> void sendToServer(MSG message) {
+        INSTANCE.sendToServer(message);
     }
 
 

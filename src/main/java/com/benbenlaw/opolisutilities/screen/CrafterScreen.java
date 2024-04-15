@@ -1,6 +1,10 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.networking.ModMessages;
+import com.benbenlaw.opolisutilities.networking.packets.PacketCrafterOnOffButton;
+import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
 import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,11 +26,15 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_gui.png");
 
-    private static final ResourceLocation SET_RECIPE_BUTTON =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_set_recipe_button.png");
+    private static final ResourceLocation ON_BUTTON =
+            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_on_button.png");
+
+    private static final ResourceLocation OFF_BUTTON =
+            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button.png");
 
     public CrafterScreen(CrafterMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+
     }
 
     @Override
@@ -57,26 +65,28 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
 
         renderBackground(guiGraphics);
-        /*
-        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, SET_RECIPE_BUTTON, (p_289630_) -> {
 
-            this.menu.blockEntity.updateRecipe();
+        if (this.menu.blockEntity.getBlockState().getValue(CrafterBlock.POWERED)) {
+            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, ON_BUTTON, (p_289630_) -> {
 
-            Item item = this.menu.blockEntity.getItemStackHandler().getStackInSlot(8).getItem();
+                ModMessages.sendToServer(new PacketCrafterOnOffButton(this.menu.blockEntity.getBlockPos()));
 
-            this.menu.blockEntity.getItemStackHandler().setStackInSlot(8, Items.ACACIA_LEAVES.getDefaultInstance());
 
-            System.out.println("Button Pressed top update recipes" + item);
-            p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
-        }));
+                p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
+            }));
+        }
 
-         */
+        else {
+            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, OFF_BUTTON, (p_289630_) -> {
+
+                ModMessages.sendToServer(new PacketCrafterOnOffButton(this.menu.blockEntity.getBlockPos()));
+                p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
+            }));
+        }
+
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-
-
-
 
     }
 }
