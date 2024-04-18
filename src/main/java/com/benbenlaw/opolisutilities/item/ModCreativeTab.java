@@ -41,6 +41,7 @@ public class ModCreativeTab {
                 output.accept(ModItems.SOAKED_PAPER.get());
                 output.accept(ModItems.SAPLING_GROWER.get());
                 output.accept(ModItems.UPGRADE_BASE.get());
+                output.accept(ModItems.ANIMAL_NET.get());
 
                 output.accept(ModBlocks.DRYING_TABLE.get());
                 output.accept(ModItems.FLOATING_BLOCK.get());

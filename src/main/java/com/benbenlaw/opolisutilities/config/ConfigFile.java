@@ -18,6 +18,12 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<Integer> maxScramblerRange;
     public static final ForgeConfigSpec.ConfigValue<Integer> minScramblerRange;
     public static final ForgeConfigSpec.ConfigValue<Integer> totalGrowthAttempts;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetHostileMobs;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetWaterMobs;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetAnimalMobs;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetVillagerMobs;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetTakesDamage;
+
 
     static {
         BUILDER.push("Opolis Utilities Config File");
@@ -49,8 +55,24 @@ public final class ConfigFile {
         minScramblerRange = BUILDER.comment("The min range of the Ender Scrambler")
                 .define("(WIP)Min Ender Scrambler Range", 8);
 
-        totalGrowthAttempts = BUILDER.comment("The number of attempts to grow a sapling per right right")
+        totalGrowthAttempts = BUILDER.comment("The number of attempts to grow a sapling per right click")
                 .define("(WIP)Total Attempts for Sapling Grower", 128);
+
+        animalNetHostileMobs = BUILDER.comment("Can the animal net capture hostile mobs, default = false")
+                .define("Animal Net: Hostile Mobs", false);
+
+        animalNetWaterMobs = BUILDER.comment("Can the animal net capture water mobs, default = true")
+                .define("Animal Net: Water Mobs", true);
+
+        animalNetAnimalMobs = BUILDER.comment("Can the animal net capture animal mobs, default = true")
+                .define("Animal Net: Animal Mobs", true);
+
+        animalNetVillagerMobs = BUILDER.comment("Can the animal net capture villager mobs, default = false")
+                .define("Animal Net: Villager Mobs", false);
+
+        animalNetTakesDamage = BUILDER.comment("Does the animal net take damage when capturing mobs, default = true")
+                .define("Animal Net: Takes Damage?", true);
+
 
         BUILDER.pop();
         SPEC = BUILDER.build();

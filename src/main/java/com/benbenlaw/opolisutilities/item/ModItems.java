@@ -93,6 +93,9 @@ public class ModItems {
     public static final RegistryObject<Item> UPGRADE_BASE = ITEMS.register("upgrade_base",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> ANIMAL_NET =  ITEMS.register("animal_net",
+            () -> new AnimalNetItem(new Item.Properties().durability(8)));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

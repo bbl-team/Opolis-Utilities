@@ -1,11 +1,20 @@
 Changelog Opolis Utilities
 
 TODO: Shift Click Support for the wallet item in the catalogue
-TODO: Sapling grower damage
+TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
-TODO: add catalogue nbt
-TODO: add recipe input nbts (1.21)
+TODO: add recipe input nbts (Not NBT item components for 1.21)
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
+TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
+
+1.11.0
+ADDED Animal Net:
+    Captures mobs on right click
+    Releases captured mobs on right click
+    Has 4 types of mobs it can catch (villagers, animals, hostile and Water Creatures), can be configured in the config by default hostiles and villagers are disabled
+    Has a durability of 8, can be configured to be unbreakable in the config
+
+
 
 1.10.7
 Crafter now has a on/off button

@@ -5,17 +5,29 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,8 +39,10 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 
 @Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
@@ -154,6 +168,54 @@ public class ModEvents {
                 .map(WrappedGoal::getPriority)
                 .orElse(-1);
     }
+
+
+    @SubscribeEvent
+    public static void onEntityRightClickEvent(PlayerInteractEvent.EntityInteract event) {
+
+        Level level = event.getLevel();
+        ItemStack stack = event.getItemStack();
+        Player player = event.getEntity();
+        InteractionHand hand = event.getHand();
+        Entity livingEntity = event.getTarget();
+
+        if (!level.isClientSide()) {
+
+            if (stack.getItem() instanceof AnimalNetItem && !stack.getTag().contains("entity")) {
+
+                ItemStack itemstack = player.getItemInHand(hand);
+                CompoundTag nbt = itemstack.getTag();
+
+                boolean hostileMobs = ConfigFile.animalNetHostileMobs.get();
+                boolean waterMobs = ConfigFile.animalNetWaterMobs.get();
+                boolean animalMobs = ConfigFile.animalNetAnimalMobs.get();
+                boolean villagerMobs = ConfigFile.animalNetVillagerMobs.get();
+
+                boolean captureHostile = livingEntity instanceof Monster && hostileMobs;
+                boolean captureWater = livingEntity instanceof WaterAnimal && waterMobs;
+                boolean captureAnimal = livingEntity instanceof Animal && animalMobs;
+                boolean captureVillagers = livingEntity instanceof Villager && villagerMobs;
+
+                if (!level.isClientSide()) {
+                    if (captureHostile || captureWater || captureAnimal || captureVillagers || livingEntity.isAlliedTo(player)) {
+
+                        // Capture the mob
+                        assert nbt != null;
+                        nbt.putString("entity", EntityType.getKey(livingEntity.getType()).toString());
+                        livingEntity.saveWithoutId(nbt);
+                        stack.setTag(nbt);
+                        livingEntity.remove(Entity.RemovalReason.DISCARDED);
+                        player.sendSystemMessage(Component.translatable("tooltips.animal_net.mob_caught").withStyle(ChatFormatting.GREEN));
+                        level.playSound(null, livingEntity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS);
+
+                    } else {
+                        player.sendSystemMessage(Component.translatable("tooltips.animal_net.not_compatible_mob").withStyle(ChatFormatting.RED));
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 

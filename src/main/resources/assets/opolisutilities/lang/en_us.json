@@ -29,6 +29,8 @@
   "item.opolisutilities.opolis_wrench": "Opolis Wrench",
   "item.opolisutilities.sapling_grower": "Sapling Grower",
 
+  "item.opolisutilities.animal_net": "Animal Net (BETA)",
+
 
 
   "block.opolisutilities.floating_block_block": "Floating Block",
@@ -67,6 +69,18 @@
   "tooltips.wrench_item.shift.held": "When held look at a block to see more information!",
   "tooltips.wallet.no_b_bucks": "Your wallet is empty!",
   "tooltips.floating_block.place_in_air": "Place in the air or inside water!",
+
+  "tooltips.animal_net.shift.held": "Contains: ",
+  "tooltips.animal_net.hover.shift": "Press SHIFT for more info",
+  "tooltips.animal_net.no_mob": "This Contains No Mob!",
+  "tooltips.animal_net.not_compatible_mob": "This Mob cannot be caught!",
+  "tooltips.animal_net.mob_caught": "Mob Caught!",
+  "tooltips.animal_net.mob_types": "Allowed Mob Types: ",
+  "tooltips.animal_net.hostile_mobs": "Hostile Mobs",
+  "tooltips.animal_net.water_mobs": "Water Mobs",
+  "tooltips.animal_net.animal_mobs": "Animal Mobs",
+  "tooltips.animal_net.villager_mobs": "Villager Mobs",
+
 
   "tooltips.scrambler_item.shift.held": "Used to control the Ender Scrambler! Right click in main hand to increase range, Shift right click in main hand to decrease range, Right click in off hand to toggle between on and off!",
   "tooltips.scrambler_item.hover.shift": "Press SHIFT for more info",
