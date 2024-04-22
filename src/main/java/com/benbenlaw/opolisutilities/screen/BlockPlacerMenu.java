@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class BlockPlacerMenu extends AbstractContainerMenu {
-    private final BlockPlacerBlockEntity blockEntity;
+    public final BlockPlacerBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 

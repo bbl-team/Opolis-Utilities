@@ -1,9 +1,8 @@
 package com.benbenlaw.opolisutilities.networking;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.networking.packets.PacketCapabilitySyncToClient;
-import com.benbenlaw.opolisutilities.networking.packets.PacketCrafterOnOffButton;
-import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
+import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
+import com.benbenlaw.opolisutilities.networking.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -41,10 +40,29 @@ public class ModMessages {
                 .consumerMainThread(PacketCapabilitySyncToClient::handle)
                 .add();
 
+        //On Off Buttons
         net.messageBuilder(PacketCrafterOnOffButton.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketCrafterOnOffButton::new)
                 .encoder(PacketCrafterOnOffButton::toBytes)
                 .consumerMainThread(PacketCrafterOnOffButton::handle)
+                .add();
+
+        net.messageBuilder(PacketItemRepairerOnOffButton.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketItemRepairerOnOffButton::new)
+                .encoder(PacketItemRepairerOnOffButton::toBytes)
+                .consumerMainThread(PacketItemRepairerOnOffButton::handle)
+                .add();
+
+        net.messageBuilder(PacketBlockPlacerOnOffButton.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketBlockPlacerOnOffButton::new)
+                .encoder(PacketBlockPlacerOnOffButton::toBytes)
+                .consumerMainThread(PacketBlockPlacerOnOffButton::handle)
+                .add();
+
+        net.messageBuilder(PacketBlockBreakerOnOffButton.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketBlockBreakerOnOffButton::new)
+                .encoder(PacketBlockBreakerOnOffButton::toBytes)
+                .consumerMainThread(PacketBlockBreakerOnOffButton::handle)
                 .add();
 
     }

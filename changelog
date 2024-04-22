@@ -3,9 +3,20 @@ Changelog Opolis Utilities
 TODO: Shift Click Support for the wallet item in the catalogue
 TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
-TODO: add recipe input nbts (Not NBT item components for 1.21)
+TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
+TODO: Add screens for all opolis utilities blocks (1.21)
+
+
+1.11.2
+
+
+1.11.1
+
+Fixed Crafter button not setting the facing direction correctly
+Added on/off button to Item Repairer, Block Breaker and Block Placer
+Animal placer tweaks
 
 1.11.0
 ADDED Animal Net:

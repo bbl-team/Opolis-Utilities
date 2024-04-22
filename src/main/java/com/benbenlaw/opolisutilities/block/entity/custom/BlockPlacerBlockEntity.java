@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
+import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.POWERED;
 import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.FACING;
 
 public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
@@ -206,7 +207,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         BlockState blockState = pLevel.getBlockState(pPos);
         maxProgress = this.getBlockState().getValue(BlockPlacerBlock.TIMER);
 
-        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel) {
+        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel && blockState.getValue(POWERED)) {
 
             ItemStack itemStackInSlot = pBlockEntity.getItemStackHandler().getStackInSlot(0);
             Direction direction = pLevel.getBlockState(pPos).getValue(FACING);

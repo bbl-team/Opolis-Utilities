@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
+import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.POWERED;
 
 public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
@@ -223,7 +224,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && level instanceof ServerLevel) {
 
-            if (blockState.hasProperty(FACING)) {
+            if (blockState.hasProperty(FACING) && blockState.getValue(POWERED)) {
 
                 Direction direction = blockState.getValue(FACING);
                 BlockPos placeHere = pos.relative(direction);

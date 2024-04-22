@@ -15,7 +15,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockBreakerMenu extends AbstractContainerMenu {
-    private final BlockBreakerBlockEntity blockEntity;
+    public final BlockBreakerBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 

@@ -36,6 +36,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
+import static com.benbenlaw.opolisutilities.block.custom.ItemRepairerBlock.POWERED;
+
 public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
@@ -193,7 +195,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         ItemStack stackInSlot0 = pBlockEntity.itemHandler.getStackInSlot(0);
         ItemStack copiedStack = stackInSlot0.copy();
 
-        if(inputAsStack.isDamageableItem() && !(damageValue == 0)) {
+        if(inputAsStack.isDamageableItem() && !(damageValue == 0) && pState.getValue(POWERED)) {
 
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);

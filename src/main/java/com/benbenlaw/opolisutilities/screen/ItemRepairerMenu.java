@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class ItemRepairerMenu extends AbstractContainerMenu {
-    private final ItemRepairerBlockEntity blockEntity;
+    public final ItemRepairerBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
