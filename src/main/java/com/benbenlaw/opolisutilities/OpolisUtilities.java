@@ -12,6 +12,7 @@ import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.screen.*;
+import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -42,6 +43,7 @@ public class OpolisUtilities {
         ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
         ModEnchantments.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         Capabilities.register(MinecraftForge.EVENT_BUS);
 

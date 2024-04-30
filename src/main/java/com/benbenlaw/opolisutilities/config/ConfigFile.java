@@ -23,6 +23,7 @@ public final class ConfigFile {
     public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetAnimalMobs;
     public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetVillagerMobs;
     public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetTakesDamage;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> woodenButtonsMakeDoorbellSound;
 
 
     static {
@@ -72,6 +73,9 @@ public final class ConfigFile {
 
         animalNetTakesDamage = BUILDER.comment("Does the animal net take damage when capturing mobs, default = true")
                 .define("Animal Net: Takes Damage?", true);
+
+        woodenButtonsMakeDoorbellSound = BUILDER.comment("Do wooden buttons make a doorbell sound, default = false")
+                .define("Wooden Buttons Make Doorbell Sound", false);
 
 
         BUILDER.pop();

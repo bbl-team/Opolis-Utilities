@@ -9,16 +9,18 @@ TODO: Auto Summoning Block & Summoning block moved from strainers to opolis util
 TODO: Add screens for all opolis utilities blocks (1.21)
 
 
-1.11.2
+2.11.2
+
+ADDED config option for a doorbell sound to play when a wooden button is pressed
 
 
-1.11.1
+2.11.1
 
 Fixed Crafter button not setting the facing direction correctly
 Added on/off button to Item Repairer, Block Breaker and Block Placer
 Animal placer tweaks
 
-1.11.0
+2.11.0
 ADDED Animal Net:
     Captures mobs on right click
     Releases captured mobs on right click
@@ -27,7 +29,7 @@ ADDED Animal Net:
 
 
 
-1.10.7
+2.10.7
 Crafter now has a on/off button
 
 2.10.6

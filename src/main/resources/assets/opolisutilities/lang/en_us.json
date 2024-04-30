@@ -81,6 +81,7 @@
   "tooltips.animal_net.animal_mobs": "Animal Mobs",
   "tooltips.animal_net.villager_mobs": "Villager Mobs",
 
+  "sounds.opolisutilities.doorbell": "Doorbell Rings",
 
   "tooltips.scrambler_item.shift.held": "Used to control the Ender Scrambler! Right click in main hand to increase range, Shift right click in main hand to decrease range, Right click in off hand to toggle between on and off!",
   "tooltips.scrambler_item.hover.shift": "Press SHIFT for more info",

@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
+import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -42,6 +44,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -216,6 +219,18 @@ public class ModEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void doorBellSounds(PlayerInteractEvent.RightClickBlock event) {
+        if(ConfigFile.woodenButtonsMakeDoorbellSound.get()) {
+            Level level = event.getLevel();
+            BlockState state = event.getLevel().getBlockState(event.getPos());
+            if (!level.isClientSide()) {
+                if (state.is(BlockTags.WOODEN_BUTTONS)) {
+                    level.playSound(null, event.getPos(), ModSounds.DOORBELL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+            }
+        }
+    }
 }
 
 
