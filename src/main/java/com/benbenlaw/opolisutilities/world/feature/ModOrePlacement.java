@@ -1,7 +1,5 @@
 package com.benbenlaw.opolisutilities.world.feature;
 
-import net.minecraft.world.level.levelgen.placement.*;
-
 import java.util.List;
 
 public class ModOrePlacement {

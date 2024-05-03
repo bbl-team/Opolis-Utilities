@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.networking;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
 import com.benbenlaw.opolisutilities.networking.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;

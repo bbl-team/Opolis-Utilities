@@ -4,8 +4,6 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketCrafterOnOffButton;
-import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
-import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
@@ -14,13 +12,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
     private static final ResourceLocation TEXTURE =

@@ -9,10 +9,12 @@ TODO: Auto Summoning Block & Summoning block moved from strainers to opolis util
 TODO: Add screens for all opolis utilities blocks (1.21)
 
 
+2.11.3
+FIXED Resource Generator 2 trying to save a null string instead of a empty string on its block data, fixes crash with construction wands
+
 2.11.2
 
 ADDED config option for a doorbell sound to play when a wooden button is pressed
-
 
 2.11.1
 

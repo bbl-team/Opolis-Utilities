@@ -1,18 +1,11 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
-import com.benbenlaw.opolisutilities.screen.slot.BlacklistMaxStackSizeOneSlot;
-import com.benbenlaw.opolisutilities.screen.slot.MaxStackSizeOneSlot;
-import com.benbenlaw.opolisutilities.screen.slot.MaxStackSizeTwoSlot;
-import com.benbenlaw.opolisutilities.screen.slot.WhitelistMaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
-import com.benbenlaw.opolisutilities.screen.slot.utils.WhitelistItemInputSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

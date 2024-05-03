@@ -1,10 +1,8 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
 import com.benbenlaw.opolisutilities.block.custom.ItemRepairerBlock;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
-import com.benbenlaw.opolisutilities.networking.packets.PacketCrafterOnOffButton;
 import com.benbenlaw.opolisutilities.networking.packets.PacketItemRepairerOnOffButton;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;

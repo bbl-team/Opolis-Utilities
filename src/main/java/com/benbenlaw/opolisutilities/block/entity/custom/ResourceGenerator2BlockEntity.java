@@ -29,7 +29,7 @@ import java.util.Objects;
 public class ResourceGenerator2BlockEntity extends BlockEntity {
     private int progress = 0;
     private int maxProgress = 220;
-    public String resource;
+    public String resource = "";
     private boolean isValidStructure = false;
 
 
