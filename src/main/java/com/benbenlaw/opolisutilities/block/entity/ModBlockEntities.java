@@ -3,17 +3,29 @@ package com.benbenlaw.opolisutilities.block.entity;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.*;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, OpolisUtilities.MOD_ID);
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, OpolisUtilities.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<CrafterBlockEntity>> CRAFTER_BLOCK_ENTITY =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrafterBlockEntity>> CRAFTER_BLOCK_ENTITY =
+
+            register("crafter_block_entity", () ->
+                    BlockEntityType.Builder.of(CrafterBlockEntity::new,
+                            ModBlocks.CRAFTER.get()));
+
             BLOCK_ENTITIES.register("crafter_block_entity", () ->
                     BlockEntityType.Builder.of(CrafterBlockEntity::new,
                             ModBlocks.CRAFTER.get()).build(null));
@@ -73,8 +85,9 @@ public class ModBlockEntities {
 
 
 
-    public static void register(IEventBus eventBus) {
-        BLOCK_ENTITIES.register(eventBus);
+    public static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(@Nonnull String name, @Nonnull Supplier<BlockEntityType.Builder<T>> initializer) {
+        return BLOCK_ENTITIES.register(name, () -> initializer.get().build(null));
     }
+
 
 }

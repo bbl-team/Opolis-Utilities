@@ -1,29 +1,29 @@
 package com.benbenlaw.opolisutilities.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class ConfigFile {
 
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> homeStoneCooldown;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> homeStoneTakesDamage;
+    public static final ModConfigSpec.ConfigValue<Integer> homeStoneCooldown;
+    public static final ModConfigSpec.ConfigValue<Boolean> homeStoneTakesDamage;
 
-    public static final ForgeConfigSpec.ConfigValue<String> discordURL;
-    public static final ForgeConfigSpec.ConfigValue<String> modpackVersion;
-    public static final ForgeConfigSpec.ConfigValue<String> modpackName;
-    public static final ForgeConfigSpec.ConfigValue<Double> basicLootBoxDropChance;
-    public static final ForgeConfigSpec.ConfigValue<Integer> crookBoost;
-    public static final ForgeConfigSpec.ConfigValue<Integer> maxScramblerRange;
-    public static final ForgeConfigSpec.ConfigValue<Integer> minScramblerRange;
-    public static final ForgeConfigSpec.ConfigValue<Integer> totalGrowthAttempts;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetHostileMobs;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetWaterMobs;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetAnimalMobs;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetVillagerMobs;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> animalNetTakesDamage;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> woodenButtonsMakeDoorbellSound;
+    public static final ModConfigSpec.ConfigValue<String> discordURL;
+    public static final ModConfigSpec.ConfigValue<String> modpackVersion;
+    public static final ModConfigSpec.ConfigValue<String> modpackName;
+    public static final ModConfigSpec.ConfigValue<Double> basicLootBoxDropChance;
+    public static final ModConfigSpec.ConfigValue<Integer> crookBoost;
+    public static final ModConfigSpec.ConfigValue<Integer> maxScramblerRange;
+    public static final ModConfigSpec.ConfigValue<Integer> minScramblerRange;
+    public static final ModConfigSpec.ConfigValue<Integer> totalGrowthAttempts;
+    public static final ModConfigSpec.ConfigValue<Boolean> animalNetHostileMobs;
+    public static final ModConfigSpec.ConfigValue<Boolean> animalNetWaterMobs;
+    public static final ModConfigSpec.ConfigValue<Boolean> animalNetAnimalMobs;
+    public static final ModConfigSpec.ConfigValue<Boolean> animalNetVillagerMobs;
+    public static final ModConfigSpec.ConfigValue<Boolean> animalNetTakesDamage;
+    public static final ModConfigSpec.ConfigValue<Boolean> woodenButtonsMakeDoorbellSound;
 
 
     static {

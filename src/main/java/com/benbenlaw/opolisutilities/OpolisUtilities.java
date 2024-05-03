@@ -41,26 +41,27 @@ public class OpolisUtilities {
 
       //  IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        ModItems.register(modEventBus);
+    //    ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModCreativeTab.register(modEventBus);
-        ModBlockEntities.register(modEventBus);
-        ModMenuTypes.register(modEventBus);
-        ModRecipes.register(modEventBus);
-        ModParticles.register(modEventBus);
-        ModEnchantments.register(modEventBus);
-        ModSounds.register(modEventBus);
-
-        Capabilities.register(MinecraftForge.EVENT_BUS);
-
-        modEventBus.addListener(this::commonSetup);
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
-
-        MinecraftForge.EVENT_BUS.register(this);
+    //    ModCreativeTab.register(modEventBus);
+    //    ModBlockEntities.register(modEventBus);
+    //    ModMenuTypes.register(modEventBus);
+    //    ModRecipes.register(modEventBus);
+    //    ModParticles.register(modEventBus);
+    //    ModEnchantments.register(modEventBus);
+    //    ModSounds.register(modEventBus);
+//
+    //    Capabilities.register(MinecraftForge.EVENT_BUS);
+//
+    //    modEventBus.addListener(this::commonSetup);
+//
+    //    ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
+//
+    //    MinecraftForge.EVENT_BUS.register(this);
 
     }
 
+    /*
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ModMessages::register);
 
@@ -85,4 +86,6 @@ public class OpolisUtilities {
             });
         }
     }
+
+     */
 }

@@ -1,16 +1,17 @@
 package com.benbenlaw.opolisutilities.util;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
-import net.minecraftforge.client.model.IQuadTransformer;
+import net.neoforged.neoforge.client.model.IQuadTransformer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import static net.minecraftforge.client.model.IQuadTransformer.COLOR;
+import static net.neoforged.neoforge.client.model.IQuadTransformer.COLOR;
 import static org.lwjgl.stb.STBTTBitmap.STRIDE;
 
 public class RenderUtil {
@@ -18,10 +19,10 @@ public class RenderUtil {
     //FROM ENDER IO//
     //https://github.com/Team-EnderIO/EnderIO/blob/dev/1.20.4/src/core/java/com/enderio/core/client/RenderUtil.java//
 
-public static void renderFace(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, int color) {
+public static void renderFace(Direction face, Matrix4f pose,  PoseStack.Pose normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, int color) {
     renderFace(face, pose, normal, consumer, texture, x, y, z, w, h, color, LightTexture.FULL_BRIGHT);
 }
-public static void renderFace(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, int color, int light) {
+public static void renderFace(Direction face, Matrix4f pose, PoseStack.Pose normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, int color, int light) {
     // Normals are taken from Direction enum. They are necessary for proper lighting and block breaking textures
     switch (face) {
         case DOWN -> renderFace(pose, normal, consumer, texture, color, light, x, x + w, 1.0f - z, 1.0f - z, y, y, y + h, y + h, x, x + w, y, y + h, 0, -1, 0);
@@ -34,7 +35,7 @@ public static void renderFace(Direction face, Matrix4f pose, Matrix3f normal, Ve
     }
 }
 
-private static void renderFace(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, int color, int light, float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3, float u0, float u1, float v0, float v1, float normalX, float normalY, float normalZ) {
+private static void renderFace(Matrix4f pose, PoseStack.Pose normal, VertexConsumer consumer, TextureAtlasSprite texture, int color, int light, float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3, float u0, float u1, float v0, float v1, float normalX, float normalY, float normalZ) {
     float minU = u0 * texture.contents().width() / 16f;
     float maxU = u1 * texture.contents().width() / 16f;
     float minV = v0 * texture.contents().height() / 16f;

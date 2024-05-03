@@ -6,12 +6,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ModSounds {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-            DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, OpolisUtilities.MOD_ID);
+            DeferredRegister.create(NeoForgeRegistries.SOUND_EVENTS, OpolisUtilities.MOD_ID);
 
     public static final RegistryObject<SoundEvent> DOORBELL = registerSoundEvents("doorbell");
 

@@ -25,8 +25,8 @@ import net.minecraft.world.phys.BlockHitResult;
 public class EnderOreBlock extends DropExperienceBlock {
     public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-    public EnderOreBlock(Properties p_55453_, UniformInt of) {
-        super(p_55453_);
+    public EnderOreBlock(Properties properties, UniformInt uniformInt) {
+        super(uniformInt, properties);
         this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
     }
 

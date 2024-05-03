@@ -45,23 +45,6 @@ public class ModTags {
         }
 
     }
-    /*
-
-    public static class Structures {
-
-    //    public static final TagKey<Item> RESOURCE_GENERATOR_BLOCKS = tag("resource_generator_blocks");
-
-        private static TagKey<StructureType<?>> tag(String name) {
-            return TagKey.create(Registry.STRUCTURE_TYPE_REGISTRY, new ResourceLocation(OpolisUtilities.MOD_ID, name));
-        }
-
-        private static TagKey<StructureType<?>> forgeTag(String name) {
-            return TagKey.create(Registry.STRUCTURE_TYPE_REGISTRY, new ResourceLocation("forge", name));
-        }
-
-    }
-
-     */
 
 
 }

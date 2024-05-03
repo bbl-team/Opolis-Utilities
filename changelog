@@ -8,6 +8,11 @@ TODO: Make recipes more consistent with values (eg. ingredient and ingredients) 
 TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
 TODO: Add screens for all opolis utilities blocks (1.21)
 
+3.0.0
+
+Updated all utils package to 1.20.5
+Updated Particles
+
 
 2.11.3
 FIXED Resource Generator 2 trying to save a null string instead of a empty string on its block data, fixes crash with construction wands
