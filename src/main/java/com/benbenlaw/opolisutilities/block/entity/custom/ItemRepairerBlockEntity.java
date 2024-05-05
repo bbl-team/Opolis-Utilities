@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -23,6 +24,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -195,35 +197,37 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         ItemStack stackInSlot0 = pBlockEntity.itemHandler.getStackInSlot(0);
         ItemStack copiedStack = stackInSlot0.copy();
 
-        if(inputAsStack.isDamageableItem() && !(damageValue == 0) && pState.getValue(POWERED)) {
+        if (!pState.isAir() && !pState.is(Blocks.VOID_AIR) && level instanceof ServerLevel) {
+            if (inputAsStack.isDamageableItem() && !(damageValue == 0) && pState.getValue(POWERED)) {
 
-            pBlockEntity.progress++;
-            setChanged(pLevel, pPos, pState);
-            if(pBlockEntity.progress > pBlockEntity.maxProgress) {
+                pBlockEntity.progress++;
+                setChanged(pLevel, pPos, pState);
+                if (pBlockEntity.progress > pBlockEntity.maxProgress) {
 
-                if (!isDamaged) {
-                    pBlockEntity.itemHandler.getStackInSlot(0).hurt(-1, RandomSource.create(), null);
-                    pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
+                    if (!isDamaged) {
+                        pBlockEntity.itemHandler.getStackInSlot(0).hurt(-1, RandomSource.create(), null);
+                        pLevel.playLocalSound(pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
 
+                    }
+                    pBlockEntity.resetProgress();
+                    setChanged(pLevel, pPos, pState);
                 }
+            }
+
+            if (inputAsStack.isDamageableItem() && damageValue == 0 && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty()) {
+
+                pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
+                pBlockEntity.itemHandler.extractItem(0, 1, false);
                 pBlockEntity.resetProgress();
                 setChanged(pLevel, pPos, pState);
             }
-        }
 
-        if(inputAsStack.isDamageableItem() && damageValue == 0 && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty() ) {
-
-            pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
-            pBlockEntity.itemHandler.extractItem(0, 1, false);
-            pBlockEntity.resetProgress();
-            setChanged(pLevel, pPos, pState);
-        }
-
-        if(!inputAsStack.isDamageableItem() && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty() ) {
-            pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
-            pBlockEntity.itemHandler.extractItem(0, copiedStack.getCount(), false);
-            pBlockEntity.resetProgress();
-            setChanged(pLevel, pPos, pState);
+            if (!inputAsStack.isDamageableItem() && pBlockEntity.itemHandler.getStackInSlot(1).isEmpty()) {
+                pBlockEntity.itemHandler.setStackInSlot(1, copiedStack);
+                pBlockEntity.itemHandler.extractItem(0, copiedStack.getCount(), false);
+                pBlockEntity.resetProgress();
+                setChanged(pLevel, pPos, pState);
+            }
         }
     }
 
