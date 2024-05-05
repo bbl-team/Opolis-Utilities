@@ -8,14 +8,16 @@ TODO: Make recipes more consistent with values (eg. ingredient and ingredients) 
 TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
 TODO: Add screens for all opolis utilities blocks (1.21)
 
+2.11.4
+FIXED Client side crash with the item repairer
+
+2.11.3
+FIXED Resource Generator 2 trying to save a null string instead of a empty string on its block data, fixes crash with construction wands
 
 2.11.2
-
 ADDED config option for a doorbell sound to play when a wooden button is pressed
 
-
 2.11.1
-
 Fixed Crafter button not setting the facing direction correctly
 Added on/off button to Item Repairer, Block Breaker and Block Placer
 Animal placer tweaks
