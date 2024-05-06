@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.FanBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -30,6 +31,8 @@ import java.util.List;
 
 public class FanBlock extends BaseEntityBlock {
 
+    public static final MapCodec<FanBlock> CODEC = simpleCodec(FanBlock::new);
+
     public static final int maxRange = 8;// ConfigFile.maxScramblerRange.get();
     public static final int minRange = 1;// ConfigFile.minScramblerRange.get();
 
@@ -40,6 +43,11 @@ public class FanBlock extends BaseEntityBlock {
     public FanBlock(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE).setValue(FAN_RANGE, minRange).setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {

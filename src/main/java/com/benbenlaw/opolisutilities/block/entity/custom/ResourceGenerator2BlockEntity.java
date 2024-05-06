@@ -1,6 +1,5 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
-import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.ResourceGenerator2Block;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
@@ -9,6 +8,7 @@ import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.registries.ForgeRegistries;
+
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -39,6 +39,8 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
 
     public void tick() {
 
+        /*
+
         // Increment the counter
         Level pLevel = this.level;
         BlockPos blockPos = this.worldPosition;
@@ -51,11 +53,11 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
             for (RG2SpeedBlocksRecipe match : level.getRecipeManager().getRecipesFor(RG2SpeedBlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
 
                 String blockName = match.getBlock();
-                Block speedBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
+                Block speedBlock = BuiltInRegistries.BLOCK.get(new ResourceLocation(blockName));
 
                 TagKey<Block> speedBlockTag = BlockTags.create(new ResourceLocation(blockName));
 
-                if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(speedBlockTag) ||
+                if (level.getBlockState(blockPos.above(2)).getBlockHolder().is(speedBlockTag) ||
                         level.getBlockState(blockPos.above(2)).is(Objects.requireNonNull(speedBlock))) {
                     maxProgress = match.getTickRate();
 
@@ -131,6 +133,8 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
                 }
             }
         }
+
+         */
     }
 
     public int getTickrate() {
@@ -144,6 +148,7 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
         return resource;
     }
 
+    /*
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
@@ -160,4 +165,6 @@ public class ResourceGenerator2BlockEntity extends BlockEntity {
         maxProgress = nbt.getInt("resource_generator_2.maxProgress");
         resource = nbt.getString("resource");
     }
+
+     */
 }

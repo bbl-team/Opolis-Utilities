@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGenerator2BlockEntity;
 import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
 import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -27,11 +28,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ResourceGenerator2Block extends BaseEntityBlock {
+    public static final MapCodec<ResourceGenerator2Block> CODEC = simpleCodec(ResourceGenerator2Block::new);
+
 
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -40,10 +42,16 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
         this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.FALSE));
     }
 
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
         p_55484_.add(LIT);
     }
 
+    /*
     @Override
     public @NotNull InteractionResult use(BlockState pState, Level level, BlockPos blockPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
 
@@ -86,6 +94,8 @@ public class ResourceGenerator2Block extends BaseEntityBlock {
         }
         return InteractionResult.SUCCESS;
     }
+
+     */
 
     @Nullable
     @Override

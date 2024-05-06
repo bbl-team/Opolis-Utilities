@@ -1,6 +1,5 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
-import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.FluidGeneratorBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.recipe.FluidGeneratorRecipe;
@@ -19,10 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -40,6 +35,8 @@ public class FluidGeneratorBlockEntity extends BlockEntity {
     }
 
     public void tick() {
+
+        /*
 
         Level pLevel = this.level;
         BlockPos blockPos = this.worldPosition;
@@ -121,6 +118,8 @@ public class FluidGeneratorBlockEntity extends BlockEntity {
                 }
             }
         }
+
+         */
     }
 
     public String getResource() {
@@ -134,6 +133,8 @@ public class FluidGeneratorBlockEntity extends BlockEntity {
     public Integer getFluidAmount() {
         return fluidAmount;
     }
+
+    /*
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
@@ -150,6 +151,8 @@ public class FluidGeneratorBlockEntity extends BlockEntity {
         maxProgress = nbt.getInt("fluid_generator.maxProgress");
         resource = nbt.getString("resource");
     }
+
+     */
 
 
 }

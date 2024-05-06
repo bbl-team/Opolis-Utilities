@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.capabillties;
 import net.neoforged.bus.api.IEventBus;
 
 public class Capabilities {
+    /*
     public static final CapabilityMigration MIGRATION = CapabilityMigration.create();
     public static final CapabilityAttacher ATTACHER = CapabilityAttacher.create();
 
@@ -11,4 +12,6 @@ public class Capabilities {
         MIGRATION.register(bus);
         ATTACHER.register(bus);
     }
+
+     */
 }

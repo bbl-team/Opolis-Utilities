@@ -45,6 +45,7 @@ public class EnderOreBlock extends DropExperienceBlock {
         super.stepOn(p_154299_, p_154300_, p_154301_, p_154302_);
     }
 
+    /*
     @Override
     public InteractionResult use(BlockState p_55472_, Level p_55473_, BlockPos p_55474_, Player p_55475_, InteractionHand p_55476_, BlockHitResult p_55477_) {
         if (p_55473_.isClientSide) {
@@ -56,6 +57,8 @@ public class EnderOreBlock extends DropExperienceBlock {
         ItemStack itemstack = p_55475_.getItemInHand(p_55476_);
         return itemstack.getItem() instanceof BlockItem && (new BlockPlaceContext(p_55475_, p_55476_, itemstack, p_55477_)).canPlace() ? InteractionResult.PASS : InteractionResult.SUCCESS;
     }
+
+     */
 
     private static void interact(BlockState p_55493_, Level p_55494_, BlockPos p_55495_) {
         spawnParticles(p_55494_, p_55495_);
@@ -104,7 +107,7 @@ public class EnderOreBlock extends DropExperienceBlock {
                 double d1 = direction$axis == Direction.Axis.X ? 0.5D + 0.5625D * (double)direction.getStepX() : (double)randomsource.nextFloat();
                 double d2 = direction$axis == Direction.Axis.Y ? 0.5D + 0.5625D * (double)direction.getStepY() : (double)randomsource.nextFloat();
                 double d3 = direction$axis == Direction.Axis.Z ? 0.5D + 0.5625D * (double)direction.getStepZ() : (double)randomsource.nextFloat();
-                p_55455_.addParticle(ModParticles.ENDER_ORE_PARTICLES.get(), (double)p_55456_.getX() + d1, (double)p_55456_.getY() + d2, (double)p_55456_.getZ() + d3, 0.0D, 0.0D, 0.0D);
+          //      p_55455_.addParticle(ModParticles.ENDER_ORE_PARTICLES.get(), (double)p_55456_.getX() + d1, (double)p_55456_.getY() + d2, (double)p_55456_.getZ() + d3, 0.0D, 0.0D, 0.0D);
             }
         }
 

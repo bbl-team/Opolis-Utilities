@@ -43,6 +43,8 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+
+        /*
         renderBackground(guiGraphics);
 
         //Power Button
@@ -66,5 +68,9 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
+
+         */
     }
+
+
 }

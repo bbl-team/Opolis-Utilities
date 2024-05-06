@@ -6,9 +6,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class WardenSmiteEnchantment extends Enchantment {
+    public WardenSmiteEnchantment(EnchantmentDefinition p_335940_) {
+        super(p_335940_);
+    }
+
+
+    /*
     public WardenSmiteEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
         super(pRarity, pCategory, pApplicableSlots);
     }
@@ -51,4 +56,6 @@ public class WardenSmiteEnchantment extends Enchantment {
 
 
     }
+
+     */
 }

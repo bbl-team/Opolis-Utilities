@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.RedstoneClockBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class RedstoneClockBlock extends BaseEntityBlock {
 
+    public static final MapCodec<RedstoneClockBlock> CODEC = simpleCodec(RedstoneClockBlock::new);
+
     public static final int maxTimer = 1200; // 1 min
     public static final int minTimer = 10; // 0.5 seconds
 
@@ -32,6 +35,11 @@ public class RedstoneClockBlock extends BaseEntityBlock {
     public RedstoneClockBlock(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE).setValue(CLOCK_TIMER, minTimer));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {

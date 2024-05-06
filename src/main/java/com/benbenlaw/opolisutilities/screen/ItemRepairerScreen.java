@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu> {
+public class ItemRepairerScreen extends AbstractContainerScreen{
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/drying_table_gui.png");
 
@@ -37,17 +37,21 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        /*
 
         if(menu.isCrafting()) {
             guiGraphics.blit(TEXTURE, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
         }
+
+         */
 
 
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics);
+    }
+     /*   renderBackground(guiGraphics);
 
         //Power Button
         if (this.menu.blockEntity.getBlockState().getValue(ItemRepairerBlock.POWERED)) {
@@ -74,6 +78,10 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
+
+
+      */
+
 
 
 }

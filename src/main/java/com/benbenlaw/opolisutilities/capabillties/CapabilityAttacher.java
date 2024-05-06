@@ -5,12 +5,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 
 import java.util.HashMap;
@@ -19,6 +13,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class CapabilityAttacher {
+
+    /*-
     public static CapabilityAttacher create() {
         return new CapabilityAttacher();
     }
@@ -79,4 +75,6 @@ public class CapabilityAttacher {
     public void register(IEventBus bus) {
         addAttachEvents(Entity.class, BlockEntity.class, Item.class, Level.class, ItemStack.class);
     }
+
+     */
 }

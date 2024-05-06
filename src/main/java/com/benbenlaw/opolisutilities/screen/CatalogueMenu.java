@@ -23,6 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CatalogueMenu extends AbstractContainerMenu {
+
+
     private final ContainerLevelAccess access;
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private final Level level;
@@ -51,7 +53,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
     }
 
     public CatalogueMenu(int pContainerId, Inventory pPlayerInventory, final ContainerLevelAccess pAccess) {
-        super(ModMenuTypes.CATALOGUE_MENU.get(), pContainerId);
+        super((MenuType<?>) ModMenuTypes.CATALOGUE_MENU, pContainerId);
         this.access = pAccess;
         this.level = pPlayerInventory.player.level();
         this.inputSlot = this.addSlot(new Slot(this.container, 0, 26, 44));
@@ -78,6 +80,8 @@ public class CatalogueMenu extends AbstractContainerMenu {
             }
 
             public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
+
+                /*
                 stack.onCraftedBy(player.level(), player, stack.getCount());
                 CatalogueMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
                 ItemStack input = CatalogueMenu.this.inputSlot.getItem(); // Could be wallet or Currency!
@@ -109,6 +113,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
                         CatalogueMenu.this.lastSoundTime = l;
                     }
                 });
+                */
 
                 CatalogueMenu.this.slotsChanged(CatalogueMenu.this.container);
                 super.onTake(player, stack);
@@ -157,10 +162,15 @@ public class CatalogueMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {
         if (this.isValidRecipeIndex(pId)) {
             this.selectedRecipeIndex.set(pId);
-            this.setupResultSlot();
+          //  this.setupResultSlot();
         }
 
         return true;
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        return null;
     }
 
     private boolean isValidRecipeIndex(int pRecipeIndex) {
@@ -177,14 +187,16 @@ public class CatalogueMenu extends AbstractContainerMenu {
     private void setupRecipeList(Container pContainer, ItemStack pStack) {
         this.recipes = new ArrayList<>();
 
-        if(!this.input.is(pStack.getItem())) {
-            if(!this.input.is(Items.AIR) && !this.input.is(lastInput.getItem()) && !this.lastInput.is(Items.AIR))
+        if (!this.input.is(pStack.getItem())) {
+            if (!this.input.is(Items.AIR) && !this.input.is(lastInput.getItem()) && !this.lastInput.is(Items.AIR))
                 this.selectedRecipeIndex.set(-1);
-            if(!this.input.is(lastInput.getItem()))
+            if (!this.input.is(lastInput.getItem()))
                 this.lastInput = this.input;
         }
         if (!pStack.isEmpty()) {
             if (pStack.getItem() instanceof WalletItem walletItem) {
+
+                /*
 
 
                 this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE).stream()
@@ -197,26 +209,28 @@ public class CatalogueMenu extends AbstractContainerMenu {
             } else {
                 this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, pContainer, this.level);
             }
-        }
-        if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1) {
-            for(int i = 0; i < this.recipes.size(); i++){
-                if(this.recipes.get(i) == this.lastUsedRecipe) {
-                    this.selectedRecipeIndex.set(i);
-                    break;
+            */
+            }
+            if (this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1) {
+                for (int i = 0; i < this.recipes.size(); i++) {
+                    if (this.recipes.get(i) == this.lastUsedRecipe) {
+                        this.selectedRecipeIndex.set(i);
+                        break;
+                    }
                 }
             }
-        }
-        this.recipes = this.recipes.stream().sorted(Comparator.comparing(r -> r.getId().toString())).toList();
-        this.recipesSize = this.recipes.size();
+            //  this.recipes = this.recipes.stream().sorted(Comparator.comparing(r -> r.getId().toString())).toList();
+            this.recipesSize = this.recipes.size();
 
-        if(!this.input.is(pStack.getItem()) || pStack.getCount() != this.input.getCount()) {
-            this.resultSlot.set(ItemStack.EMPTY);
-            if(this.lastInput.is(Items.AIR))
-                setupResultSlot();
+            if (!this.input.is(pStack.getItem()) || pStack.getCount() != this.input.getCount()) {
+                this.resultSlot.set(ItemStack.EMPTY);
+                //    if(this.lastInput.is(Items.AIR))
+                //      setupResultSlot();
+            }
         }
-    }
 
-    void setupResultSlot() {
+
+            /*
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
             CatalogueRecipe catalogueRecipe = this.recipes.get(this.selectedRecipeIndex.get());
             this.resultContainer.setRecipeUsed(catalogueRecipe);
@@ -306,5 +320,8 @@ public class CatalogueMenu extends AbstractContainerMenu {
             this.clearContainer(pPlayer, this.container);
         });
     }
+    */
+        }
+
 
 }

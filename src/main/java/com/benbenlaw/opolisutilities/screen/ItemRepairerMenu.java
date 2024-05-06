@@ -9,13 +9,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class ItemRepairerMenu extends AbstractContainerMenu {
-    public final ItemRepairerBlockEntity blockEntity;
+    private final ItemRepairerBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
@@ -24,7 +24,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
     }
 
     public ItemRepairerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.ITEM_REPAIRER_MENU.get(), containerID);
+        super((MenuType<?>) ModMenuTypes.ITEM_REPAIRER_MENU, containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((ItemRepairerBlockEntity) entity);
         this.level = inventory.player.level();
@@ -32,6 +32,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
 
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
+        /*
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new BlacklistTagInputSlot(handler, 0, 80, 18, ModTags.Items.BANNED_IN_ITEM_REPAIRER, 1));
@@ -39,6 +40,8 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
       //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
       //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));
         });
+
+         */
 
         addDataSlots(data);
 

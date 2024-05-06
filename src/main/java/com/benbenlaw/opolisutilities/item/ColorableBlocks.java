@@ -1,7 +1,7 @@
 package com.benbenlaw.opolisutilities.item;
 
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.EnumMap;
 import java.util.function.BiFunction;
@@ -32,10 +32,12 @@ public enum ColorableBlocks {
     }
 
     public record Instance<T, X>(DeferredRegister<T> ADR, DeferredRegister<X> BDR) {
+
+        /*
         public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(Function<String, String> idMaker, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, BiFunction<ColorableBlocks, RegistryObject<I>, Supplier<L>> supplierFunctionB) {
             EnumMap<ColorableBlocks, DualRegistryObject<I, L>> MAP = new EnumMap<>(ColorableBlocks.class);
             for (ColorableBlocks color : ColorableBlocks.values()) {
-                RegistryObject<I> A = ADR.register(idMaker.apply(color.id), supplierFunctionA.apply(color));
+                RegistryH<I> A = ADR.register(idMaker.apply(color.id), supplierFunctionA.apply(color));
                 RegistryObject<L> B = BDR.register(idMaker.apply(color.id), supplierFunctionB.apply(color, A));
                 MAP.put(color, new DualRegistryObject<>(A, B));
             }
@@ -48,5 +50,7 @@ public enum ColorableBlocks {
         public RegistryObject<T> get() {
             return A();
         }
+        
+         */
     }
 }

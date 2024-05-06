@@ -107,10 +107,13 @@ public class BlockBreakerBlock extends BaseEntityBlock {
     }
 
 
+    /*
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level level, @Nonnull BlockState state, @Nonnull BlockEntityType<T> blockEntityType) {
         return blockEntityType == BlockBreakerBlockEntity. ? BlockBreakerBlockEntity::tick : null;
     }
+
+     */
 
 
 

@@ -3,12 +3,10 @@ package com.benbenlaw.opolisutilities.networking;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.networking.packets.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+
 
 public class ModMessages {
+    /*
     private static SimpleChannel INSTANCE;
 
     private static int packetId = 0;
@@ -74,4 +72,6 @@ public class ModMessages {
     public static <MSG> void sendToClients(MSG message) {
         INSTANCE.send(PacketDistributor.ALL.noArg(), message);
     }
+
+     */
 }

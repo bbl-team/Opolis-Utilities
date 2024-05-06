@@ -7,11 +7,10 @@ import com.benbenlaw.opolisutilities.screen.slot.WhitelistMaxStackSizeOneSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockBreakerMenu extends AbstractContainerMenu {
     public final BlockBreakerBlockEntity blockEntity;
@@ -23,15 +22,16 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
     }
 
     public BlockBreakerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.BLOCK_BREAKER_MENU.get(), containerID);
+        super((MenuType<?>) ModMenuTypes.BLOCK_BREAKER_MENU, containerID);
         checkContainerSize(inventory, 3);
         blockEntity = ((BlockBreakerBlockEntity) entity);
         this.level = inventory.player.level();
         this.data = data;
 
-        addPlayerInventory(inventory);
-        addPlayerHotbar(inventory);
+   //     addPlayerInventory(inventory);
+    //    addPlayerHotbar(inventory);
 
+        /*
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 40, 40));
             this.addSlot(new WhitelistMaxStackSizeOneSlot(handler, 1, 80, 40) {
@@ -50,6 +50,8 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
             });
         });
 
+         */
+
         addDataSlots(data);
 
     }
@@ -63,6 +65,8 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+
+
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -116,4 +120,6 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }
     }
+
+
 }

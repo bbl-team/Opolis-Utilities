@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.event;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
@@ -36,18 +35,13 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 
-@Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
+//@Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
 
 public class ModEvents {
+
+    /*
 
     public static Vec3 globalEntity;
     public static Level globalLevel;
@@ -228,6 +222,8 @@ public class ModEvents {
             }
         }
     }
+
+     */
 }
 
 

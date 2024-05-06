@@ -3,7 +3,6 @@ package com.benbenlaw.opolisutilities.block.entity.custom;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
-import com.benbenlaw.opolisutilities.screen.ItemRepairerMenu;
 import com.benbenlaw.opolisutilities.util.ModTags;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
@@ -25,11 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,11 +40,12 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         protected void onContentsChanged(int slot) {
             setChanged();
             if(!level.isClientSide()) {
-                ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
+            //    ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
         }
     };
 
+    /*
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
@@ -69,6 +65,8 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                     Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER)))
             );
+
+     */
 
 
     public final ContainerData data;
@@ -117,12 +115,15 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return new ItemRepairerMenu(containerID, inventory, this, this.data);
+        return this.createMenu(containerID, inventory, player);
+
     }
 
     public ItemStackHandler getItemStackHandler() {
         return this.itemHandler;
     }
+
+    /*
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
@@ -182,8 +183,11 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+     */
+
     public void tick() {
 
+        /*
         Level pLevel = this.level;
         BlockPos pPos  = this.worldPosition;
         assert pLevel != null;
@@ -225,6 +229,8 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
+
+         */
     }
 
     private void resetProgress() {

@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class FluidGeneratorRecipe implements Recipe<NoInventoryRecipe> {
+public class FluidGeneratorRecipe {} /* implements Recipe<NoInventoryRecipe> {
 
     private final ResourceLocation id;
     private final String fluid;
@@ -108,3 +108,4 @@ public class FluidGeneratorRecipe implements Recipe<NoInventoryRecipe> {
         }
     }
 }
+*/

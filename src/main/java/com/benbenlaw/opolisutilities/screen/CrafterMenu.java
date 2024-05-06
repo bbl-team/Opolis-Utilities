@@ -6,11 +6,10 @@ import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class CrafterMenu extends AbstractContainerMenu {
     public final CrafterBlockEntity blockEntity;
@@ -38,7 +37,7 @@ public class CrafterMenu extends AbstractContainerMenu {
 
 
     public CrafterMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.CRAFTER_MENU.get(), containerID);
+        super((MenuType<?>) ModMenuTypes.CRAFTER_MENU, containerID);
         checkContainerSize(inventory, 10);
         blockEntity = ((CrafterBlockEntity) entity);
         this.level = inventory.player.level();
@@ -47,7 +46,8 @@ public class CrafterMenu extends AbstractContainerMenu {
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+        /*
+        this.blockEntity.getCa(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 30, 17)); // table
             this.addSlot(new SlotItemHandler(handler, 1, 48, 17)); // table
             this.addSlot(new SlotItemHandler(handler, 2, 66, 17)); // table
@@ -61,6 +61,8 @@ public class CrafterMenu extends AbstractContainerMenu {
             this.addSlot(new ModResultSlot(handler, 9, 124, 35)); //result
 
         });
+
+         */
 
         addDataSlots(data);
 

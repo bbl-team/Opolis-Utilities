@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
+public class ResourceGeneratorRecipe {} /* implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
@@ -131,3 +131,4 @@ public class ResourceGeneratorRecipe implements Recipe<SimpleContainer> {
         }
     }
 }
+*/

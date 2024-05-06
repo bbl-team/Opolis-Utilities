@@ -3,8 +3,7 @@ package com.benbenlaw.opolisutilities.capabillties;
 import com.benbenlaw.opolisutilities.capabillties.handlers.BlockDataHandler;
 import com.benbenlaw.opolisutilities.capabillties.handlers.SidedDataHandler;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -12,6 +11,8 @@ import java.util.Optional;
 import static com.benbenlaw.opolisutilities.OpolisUtilities.MOD_ID;
 
 public class CapabillitySyncronizer {
+
+    /*
     public static class Types {
         public static final ResourceLocation BLOCKS = new ResourceLocation(MOD_ID, "blocks");
         public static final ResourceLocation ITEMS = new ResourceLocation(MOD_ID, "items");
@@ -53,4 +54,6 @@ public class CapabillitySyncronizer {
     public static Capability<?> get(ResourceLocation location) {
         return REVERSE_CAPS.getOrDefault(location, null);
     }
+
+     */
 }

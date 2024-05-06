@@ -21,11 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +38,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         }
     };
 
+    /*
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
@@ -52,9 +49,11 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                     Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false))
             );
 
+     */
 
 
-    protected final ContainerData data;
+
+    public final ContainerData data;
     private int progress = 0;
     private int maxProgress = 220;
 
@@ -90,9 +89,11 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return new ResourceGeneratorMenu(containerID, inventory, this, this.data);
+        return this.createMenu(containerID, inventory, player);
+
     }
 
+    /*
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -142,6 +143,8 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         progress = nbt.getInt("resource_generator.progress");
     }
 
+     */
+
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < itemHandler.getSlots(); i++) {
@@ -153,6 +156,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     }
 
     public void tick() {
+        /*
 
         Level pLevel = this.level;
         BlockPos pPos  = this.worldPosition;
@@ -170,8 +174,11 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
+
+         */
     }
 
+    /*
     private boolean hasRecipe(ResourceGeneratorBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
@@ -235,6 +242,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     private boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
+    */
 
     public void setHandler(ItemStackHandler handler) {
         copyHandlerContents(handler);
@@ -244,13 +252,17 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         return this.itemHandler;
     }
 
+
     private void copyHandlerContents(ItemStackHandler handler) {
         for (int i = 0; i < handler.getSlots(); i++) {
             itemHandler.setStackInSlot(i, handler.getStackInSlot(i));
         }
     }
+    /*
 
     public boolean inputItemHasCorrectNBT(SimpleContainer inventory, ResourceGeneratorRecipe recipe) {
         return recipe.getIngredients().get(0).getItems()[0].getTag() == inventory.getItem(0).getTag();
     }
+
+     */
 }

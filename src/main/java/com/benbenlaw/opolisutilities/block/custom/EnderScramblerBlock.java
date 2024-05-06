@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.EnderScramblerBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,8 @@ import java.util.List;
 
 public class EnderScramblerBlock extends BaseEntityBlock {
 
+    public static final MapCodec<EnderScramblerBlock> CODEC = simpleCodec(EnderScramblerBlock::new);
+
     public static final int maxRange = 8;// ConfigFile.maxScramblerRange.get();
     public static final int minRange = 1;// ConfigFile.minScramblerRange.get();
 
@@ -37,6 +40,11 @@ public class EnderScramblerBlock extends BaseEntityBlock {
     public EnderScramblerBlock(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE).setValue(SCRAMBLER_RANGE, minRange));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
@@ -49,6 +57,7 @@ public class EnderScramblerBlock extends BaseEntityBlock {
         return this.defaultBlockState().setValue(POWERED, false).setValue(SCRAMBLER_RANGE, minRange);
     }
 
+    /*
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> components, TooltipFlag flag) {
 
@@ -60,6 +69,8 @@ public class EnderScramblerBlock extends BaseEntityBlock {
             components.add(Component.translatable("tooltips.home_stone.hover.shift").withStyle(ChatFormatting.BLUE));
         }
     }
+
+     */
 
 
 

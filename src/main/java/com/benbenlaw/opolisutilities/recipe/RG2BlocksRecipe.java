@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class RG2BlocksRecipe implements Recipe<NoInventoryRecipe> {
+public class RG2BlocksRecipe {} /* implements Recipe<NoInventoryRecipe> {
 
     private final ResourceLocation id;
     private final String block;
@@ -100,3 +100,5 @@ public class RG2BlocksRecipe implements Recipe<NoInventoryRecipe> {
         }
     }
 }
+
+*/

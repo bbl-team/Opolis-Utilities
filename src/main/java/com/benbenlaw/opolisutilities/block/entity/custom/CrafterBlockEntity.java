@@ -30,11 +30,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +47,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             setChanged();
             assert level != null;
             if (!level.isClientSide()) {
-                ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
+            //    ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
         }
 
@@ -63,6 +59,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         }
     };
 
+    /*
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(
@@ -126,6 +123,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
             );
 
+     */
+
 
     public final ContainerData data;
     private int recipeChecker = 0;
@@ -144,9 +143,11 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         }
     }
 
+
     public ItemStackHandler getItemStackHandler() {
         return this.itemHandler;
     }
+
 
     public CrafterBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.CRAFTER_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -180,9 +181,10 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return new CrafterMenu(containerID, inventory, this, this.data);
+        return this.createMenu(containerID, inventory, player);
     }
 
+    /*
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -219,6 +221,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         }
     }
 
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
@@ -238,6 +241,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         recipeChecker = nbt.getInt("crafter.recipeChecker");
     }
 
+     */
+
 
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
@@ -249,6 +254,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     }
 
     public void tick() {
+
 
         recipeChecker++;
 
@@ -334,6 +340,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             @Override
             public void fillStackedContents(StackedContents pHelper) {}
         };
+
+        /*
         Optional<CraftingRecipe> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container, level);
         if (recipe.isPresent()) {
             CraftingRecipe r = recipe.get();
@@ -342,6 +350,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         } else {
             craftingItem = ItemStack.EMPTY.copy();
         }
+
+         */
     }
 
     public void craft() {

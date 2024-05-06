@@ -33,11 +33,7 @@ import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,11 +51,12 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             setChanged();
             assert level != null;
             if (!level.isClientSide()) {
-                ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
+            //    ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
         }
     };
 
+    /*
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(
@@ -85,6 +82,8 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
                     Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack) && !stack.is(ModTags.Items.BANNED_IN_BLOCK_PLACER)))
             );
+
+     */
 
 
     public final ContainerData data;
@@ -137,8 +136,10 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, @NotNull Inventory inventory, @NotNull Player player) {
-        return new BlockPlacerMenu(containerID, inventory, this, this.data);
+        return this.createMenu(containerID, inventory, player);
     }
+
+    /*
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
@@ -191,6 +192,8 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         maxProgress = nbt.getInt("block_placer.maxProgress");
     }
 
+
+     */
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < itemHandler.getSlots(); i++) {
@@ -202,6 +205,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     public void tick() {
+        /*
 
         Level pLevel = this.level;
         BlockPos pPos = this.worldPosition;
@@ -254,5 +258,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         if (!level.isClientSide) {
             ModMessages.sendToClients(new PacketSyncItemStackToClient(this.itemHandler, this.worldPosition));
         }
+
+         */
     }
 }

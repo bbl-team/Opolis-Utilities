@@ -56,6 +56,7 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
         int y = (height - imageHeight) / 2;
 
 
+        /*
         renderBackground(guiGraphics);
 
         if (this.menu.blockEntity.getBlockState().getValue(CrafterBlock.POWERED)) {
@@ -79,6 +80,8 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
+
+         */
 
     }
 }

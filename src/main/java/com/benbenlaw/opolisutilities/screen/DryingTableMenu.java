@@ -6,11 +6,10 @@ import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class DryingTableMenu extends AbstractContainerMenu {
     private final DryingTableBlockEntity blockEntity;
@@ -22,7 +21,7 @@ public class DryingTableMenu extends AbstractContainerMenu {
     }
 
     public DryingTableMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.DRYING_TABLE_MENU.get(), containerID);
+        super((MenuType<?>) ModMenuTypes.DRYING_TABLE_MENU, containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((DryingTableBlockEntity) entity);
         this.level = inventory.player.level();
@@ -30,15 +29,18 @@ public class DryingTableMenu extends AbstractContainerMenu {
 
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
+        /*
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 18));
             this.addSlot(new ModResultSlot(handler, 1, 80, 60));
       //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
       //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));
-        });
 
-        addDataSlots(data);
+         */
+    //    });
+
+     //   addDataSlots(data);
 
     }
 

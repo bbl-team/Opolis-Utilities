@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class DryingTableRecipe implements Recipe<SimpleContainer> {
+public class DryingTableRecipe {} /* implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack output;
@@ -143,3 +143,4 @@ public class DryingTableRecipe implements Recipe<SimpleContainer> {
         }
     }
 }
+*/

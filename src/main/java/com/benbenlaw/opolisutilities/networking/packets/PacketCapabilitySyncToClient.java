@@ -5,12 +5,13 @@ import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.network.NetworkEvent;
+
 
 import java.util.function.Supplier;
 
 public class PacketCapabilitySyncToClient {
+
+    /*
     private final ICapabilitySync capabilitySync;
     private final ResourceLocation ID;
     private final Capability<?> capability;
@@ -31,7 +32,7 @@ public class PacketCapabilitySyncToClient {
          * ID
          * CAP RL
          * BLOCKPOS/PLAYER
-         */
+
         this.capabilitySync = null;
         this.ID = buf.readResourceLocation();
         this.capability = CapabillitySyncronizer.get(buf.readResourceLocation());
@@ -55,4 +56,6 @@ public class PacketCapabilitySyncToClient {
         });
         return true;
     }
+
+     */
 }

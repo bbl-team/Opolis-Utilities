@@ -2,8 +2,7 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.FluidGeneratorBlockEntity;
-import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
-import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -16,7 +15,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,7 +26,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,6 +34,9 @@ import java.util.Properties;
 
 public class FluidGeneratorBlock extends BaseEntityBlock {
 
+    public static final MapCodec<FluidGeneratorBlock> CODEC = simpleCodec(FluidGeneratorBlock::new);
+
+
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public FluidGeneratorBlock(Properties p_49795_) {
@@ -41,10 +44,16 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
         this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.FALSE));
     }
 
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
         p_55484_.add(LIT);
     }
 
+    /*
     @Override
     public @NotNull InteractionResult use(BlockState pState, Level level, BlockPos blockPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
 
@@ -94,6 +103,8 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
+     */
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -118,4 +129,7 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
         return createTickerHelper(pBlockEntityType, ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(),
                 (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
     }
+
+
 }
+

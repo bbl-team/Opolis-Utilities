@@ -7,10 +7,10 @@ import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class BlockPlacerMenu extends AbstractContainerMenu {
     public final BlockPlacerBlockEntity blockEntity;
@@ -22,18 +22,21 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
     }
 
     public BlockPlacerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.BLOCK_PLACER_MENU.get(), containerID);
+        super((MenuType<?>) ModMenuTypes.BLOCK_PLACER_MENU, containerID);
         checkContainerSize(inventory, 1);
         blockEntity = ((BlockPlacerBlockEntity) entity);
         this.level = inventory.player.level();
         this.data = data;
 
+        /*
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new BlacklistTagInputSlot(handler, 0, 80, 18, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
         });
+
+         */
 
         addDataSlots(data);
 

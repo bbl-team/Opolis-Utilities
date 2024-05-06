@@ -1,13 +1,10 @@
 package com.benbenlaw.opolisutilities.capabillties;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityProvider;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-
 import java.util.HashMap;
 
 public class CapabilityMigration {
+
+    /*
     public static CapabilityMigration create() {
         return new CapabilityMigration();
     }
@@ -49,4 +46,6 @@ public class CapabilityMigration {
     public void register(IEventBus bus) {
         bus.addListener(this::onRespawn);
     }
+
+     */
 }

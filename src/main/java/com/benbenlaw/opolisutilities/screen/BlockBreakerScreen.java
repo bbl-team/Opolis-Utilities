@@ -52,6 +52,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+        /*
         renderBackground(guiGraphics);
 
         //Power Button
@@ -80,6 +81,8 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         renderToolSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderWhitelistTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderBlacklistTooltip(guiGraphics, mouseX, mouseY, x, y);
+
+         */
 
     }
 

@@ -5,8 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkEvent;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +13,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class PacketSyncItemStackToClient {
+
+    /*
     private final ItemStackHandler itemStackHandler;
     private final BlockPos pos;
 
@@ -52,4 +53,6 @@ public class PacketSyncItemStackToClient {
         });
         return true;
     }
+
+     */
 }

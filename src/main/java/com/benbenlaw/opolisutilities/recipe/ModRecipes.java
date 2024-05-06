@@ -2,12 +2,10 @@ package com.benbenlaw.opolisutilities.recipe;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModRecipes{
+
+    /*
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZER=
             DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, OpolisUtilities.MOD_ID);
 
@@ -40,6 +38,8 @@ public class ModRecipes{
     public static void register(IEventBus eventBus) {
         SERIALIZER.register(eventBus);
     }
+
+     */
 
 
 }

@@ -23,12 +23,9 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,10 +44,12 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             setChanged();
             assert level != null;
             if(!level.isClientSide()) {
-                ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
+            //    ModMessages.sendToClients(new PacketSyncItemStackToClient(this, worldPosition));
             }
         }
     };
+
+    /*
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
@@ -72,10 +71,15 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack)))
             );
 
+     */
+
 
     public final ContainerData data;
     private int progress = 0;
     private int maxProgress = 80;
+
+
+
 
     public ItemStack getRenderStack() {
         ItemStack stack;
@@ -99,9 +103,15 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         }
     }
 
+
+
     public ItemStackHandler getItemStackHandler() {
         return this.itemHandler;
     }
+
+
+
+
 
     public DryingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -127,6 +137,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         };
     }
 
+
+
     @Override
     public Component getDisplayName() {
         if (this.getBlockState().getValue(WATERLOGGED)) {
@@ -138,9 +150,11 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return new DryingTableMenu(containerID, inventory, this, this.data);
+        return this.createMenu(containerID, inventory, player);
+
     }
 
+    /*
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -192,6 +206,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         maxProgress = nbt.getInt("drying_table.maxProgress");
 
     }
+    */
 
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
@@ -203,7 +218,12 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+
+
+
     public void tick() {
+
+        /*
 
         Level pLevel = this.level;
         BlockPos pPos  = this.worldPosition;
@@ -225,7 +245,11 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
+
+         */
     }
+
+    /*
 
     private boolean hasRecipe(DryingTableBlockEntity entity) {
         Level level = entity.level;
@@ -362,6 +386,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         return entity.itemHandler.getStackInSlot(1).getCount() + recipe.getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount() - 1 <
                 entity.itemHandler.getStackInSlot(1).getMaxStackSize();
     }
+
+     */
 
 
 

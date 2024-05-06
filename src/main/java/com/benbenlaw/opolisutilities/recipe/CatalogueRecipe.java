@@ -12,19 +12,21 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 
-public class CatalogueRecipe extends SingleItemRecipe {
+public class CatalogueRecipe {}/* extends SingleItemRecipe {
+
+
 
     public int itemInCount;
     public CatalogueRecipe(ResourceLocation pId, String pGroup, Ingredient pIngredient, ItemStack pResult, int itemInCount) {
         super(Type.INSTANCE, ModRecipes.CATALOGUE_SERIALIZER.get(), pId, pGroup, pIngredient, pResult);
         this.itemInCount = itemInCount;
     }
+
 
     @Override
     public RecipeSerializer<?> getSerializer() {
@@ -96,4 +98,6 @@ public class CatalogueRecipe extends SingleItemRecipe {
         var itemIn = p_44483_.getItem(0);
         return this.ingredient.test(itemIn) && itemIn.getCount() >= this.itemInCount;
     }
+
 }
+*/

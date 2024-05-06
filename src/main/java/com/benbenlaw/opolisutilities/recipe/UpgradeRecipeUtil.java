@@ -15,7 +15,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class UpgradeRecipeUtil implements Recipe<SimpleContainer> {
+public class UpgradeRecipeUtil {} /*implements Recipe<SimpleContainer> {
 
     private final ResourceLocation id;
     private final ItemStack upgradeItem;
@@ -194,3 +194,5 @@ public class UpgradeRecipeUtil implements Recipe<SimpleContainer> {
         }
     }
 }
+
+*/

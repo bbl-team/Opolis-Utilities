@@ -48,6 +48,7 @@ public class RedstoneClockBlockEntity extends BlockEntity {
     }
 
 
+    /*
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.putInt("redstone_clock.progress", progress);
@@ -61,4 +62,6 @@ public class RedstoneClockBlockEntity extends BlockEntity {
         progress = nbt.getInt("redstone_clock.progress");
         maxProgress = nbt.getInt("redstone_clock.maxProgress");
     }
+
+     */
 }
