@@ -25,6 +25,8 @@ public class EliteLootBoxItem extends Item {
    
     }
 
+    /*
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -51,5 +53,7 @@ public class EliteLootBoxItem extends Item {
         }
     }
 
+
+     */
 
 }

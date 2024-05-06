@@ -1,7 +1,9 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -9,7 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,13 +22,20 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CrafterBlock extends BaseEntityBlock {
+
+    public static final MapCodec<CrafterBlock> CODEC = simpleCodec(CrafterBlock::new);
+
     public CrafterBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public static final int maxTimer = 600; // 30 seconds
@@ -82,19 +91,14 @@ public class CrafterBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                          Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof CrafterBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (CrafterBlockEntity)entity, pPos);
-            }
-            else {
-                throw new IllegalStateException("Our Container provider is missing!");
-            }
+    protected InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+                                               @NotNull Player player , @NotNull BlockHitResult hit) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if (entity instanceof CrafterBlockEntity) {
+            player.openMenu((CrafterBlockEntity) entity);
+            return InteractionResult.SUCCESS;
         }
-
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.FAIL;
     }
 
     @Nullable

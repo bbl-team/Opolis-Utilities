@@ -25,6 +25,7 @@ public class HomeStoneItem extends Item {
         super(properties);
     }
 
+    /*
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
@@ -113,6 +114,8 @@ public class HomeStoneItem extends Item {
 
         super.appendHoverText(stack, level, components, flag);
     }
+
+     */
 }
 
 

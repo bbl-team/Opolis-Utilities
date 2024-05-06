@@ -1,6 +1,6 @@
 package com.benbenlaw.opolisutilities.capabillties;
 
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 public class Capabilities {
     public static final CapabilityMigration MIGRATION = CapabilityMigration.create();

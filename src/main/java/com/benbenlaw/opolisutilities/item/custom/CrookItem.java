@@ -37,10 +37,10 @@ public class CrookItem extends Item {
                     spawnBlockAsEntity(level, blockPos, drop);
                 }
             }
-            if (entity instanceof Player) {
-                entity.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, entity,
-                        (damage) -> entity.broadcastBreakEvent(entity.getUsedItemHand()));
-            }
+        //    if (entity instanceof Player) {
+        //        entity.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, entity,
+        //                (damage) -> entity.broadcastBreakEvent(entity.getUsedItemHand()));
+        //    }
         }
         return super.mineBlock(stack, level, state, blockPos, entity);
     }

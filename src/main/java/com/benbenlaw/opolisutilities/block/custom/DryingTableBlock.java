@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -31,9 +32,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+
+
+    public static final MapCodec<DryingTableBlock> CODEC = simpleCodec(DryingTableBlock::new);
+
     public DryingTableBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -89,19 +99,14 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos,
-                                          @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof DryingTableBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (DryingTableBlockEntity)entity, pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
-            }
+    protected InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+                                               @NotNull Player player , @NotNull BlockHitResult hit) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if (entity instanceof DryingTableBlockEntity) {
+            player.openMenu((DryingTableBlockEntity) entity);
+            return InteractionResult.SUCCESS;
         }
-
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.FAIL;
     }
 
     @Nullable

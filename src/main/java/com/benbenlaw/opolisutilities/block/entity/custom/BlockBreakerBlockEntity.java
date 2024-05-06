@@ -37,6 +37,9 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +63,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
         }
     };
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private Lazy<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(
                     Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,

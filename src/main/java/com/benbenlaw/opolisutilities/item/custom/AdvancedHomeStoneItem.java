@@ -16,15 +16,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AdvancedHomeStoneItem extends SimpleFoiledItem {
+public class AdvancedHomeStoneItem extends Item {
 
     public AdvancedHomeStoneItem(Properties properties) {
         super(properties);
@@ -32,6 +32,7 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
 
 
 
+    /*
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
@@ -150,6 +151,8 @@ public class AdvancedHomeStoneItem extends SimpleFoiledItem {
 
         super.appendHoverText(stack, level, components, flag);
     }
+
+     */
 }
 
 

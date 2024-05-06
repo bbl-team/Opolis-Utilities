@@ -49,6 +49,7 @@ public class BlockBreakerBlock extends BaseEntityBlock {
 
     /* FACING */
 
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return this.defaultBlockState().setValue(FACING, pContext.getNearestLookingDirection().getOpposite()).setValue(TIMER, minTimer).setValue(POWERED, false);
@@ -106,16 +107,9 @@ public class BlockBreakerBlock extends BaseEntityBlock {
     }
 
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.BLOCK_BREAKER_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
-    }
-
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level level, @Nonnull BlockState state, @Nonnull BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.BLOCK_BREAKER_BLOCK_ENTITY, BlockBreakerBlockEntity::tick);
+        return blockEntityType == BlockBreakerBlockEntity. ? BlockBreakerBlockEntity::tick : null;
     }
 
 

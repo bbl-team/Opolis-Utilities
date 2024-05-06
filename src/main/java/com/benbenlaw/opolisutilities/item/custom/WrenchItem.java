@@ -168,18 +168,7 @@ public class WrenchItem extends Item {
         }
 
         return InteractionResult.SUCCESS;
-    }
 
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-
-        if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.wrench_item.shift.held")
-                    .withStyle(ChatFormatting.GREEN));
-        }
-        else {
-            components.add(Component.translatable("tooltips.scrambler_item.hover.shift").withStyle(ChatFormatting.BLUE));
-        }
     }
 
 }

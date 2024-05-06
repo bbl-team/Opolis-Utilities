@@ -1,7 +1,9 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -11,6 +13,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,8 +29,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemRepairerBlock extends BaseEntityBlock {
+
+    public static final MapCodec<ItemRepairerBlock> CODEC = simpleCodec(ItemRepairerBlock::new);
+
     public ItemRepairerBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public static final VoxelShape SHAPE = Block.box(0,0,0,16,16,16);
@@ -70,17 +82,14 @@ public class ItemRepairerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                          Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof ItemRepairerBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (ItemRepairerBlockEntity)entity, pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
-            }
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+                                                        @NotNull Player player , @NotNull BlockHitResult hit) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if (entity instanceof ItemRepairerBlockEntity) {
+            player.openMenu((ItemRepairerBlockEntity) entity);
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.FAIL;
     }
 
     @Nullable

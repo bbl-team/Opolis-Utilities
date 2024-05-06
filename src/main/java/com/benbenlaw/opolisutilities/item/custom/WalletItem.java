@@ -15,12 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +27,11 @@ import java.util.function.Supplier;
 import static com.benbenlaw.opolisutilities.OpolisUtilities.MOD_ID;
 
 public class WalletItem extends Item {
+    public WalletItem(Properties pProperties) {
+        super(pProperties);
+    }
+
+    /*
     public static final ResourceLocation WALLET_CAP = new ResourceLocation(MOD_ID, "wallet");
 
     public static class WalletSlot {
@@ -342,6 +341,8 @@ public class WalletItem extends Item {
 
         super.appendHoverText(stack, level, components, flag);
     }
+
+     */
 }
 
 

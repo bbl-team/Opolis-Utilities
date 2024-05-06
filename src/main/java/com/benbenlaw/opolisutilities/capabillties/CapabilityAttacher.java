@@ -11,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 
 import java.util.HashMap;
 import java.util.function.Consumer;

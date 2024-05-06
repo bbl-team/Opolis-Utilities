@@ -21,9 +21,9 @@ public class BasicLootBoxItem extends Item {
 
     public BasicLootBoxItem(Properties pProperties) {
         super(pProperties);
-
-   
     }
+
+    /*
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
@@ -51,4 +51,6 @@ public class BasicLootBoxItem extends Item {
             return false;
         }
     }
+
+     */
 }

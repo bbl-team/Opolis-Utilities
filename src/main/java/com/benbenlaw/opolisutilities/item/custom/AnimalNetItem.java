@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,6 +29,8 @@ public class AnimalNetItem extends Item {
     public AnimalNetItem(Properties properties) {
         super(properties);
     }
+
+    /*
 
 
 
@@ -133,4 +134,6 @@ public class AnimalNetItem extends Item {
         }
         super.appendHoverText(stack, level, components, flag);
     }
+
+     */
 }

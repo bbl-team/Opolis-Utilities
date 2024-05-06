@@ -1,7 +1,9 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -25,8 +27,16 @@ import org.jetbrains.annotations.Nullable;
 import org.openjdk.nashorn.internal.ir.annotations.Ignore;
 
 public class BlockPlacerBlock extends BaseEntityBlock {
+
+    public static final MapCodec<BlockPlacerBlock> CODEC = simpleCodec(BlockPlacerBlock::new);
+
     public BlockPlacerBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public static final int maxTimer = 1200; // 1 minute
@@ -79,19 +89,16 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState pState, Level pLevel, BlockPos pPos,
-                                          @NotNull Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof BlockPlacerBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (BlockPlacerBlockEntity) entity, pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
-            }
+    protected InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+                                               @NotNull Player player , @NotNull BlockHitResult hit) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if (entity instanceof BlockPlacerBlockEntity) {
+            player.openMenu((BlockPlacerBlockEntity) entity);
+            return InteractionResult.SUCCESS;
         }
-
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.FAIL;
     }
+
 
     @Nullable
     @Override
