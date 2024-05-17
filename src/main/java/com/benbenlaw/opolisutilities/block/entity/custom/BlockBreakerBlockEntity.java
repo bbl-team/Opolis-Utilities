@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
@@ -9,8 +10,14 @@ import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntit
 import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -32,13 +39,17 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,31 +69,39 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
         }
     };
 
+
+
+    private Lazy<IItemHandler> lazyItemHandler = null;
+
+    private final Map<Direction, Lazy<WrappedHandler>> directionWrappedHandlerMap;
+    private final IItemHandler itemHandlerSided;
+
+
     /*
-
-    private Lazy<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
+    private final Map<Direction, Lazy<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(
-                    Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                    Direction.DOWN, Lazy.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
 
-                    Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                    Direction.UP, Lazy.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
 
-                    Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                    Direction.NORTH, Lazy.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
 
-                    Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                    Direction.SOUTH, Lazy.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
 
-                    Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                    Direction.WEST, Lazy.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack))),
 
-                    Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
+                    Direction.EAST, Lazy.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> index == 0 && itemHandler.isItemValid(0, stack)))
             );
 
      */
+
+
 
 
     public final ContainerData data;
@@ -105,6 +124,14 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
     public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.BLOCK_BREAKER_BLOCK_ENTITY.get(), blockPos, blockState);
+        this.directionWrappedHandlerMap = new HashMap<>();
+
+        this.itemHandlerSided = new InputOutputItemHandler(this.itemHandler, (i, stack) -> {
+            return i == 0 || i == 1;
+        }, (i) -> {
+            return i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 9;
+        });
+
         this.data = new ContainerData() {
             public int get(int index) {
                 return switch (index) {
@@ -125,7 +152,14 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                 return 2;
             }
         };
+
+
     }
+
+    public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
+        return (IItemHandler)(side == null ? this.itemHandler : this.itemHandlerSided);
+    }
+
 
     @Override
     public Component getDisplayName() {
@@ -134,72 +168,56 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return this.createMenu(containerID, inventory, player);
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return new BlockBreakerMenu(pContainerId, pPlayerInventory, this, this.data);
     }
-
-    /*
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-        return super.getCapability(cap);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return directionWrappedHandlerMap.get(side).cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
-
-
 
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        this.setChanged();
+    }
 
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
-        for (Direction dir : Direction.values()) {
-            if (directionWrappedHandlerMap.containsKey(dir)) {
-                directionWrappedHandlerMap.get(dir).invalidate();
-            }
-        }
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        super.loadAdditional(tag, lookupProvider);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag, provider);
+        return tag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+        super.onDataPacket(net, pkt, lookupProvider);
     }
 
 
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put("inventory", this.itemHandler.serializeNBT(provider));
         tag.putInt("block_breaker.progress", progress);
         tag.putInt("block_breaker.maxProgress", maxProgress);
-
-        super.saveAdditional(tag);
     }
 
-     */
 
-    /*
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("block_breaker.progress");
-        maxProgress = nbt.getInt("block_breaker.maxProgress");
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        this.itemHandler.deserializeNBT(provider, tag.getCompound("inventory"));
+        progress = tag.getInt("block_breaker.progress");
+        maxProgress = tag.getInt("block_breaker.maxProgress");
+        super.loadAdditional(tag, provider);
     }
-
-     */
 
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
@@ -209,6 +227,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
+
 
     //Spawn Block As Entity Method inpsired by https://github.com/stfwi/engineers-decor/blob/1.19/src/main/java/wile/engineersdecor/blocks/EdBreaker.java
 
@@ -228,13 +247,14 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
     public void tick() {
 
-        /*
 
         Level level = this.level;
         BlockPos pos = this.worldPosition;
         assert level != null;
         BlockState blockState = level.getBlockState(pos);
         maxProgress = this.getBlockState().getValue(BlockBreakerBlock.TIMER);
+
+        setChanged(level, worldPosition, blockState);
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && level instanceof ServerLevel) {
 
@@ -258,7 +278,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                     if (progress >= maxProgress) {
                         progress = 0;
 
-                        if (tool.getItem().isCorrectToolForDrops(block.defaultBlockState()) || !block.defaultBlockState().requiresCorrectToolForDrops()) {
+                        if (tool.getItem().isCorrectToolForDrops(tool, block.defaultBlockState()) || !block.defaultBlockState().requiresCorrectToolForDrops()) {
 
                             if (this.itemHandler.getStackInSlot(1).is(Item.byBlock(block)) && this.itemHandler.getStackInSlot(2).isEmpty()) {
 
@@ -269,7 +289,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                                     spawnBlockAsEntity(this.level, placeHere, drop);
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, RandomSource.create(), null, null);
                                     level.playSound(null, pos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -288,7 +308,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                                     spawnBlockAsEntity(this.level, placeHere, drop);
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, RandomSource.create(), null, null);
                                     level.playSound(null, pos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -308,7 +328,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                                     spawnBlockAsEntity(this.level, placeHere, drop);
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurt(1, RandomSource.create(), null);
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, RandomSource.create(), null, null);
                                     level.playSound(null, pos, blockSounds.getBreakSound(), SoundSource.BLOCKS, (float) 1, 1);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -322,10 +342,11 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
             }
         }
         if (!this.level.isClientSide()) {
-            ModMessages.sendToClients(new PacketSyncItemStackToClient(this.itemHandler, this.worldPosition));
+
+            setChanged();
+        //    ModMessages.sendToClients(new PacketSyncItemStackToClient(this.itemHandler, this.worldPosition));
         }
 
-         */
 
     }
 

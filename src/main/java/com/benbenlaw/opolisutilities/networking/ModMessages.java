@@ -3,16 +3,32 @@ package com.benbenlaw.opolisutilities.networking;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.networking.packets.*;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 
 public class ModMessages {
+
+    @SubscribeEvent
+    public static void register(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(OpolisUtilities.MOD_ID);
+
+        //Client To Server
+
+        //Server To Client
+    }
+
     /*
-    private static SimpleChannel INSTANCE;
+
+    private static SimpleChanner INSTANCE;
 
     private static int packetId = 0;
     private static int id() {
         return packetId++;
     }
+
 
 
     public static void register() {

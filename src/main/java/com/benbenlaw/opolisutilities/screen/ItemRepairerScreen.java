@@ -50,8 +50,9 @@ public class ItemRepairerScreen extends AbstractContainerScreen{
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-    }
-     /*   renderBackground(guiGraphics);
+
+        renderBackground(guiGraphics, mouseX, mouseY, delta);
+        /*
 
         //Power Button
         if (this.menu.blockEntity.getBlockState().getValue(ItemRepairerBlock.POWERED)) {
@@ -71,6 +72,7 @@ public class ItemRepairerScreen extends AbstractContainerScreen{
                 p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
             }));
         }
+        */
 
 
 
@@ -78,10 +80,4 @@ public class ItemRepairerScreen extends AbstractContainerScreen{
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
-
-
-      */
-
-
-
 }

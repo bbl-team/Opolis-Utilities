@@ -2,11 +2,14 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
+import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -48,8 +51,6 @@ public class BlockBreakerBlock extends BaseEntityBlock {
 
 
     /* FACING */
-
-
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return this.defaultBlockState().setValue(FACING, pContext.getNearestLookingDirection().getOpposite()).setValue(TIMER, minTimer).setValue(POWERED, false);
@@ -89,14 +90,19 @@ public class BlockBreakerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
-                                               @NotNull Player player , @NotNull BlockHitResult hit) {
-        BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof BlockBreakerBlockEntity) {
-            player.openMenu((BlockBreakerBlockEntity) entity);
+    public @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hit) {
+        if (level.isClientSide)
             return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.FAIL;
+
+        BlockEntity te = level.getBlockEntity(blockPos);
+        if (!(te instanceof BlockBreakerBlockEntity))
+            return InteractionResult.FAIL;
+
+        player.openMenu(new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new BlockBreakerMenu(windowId, playerInventory, blockPos), Component.translatable("")), (buf -> {
+            buf.writeBlockPos(blockPos);
+        }));
+        return InteractionResult.SUCCESS;
     }
 
 
@@ -106,15 +112,10 @@ public class BlockBreakerBlock extends BaseEntityBlock {
         return new BlockBreakerBlockEntity(pPos, pState);
     }
 
-
-    /*
+    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level level, @Nonnull BlockState state, @Nonnull BlockEntityType<T> blockEntityType) {
-        return blockEntityType == BlockBreakerBlockEntity. ? BlockBreakerBlockEntity::tick : null;
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, ModBlockEntities.BLOCK_BREAKER_BLOCK_ENTITY.get(),
+                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
     }
-
-     */
-
-
-
 }

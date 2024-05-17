@@ -18,32 +18,22 @@ import org.jetbrains.annotations.NotNull;
 public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/block_breaker_gui.png");
-
-
     private static final ResourceLocation ON_BUTTON =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_on_button.png");
-
     private static final ResourceLocation OFF_BUTTON =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button.png");
-
-
     public BlockBreakerScreen(BlockBreakerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
-
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
     }
 
     @Override
@@ -52,8 +42,8 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+        renderBackground(guiGraphics, mouseX, mouseY, delta);
         /*
-        renderBackground(guiGraphics);
 
         //Power Button
         if (this.menu.blockEntity.getBlockState().getValue(BlockBreakerBlock.POWERED)) {
@@ -73,7 +63,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
                 p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
             }));
         }
-
+        */
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
@@ -82,7 +72,6 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         renderWhitelistTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderBlacklistTooltip(guiGraphics, mouseX, mouseY, x, y);
 
-         */
 
     }
 

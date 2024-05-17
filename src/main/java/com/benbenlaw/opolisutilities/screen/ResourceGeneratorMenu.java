@@ -21,7 +21,7 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     }
 
     public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super((MenuType<?>) ModMenuTypes.RESOURCE_GENERATOR_MENU, containerID);
+        super(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((ResourceGeneratorBlockEntity) entity);
         this.level = inventory.player.level();

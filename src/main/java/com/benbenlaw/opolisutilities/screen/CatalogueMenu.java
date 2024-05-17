@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.item.custom.WalletItem;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.google.common.collect.Lists;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -48,12 +49,12 @@ public class CatalogueMenu extends AbstractContainerMenu {
     };
     public final ResultContainer resultContainer = new ResultContainer();
 
-    public CatalogueMenu(int pContainerId, Inventory pPlayerInventory) {
+    public CatalogueMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf buf) {
         this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
     }
 
     public CatalogueMenu(int pContainerId, Inventory pPlayerInventory, final ContainerLevelAccess pAccess) {
-        super((MenuType<?>) ModMenuTypes.CATALOGUE_MENU, pContainerId);
+        super(ModMenuTypes.CATALOGUE_MENU.get(), pContainerId);
         this.access = pAccess;
         this.level = pPlayerInventory.player.level();
         this.inputSlot = this.addSlot(new Slot(this.container, 0, 26, 44));

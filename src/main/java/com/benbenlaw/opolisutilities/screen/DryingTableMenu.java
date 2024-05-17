@@ -21,7 +21,7 @@ public class DryingTableMenu extends AbstractContainerMenu {
     }
 
     public DryingTableMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super((MenuType<?>) ModMenuTypes.DRYING_TABLE_MENU, containerID);
+        super(ModMenuTypes.DRYING_TABLE_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((DryingTableBlockEntity) entity);
         this.level = inventory.player.level();

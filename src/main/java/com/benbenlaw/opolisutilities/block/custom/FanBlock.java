@@ -60,19 +60,6 @@ public class FanBlock extends BaseEntityBlock {
         return this.defaultBlockState().setValue(POWERED, false).setValue(FAN_RANGE, minRange).setValue(FACING, Direction.NORTH);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> components, TooltipFlag flag) {
-
-        if(Screen.hasShiftDown()) {
-            components.add(Component.translatable("tooltips.fan.shift.held")
-                    .withStyle(ChatFormatting.GREEN));
-        }
-        else {
-            components.add(Component.translatable("tooltips.home_stone.hover.shift").withStyle(ChatFormatting.BLUE));
-        }
-    }
-
-
 
 
     //BLOCK ENTITY

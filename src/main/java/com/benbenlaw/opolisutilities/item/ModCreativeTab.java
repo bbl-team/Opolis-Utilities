@@ -1,19 +1,23 @@
 package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 
 public class ModCreativeTab {
 
-    /*
+
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpolisUtilities.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> OPOLIS_UTILITIES_TAB = CREATIVE_MODE_TABS.register("opolisutilities", () -> CreativeModeTab.builder()
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> OPOLIS_UTILITIES_TAB = CREATIVE_MODE_TABS.register("opolisutilities", () -> CreativeModeTab.builder()
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> ModItems.HOME_STONE.get().getDefaultInstance())
             .title(Component.translatable("itemGroup.opolisutilities"))
@@ -66,7 +70,7 @@ public class ModCreativeTab {
         CREATIVE_MODE_TABS.register(eventBus);
     }
     
-     */
+
 
 
 }

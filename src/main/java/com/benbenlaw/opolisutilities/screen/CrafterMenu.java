@@ -37,7 +37,7 @@ public class CrafterMenu extends AbstractContainerMenu {
 
 
     public CrafterMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super((MenuType<?>) ModMenuTypes.CRAFTER_MENU, containerID);
+        super(ModMenuTypes.CRAFTER_MENU.get(), containerID);
         checkContainerSize(inventory, 10);
         blockEntity = ((CrafterBlockEntity) entity);
         this.level = inventory.player.level();

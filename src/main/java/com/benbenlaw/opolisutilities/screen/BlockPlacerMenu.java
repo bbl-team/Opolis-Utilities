@@ -2,8 +2,6 @@ package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
-import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
-import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,28 +10,43 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+
 public class BlockPlacerMenu extends AbstractContainerMenu {
     public final BlockPlacerBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
     public BlockPlacerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
     }
 
     public BlockPlacerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super((MenuType<?>) ModMenuTypes.BLOCK_PLACER_MENU, containerID);
-        checkContainerSize(inventory, 1);
+        super(ModMenuTypes.BLOCK_PLACER_MENU.get(), containerID);
+        checkContainerSize(inventory, 3);
         blockEntity = ((BlockPlacerBlockEntity) entity);
         this.level = inventory.player.level();
         this.data = data;
 
-        /*
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
+        /*
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new BlacklistTagInputSlot(handler, 0, 80, 18, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
+            this.addSlot(new SlotItemHandler(handler, 0, 40, 40));
+            this.addSlot(new WhitelistMaxStackSizeOneSlot(handler, 1, 80, 40) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    ItemStack blacklistStack = handler.getStackInSlot(2);
+                    return blacklistStack.isEmpty() && super.mayPlace(stack);
+                }
+            });
+            this.addSlot(new BlacklistMaxStackSizeOneSlot(handler, 2, 120, 40) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    ItemStack whitelistStack = handler.getStackInSlot(1);
+                    return whitelistStack.isEmpty() && super.mayPlace(stack);
+                }
+            });
         });
 
          */
@@ -50,7 +63,9 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 1;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+
+
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -104,4 +119,6 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }
     }
+
+
 }

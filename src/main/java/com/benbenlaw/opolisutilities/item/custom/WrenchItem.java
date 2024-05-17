@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.*;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.item.ModItems;

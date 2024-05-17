@@ -3,8 +3,8 @@ package com.benbenlaw.opolisutilities.screen.slot.utils;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class BlacklistTagInputSlot extends SlotItemHandler {
 

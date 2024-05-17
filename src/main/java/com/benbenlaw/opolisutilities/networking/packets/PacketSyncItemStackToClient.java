@@ -14,7 +14,8 @@ import java.util.function.Supplier;
 
 public class PacketSyncItemStackToClient {
 
-    /*
+
+/*
     private final ItemStackHandler itemStackHandler;
     private final BlockPos pos;
 
@@ -54,5 +55,7 @@ public class PacketSyncItemStackToClient {
         return true;
     }
 
-     */
+ */
+
+
 }

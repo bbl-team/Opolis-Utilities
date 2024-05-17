@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

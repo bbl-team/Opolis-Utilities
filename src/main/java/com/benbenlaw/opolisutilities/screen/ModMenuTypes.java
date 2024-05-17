@@ -4,10 +4,14 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.network.IContainerFactory;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
@@ -17,29 +21,40 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(BuiltInRegistries.MENU, OpolisUtilities.MOD_ID);
 
+    public static final DeferredHolder<MenuType<?>, MenuType<BlockBreakerMenu>> BLOCK_BREAKER_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<BlockPlacerMenu>> BLOCK_PLACER_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<DryingTableMenu>> DRYING_TABLE_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<ItemRepairerMenu>> ITEM_REPAIRER_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<CrafterMenu>> CRAFTER_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<CatalogueMenu>> CATALOGUE_MENU;
 
 
-    public static final Registry<MenuType<BlockBreakerMenu>> BLOCK_BREAKER_MENU =
-            registerMenuType(BlockBreakerMenu::new, "block_breaker_menu");
+    static {
+        BLOCK_BREAKER_MENU = MENUS.register("block_breaker_menu", () ->
+                IMenuTypeExtension.create(BlockBreakerMenu::new));
 
-    public static final Registry<MenuType<BlockPlacerMenu>> BLOCK_PLACER_MENU =
-            registerMenuType(BlockPlacerMenu::new, "block_placer_menu");
+        BLOCK_PLACER_MENU = MENUS.register("block_placer_menu", () ->
+                IMenuTypeExtension.create(BlockPlacerMenu::new));
 
-    public static final Registry<MenuType<DryingTableMenu>> DRYING_TABLE_MENU =
-            registerMenuType(DryingTableMenu::new, "drying_table_menu");
+        DRYING_TABLE_MENU = MENUS.register("drying_table_menu", () ->
+                IMenuTypeExtension.create(DryingTableMenu::new));
 
-    public static final Registry<MenuType<ItemRepairerMenu>> ITEM_REPAIRER_MENU =
-            registerMenuType(ItemRepairerMenu::new, "item_repairer_menu");
+        ITEM_REPAIRER_MENU = MENUS.register("item_repairer_menu", () ->
+                IMenuTypeExtension.create(ItemRepairerMenu::new));
 
-    public static final Registry<MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU =
-            registerMenuType(ResourceGeneratorMenu::new, "resource_generator_menu");
+        RESOURCE_GENERATOR_MENU = MENUS.register("resource_generator_menu", () ->
+                IMenuTypeExtension.create(ResourceGeneratorMenu::new));
 
-    public static final Registry<MenuType<CrafterMenu>> CRAFTER_MENU =
-            registerMenuType(CrafterMenu::new, "crafter_menu");
+        CRAFTER_MENU = MENUS.register("crafter_menu", () ->
+                IMenuTypeExtension.create(CrafterMenu::new));
+
+        CATALOGUE_MENU = MENUS.register("catalogue_menu", () ->
+                IMenuTypeExtension.create(CatalogueMenu::new));
 
 
-    private static <T extends AbstractContainerMenu> Registry<MenuType<T>> registerMenuType(Supplier<? extends T> menuSupplier, String name) {
-        return MENUS.register(name, () -> MenuTypeBuilder.builder(menuSupplier));
+
+
     }
 
     public static void register(IEventBus eventBus) {

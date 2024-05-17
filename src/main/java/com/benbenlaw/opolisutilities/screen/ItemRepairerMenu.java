@@ -24,7 +24,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
     }
 
     public ItemRepairerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super((MenuType<?>) ModMenuTypes.ITEM_REPAIRER_MENU, containerID);
+        super(ModMenuTypes.ITEM_REPAIRER_MENU.get(), containerID);
         checkContainerSize(inventory, 2);
         blockEntity = ((ItemRepairerBlockEntity) entity);
         this.level = inventory.player.level();
