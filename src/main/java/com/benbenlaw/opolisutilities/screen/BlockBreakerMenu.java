@@ -98,7 +98,7 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
 
              */
 
-        addDataSlots(this.data);
+        addDataSlots(data);
 
 
 

@@ -10,9 +10,10 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(OpolisUtilities.MOD_ID);
+    public static final DeferredRegister.Items ITEMS =
+            DeferredRegister.createItems(OpolisUtilities.MOD_ID);
 
-    public static final DeferredItem<Item> JEI_NULL_ITEM = ITEMS.register("jei_null_item",
+    public static final DeferredItem<Item> JEI_NULL_ITEM = ITEMS .register("jei_null_item",
             () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> MINI_COAL = ITEMS.register("mini_coal",
