@@ -1,7 +1,11 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
+import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
+import com.benbenlaw.opolisutilities.util.ModTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -9,49 +13,34 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 
 public class BlockPlacerMenu extends AbstractContainerMenu {
-    public final BlockPlacerBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
+    protected BlockPlacerBlockEntity blockEntity;
+    protected Level level;
+    protected ContainerData data;
+    protected Player player;
+    protected BlockPos blockPos;
 
     public BlockPlacerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
+        this(containerID, inventory, extraData.readBlockPos());
     }
 
-    public BlockPlacerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
+    public BlockPlacerMenu(int containerID, Inventory inventory, BlockPos blockPos) {
         super(ModMenuTypes.BLOCK_PLACER_MENU.get(), containerID);
-        checkContainerSize(inventory, 3);
-        blockEntity = ((BlockPlacerBlockEntity) entity);
+        this.player = inventory.player;
+        this.blockPos = blockPos;
         this.level = inventory.player.level();
-        this.data = data;
 
+        BlockPlacerBlockEntity entity = (BlockPlacerBlockEntity) this.level.getBlockEntity(blockPos);
+
+        checkContainerSize(inventory, 1);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
-        /*
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 40, 40));
-            this.addSlot(new WhitelistMaxStackSizeOneSlot(handler, 1, 80, 40) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    ItemStack blacklistStack = handler.getStackInSlot(2);
-                    return blacklistStack.isEmpty() && super.mayPlace(stack);
-                }
-            });
-            this.addSlot(new BlacklistMaxStackSizeOneSlot(handler, 2, 120, 40) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    ItemStack whitelistStack = handler.getStackInSlot(1);
-                    return whitelistStack.isEmpty() && super.mayPlace(stack);
-                }
-            });
-        });
-
-         */
-
-        addDataSlots(data);
+        assert entity != null;
+        this.addSlot(new BlacklistTagInputSlot(entity.getItemStackHandler(), 0, 80, 18, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
 
     }
 
@@ -68,9 +57,9 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
 
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        if (!sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
@@ -96,14 +85,14 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
         } else {
             sourceSlot.setChanged();
         }
-        sourceSlot.onTake(playerIn, sourceStack);
+        sourceSlot.onTake(player, sourceStack);
         return copyOfSourceStack;
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.BLOCK_PLACER.get());
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
+                player, ModBlocks.BLOCK_PLACER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

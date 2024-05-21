@@ -3,12 +3,17 @@ package com.benbenlaw.opolisutilities.block.custom;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
+import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
+import com.benbenlaw.opolisutilities.screen.BlockPlacerMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -35,34 +40,46 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
-
-    public static final int maxTimer = 1200; // 1 minute
-    public static final int minTimer = 10; // 0.5 seconds
+    public static final int MAX_TIMER = 1200; // 1 minute
+    public static final int MIN_TIMER = 10; // 0.5 seconds
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
-    public static final IntegerProperty TIMER = IntegerProperty.create("timer", minTimer, maxTimer);
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final IntegerProperty TIMER = IntegerProperty.create("timer", MIN_TIMER, MAX_TIMER);
 
-
-    /* FACING */
-
+    /* REDSTONE SIGNAL */
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getNearestLookingDirection().getOpposite()).setValue(TIMER, minTimer).setValue(POWERED, false);
+    protected void neighborChanged(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos,
+                                   @NotNull Block neighborBlock, @NotNull BlockPos neighborBlockPos, boolean movedByPiston) {
+
+        if (!level.isClientSide()) {
+            boolean powered = level.hasNeighborSignal(blockPos);
+            if (powered != blockState.getValue(POWERED)) {
+                level.setBlock(blockPos, blockState.setValue(POWERED, powered), 3);
+            }
+        }
     }
 
+    /* FACING WITH REDSTONE NEIGHBOUR CHECK */
     @Override
-    public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {
-        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING))).setValue(TIMER, minTimer).setValue(POWERED, false);
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level level = context.getLevel();
+        BlockPos blockPos = context.getClickedPos();
+        boolean powered = level.hasNeighborSignal(blockPos);
+        if (powered) {
+            return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, true).setValue(TIMER, MIN_TIMER);
+        }
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false).setValue(TIMER, MIN_TIMER);
     }
 
+    /* ROTATION */
     @Override
-    public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING))).setValue(TIMER, minTimer).setValue(POWERED, false);
+    public @NotNull BlockState rotate(BlockState blockState, Rotation direction) {
+        return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, false).setValue(TIMER, MIN_TIMER);
     }
 
     @Override
@@ -73,32 +90,48 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     /* BLOCK ENTITY */
 
     @Override
-    public @NotNull RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newBlockState, boolean isMoving) {
+        if (blockState.getBlock() != newBlockState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof BlockPlacerBlockEntity) {
                 ((BlockPlacerBlockEntity) blockEntity).drops();
             }
         }
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        super.onRemove(blockState, level, blockPos, newBlockState, isMoving);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
-                                               @NotNull Player player , @NotNull BlockHitResult hit) {
-        BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof BlockPlacerBlockEntity) {
-            player.openMenu((BlockPlacerBlockEntity) entity);
-            return InteractionResult.SUCCESS;
+    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
+
+        if (!level.isClientSide()) {
+
+            BlockPlacerBlockEntity blockPlacerBlockEntity = (BlockPlacerBlockEntity) level.getBlockEntity(blockPos);
+
+            //STAT CHECK//
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem().equals(Items.STICK)) {
+                assert blockPlacerBlockEntity != null;
+                int maxProgress = blockPlacerBlockEntity.maxProgress;
+                int currentProgress = blockPlacerBlockEntity.progress;
+                player.sendSystemMessage(Component.literal("Max Progress: " + maxProgress));
+                player.sendSystemMessage(Component.literal("Current Progress: " + currentProgress));
+                return InteractionResult.SUCCESS;
+            }
+
+            //MENU OPEN//
+            else {
+                player.openMenu(new SimpleMenuProvider(
+                        (windowId, playerInventory, playerEntity) -> new BlockPlacerMenu(windowId, playerInventory, blockPos),
+                        Component.translatable("block.opolisutilities.block_placer")), (buf -> buf.writeBlockPos(blockPos)));
+                return InteractionResult.SUCCESS;
+            }
         }
         return InteractionResult.FAIL;
     }
-
 
     @Nullable
     @Override
@@ -106,12 +139,11 @@ public class BlockPlacerBlock extends BaseEntityBlock {
         return new BlockPlacerBlockEntity(pPos, pState);
     }
 
-
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.BLOCK_PLACER_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, ModBlockEntities.BLOCK_PLACER_BLOCK_ENTITY.get(),
+                (world, blockPos, thisBlockState, blockEntity) -> blockEntity.tick());
     }
 
 }

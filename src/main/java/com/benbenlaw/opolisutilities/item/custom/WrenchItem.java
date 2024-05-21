@@ -95,21 +95,6 @@ public class WrenchItem extends Item {
 
             if (blockState.is(ModBlocks.BLOCK_PLACER.get())) {
 
-                int currentRange = blockState.getValue(BlockPlacerBlock.TIMER);
-
-                assert player != null;
-                if (player.getMainHandItem().is(ModItems.OPOLIS_WRENCH.get())) {
-
-                    if (player.isCrouching() && !Screen.hasControlDown() && currentRange < BlockPlacerBlock.maxTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(BlockPlacerBlock.TIMER, currentRange + 10));
-                        return InteractionResult.SUCCESS;
-                    }
-
-                    else if (player.isCrouching() && Screen.hasControlDown() && currentRange > BlockPlacerBlock.minTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(BlockPlacerBlock.TIMER, currentRange - 10));
-                        return InteractionResult.SUCCESS;
-                    }
-                }
             }
 
             if (blockState.is(ModBlocks.CRAFTER.get())) {

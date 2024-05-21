@@ -44,8 +44,11 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 
+
+        renderBackground(guiGraphics, mouseX, mouseY, delta);
+        renderLabels(guiGraphics, mouseX, mouseY);
+
         /*
-        renderBackground(guiGraphics);
 
         //Power Button
         if (this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
@@ -65,12 +68,11 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
                 p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
             }));
         }
+        */
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-         */
+
     }
-
-
 }

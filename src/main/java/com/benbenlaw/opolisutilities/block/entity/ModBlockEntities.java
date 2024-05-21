@@ -69,7 +69,11 @@ public class ModBlockEntities {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.BLOCK_BREAKER_BLOCK_ENTITY.get(), BlockBreakerBlockEntity::getItemHandlerCapability);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.BLOCK_PLACER_BLOCK_ENTITY.get(), BlockPlacerBlockEntity::getItemHandlerCapability);
     }
+
 
 
     public static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(@Nonnull String name, @Nonnull Supplier<BlockEntityType.Builder<T>> initializer) {

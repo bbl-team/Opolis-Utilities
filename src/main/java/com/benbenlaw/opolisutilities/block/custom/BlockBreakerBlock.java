@@ -73,6 +73,8 @@ public class BlockBreakerBlock extends BaseEntityBlock {
         return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false);
     }
 
+    /* ROTATION */
+
     @Override
     public @NotNull BlockState rotate(BlockState blockState, @NotNull LevelAccessor level, @NotNull BlockPos blockPos, Rotation direction) {
         return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, blockState.getValue(POWERED));
@@ -86,7 +88,7 @@ public class BlockBreakerBlock extends BaseEntityBlock {
 
     /* BLOCK ENTITY */
 
-    public @NotNull RenderShape getRenderShape(BlockState blockState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
 
