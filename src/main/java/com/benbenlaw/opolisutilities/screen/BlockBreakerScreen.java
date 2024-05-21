@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu> {
@@ -24,6 +26,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button.png");
     public BlockBreakerScreen(BlockBreakerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+
     }
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
@@ -43,6 +46,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         int y = (height - imageHeight) / 2;
 
         renderBackground(guiGraphics, mouseX, mouseY, delta);
+        renderLabels(guiGraphics, mouseX, mouseY);
         /*
 
         //Power Button
@@ -78,7 +82,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     private void renderToolSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveArea(mouseX, mouseY, x, y, 40, 40, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                guiGraphics.renderTooltip(this.font, Component.literal("Tool Slot"), mouseX, mouseY);
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.tool_slot"), mouseX, mouseY);
             }
         }
 
@@ -87,7 +91,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     private void renderWhitelistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveArea(mouseX, mouseY, x, y, 80, 40, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                guiGraphics.renderTooltip(this.font, Component.literal("Whitelist Block"), mouseX, mouseY);
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.whitelist_slot"), mouseX, mouseY);
             }
         }
     }
@@ -95,7 +99,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     private void renderBlacklistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveArea(mouseX, mouseY, x, y, 120, 40, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                guiGraphics.renderTooltip(this.font, Component.literal("Blacklist Block"), mouseX, mouseY);
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.blacklist_slot"), mouseX, mouseY);
             }
         }
     }
@@ -103,5 +107,4 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
         return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
     }
-
 }

@@ -4,7 +4,6 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.BlacklistMaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.WhitelistMaxStackSizeOneSlot;
-import com.benbenlaw.opolisutilities.util.ItemCapabilityMenuHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,9 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockBreakerMenu extends AbstractContainerMenu {
     protected BlockBreakerBlockEntity blockEntity;
@@ -24,130 +22,43 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
     protected BlockPos blockPos;
 
     public BlockBreakerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
+        this(containerID, inventory, extraData.readBlockPos());
     }
 
     public BlockBreakerMenu(int containerID, Inventory inventory, BlockPos blockPos) {
         super(ModMenuTypes.BLOCK_BREAKER_MENU.get(), containerID);
         this.player = inventory.player;
         this.blockPos = blockPos;
-
-    //    checkContainerSize(inventory, 3);
-
-    //    addPlayerInventory(inventory);
-    //    addPlayerHotbar(inventory);
-    //    addDataSlots(data);
-
-
-    }
-
-    public BlockBreakerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.BLOCK_BREAKER_MENU.get(), containerID);
-
-        this.data = data;
-        this.blockEntity = ((BlockBreakerBlockEntity) entity);
         this.level = inventory.player.level();
 
+        BlockBreakerBlockEntity entity = (BlockBreakerBlockEntity) this.level.getBlockEntity(blockPos);
+
+        checkContainerSize(inventory, 3);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
-
-        /*
-        ItemCapabilityMenuHelper.getCapabilityItemHandler(this.level, this.blockEntity).ifPresent(itemHandler -> {
-            addSlot(new SlotItemHandler(itemHandler, 0, 40, 40));
-        });
-
-         */
-
-
-        this.addSlot(new SlotItemHandler(this.blockEntity.getItemStackHandler(), 0, 40, 40));
-        this.addSlot(new WhitelistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 1, 80, 40) {
-                         @Override
-                         public boolean mayPlace(ItemStack stack) {
-                             ItemStack blacklistStack = blockEntity.getItemStackHandler().getStackInSlot(2);
-                             return blacklistStack.isEmpty() && super.mayPlace(stack);
-                         }
-                     });
-
-        this.addSlot(new BlacklistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 2, 120, 40) {
+        //    addDataSlots(this.data);
+        
+        //Add Slots
+        assert entity != null;
+        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 40, 40));
+        this.addSlot(new WhitelistMaxStackSizeOneSlot(entity.getItemStackHandler(), 1, 80, 40) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                ItemStack whitelistStack = blockEntity.getItemStackHandler().getStackInSlot(1);
+                ItemStack blacklistStack = entity.getItemStackHandler().getStackInSlot(2);
+                return blacklistStack.isEmpty() && super.mayPlace(stack);
+            }
+        });
+
+        this.addSlot(new BlacklistMaxStackSizeOneSlot(entity.getItemStackHandler(), 2, 120, 40) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                ItemStack whitelistStack = entity.getItemStackHandler().getStackInSlot(1);
                 return whitelistStack.isEmpty() && super.mayPlace(stack);
             }
         });
 
 
-
-
-
-            /*
-            this.addSlot(new WhitelistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 1, 80, 40) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    ItemStack blacklistStack = blockEntity.getItemStackHandler().getStackInSlot(2);
-                    return blacklistStack.isEmpty() && super.mayPlace(stack);
-                }
-            });
-            this.addSlot(new BlacklistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 2, 120, 40) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    ItemStack whitelistStack = blockEntity.getItemStackHandler().getStackInSlot(1);
-                    return whitelistStack.isEmpty() && super.mayPlace(stack);
-                }
-            });
-
-             */
-
-        addDataSlots(data);
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-        /*
-        checkContainerSize(inventory, 3);
-        blockEntity = ((BlockBreakerBlockEntity) entity);
-        this.level = inventory.player.level();
-        this.data = data;
-
-        addPlayerInventory(inventory);
-        addPlayerHotbar(inventory);
-
-        /*
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 40, 40));
-            this.addSlot(new WhitelistMaxStackSizeOneSlot(handler, 1, 80, 40) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    ItemStack blacklistStack = handler.getStackInSlot(2);
-                    return blacklistStack.isEmpty() && super.mayPlace(stack);
-                }
-            });
-            this.addSlot(new BlacklistMaxStackSizeOneSlot(handler, 2, 120, 40) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    ItemStack whitelistStack = handler.getStackInSlot(1);
-                    return whitelistStack.isEmpty() && super.mayPlace(stack);
-                }
-            });
-        });
-
-
-
-
-        */
-
-
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -160,11 +71,10 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
 
 
-
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        if (!sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
@@ -190,12 +100,12 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
         } else {
             sourceSlot.setChanged();
         }
-        sourceSlot.onTake(playerIn, sourceStack);
+        sourceSlot.onTake(player, sourceStack);
         return copyOfSourceStack;
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(@NotNull Player player) {
         return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
                 player, ModBlocks.BLOCK_BREAKER.get());
     }

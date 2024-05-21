@@ -7,6 +7,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -61,6 +63,13 @@ public class ModBlockEntities {
             register("ender_scrambler_block_entity", () ->
                     BlockEntityType.Builder.of(EnderScramblerBlockEntity::new, ModBlocks.ENDER_SCRAMBLER.get()));
 
+
+    //Capability Registration (Item Handler)
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.BLOCK_BREAKER_BLOCK_ENTITY.get(), BlockBreakerBlockEntity::getItemHandlerCapability);
+    }
 
 
     public static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(@Nonnull String name, @Nonnull Supplier<BlockEntityType.Builder<T>> initializer) {

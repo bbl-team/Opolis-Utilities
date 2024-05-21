@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-public class InputOutputItemHandler  implements IItemHandlerModifiable {
+public class InputOutputItemHandler implements IItemHandlerModifiable {
     private final IItemHandlerModifiable handler;
     private final BiPredicate<Integer, ItemStack> canInput;
     private final Predicate<Integer> canOutput;

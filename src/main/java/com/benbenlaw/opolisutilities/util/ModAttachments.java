@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 
 public class ModAttachments {
 
+
+
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, OpolisUtilities.MOD_ID);
 
     private static final Supplier<AttachmentType<ItemStackHandler>> HANDLER = ATTACHMENT_TYPES.register(

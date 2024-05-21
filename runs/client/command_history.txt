@@ -18,3 +18,32 @@
 /data get block -25 69 4
 /
 /data get block 24 64 -50
+/setblock 14 64 -49 opolisutilities:block_breaker[powered=true]
+/data get block 14 64 -49
+/setblock 14 64 -49 opolisutilities:block_breaker[powered=true]
+/data get block 14 64 -49
+/setblock 14 73 -34 opolisutilities:block_breaker[powered=true]
+/data get block 14 73 -34
+/setblock 14 73 -34 opolisutilities:block_breaker[powered=true]
+/
+/setblock 14 73 -34 opolisutilities:block_breaker[powered=true]
+/
+/setblock 14 73 -34 opolisutilities:block_breaker[powered=true]
+/data get block 14 73 -34
+/setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
+/data get block 13 72 -34
+/setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
+/data get block 13 72 -34
+/
+/setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
+/data get block 13 72 -34
+/data get block 0 64 -42
+/data get block 13 72 -34
+/data get block 0 64 -42
+/playsound minecraft:block.amethyst_block.break
+/
+/weather clear 1000000d
+/give Dev minecraft:wooden_pickaxe[minecraft:damage=80
+/give Dev minecraft:wooden_pickaxe[minecraft:damage=80]
+/give Dev minecraft:wooden_pickaxe[minecraft:damage=58]
+/time set day

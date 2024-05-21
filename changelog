@@ -7,8 +7,20 @@ TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
 TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
 TODO: Add screens for all opolis utilities blocks (1.21)
+TODD: Shift clicking into stack limited slots (1.21) (maybe fixed in block breaker)
 
 3.0.0
+
+Block Breaker;
+    - Removed ability to set the tick rate for speed of breaking blocks
+    - Breaking speed is now based on the block being broken (up to 1000 ticks for the hardest blocks)
+    - Fixed block breaking progress not being reset when the block is broken by the player
+    - Remove the max timer and min timer for the block breaker no longer needed
+    - Added Redstone control for on and off instead of wrench
+    - Complete tidy of the block breaker code
+    - Added block breaking sounds and block broken sounds now work correctly
+    - Block Breaker now a has fake player properties (not sure what effect this will have)
+
 
 Updated all utils package to 1.20.5
 Updated Particles

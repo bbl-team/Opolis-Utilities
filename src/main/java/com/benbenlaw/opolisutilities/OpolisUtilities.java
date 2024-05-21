@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
@@ -14,6 +15,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,6 +38,12 @@ public class OpolisUtilities {
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModAttachments.register(modEventBus);
+
+
+        modEventBus.addListener(this::registerCapabilities);
+
+
+
     //    ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
     //    ModEnchantments.register(modEventBus);
@@ -60,10 +70,30 @@ public class OpolisUtilities {
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
 
 
+    public void registerCapabilities(RegisterCapabilitiesEvent event) {
+
+        ModBlockEntities.registerCapabilities(event);
+    }
 
     @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 
     public static class ClientModEvents {
+
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+
+            event.register(ModMenuTypes.BLOCK_BREAKER_MENU.get(), BlockBreakerScreen::new);
+            event.register(ModMenuTypes.BLOCK_PLACER_MENU.get(), BlockPlacerScreen::new);
+            event.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
+            event.register(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
+            //    event.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
+            event.register(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
+            event.register(ModMenuTypes.CRAFTER_MENU.get(), CrafterScreen::new);
+
+        }
+
+
+        /*
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
 
@@ -71,15 +101,17 @@ public class OpolisUtilities {
 
 //
 
-                MenuScreens.register(ModMenuTypes.BLOCK_PLACER_MENU.get(), BlockPlacerScreen::new);
-                MenuScreens.register(ModMenuTypes.BLOCK_BREAKER_MENU.get(), BlockBreakerScreen::new);
-                MenuScreens.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
-                MenuScreens.register(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
+                MenuScreens.create(ModMenuTypes.BLOCK_PLACER_MENU.get(),
+                MenuScreens.create(ModMenuTypes.BLOCK_BREAKER_MENU.get(), BlockBreakerScreen::new);
+                MenuScreens.create(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
+                MenuScreens.create(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
                 //    MenuScreens.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
-                MenuScreens.register(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
-                MenuScreens.register(ModMenuTypes.CRAFTER_MENU.get(), CrafterScreen::new);
+                MenuScreens.create(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
+                MenuScreens.create(ModMenuTypes.CRAFTER_MENU.get(), CrafterScreen::new);
 
             });
         }
+
+         */
     }
 }

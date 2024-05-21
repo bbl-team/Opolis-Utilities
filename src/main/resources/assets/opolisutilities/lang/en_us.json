@@ -44,7 +44,14 @@
   "block.opolisutilities.ender_scrambler": "Ender Scrambler",
   "block.opolisutilities.item_repairer": "Item Repairer",
   "block.opolisutilities.block_placer": "Block Placer",
+
   "block.opolisutilities.block_breaker": "Block Breaker",
+
+  "block.gui.whitelist_slot": "Whitelist Slot",
+  "block.gui.blacklist_slot": "Blacklist Slot",
+  "block.gui.tool_slot": "Tool Slot",
+
+
   "block.opolisutilities.catalogue": "Catalogue",
   "block.opolisutilities.clicker": "Clicker",
   "block.opolisutilities.crafter": "Crafter (BETA)",
