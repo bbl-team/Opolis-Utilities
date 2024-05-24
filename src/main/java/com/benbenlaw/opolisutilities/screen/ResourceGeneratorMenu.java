@@ -2,48 +2,55 @@ package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
+import com.benbenlaw.opolisutilities.screen.slot.utils.MaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ResourceGeneratorInputSlot;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ResourceGeneratorMenu extends AbstractContainerMenu {
-    private final ResourceGeneratorBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
+    protected ResourceGeneratorBlockEntity blockEntity;
+    protected Level level;
+    protected ContainerData data;
+    protected Player player;
+    protected BlockPos blockPos;
 
     public ResourceGeneratorMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, extraData.readBlockPos());
+
     }
 
-    public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
+    public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockPos blockPos) {
         super(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), containerID);
-        checkContainerSize(inventory, 2);
-        blockEntity = ((ResourceGeneratorBlockEntity) entity);
+        this.player = inventory.player;
+        this.blockPos = blockPos;
         this.level = inventory.player.level();
-        this.data = data;
 
+        ResourceGeneratorBlockEntity entity = (ResourceGeneratorBlockEntity) this.level.getBlockEntity(blockPos);
+
+        checkContainerSize(inventory, 3);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
-        /*
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 80, 18));
-            this.addSlot(new ModResultSlot(handler, 1, 80, 60));
-      //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
-      //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));
-        });
+        assert entity != null;
+        this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 143, 26, level, blockPos));
+        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 143, 60));
+     //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
+        this.addSlot(new MaxStackSizeOneSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26));
 
-         */
-
-        addDataSlots(data);
 
     }
 
+    /*
     public boolean isCrafting() {
         return data.get(0) > 0;
     }
@@ -56,6 +63,8 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
+
+     */
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
@@ -102,9 +111,9 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.RESOURCE_GENERATOR.get());
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
+                player, ModBlocks.RESOURCE_GENERATOR.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

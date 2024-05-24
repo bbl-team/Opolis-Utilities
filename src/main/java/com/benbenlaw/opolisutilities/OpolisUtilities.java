@@ -3,21 +3,20 @@ package com.benbenlaw.opolisutilities;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
+import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.screen.*;
 import com.benbenlaw.opolisutilities.util.ModAttachments;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,14 +43,15 @@ public class OpolisUtilities {
 
 
 
-    //    ModRecipes.register(modEventBus);
+
+        ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
     //    ModEnchantments.register(modEventBus);
     //    ModSounds.register(modEventBus);
 //
     //    Capabilities.register(MinecraftForge.EVENT_BUS);
 //
-    //    modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::commonSetup);
 //
     //    ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
 //
@@ -59,13 +59,7 @@ public class OpolisUtilities {
 
     }
 
-    /*
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(ModMessages::register);
 
-    }
-
-     */
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
 
@@ -73,6 +67,10 @@ public class OpolisUtilities {
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
 
         ModBlockEntities.registerCapabilities(event);
+    }
+
+    public void commonSetup(RegisterPayloadHandlersEvent event) {
+        ModMessages.registerNetworking(event);
     }
 
     @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)

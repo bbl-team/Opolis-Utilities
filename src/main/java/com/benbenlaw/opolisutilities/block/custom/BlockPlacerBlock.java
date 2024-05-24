@@ -1,14 +1,11 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
-import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
 import com.benbenlaw.opolisutilities.screen.BlockPlacerMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -16,7 +13,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.openjdk.nashorn.internal.ir.annotations.Ignore;
 
 public class BlockPlacerBlock extends BaseEntityBlock {
 
@@ -77,6 +76,7 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     }
 
     /* ROTATION */
+    @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState rotate(BlockState blockState, Rotation direction) {
         return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, false).setValue(TIMER, MIN_TIMER);
@@ -89,13 +89,14 @@ public class BlockPlacerBlock extends BaseEntityBlock {
 
     /* BLOCK ENTITY */
 
+    @SuppressWarnings("deprecation")
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newBlockState, boolean isMoving) {
+    public void onRemove(BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, BlockState newBlockState, boolean isMoving) {
         if (blockState.getBlock() != newBlockState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof BlockPlacerBlockEntity) {
@@ -119,7 +120,6 @@ public class BlockPlacerBlock extends BaseEntityBlock {
                 int currentProgress = blockPlacerBlockEntity.progress;
                 player.sendSystemMessage(Component.literal("Max Progress: " + maxProgress));
                 player.sendSystemMessage(Component.literal("Current Progress: " + currentProgress));
-                return InteractionResult.SUCCESS;
             }
 
             //MENU OPEN//
@@ -127,8 +127,8 @@ public class BlockPlacerBlock extends BaseEntityBlock {
                 player.openMenu(new SimpleMenuProvider(
                         (windowId, playerInventory, playerEntity) -> new BlockPlacerMenu(windowId, playerInventory, blockPos),
                         Component.translatable("block.opolisutilities.block_placer")), (buf -> buf.writeBlockPos(blockPos)));
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }

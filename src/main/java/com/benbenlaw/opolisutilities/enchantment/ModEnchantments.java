@@ -1,10 +1,5 @@
 package com.benbenlaw.opolisutilities.enchantment;
 
-import com.benbenlaw.opolisutilities.OpolisUtilities;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
-
 public class ModEnchantments {
 
     /*

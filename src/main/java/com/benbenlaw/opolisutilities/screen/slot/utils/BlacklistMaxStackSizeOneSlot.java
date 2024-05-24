@@ -1,12 +1,12 @@
-package com.benbenlaw.opolisutilities.screen.slot;
+package com.benbenlaw.opolisutilities.screen.slot.utils;
 
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class WhitelistMaxStackSizeOneSlot extends SlotItemHandler {
-    public WhitelistMaxStackSizeOneSlot(IItemHandler itemHandler, int index, int x, int y) {
+public class BlacklistMaxStackSizeOneSlot extends SlotItemHandler {
+    public BlacklistMaxStackSizeOneSlot(IItemHandler itemHandler, int index, int x, int y) {
         super(itemHandler, index, x, y);
     }
 
@@ -14,6 +14,7 @@ public class WhitelistMaxStackSizeOneSlot extends SlotItemHandler {
     public boolean mayPlace(ItemStack stack) {
         return stack.getCount() <= 1;
     }
+
     @Override
     public int getMaxStackSize(ItemStack stack) {
         ItemStack maxAdd = stack.copy();

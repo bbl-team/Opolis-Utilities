@@ -1,5 +1,7 @@
 {
-  "type": "opolisutilities:rg2_speed_blocks",
-  "block": "forge:storage_blocks/diamond",
-  "tickRate": 80
+  "type": "opolisutilities:speed_blocks",
+  "input": {
+    "tag": "minecraft:coal_ores"
+  },
+  "tickRate": 100
 }

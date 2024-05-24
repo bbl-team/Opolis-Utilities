@@ -1,11 +1,8 @@
 package com.benbenlaw.opolisutilities.particles;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 

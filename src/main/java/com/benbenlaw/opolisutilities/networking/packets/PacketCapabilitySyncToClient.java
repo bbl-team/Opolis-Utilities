@@ -1,14 +1,5 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
-import com.benbenlaw.opolisutilities.capabillties.CapabillitySyncronizer;
-import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-
-
-import java.util.function.Supplier;
-
 public class PacketCapabilitySyncToClient {
 
     /*

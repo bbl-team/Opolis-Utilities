@@ -2,9 +2,6 @@ package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
-import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
-import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
-import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

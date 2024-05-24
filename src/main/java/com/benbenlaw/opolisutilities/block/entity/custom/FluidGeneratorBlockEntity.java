@@ -1,26 +1,9 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
-import com.benbenlaw.opolisutilities.block.custom.FluidGeneratorBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.recipe.FluidGeneratorRecipe;
-import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
-import com.benbenlaw.opolisutilities.recipe.RG2SpeedBlocksRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 
 public class FluidGeneratorBlockEntity extends BlockEntity {

@@ -1,55 +1,57 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
+import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
 
+public record PacketBlockPlacerOnOffButton(BlockPos blockPos) implements CustomPacketPayload {
 
-public class PacketBlockPlacerOnOffButton {
+    public static final Type<PacketBlockPlacerOnOffButton> TYPE = new Type<>(new ResourceLocation(OpolisUtilities.MOD_ID, "block_placer_on_off_button"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, PacketBlockPlacerOnOffButton> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public @NotNull PacketBlockPlacerOnOffButton decode(RegistryFriendlyByteBuf buf) {
+            BlockPos blockPos = buf.readBlockPos();
+            return new PacketBlockPlacerOnOffButton(blockPos);
+        }
 
-    /*
+        @Override
+        public void encode(RegistryFriendlyByteBuf buf, PacketBlockPlacerOnOffButton packet) {
+            buf.writeBlockPos(packet.blockPos);
 
-    private BlockPos pos;
+        }
+    };
 
-    public PacketBlockPlacerOnOffButton(BlockPos pos) {
-        this.pos = pos;
+    @Override
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public PacketBlockPlacerOnOffButton(FriendlyByteBuf buf) {
-        this.pos = buf.readBlockPos();
+    public void handle(IPayloadContext context) {
+
+        Player player = context.player();
+        Level level = player.level();
+
+        if (level.getBlockState(blockPos).getBlock() instanceof BlockPlacerBlock) {
+
+            if (level.getBlockState(blockPos).getValue(BlockPlacerBlock.POWERED)) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.BLOCK_PLACER.get().defaultBlockState().setValue(BlockPlacerBlock.POWERED, false)
+                        .setValue(BlockPlacerBlock.FACING, level.getBlockState(blockPos).getValue(BlockPlacerBlock.FACING))
+                        .setValue(BlockPlacerBlock.TIMER, level.getBlockState(blockPos).getValue(BlockPlacerBlock.TIMER)));
+            } else
+                level.setBlockAndUpdate(blockPos, ModBlocks.BLOCK_PLACER.get().defaultBlockState().setValue(BlockPlacerBlock.POWERED, true)
+                        .setValue(BlockPlacerBlock.FACING, level.getBlockState(blockPos).getValue(BlockPlacerBlock.FACING))
+                        .setValue(BlockPlacerBlock.TIMER, level.getBlockState(blockPos).getValue(BlockPlacerBlock.TIMER)));
+
+        }
     }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeBlockPos(pos);
-    }
-
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
-            ServerPlayer player = context.getSender();
-            if (player != null) {
-                ServerLevel level = player.serverLevel();
-                if (pos != null) {
-
-                    if (level.getBlockState(pos).getValue(BlockPlacerBlock.POWERED)) {
-                        level.setBlockAndUpdate(pos, ModBlocks.BLOCK_PLACER.get().defaultBlockState().setValue(BlockPlacerBlock.POWERED, false)
-                                .setValue(BlockPlacerBlock.FACING, level.getBlockState(pos).getValue(BlockPlacerBlock.FACING))
-                                .setValue(BlockPlacerBlock.TIMER, level.getBlockState(pos).getValue(BlockPlacerBlock.TIMER)));
-                    } else
-                        level.setBlockAndUpdate(pos, ModBlocks.BLOCK_PLACER.get().defaultBlockState().setValue(BlockPlacerBlock.POWERED, true)
-                                .setValue(BlockPlacerBlock.FACING, level.getBlockState(pos).getValue(BlockPlacerBlock.FACING))
-                                .setValue(BlockPlacerBlock.TIMER, level.getBlockState(pos).getValue(BlockPlacerBlock.TIMER)));
-
-
-                }
-            }
-        });
-        return true;
-    }
-
-     */
 }

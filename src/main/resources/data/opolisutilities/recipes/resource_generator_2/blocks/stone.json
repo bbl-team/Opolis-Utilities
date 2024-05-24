@@ -1,4 +1,6 @@
 {
-  "type": "opolisutilities:rg2_blocks",
-  "block": "forge:stone"
+  "type": "opolisutilities:resource_generator",
+  "input": {
+    "item": "minecraft:stone"
+  }
 }

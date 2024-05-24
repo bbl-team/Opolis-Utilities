@@ -3,11 +3,6 @@ package com.benbenlaw.opolisutilities.item;
 
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.EnumMap;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 public enum ColorableBlocks {
     WHITE("white"),
     GRAY("gray"),

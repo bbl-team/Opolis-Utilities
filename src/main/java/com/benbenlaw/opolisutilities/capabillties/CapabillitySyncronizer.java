@@ -1,15 +1,5 @@
 package com.benbenlaw.opolisutilities.capabillties;
 
-import com.benbenlaw.opolisutilities.capabillties.handlers.BlockDataHandler;
-import com.benbenlaw.opolisutilities.capabillties.handlers.SidedDataHandler;
-import net.minecraft.resources.ResourceLocation;
-
-
-import java.util.HashMap;
-import java.util.Optional;
-
-import static com.benbenlaw.opolisutilities.OpolisUtilities.MOD_ID;
-
 public class CapabillitySyncronizer {
 
     /*

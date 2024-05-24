@@ -6,18 +6,18 @@ import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,12 +26,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.annotation.Nonnull;
 
 public class BlockBreakerBlock extends BaseEntityBlock {
 
@@ -88,6 +85,8 @@ public class BlockBreakerBlock extends BaseEntityBlock {
 
     /* BLOCK ENTITY */
 
+    @SuppressWarnings("deprecation")
+    @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
@@ -111,7 +110,6 @@ public class BlockBreakerBlock extends BaseEntityBlock {
 
             BlockBreakerBlockEntity blockBreakerBlockEntity = (BlockBreakerBlockEntity) level.getBlockEntity(blockPos);
 
-
             //STAT CHECK//
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem().equals(Items.STICK)) {
                 assert blockBreakerBlockEntity != null;
@@ -119,7 +117,6 @@ public class BlockBreakerBlock extends BaseEntityBlock {
                 int currentProgress = blockBreakerBlockEntity.progress;
                 player.sendSystemMessage(Component.literal("Max Progress: " + maxProgress));
                 player.sendSystemMessage(Component.literal("Current Progress: " + currentProgress));
-                return InteractionResult.SUCCESS;
             }
 
             //MENU OPEN//
@@ -127,8 +124,8 @@ public class BlockBreakerBlock extends BaseEntityBlock {
                 player.openMenu(new SimpleMenuProvider(
                         (windowId, playerInventory, playerEntity) -> new BlockBreakerMenu(windowId, playerInventory, blockPos),
                         Component.translatable("block.opolisutilities.block_breaker")), (buf -> buf.writeBlockPos(blockPos)));
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }

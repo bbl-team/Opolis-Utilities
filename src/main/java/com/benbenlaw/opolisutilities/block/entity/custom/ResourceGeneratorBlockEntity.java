@@ -1,15 +1,25 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.custom.ResourceGeneratorBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
 import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
+import com.benbenlaw.opolisutilities.recipe.SpeedUpgradesRecipe;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
-import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -18,47 +28,64 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+
 
 public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+
+    private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
     };
 
-    /*
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
-            Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
-                    Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
-                    Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
-                    Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
-                    Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
-                    Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false))
-            );
-
-     */
-
-
-
     public final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 220;
+    public int progress = 0;
+    public int maxProgress = 220;
+    public String resource = "";
+    public boolean isValidStructure = false;
+
+    public static final int INPUT_SLOT = 0;
+    public static final int OUTPUT_SLOT = 1;
+    public static final int UPGRADE_SLOT = 2;
+
+    private final IItemHandler outputItemHandler = new InputOutputItemHandler(itemHandler,
+            (i, stack) -> false, // No input slots
+            i -> i == OUTPUT_SLOT // Allow output from OUTPUT_SLOT
+    );
+
+    public IItemHandler getItemHandlerCapability(Direction side) {
+        if (side == null)
+            return itemHandler;
+
+        return outputItemHandler;
+    }
+
+    public void setHandler(ItemStackHandler handler) {
+        for (int i = 0; i < handler.getSlots(); i++) {
+            this.itemHandler.setStackInSlot(i, handler.getStackInSlot(i));
+        }
+    }
+
+    public ItemStackHandler getItemStackHandler() {
+        return this.itemHandler;
+    }
 
     public ResourceGeneratorBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.RESOURCE_GENERATOR_BLOCK_ENTITY.get(), blockPos, blockState);
+
         this.data = new ContainerData() {
             public int get(int index) {
                 return switch (index) {
@@ -76,193 +103,229 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             public int getCount() {
-                return 2;
+                return 1;
             }
         };
     }
 
     @Override
-    public Component getDisplayName() {
-        return Component.literal("Resource Generator");
+    public @NotNull Component getDisplayName() {
+        return Component.translatable("block.opolisutilities.resource_generator");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerID, Inventory inventory, Player player) {
-        return this.createMenu(containerID, inventory, player);
-
-    }
-
-    /*
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-        return super.getCapability(cap);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return directionWrappedHandlerMap.get(side).cast();
-        }
-
-        return super.getCapability(cap, side);
+    public AbstractContainerMenu createMenu(int container, @NotNull Inventory inventory, @NotNull Player player) {
+        return new ResourceGeneratorMenu(container, inventory, this.getBlockPos());
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        this.setChanged();
     }
 
     @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
-        for (Direction dir : Direction.values()) {
-            if (directionWrappedHandlerMap.containsKey(dir)) {
-                directionWrappedHandlerMap.get(dir).invalidate();
-            }
-        }
+    public void handleUpdateTag(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
+        super.loadAdditional(compoundTag, provider);
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("resource_generator.progress", progress);
-        super.saveAdditional(tag);
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider provider) {
+        CompoundTag compoundTag = new CompoundTag();
+        saveAdditional(compoundTag, provider);
+        return compoundTag;
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("resource_generator.progress");
+    public void onDataPacket(@NotNull Connection connection, @NotNull ClientboundBlockEntityDataPacket clientboundBlockEntityDataPacket,
+                             HolderLookup.@NotNull Provider provider) {
+        super.onDataPacket(connection, clientboundBlockEntityDataPacket, provider);
     }
 
-     */
+
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
+        super.saveAdditional(compoundTag, provider);
+        compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
+        compoundTag.putInt("resource_generator.progress", progress);
+        compoundTag.putInt("resource_generator.maxProgress", maxProgress);
+        compoundTag.putString("resource_generator.resource", resource);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
+        this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
+        progress = compoundTag.getInt("resource_generator.progress");
+        maxProgress = compoundTag.getInt("resource_generator.maxProgress");
+        resource = compoundTag.getString("resource_generator.resource");
+        super.loadAdditional(compoundTag, provider);
+    }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        if (level != null) {
+            SimpleContainer container = new SimpleContainer(1);
+            container.setItem(0, new ItemStack(Objects.requireNonNull(level.getBlockState(worldPosition).getBlock()).asItem()));
+            Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), container.getItem(0));
         }
-
-        assert this.level != null;
-        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public void tick() {
-        /*
 
+        Block genBlockBlock = null;
+
+        // Increment the counter
         Level pLevel = this.level;
-        BlockPos pPos  = this.worldPosition;
+        BlockPos blockPos = this.worldPosition;
         assert pLevel != null;
-        BlockState pState = pLevel.getBlockState(pPos);
-        ResourceGeneratorBlockEntity pBlockEntity = this;
+        ResourceGeneratorBlockEntity entity = this;
+        entity.progress++;
 
-        if (hasRecipe(pBlockEntity)) {
-            pBlockEntity.progress++;
-            setChanged(pLevel, pPos, pState);
-            if (pBlockEntity.progress > pBlockEntity.maxProgress) {
-                craftItem(pBlockEntity);
-            }
-        } else {
-            pBlockEntity.resetProgress();
-            setChanged(pLevel, pPos, pState);
-        }
+        if (!level.isClientSide()) {
 
-         */
-    }
+            //Set Tickrate
 
-    /*
-    private boolean hasRecipe(ResourceGeneratorBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
+            boolean useInventoySpeedBlocks = true;
 
-        assert level != null;
-        Optional<ResourceGeneratorRecipe> match = level.getRecipeManager()
-                .getRecipeFor(ResourceGeneratorRecipe.Type.INSTANCE, inventory, level);
+            for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
 
-        match.ifPresent(recipe -> maxProgress = recipe.getDuration());
-
-        if (match.isEmpty() || !canInsertAmountIntoOutputSlot(inventory)) return false;
-        assert Minecraft.getInstance().level != null;
-        return
-                canInsertItemIntoOutputSlot(inventory, match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess())) &&
-                hasDuration(match.get());
-    }
-
-    private void craftItem(ResourceGeneratorBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        assert level != null;
-        Optional<ResourceGeneratorRecipe> match = level.getRecipeManager()
-                .getRecipeFor(ResourceGeneratorRecipe.Type.INSTANCE, inventory, level);
-
-        if (match.isPresent()) {
-
-            assert Minecraft.getInstance().level != null;
-            ItemStack resultItem = new ItemStack(match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
-                    entity.itemHandler.getStackInSlot(1).getCount() + 1);
-            CompoundTag resultItemNBT = match.get().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getTag();
-
-            if (resultItemNBT != null) {
-                resultItem.setTag(resultItemNBT);
+                NonNullList<Ingredient> input = match.value().getIngredients();
+                for (Ingredient ingredient : input) {
+                    for (ItemStack itemStack : ingredient.getItems()) {
+                        Block speedBlock = Block.byItem(itemStack.getItem());
+                        if (level.getBlockState(blockPos.above(2)).is(speedBlock)) {
+                            maxProgress = match.value().tickRate();
+                            useInventoySpeedBlocks = false;
+                            break;
+                        }
+                        if (this.itemHandler.getStackInSlot(UPGRADE_SLOT).is(itemStack.getItem())) {
+                            maxProgress = match.value().tickRate();
+                            break;
+                        }
+                    }
+                }
             }
 
-            entity.itemHandler.setStackInSlot(1, resultItem);
-            entity.resetProgress();
+            //Reset if upgrade is removed
+            if (itemHandler.getStackInSlot(UPGRADE_SLOT).isEmpty() && useInventoySpeedBlocks) {
+                maxProgress = 220;
+            }
 
+            //Check valid block
+
+            if (entity.progress % 5 == 0) {
+
+                for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
+
+                    NonNullList<Ingredient> input = genBlocks.value().getIngredients();
+                    for (Ingredient ingredient : input) {
+                        for (ItemStack itemStack : ingredient.getItems()) {
+                            genBlockBlock = Block.byItem(itemStack.getItem());
+                            if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
+                                resource = itemStack.getItem().toString();
+                                isValidStructure = true;
+                                level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                                break;
+                            }
+                            if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
+                                resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
+                                isValidStructure = true;
+                                level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                                break;
+                            }
+                            else {
+
+                                isValidStructure = false;
+                                resource = "";
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Update Blockstate
+
+            if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
+                if (!isValidStructure) {
+                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, false));
+                }
+            }
+
+            if (progress >= maxProgress && isValidStructure) {
+                progress = 0;
+
+                if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
+                    ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(resource)).getDefaultInstance();
+                    this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemStack.getItem()), false);
+                    setChanged();
+                }
+            }
         }
     }
-
-    private void resetProgress() {
-        this.progress = 0;
-    }
-
-    private boolean hasDuration(ResourceGeneratorRecipe recipe) {
-        return 0 <= recipe.getDuration();
-    }
-
-    private boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
-        return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
-    }
-
-    private boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
-        return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
-    }
-    */
-
-    public void setHandler(ItemStackHandler handler) {
-        copyHandlerContents(handler);
-    }
-
-    public ItemStackHandler getItemStackHandler() {
-        return this.itemHandler;
-    }
-
-
-    private void copyHandlerContents(ItemStackHandler handler) {
-        for (int i = 0; i < handler.getSlots(); i++) {
-            itemHandler.setStackInSlot(i, handler.getStackInSlot(i));
-        }
-    }
-    /*
-
-    public boolean inputItemHasCorrectNBT(SimpleContainer inventory, ResourceGeneratorRecipe recipe) {
-        return recipe.getIngredients().get(0).getItems()[0].getTag() == inventory.getItem(0).getTag();
-    }
-
-     */
 }
+
+
+                /*
+
+                if (!validBlock) {
+                    for (RecipeHolder<RG2BlocksRecipe> genBlocks : level.getRecipeManager().getRecipesFor(RG2BlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
+
+                        NonNullList<Ingredient> input = genBlocks.value().getIngredients();
+                        for (Ingredient ingredient : input) {
+                            for (ItemStack itemStack : ingredient.getItems()) {
+                                if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
+                                    resource = itemStack.toString();
+                                    isValidStructure = true;
+                                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+                 */
+
+                /*
+
+
+
+                    if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
+                        isValidStructure = level.getBlockState(blockPos.above(1)).is(genBlockBlock) && !(genBlockBlock == Blocks.AIR);
+                        level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                        resource = level.getBlockState(blockPos.above(1)).getBlock().toString();
+
+                        break;
+                    } else {
+                        isValidStructure = false;
+                        resource = "";
+                    }
+
+
+
+            }
+
+            }
+        }
+    }
+
+
+    public int getTickrate() {
+        return maxProgress;
+    }
+    public int getProgress() {
+        return progress;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+}
+
+                 */

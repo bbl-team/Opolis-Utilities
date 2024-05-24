@@ -1,7 +1,5 @@
 package com.benbenlaw.opolisutilities.capabillties;
 
-import java.util.HashMap;
-
 public class CapabilityMigration {
 
     /*

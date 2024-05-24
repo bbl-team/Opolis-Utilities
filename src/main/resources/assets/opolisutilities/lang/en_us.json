@@ -35,8 +35,6 @@
 
   "block.opolisutilities.floating_block_block": "Floating Block",
   "block.opolisutilities.drying_table": "Drying Table",
-  "block.opolisutilities.resource_generator": "Resource Generator",
-  "block.opolisutilities.resource_generator_2": "Resource Generator 2",
   "block.opolisutilities.fluid_generator": "Fluid Generator",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
@@ -51,6 +49,14 @@
   "block.gui.blacklist_slot": "Blacklist Slot",
   "block.gui.tool_slot": "Tool Slot",
 
+  "block.opolisutilities.resource_generator": "Resource Generator",
+
+  "block.gui.speed_upgrade": "Speed Cap Block",
+  "block.gui.resource": "Resource to Generate",
+  "block.gui.output": "Resource Generated",
+  "block.in_world.no_speed_upgrade": "No Speed Upgrade Detected!",
+  "block.in_world.tickrate": "Current Tick Rate: %s",
+  "block.in_world.obtaining": "Obtaining %s",
 
   "block.opolisutilities.catalogue": "Catalogue",
   "block.opolisutilities.clicker": "Clicker",

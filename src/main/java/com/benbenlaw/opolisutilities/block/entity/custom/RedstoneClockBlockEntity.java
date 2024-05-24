@@ -4,10 +4,8 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class RedstoneClockBlockEntity extends BlockEntity {
     private int maxProgress = 20;

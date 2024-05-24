@@ -2,16 +2,9 @@ package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.networking.ModMessages;
-import com.benbenlaw.opolisutilities.networking.packets.PacketSyncItemStackToClient;
-import com.benbenlaw.opolisutilities.screen.CrafterMenu;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
-import com.benbenlaw.opolisutilities.util.inventory.WrappedHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -24,9 +17,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +25,6 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 
 import static com.benbenlaw.opolisutilities.block.custom.CrafterBlock.POWERED;

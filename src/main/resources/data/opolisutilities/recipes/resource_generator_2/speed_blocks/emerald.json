@@ -1,5 +1,7 @@
 {
-  "type": "opolisutilities:rg2_speed_blocks",
-  "block": "forge:storage_blocks/emerald",
+  "type": "opolisutilities:speed_blocks",
+  "input": {
+    "item": "minecraft:emerald_block"
+  },
   "tickRate": 60
 }

@@ -1,10 +1,5 @@
 package com.benbenlaw.opolisutilities.event;
 
-import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.particles.ModParticles;
-import com.benbenlaw.opolisutilities.particles.custom.EnderOreParticles;
-import net.minecraft.client.Minecraft;
-
 //@Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
     /*

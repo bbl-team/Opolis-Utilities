@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.recipe;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInventoryRecipe> {
+public record SpeedUpgradesRecipe(Ingredient input, int tickRate) implements Recipe<NoInventoryRecipe> {
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
@@ -29,14 +30,15 @@ public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInve
     }
 
     @Override
+    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv, HolderLookup.@NotNull Provider provider) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
     }
 
-    @Override
-    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv, HolderLookup.@NotNull Provider provider) {
-        return ItemStack.EMPTY;
-    }
 
     @Override
     public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider provider) {
@@ -46,19 +48,19 @@ public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInve
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return ResourceGeneratorRecipe.Serializer.INSTANCE;
+        return SpeedUpgradesRecipe.Serializer.INSTANCE;
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return ResourceGeneratorRecipe.Type.INSTANCE;
+        return SpeedUpgradesRecipe.Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<ResourceGeneratorRecipe> {
+    public static class Type implements RecipeType<SpeedUpgradesRecipe> {
         private Type() {
         }
 
-        public static final ResourceGeneratorRecipe.Type INSTANCE = new ResourceGeneratorRecipe.Type();
+        public static final SpeedUpgradesRecipe.Type INSTANCE = new SpeedUpgradesRecipe.Type();
     }
 
     @Override
@@ -66,39 +68,41 @@ public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInve
         return true;
     }
 
+    public static class Serializer implements RecipeSerializer<SpeedUpgradesRecipe> {
+        public static final SpeedUpgradesRecipe.Serializer INSTANCE = new Serializer();
 
-    public static class Serializer implements RecipeSerializer<ResourceGeneratorRecipe> {
-        public static final ResourceGeneratorRecipe.Serializer INSTANCE = new Serializer();
-
-        public final MapCodec<ResourceGeneratorRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+        public final MapCodec<SpeedUpgradesRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
-                                Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(ResourceGeneratorRecipe::input))
-                        .apply(instance, ResourceGeneratorRecipe::new)
+                                Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(SpeedUpgradesRecipe::input),
+                                Codec.INT.fieldOf("tickRate").forGetter(SpeedUpgradesRecipe::tickRate))
+                        .apply(instance, SpeedUpgradesRecipe::new)
         );
 
-        private final StreamCodec<RegistryFriendlyByteBuf, ResourceGeneratorRecipe> STREAM_CODEC = StreamCodec.of(
+        private final StreamCodec<RegistryFriendlyByteBuf, SpeedUpgradesRecipe> STREAM_CODEC = StreamCodec.of(
                 Serializer::write, Serializer::read);
 
         @Override
-        public @NotNull MapCodec<ResourceGeneratorRecipe> codec() {
+        public @NotNull MapCodec<SpeedUpgradesRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, ResourceGeneratorRecipe> streamCodec() {
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, SpeedUpgradesRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 
-        private static ResourceGeneratorRecipe read(RegistryFriendlyByteBuf buffer) {
+        private static SpeedUpgradesRecipe read(RegistryFriendlyByteBuf buffer) {
             Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            int tickRate = buffer.readInt();
 
-            return new ResourceGeneratorRecipe(input);
+            return new SpeedUpgradesRecipe(input, tickRate);
         }
 
-        private static void write(RegistryFriendlyByteBuf buffer, ResourceGeneratorRecipe recipe) {
+        private static void write(RegistryFriendlyByteBuf buffer, SpeedUpgradesRecipe recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input);
+            buffer.writeInt(recipe.tickRate);
         }
-
     }
 }
+
 

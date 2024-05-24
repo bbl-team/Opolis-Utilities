@@ -49,7 +49,6 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.DRYING_TABLE.get());
                 output.accept(ModItems.FLOATING_BLOCK.get());
                 output.accept(ModBlocks.RESOURCE_GENERATOR.get());
-                output.accept(ModBlocks.RESOURCE_GENERATOR_2.get());
                 output.accept(ModBlocks.FLUID_GENERATOR.get());
                 output.accept(ModBlocks.ENDER_ORE.get());
                 output.accept(ModBlocks.DEEPSLATE_ENDER_ORE.get());

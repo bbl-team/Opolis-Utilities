@@ -1,7 +1,9 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.*;
+import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
+import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.client.gui.screens.Screen;

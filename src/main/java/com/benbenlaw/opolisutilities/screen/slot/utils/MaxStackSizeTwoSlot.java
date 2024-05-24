@@ -1,6 +1,5 @@
-package com.benbenlaw.opolisutilities.screen.slot;
+package com.benbenlaw.opolisutilities.screen.slot.utils;
 
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;

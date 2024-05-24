@@ -21,6 +21,11 @@ Block Breaker;
     - Added block breaking sounds and block broken sounds now work correctly
     - Block Breaker now a has fake player properties (not sure what effect this will have)
 
+Block Placer - Ported
+Resource Generator (1) - Removed
+Resource Generator (2);
+    - Name Changed to Resource Generator
+
 
 Updated all utils package to 1.20.5
 Updated Particles

@@ -43,10 +43,6 @@ public class ModBlockEntities {
             register("resource_generator_block_entity", () ->
                     BlockEntityType.Builder.of(ResourceGeneratorBlockEntity::new, ModBlocks.RESOURCE_GENERATOR.get()));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResourceGenerator2BlockEntity>> RESOURCE_GENERATOR_2_BLOCK_ENTITY =
-            register("resource_generator_2_block_entity", () ->
-                    BlockEntityType.Builder.of(ResourceGenerator2BlockEntity::new, ModBlocks.RESOURCE_GENERATOR_2.get()));
-
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidGeneratorBlockEntity>> FLUID_GENERATOR_BLOCK_ENTITY =
             register("fluid_generator_block_entity", () ->
                     BlockEntityType.Builder.of(FluidGeneratorBlockEntity::new, ModBlocks.FLUID_GENERATOR.get()));
@@ -72,6 +68,10 @@ public class ModBlockEntities {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.BLOCK_PLACER_BLOCK_ENTITY.get(), BlockPlacerBlockEntity::getItemHandlerCapability);
+        
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.RESOURCE_GENERATOR_BLOCK_ENTITY.get(), ResourceGeneratorBlockEntity::getItemHandlerCapability);
+
     }
 
 

@@ -56,11 +56,6 @@ public class ModBlocks {
                     .strength(2.0f,2.0f)
                     .noOcclusion()));
 
-    public static final DeferredBlock<Block> RESOURCE_GENERATOR_2 = registerBlock("resource_generator_2",
-            () -> new ResourceGenerator2Block(BlockBehaviour.Properties.of()
-                    .strength(2.0f,2.0f)
-                    .noOcclusion()));
-
     public static final DeferredBlock<Block> FLUID_GENERATOR = registerBlock("fluid_generator",
             () -> new FluidGeneratorBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f,2.0f)
