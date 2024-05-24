@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -181,7 +182,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
 
     public void tick() {
 
-        Block genBlockBlock = null;
+        Block genBlockBlock;
 
         // Increment the counter
         Level pLevel = this.level;
@@ -201,11 +202,13 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 NonNullList<Ingredient> input = match.value().getIngredients();
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
-                        Block speedBlock = Block.byItem(itemStack.getItem());
-                        if (level.getBlockState(blockPos.above(2)).is(speedBlock) && speedBlock != Blocks.AIR) {
-                            maxProgress = match.value().tickRate();
-                            useInventoySpeedBlocks = false;
-                            break;
+                        if (itemStack.getItem() instanceof BlockItem) {
+                            Block speedBlock = Block.byItem(itemStack.getItem());
+                            if (level.getBlockState(blockPos.above(2)).is(speedBlock)) {
+                                maxProgress = match.value().tickRate();
+                                useInventoySpeedBlocks = false;
+                                break;
+                            }
                         }
                         if (this.itemHandler.getStackInSlot(UPGRADE_SLOT).is(itemStack.getItem())) {
                             maxProgress = match.value().tickRate();
@@ -221,49 +224,57 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             //Check valid block
-
             if (entity.validCheck % 10 == 0) {
-
                 validCheck = 0;
+                isValidStructure = false;
+                boolean foundBlock = false;
 
                 for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-
                     NonNullList<Ingredient> input = genBlocks.value().getIngredients();
                     for (Ingredient ingredient : input) {
                         for (ItemStack itemStack : ingredient.getItems()) {
-                            genBlockBlock = Block.byItem(itemStack.getItem());
-                            if (level.getBlockState(blockPos.above(1)).is(genBlockBlock) && genBlockBlock != Blocks.AIR) {
-                                resource = itemStack.getItem().toString();
-                                isValidStructure = true;
-                                level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-                                break;
-                            }
-                            if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
-                                resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
-                                isValidStructure = true;
-                                level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-                                break;
-                            }
-                            else {
-
-                                isValidStructure = false;
-                                resource = "";
+                            if (itemStack.getItem() instanceof BlockItem) {
+                                genBlockBlock = Block.byItem(itemStack.getItem());
+                                if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
+                                    resource = itemStack.getItem().toString();
+                                    isValidStructure = true;
+                                    foundBlock = true;
+                                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                                    break;
+                                }
                             }
                         }
+                        if (foundBlock) break;
+                    }
+                    if (foundBlock) break;
+                }
+
+                if (!foundBlock) {
+                    for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
+                        NonNullList<Ingredient> input = genBlocks.value().getIngredients();
+                        for (Ingredient ingredient : input) {
+                            for (ItemStack itemStack : ingredient.getItems()) {
+                                if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
+                                    resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
+                                    isValidStructure = true;
+                                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                                    break;
+                                }
+                            }
+                            if (isValidStructure) break;
+                        }
+                        if (isValidStructure) break;
                     }
                 }
-            }
 
-            //Update Blockstate
-
-            if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
+                // Update Blockstate if no valid structure was found
                 if (!isValidStructure) {
+                    resource = "";
                     level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, false));
                 }
             }
 
             if (isValidStructure) {
-
                 progress++;
                 if (progress >= maxProgress) {
                     progress = 0;

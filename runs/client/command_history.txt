@@ -1,9 +1,3 @@
-/
-/setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
-/data get block 13 72 -34
-/data get block 0 64 -42
-/data get block 13 72 -34
-/data get block 0 64 -42
 /playsound minecraft:block.amethyst_block.break
 /
 /weather clear 1000000d
@@ -48,3 +42,9 @@
 /data get block -23 89 -63
 /data get block -26 89 -62
 /data get block -1 -60 -8
+/data get block 3 -60 -12
+/data get block 5 -60 -17
+/data get block 5 -60 -20
+/data get block -23 89 -69
+/data get block -23 89 -67
+/reload

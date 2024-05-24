@@ -1,7 +1,6 @@
 {
-  "type": "opolisutilities:speed_upgrades",
+  "type": "opolisutilities:resource_generator",
   "input": {
-    "item": "minecraft:iron_ingot"
-  },
-  "tickRate": 10
+    "item": "minecraft:iron_block"
+  }
 }
