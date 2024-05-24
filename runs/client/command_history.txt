@@ -1,11 +1,4 @@
 /
-/setblock 14 73 -34 opolisutilities:block_breaker[powered=true]
-/data get block 14 73 -34
-/setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
-/data get block 13 72 -34
-/setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
-/data get block 13 72 -34
-/
 /setblock 13 72 -34 opolisutilities:block_breaker[powered=true]
 /data get block 13 72 -34
 /data get block 0 64 -42
@@ -48,3 +41,10 @@
 /data get block
 /data get block -23 89 -67
 /data get block -23 89 -69
+/data get block -20 89 -72
+/
+/data get block -20 89 -72
+/reload
+/data get block -23 89 -63
+/data get block -26 89 -62
+/data get block -1 -60 -8

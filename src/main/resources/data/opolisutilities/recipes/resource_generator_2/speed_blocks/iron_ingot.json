@@ -1,7 +1,7 @@
 {
   "type": "opolisutilities:speed_upgrades",
   "input": {
-    "item": "minecraft:emerald_block"
+    "item": "minecraft:iron_ingot"
   },
-  "tickRate": 60
+  "tickRate": 10
 }

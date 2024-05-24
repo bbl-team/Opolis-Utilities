@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockE
 import com.benbenlaw.opolisutilities.screen.slot.utils.MaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ResourceGeneratorInputSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ResourceGeneratorUpgradeSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -45,7 +46,7 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
         this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 143, 26, level, blockPos));
         this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 143, 60));
      //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
-        this.addSlot(new MaxStackSizeOneSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26));
+        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, level, blockPos));
 
 
     }

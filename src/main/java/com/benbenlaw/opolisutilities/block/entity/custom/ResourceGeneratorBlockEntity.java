@@ -32,6 +32,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -52,6 +53,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     };
 
     public final ContainerData data;
+    public int validCheck = 0;
     public int progress = 0;
     public int maxProgress = 220;
     public String resource = "";
@@ -155,6 +157,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
         compoundTag.putInt("resource_generator.progress", progress);
         compoundTag.putInt("resource_generator.maxProgress", maxProgress);
+        compoundTag.putInt("resource_generator.validCheck", validCheck);
         compoundTag.putString("resource_generator.resource", resource);
     }
 
@@ -163,6 +166,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
         progress = compoundTag.getInt("resource_generator.progress");
         maxProgress = compoundTag.getInt("resource_generator.maxProgress");
+        validCheck = compoundTag.getInt("resource_generator.validCheck");
         resource = compoundTag.getString("resource_generator.resource");
         super.loadAdditional(compoundTag, provider);
     }
@@ -184,7 +188,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         BlockPos blockPos = this.worldPosition;
         assert pLevel != null;
         ResourceGeneratorBlockEntity entity = this;
-        entity.progress++;
+        entity.validCheck++;
 
         if (!level.isClientSide()) {
 
@@ -198,7 +202,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
                         Block speedBlock = Block.byItem(itemStack.getItem());
-                        if (level.getBlockState(blockPos.above(2)).is(speedBlock)) {
+                        if (level.getBlockState(blockPos.above(2)).is(speedBlock) && speedBlock != Blocks.AIR) {
                             maxProgress = match.value().tickRate();
                             useInventoySpeedBlocks = false;
                             break;
@@ -218,7 +222,9 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
 
             //Check valid block
 
-            if (entity.progress % 5 == 0) {
+            if (entity.validCheck % 10 == 0) {
+
+                validCheck = 0;
 
                 for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
 
@@ -226,7 +232,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                     for (Ingredient ingredient : input) {
                         for (ItemStack itemStack : ingredient.getItems()) {
                             genBlockBlock = Block.byItem(itemStack.getItem());
-                            if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
+                            if (level.getBlockState(blockPos.above(1)).is(genBlockBlock) && genBlockBlock != Blocks.AIR) {
                                 resource = itemStack.getItem().toString();
                                 isValidStructure = true;
                                 level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
@@ -256,76 +262,18 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 }
             }
 
-            if (progress >= maxProgress && isValidStructure) {
-                progress = 0;
+            if (isValidStructure) {
 
-                if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
-                    ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(resource)).getDefaultInstance();
-                    this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemStack.getItem()), false);
-                    setChanged();
+                progress++;
+                if (progress >= maxProgress) {
+                    progress = 0;
+                    if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
+                        ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(resource)).getDefaultInstance();
+                        this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemStack.getItem()), false);
+                        setChanged();
+                    }
                 }
             }
         }
     }
 }
-
-
-                /*
-
-                if (!validBlock) {
-                    for (RecipeHolder<RG2BlocksRecipe> genBlocks : level.getRecipeManager().getRecipesFor(RG2BlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-
-                        NonNullList<Ingredient> input = genBlocks.value().getIngredients();
-                        for (Ingredient ingredient : input) {
-                            for (ItemStack itemStack : ingredient.getItems()) {
-                                if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
-                                    resource = itemStack.toString();
-                                    isValidStructure = true;
-                                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-
-                                    break;
-                                }
-                            }
-                        }
-
-                    }
-                }
-                 */
-
-                /*
-
-
-
-                    if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
-                        isValidStructure = level.getBlockState(blockPos.above(1)).is(genBlockBlock) && !(genBlockBlock == Blocks.AIR);
-                        level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-                        resource = level.getBlockState(blockPos.above(1)).getBlock().toString();
-
-                        break;
-                    } else {
-                        isValidStructure = false;
-                        resource = "";
-                    }
-
-
-
-            }
-
-            }
-        }
-    }
-
-
-    public int getTickrate() {
-        return maxProgress;
-    }
-    public int getProgress() {
-        return progress;
-    }
-
-    public String getResource() {
-        return resource;
-    }
-}
-
-                 */

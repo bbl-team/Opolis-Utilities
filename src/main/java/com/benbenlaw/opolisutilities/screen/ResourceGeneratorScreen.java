@@ -9,14 +9,23 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
+import static com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity.INPUT_SLOT;
+import static com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity.UPGRADE_SLOT;
+
 public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGeneratorMenu> {
+
+    Level level;
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/resource_generator_gui.png");
 
     public ResourceGeneratorScreen(ResourceGeneratorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        this.level = pMenu.level;
     }
 
     @Override
@@ -46,41 +55,56 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         renderLabels(guiGraphics, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, delta);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+    //    renderTooltip(guiGraphics, mouseX, mouseY);
 
-        renderSpeedSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
-        renderResourceSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderOutputSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
 
+        renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
 
     }
 
-    private void renderSpeedSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 109, 26, 16, 16)) {
-            if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
+    private void renderInWorldBlocksAsItems (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+
+        Block speedBlock = level.getBlockState(this.menu.blockPos.above(2)).getBlock();
+        Block genBlock = level.getBlockState(this.menu.blockPos.above(1)).getBlock();
+
+        if (!menu.getSlot(INPUT_SLOT).getItem().isEmpty() && genBlock != Blocks.AIR) {
+            guiGraphics.renderFakeItem(genBlock.asItem().getDefaultInstance(), x + 143, y + 26);
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 143, 26, 16, 16)) {
+                if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
+                    guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
+                }
+            }
+        }
+
+        if (genBlock == Blocks.AIR && !menu.getSlot(INPUT_SLOT).getItem().isEmpty()) {
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 143, 26, 16, 16)) {
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.resource"), mouseX, mouseY);
+            }
+        }
+
+        if (!menu.getSlot(UPGRADE_SLOT).getItem().isEmpty() && speedBlock != Blocks.AIR) {
+            guiGraphics.renderFakeItem(speedBlock.asItem().getDefaultInstance(), x + 109, y + 26);
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 109, 26, 16, 16)) {
+                if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
+                    guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
+
+                }
+            }
+        }
+
+        if (speedBlock == Blocks.AIR && !menu.getSlot(UPGRADE_SLOT).getItem().isEmpty()) {
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 109, 26, 16, 16)) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade"), mouseX, mouseY);
             }
         }
     }
 
-    private void renderResourceSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 143, 26, 16, 16)) {
-            if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.resource"), mouseX, mouseY);
-            }
-        }
-    }
-
     private void renderOutputSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 143, 61, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 143, 61, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.output"), mouseX, mouseY);
             }
         }
     }
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
-    }
-
-
 }

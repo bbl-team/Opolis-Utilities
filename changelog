@@ -20,11 +20,21 @@ Block Breaker;
     - Complete tidy of the block breaker code
     - Added block breaking sounds and block broken sounds now work correctly
     - Block Breaker now a has fake player properties (not sure what effect this will have)
+    - Resource gen valid checks happen every 10 ticks)
 
 Block Placer - Ported
 Resource Generator (1) - Removed
 Resource Generator (2);
     - Name Changed to Resource Generator
+    - Same as resource generator 2 but now has a GUI, stores generated items inside
+    - Can be piped out from all sides
+    - Can be used with just the GUI or a mix of GUi and in world
+    - Change to "resource_generator" recipes instead of that and resource generator 2
+    - Resource generator speed block recipe type changed to "speed_upgrades", this contains the same blocks as before but allow for items to be used as well
+    - Resource generator now works with blocks and items
+    - Updated right click information for resource generator
+    - Both of these recipes now use Ingredients instead of strings and conversions in the block entity
+    - Resource generator should have a bit of a performance boost as less tasks required
 
 
 Updated all utils package to 1.20.5

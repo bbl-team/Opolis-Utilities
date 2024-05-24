@@ -28,9 +28,9 @@ public class ModRecipes{
 
     //SPEED BLOCK
     public static final Supplier<RecipeSerializer<SpeedUpgradesRecipe>> RG2_SPEED_BLOCKS_SERIALIZER =
-            SERIALIZER.register("speed_blocks", () -> SpeedUpgradesRecipe.Serializer.INSTANCE);
+            SERIALIZER.register("speed_upgrades", () -> SpeedUpgradesRecipe.Serializer.INSTANCE);
     public static final Supplier<RecipeType<SpeedUpgradesRecipe>> RG2_SPEED_BLOCKS_TYPE =
-            TYPES.register("speed_blocks", () -> SpeedUpgradesRecipe.Type.INSTANCE);
+            TYPES.register("speed_upgrades", () -> SpeedUpgradesRecipe.Type.INSTANCE);
 
 
     //Resource Generator Blocks

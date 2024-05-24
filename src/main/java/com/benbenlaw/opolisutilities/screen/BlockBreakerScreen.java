@@ -74,7 +74,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     }
 
     private void renderToolSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 40, 40, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 40, 40, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.tool_slot"), mouseX, mouseY);
             }
@@ -83,7 +83,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     }
 
     private void renderWhitelistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 80, 40, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 40, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.whitelist_slot"), mouseX, mouseY);
             }
@@ -91,14 +91,11 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     }
 
     private void renderBlacklistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 120, 40, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 120, 40, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.blacklist_slot"), mouseX, mouseY);
             }
         }
     }
 
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
-    }
 }
