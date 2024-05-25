@@ -72,6 +72,9 @@ public class ModBlockEntities {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.RESOURCE_GENERATOR_BLOCK_ENTITY.get(), ResourceGeneratorBlockEntity::getItemHandlerCapability);
 
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), DryingTableBlockEntity::getItemHandlerCapability);
+
     }
 
 

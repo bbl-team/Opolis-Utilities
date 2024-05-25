@@ -1,7 +1,11 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.custom.DryingTableBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -9,40 +13,39 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class DryingTableMenu extends AbstractContainerMenu {
-    private final DryingTableBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
+    protected DryingTableBlock blockEntity;
+    protected Level level;
+    protected ContainerData data;
+    protected Player player;
+    protected BlockPos blockPos;
 
     public DryingTableMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, extraData.readBlockPos());
     }
 
-    public DryingTableMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
+    public DryingTableMenu(int containerID, Inventory inventory, BlockPos blockPos) {
         super(ModMenuTypes.DRYING_TABLE_MENU.get(), containerID);
-        checkContainerSize(inventory, 2);
-        blockEntity = ((DryingTableBlockEntity) entity);
+        this.player = inventory.player;
+        this.blockPos = blockPos;
         this.level = inventory.player.level();
-        this.data = data;
 
+        DryingTableBlockEntity entity = (DryingTableBlockEntity) this.level.getBlockEntity(blockPos);
+
+        checkContainerSize(inventory, 2);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
-        /*
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 80, 18));
-            this.addSlot(new ModResultSlot(handler, 1, 80, 60));
-      //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
-      //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));
-
-         */
-    //    });
-
-     //   addDataSlots(data);
+        assert entity != null;
+        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 80, 18));
+        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), 1, 80, 60));
 
     }
 
+    /*
     public boolean isCrafting() {
         return data.get(0) > 0 ;
     }
@@ -56,6 +59,8 @@ public class DryingTableMenu extends AbstractContainerMenu {
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
 
     }
+
+     */
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -103,9 +108,9 @@ public class DryingTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.DRYING_TABLE.get());
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
+                player, ModBlocks.DRYING_TABLE.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

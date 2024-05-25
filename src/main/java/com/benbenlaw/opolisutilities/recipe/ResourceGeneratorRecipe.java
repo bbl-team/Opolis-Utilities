@@ -54,16 +54,15 @@ public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInve
         return ResourceGeneratorRecipe.Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<ResourceGeneratorRecipe> {
-        private Type() {
-        }
-
-        public static final ResourceGeneratorRecipe.Type INSTANCE = new ResourceGeneratorRecipe.Type();
-    }
-
     @Override
     public boolean isSpecial() {
         return true;
+    }
+
+
+    public static class Type implements RecipeType<ResourceGeneratorRecipe> {
+        private Type() {}
+        public static final ResourceGeneratorRecipe.Type INSTANCE = new ResourceGeneratorRecipe.Type();
     }
 
 

@@ -1,70 +1,68 @@
 package com.benbenlaw.opolisutilities.recipe;
 
-public class SoakingTableRecipe {} /* implements Recipe<SimpleContainer> {
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
+import org.jetbrains.annotations.NotNull;
 
-    private final ResourceLocation id;
-    private final ItemStack output;
-    private final NonNullList<Ingredient> inputItems;
-    public final int count;
-    public final int duration;
+public record SoakingTableRecipe(SizedIngredient input, ItemStack output, int duration) implements Recipe<SimpleContainer> {
 
-    public SoakingTableRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputItems, int count, int duration) {
-        this.id = id;
-        this.output = output;
-        this.inputItems = inputItems;
-        this.count = count;
-        this.duration = duration;
+    @Override
+    public @NotNull NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> ingredients = NonNullList.createWithCapacity(1);
+        ingredients.add(input.ingredient());
+        return ingredients;
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, @NotNull Level pLevel) {
-
-        if(inputItems.get(0).test(pContainer.getItem(0))){
-            return duration >= 0;
-        }
-        return false;
+    public boolean matches(SimpleContainer container, @NotNull Level level) {
+        return input.test(container.getItem(0)) && duration >= 0;
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return inputItems;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    @Override
-    public ItemStack assemble(SimpleContainer p_44001_, RegistryAccess p_267165_) {
-        return output;
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+    public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess p_267052_) {
-        return output.copy();
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
+        return this.output.copy();
+    }
+
+    @Override
+    public @NotNull ItemStack assemble(@NotNull SimpleContainer container, HolderLookup.@NotNull Provider provider) {
+        return this.output.copy();
     }
 
     public int getDuration() {
         return this.duration;
     }
 
-    @Override
-    public ResourceLocation getId() {
-        return id;
+    public int getIngredientStackCount() {
+        return this.input.count();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return Serializer.INSTANCE;
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NotNull RecipeType<?> getType() {
         return Type.INSTANCE;
     }
 
@@ -74,60 +72,49 @@ public class SoakingTableRecipe {} /* implements Recipe<SimpleContainer> {
     }
 
     public static class Type implements RecipeType<SoakingTableRecipe> {
-        private Type() { }
+        private Type() {}
         public static final Type INSTANCE = new Type();
-        public static final String ID = "soaking_table";
     }
 
     public static class Serializer implements RecipeSerializer<SoakingTableRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID,"soaking_table");
+
+        public final MapCodec<SoakingTableRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
+                instance.group(
+                        SizedIngredient.FLAT_CODEC.fieldOf("input").forGetter(SoakingTableRecipe::input),
+                        ItemStack.CODEC.fieldOf("output").forGetter(SoakingTableRecipe::output),
+                        Codec.INT.fieldOf("duration").forGetter(SoakingTableRecipe::getDuration)
+                ).apply(instance, Serializer::createSoakingTableRecipe)
+        );
+
+        private static final StreamCodec<RegistryFriendlyByteBuf, SoakingTableRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::write, Serializer::read);
 
         @Override
-        public SoakingTableRecipe fromJson(ResourceLocation id, JsonObject json) {
-            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
-
-            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredient");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
-
-            int count = GsonHelper.getAsInt(json, "count", 1);
-            int duration = GsonHelper.getAsInt(json, "duration");
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            return new SoakingTableRecipe(id, output, inputs, count, duration);
+        public @NotNull MapCodec<SoakingTableRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public SoakingTableRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
-            int duration = buf.readInt();
-            int count = buf.readInt();
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf));
-            }
-
-            ItemStack output = buf.readItem();
-            return new SoakingTableRecipe(id, output, inputs, count, duration);
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, SoakingTableRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, SoakingTableRecipe recipe) {
+        private static SoakingTableRecipe read(RegistryFriendlyByteBuf buffer) {
+            SizedIngredient input = SizedIngredient.STREAM_CODEC.decode(buffer);
+            ItemStack output = ItemStack.STREAM_CODEC.decode(buffer);
+            int duration = buffer.readInt();
+            return new SoakingTableRecipe(input, output, duration);
+        }
 
-            buf.writeInt(recipe.getIngredients().size());
-            buf.writeInt(recipe.getDuration());
-            buf.writeInt(recipe.getCount());
+        private static void write(RegistryFriendlyByteBuf buffer, SoakingTableRecipe recipe) {
+            SizedIngredient.STREAM_CODEC.encode(buffer, recipe.input);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.output);
+            buffer.writeInt(recipe.duration);
+        }
 
-            for (Ingredient ing : recipe.getIngredients()) {
-                ing.toNetwork(buf);
-            }
-
-            buf.writeItemStack(recipe.output, false);
+        private static SoakingTableRecipe createSoakingTableRecipe(SizedIngredient input, ItemStack output, int duration) {
+            return new SoakingTableRecipe(input, output, duration);
         }
     }
 }
-*/

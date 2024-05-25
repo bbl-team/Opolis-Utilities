@@ -15,25 +15,28 @@ public class ModRecipes{
     public static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, OpolisUtilities.MOD_ID);
 
-/*
-    public static final RegistryObject<RecipeSerializer<DryingTableRecipe>> DRYING_TABLE_SERIALIZER =
+
+    //Drying Table
+    public static final Supplier<RecipeSerializer<DryingTableRecipe>> DRYING_TABLE_SERIALIZER =
             SERIALIZER.register("drying_table", () -> DryingTableRecipe.Serializer.INSTANCE);
+    public static final Supplier<RecipeType<DryingTableRecipe>> DRYING_TABLE_TYPE =
+            TYPES.register("drying_table", () -> DryingTableRecipe.Type.INSTANCE);
 
-    public static final RegistryObject<RecipeSerializer<SoakingTableRecipe>> SOAKING_TABLE_SERIALIZER =
+    //Soaking Table
+
+    public static final Supplier<RecipeSerializer<SoakingTableRecipe>> SOAKING_TABLE_SERIALIZER =
             SERIALIZER.register("soaking_table", () -> SoakingTableRecipe.Serializer.INSTANCE);
+    public static final Supplier<RecipeType<SoakingTableRecipe>> SOAKING_TABLE_TYPE =
+            TYPES.register("soaking_table", () -> SoakingTableRecipe.Type.INSTANCE);
 
-    public static final RegistryObject<RecipeSerializer<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_SERIALIZER =
-            SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
-            */
 
-    //SPEED BLOCK
+    //Speed Upgrades
     public static final Supplier<RecipeSerializer<SpeedUpgradesRecipe>> RG2_SPEED_BLOCKS_SERIALIZER =
             SERIALIZER.register("speed_upgrades", () -> SpeedUpgradesRecipe.Serializer.INSTANCE);
     public static final Supplier<RecipeType<SpeedUpgradesRecipe>> RG2_SPEED_BLOCKS_TYPE =
             TYPES.register("speed_upgrades", () -> SpeedUpgradesRecipe.Type.INSTANCE);
 
-
-    //Resource Generator Blocks
+    //Resource Generator
     public static final Supplier<RecipeSerializer<ResourceGeneratorRecipe>> RG2_BLOCKS_SERIALIZER =
             SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
 

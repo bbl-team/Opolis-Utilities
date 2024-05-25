@@ -173,11 +173,12 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     }
 
     public void drops() {
-        if (level != null) {
-            SimpleContainer container = new SimpleContainer(1);
-            container.setItem(0, new ItemStack(Objects.requireNonNull(level.getBlockState(worldPosition).getBlock()).asItem()));
-            Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), container.getItem(0));
+        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
+        assert this.level != null;
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public void tick() {
@@ -185,12 +186,11 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         Block genBlockBlock;
 
         // Increment the counter
-        Level pLevel = this.level;
         BlockPos blockPos = this.worldPosition;
-        assert pLevel != null;
         ResourceGeneratorBlockEntity entity = this;
         entity.validCheck++;
 
+        assert level != null;
         if (!level.isClientSide()) {
 
             //Set Tickrate
@@ -249,6 +249,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                     if (foundBlock) break;
                 }
 
+                //No Block check item slots
                 if (!foundBlock) {
                     for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                         NonNullList<Ingredient> input = genBlocks.value().getIngredients();
