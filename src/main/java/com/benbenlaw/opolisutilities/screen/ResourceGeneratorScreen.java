@@ -40,7 +40,7 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
 
 
         if(menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
+            guiGraphics.blit(TEXTURE, x + 84, y + 35, 176, 0, 8, menu.getScaledProgress());
         }
     }
 
@@ -61,14 +61,15 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
 
     }
 
+
     private void renderInWorldBlocksAsItems (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
 
         Block speedBlock = level.getBlockState(this.menu.blockPos.above(2)).getBlock();
         Block genBlock = level.getBlockState(this.menu.blockPos.above(1)).getBlock();
 
         if (!menu.getSlot(INPUT_SLOT).getItem().isEmpty() && genBlock != Blocks.AIR) {
-            guiGraphics.renderFakeItem(genBlock.asItem().getDefaultInstance(), x + 143, y + 26);
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 143, 26, 16, 16)) {
+            guiGraphics.renderFakeItem(genBlock.asItem().getDefaultInstance(), x + 80, y + 16);
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 16, 16, 16)) {
                 if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                     guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
                 }
@@ -76,14 +77,14 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
         }
 
         if (genBlock == Blocks.AIR && !menu.getSlot(INPUT_SLOT).getItem().isEmpty()) {
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 143, 26, 16, 16)) {
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 16, 16, 16)) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.resource"), mouseX, mouseY);
             }
         }
 
         if (!menu.getSlot(UPGRADE_SLOT).getItem().isEmpty() && speedBlock != Blocks.AIR) {
-            guiGraphics.renderFakeItem(speedBlock.asItem().getDefaultInstance(), x + 109, y + 26);
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 109, 26, 16, 16)) {
+            guiGraphics.renderFakeItem(speedBlock.asItem().getDefaultInstance(), x + 116, y + 16);
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
                 if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                     guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
 
@@ -92,14 +93,14 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
         }
 
         if (speedBlock == Blocks.AIR && !menu.getSlot(UPGRADE_SLOT).getItem().isEmpty()) {
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 109, 26, 16, 16)) {
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade"), mouseX, mouseY);
             }
         }
     }
 
     private void renderOutputSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 143, 61, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 64, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.output"), mouseX, mouseY);
             }

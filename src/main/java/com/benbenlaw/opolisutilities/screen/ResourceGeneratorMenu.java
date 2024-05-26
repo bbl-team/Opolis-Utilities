@@ -41,10 +41,11 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         assert entity != null;
-        this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 143, 26, level, blockPos));
-        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 143, 60));
+
+        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos));
+        this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 80, 16, level, blockPos));
+        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 80, 64));
      //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
-        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, level, blockPos));
 
         addDataSlots(data);
 
