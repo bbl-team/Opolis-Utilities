@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -93,7 +94,7 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, BlockState newBlockState, boolean isMoving) {
+    public void onRemove(BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState newBlockState, boolean isMoving) {
         if (blockState.getBlock() != blockState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof DryingTableBlockEntity) {
@@ -108,12 +109,21 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
 
         if (!level.isClientSide()) {
 
-            DryingTableBlockEntity dryingTableBlockEntity = (DryingTableBlockEntity) level.getBlockEntity(blockPos);
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof DryingTableBlockEntity dryingTableBlockEntity) {
+                ContainerData data = dryingTableBlockEntity.data;
 
-            player.openMenu(new SimpleMenuProvider(
-                    (windowId, playerInventory, playerEntity) -> new DryingTableMenu(windowId, playerInventory, blockPos),
-                    Component.translatable("block.opolisutilities.drying_table")), (buf -> buf.writeBlockPos(blockPos)));
-
+                if (blockState.getValue(WATERLOGGED)) {
+                    player.openMenu(new SimpleMenuProvider(
+                            (windowId, playerInventory, playerEntity) -> new DryingTableMenu(windowId, playerInventory, blockPos, data),
+                            Component.translatable("block.opolisutilities.soaking_table")), (buf -> buf.writeBlockPos(blockPos)));
+                }
+                if (!blockState.getValue(WATERLOGGED)) {
+                    player.openMenu(new SimpleMenuProvider(
+                            (windowId, playerInventory, playerEntity) -> new DryingTableMenu(windowId, playerInventory, blockPos, data),
+                            Component.translatable("block.opolisutilities.drying_table")), (buf -> buf.writeBlockPos(blockPos)));
+                }
+            }
             return InteractionResult.SUCCESS;
         }
 

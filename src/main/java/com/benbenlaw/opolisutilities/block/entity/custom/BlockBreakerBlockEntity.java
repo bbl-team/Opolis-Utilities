@@ -136,12 +136,14 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                     default -> 0;
                 };
             }
+
             public void set(int index, int value) {
                 switch (index) {
                     case 0 -> BlockBreakerBlockEntity.this.progress = value;
                     case 1 -> BlockBreakerBlockEntity.this.maxProgress = value;
                 }
             }
+
             public int getCount() {
                 return 2;
             }
@@ -156,7 +158,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int container, @NotNull Inventory inventory, @NotNull Player player) {
-        return new BlockBreakerMenu(container, inventory, this.getBlockPos());
+        return new BlockBreakerMenu(container, inventory, this.getBlockPos(), data);
     }
 
     @Override
@@ -248,10 +250,12 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                 int damageValue = this.itemHandler.getStackInSlot(0).getDamageValue();
                 blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) this.level, placeHere, this.level.getBlockEntity(pos), null, tool);
 
+                boolean blockRequiresCorrectTool = block.defaultBlockState().requiresCorrectToolForDrops();
+                boolean hasCorrectTool = tool.isCorrectToolForDrops(block.defaultBlockState());
 
                 if (level.getBlockState(placeHere).getBlock() != Blocks.AIR && !blockState.is(Blocks.VOID_AIR) && !blockState.isAir()) {
 
-                    if (tool.getItem().isCorrectToolForDrops(tool, block.defaultBlockState()) || !block.defaultBlockState().requiresCorrectToolForDrops()) {
+                    if (!blockRequiresCorrectTool || hasCorrectTool) {
 
                         // Calculate the time it takes to break the block
                         float destroySpeed = block.defaultBlockState().getDestroySpeed(this.level, pos);
@@ -263,11 +267,11 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                         if (calculatedBreakTime > 1000) {
                             calculatedBreakTime = 1000;
                         }
+
                         maxProgress = calculatedBreakTime;
 
                         // Play the breaking sound
                         playBreakingSound(level, placeHere);
-
 
                         // Progress the breaking
                         this.progress++;
@@ -277,7 +281,6 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                             if (this.itemHandler.getStackInSlot(1).is(Item.BY_BLOCK.get(block)) && this.itemHandler.getStackInSlot(2).isEmpty()) {
 
                                 this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
-
 
                                 for (ItemStack drop : blockDrops) {
                                     spawnBlockAsEntity(this.level, placeHere, drop);

@@ -2,7 +2,9 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
+import com.benbenlaw.opolisutilities.screen.BlockBreakerScreen;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -10,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -120,10 +123,13 @@ public class BlockBreakerBlock extends BaseEntityBlock {
             }
 
             //MENU OPEN//
-            else {
+
+            if (blockBreakerBlockEntity instanceof BlockBreakerBlockEntity) {
+                ContainerData data = blockBreakerBlockEntity.data;
                 player.openMenu(new SimpleMenuProvider(
-                        (windowId, playerInventory, playerEntity) -> new BlockBreakerMenu(windowId, playerInventory, blockPos),
+                        (windowId, playerInventory, playerEntity) -> new BlockBreakerMenu(windowId, playerInventory, blockPos, data),
                         Component.translatable("block.opolisutilities.block_breaker")), (buf -> buf.writeBlockPos(blockPos)));
+
             }
             return InteractionResult.SUCCESS;
         }

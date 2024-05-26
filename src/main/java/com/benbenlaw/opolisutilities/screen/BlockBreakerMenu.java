@@ -6,12 +6,10 @@ import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistMaxStackSizeOneS
 import com.benbenlaw.opolisutilities.screen.slot.utils.WhitelistMaxStackSizeOneSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.SlotItemHandler;
@@ -25,26 +23,26 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
     protected BlockPos blockPos;
 
     public BlockBreakerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, extraData.readBlockPos());
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(3));
     }
 
-    public BlockBreakerMenu(int containerID, Inventory inventory, BlockPos blockPos) {
+    public BlockBreakerMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
         super(ModMenuTypes.BLOCK_BREAKER_MENU.get(), containerID);
         this.player = inventory.player;
         this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.data = data;
 
         BlockBreakerBlockEntity entity = (BlockBreakerBlockEntity) this.level.getBlockEntity(blockPos);
 
         checkContainerSize(inventory, 3);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
-        //    addDataSlots(this.data);
-        
+
         //Add Slots
         assert entity != null;
-        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 40, 40));
-        this.addSlot(new WhitelistMaxStackSizeOneSlot(entity.getItemStackHandler(), 1, 80, 40) {
+        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 40, 26));
+        this.addSlot(new WhitelistMaxStackSizeOneSlot(entity.getItemStackHandler(), 1, 80, 26) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 ItemStack blacklistStack = entity.getItemStackHandler().getStackInSlot(2);
@@ -52,7 +50,7 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
             }
         });
 
-        this.addSlot(new BlacklistMaxStackSizeOneSlot(entity.getItemStackHandler(), 2, 120, 40) {
+        this.addSlot(new BlacklistMaxStackSizeOneSlot(entity.getItemStackHandler(), 2, 120, 26) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 ItemStack whitelistStack = entity.getItemStackHandler().getStackInSlot(1);
@@ -60,6 +58,20 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
             }
         });
 
+        addDataSlots(data);
+    }
+
+    public boolean isCrafting() {
+        return data.get(0) > 0 ;
+    }
+
+    public int getScaledProgress() {
+
+        int progress = this.data.get(0);
+        int maxProgress = this.data.get(1);  // Max Progress
+        int progressArrowSize = 26; // This is the height in pixels of your arrow
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
 
     }
 

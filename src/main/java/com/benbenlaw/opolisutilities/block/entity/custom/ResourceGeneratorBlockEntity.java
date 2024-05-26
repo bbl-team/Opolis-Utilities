@@ -106,7 +106,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             public int getCount() {
-                return 1;
+                return 2;
             }
         };
     }
@@ -119,7 +119,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int container, @NotNull Inventory inventory, @NotNull Player player) {
-        return new ResourceGeneratorMenu(container, inventory, this.getBlockPos());
+        return new ResourceGeneratorMenu(container, inventory, this.getBlockPos(), data);
     }
 
     @Override

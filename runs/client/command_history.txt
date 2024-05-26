@@ -1,7 +1,3 @@
-/data get block -6 64 -48
-/data get block
-/data get block -5 64 -48
-/data get block -5 64
 /data get block -5 64 -48
 /data get block
 /data get block -5 64 -48
@@ -48,3 +44,7 @@
 /reload
 /data get block -18 89 -62
 /reload
+/data get block -18 89 -62
+/data get block -1 64 -43
+/reload
+/data get block -1 64 -43

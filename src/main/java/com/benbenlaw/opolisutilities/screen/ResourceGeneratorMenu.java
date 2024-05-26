@@ -10,10 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -26,15 +23,16 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     protected BlockPos blockPos;
 
     public ResourceGeneratorMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, extraData.readBlockPos());
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(3));
 
     }
 
-    public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockPos blockPos) {
+    public ResourceGeneratorMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
         super(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), containerID);
         this.player = inventory.player;
         this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.data = data;
 
         ResourceGeneratorBlockEntity entity = (ResourceGeneratorBlockEntity) this.level.getBlockEntity(blockPos);
 
@@ -48,10 +46,11 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
      //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
         this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, level, blockPos));
 
+        addDataSlots(data);
 
     }
 
-    /*
+
     public boolean isCrafting() {
         return data.get(0) > 0;
     }
@@ -65,7 +64,6 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
     }
 
 
-     */
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;

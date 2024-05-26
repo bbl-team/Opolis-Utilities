@@ -127,7 +127,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int container, @NotNull Inventory inventory, @NotNull Player player) {
-        return new DryingTableMenu(container, inventory, this.getBlockPos());
+        return new DryingTableMenu(container, inventory, this.getBlockPos(), data);
     }
 
     @Override
@@ -214,14 +214,13 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                     if ( canInsertItemIntoOutputSlot(inventory, match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
                             && hasOutputSpaceMaking(this, match.get().value())
                             && hasCorrectCountInInputSlot(this, match.get().value())
-                            && hasDuration(match.get().value()))
-
-                    {
+                            && hasDuration(match.get().value())) {
                         craftItem(this);
                         setChanged();
                     }
                 }
             }
+
             else if (this.getBlockState().getValue(WATERLOGGED) && matchSoaking.isPresent()) {
 
                 maxProgress = matchSoaking.get().value().getDuration();
@@ -231,58 +230,19 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                     if ( canInsertItemIntoOutputSlot(inventory, matchSoaking.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
                             && hasOutputSpaceMakingSoaking(this, matchSoaking.get().value())
                             && hasCorrectCountInInputSlotSoaking(this, matchSoaking.get().value())
-                            && hasDurationSoaking(matchSoaking.get().value()))
-
-                    {
+                            && hasDurationSoaking(matchSoaking.get().value())) {
                         craftItem(this);
                         setChanged();
                     }
                 }
             }
 
+            else {
+                resetProgress();
+                setChanged();
+            }
+
         }
-    }
-
-
-    private boolean hasRecipe(DryingTableBlockEntity entity) {
-
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        assert level != null;
-        Optional<RecipeHolder<DryingTableRecipe>> match = level.getRecipeManager()
-                .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
-
-        Optional<RecipeHolder<SoakingTableRecipe>> matchSoaking = level.getRecipeManager()
-                .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);
-
-
-        if (!entity.getBlockState().getValue(WATERLOGGED) && match.isPresent()) {
-
-            maxProgress = match.get().value().getDuration();
-            return canInsertItemIntoOutputSlot(inventory, match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
-                    && hasOutputSpaceMaking(entity, match.get().value())
-                    && hasCorrectCountInInputSlot(entity, match.get().value())
-                    && hasDuration(match.get().value());
-        }
-
-
-        else if (entity.getBlockState().getValue(WATERLOGGED) && matchSoaking.isPresent()) {
-
-            maxProgress = matchSoaking.get().value().getDuration();
-
-            return canInsertItemIntoOutputSlot(inventory, matchSoaking.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
-                    && hasOutputSpaceMakingSoaking(entity, matchSoaking.get().value())
-                    && hasCorrectCountInInputSlotSoaking(entity, matchSoaking.get().value())
-                    && hasDurationSoaking(matchSoaking.get().value());
-        }
-
-        return false;
-
-
     }
 
     private void craftItem(@NotNull DryingTableBlockEntity entity) {

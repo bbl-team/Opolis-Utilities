@@ -36,7 +36,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
+import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.FACING;
 import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.POWERED;
 
 public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
@@ -137,7 +137,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             }
 
             public int getCount() {
-                return 1;
+                return 2;
             }
         };
     }
@@ -150,7 +150,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int container, @NotNull Inventory inventory, @NotNull Player player) {
-        return new BlockPlacerMenu(container, inventory, this.getBlockPos());
+        return new BlockPlacerMenu(container, inventory, this.getBlockPos(), data);
     }
 
     @Override

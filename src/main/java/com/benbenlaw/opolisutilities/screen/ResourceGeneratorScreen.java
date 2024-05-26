@@ -38,12 +38,10 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
-        /*
+
         if(menu.isCrafting()) {
             guiGraphics.blit(TEXTURE, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
         }
-
-         */
     }
 
     @Override

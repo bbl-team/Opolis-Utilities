@@ -31,6 +31,11 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+
+        if(menu.isCrafting()) {
+            guiGraphics.blit(TEXTURE, x + 84, y + 45, 176, 0, 8, menu.getScaledProgress());
+        }
+
     }
 
     @Override
@@ -41,27 +46,6 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
 
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         renderLabels(guiGraphics, mouseX, mouseY);
-        /*
-
-        //Power Button
-        if (this.menu.blockEntity.getBlockState().getValue(BlockBreakerBlock.POWERED)) {
-            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, ON_BUTTON, (p_289630_) -> {
-
-                ModMessages.sendToServer(new PacketBlockBreakerOnOffButton(this.menu.blockEntity.getBlockPos()));
-
-
-                p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
-            }));
-        }
-
-        else {
-            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, OFF_BUTTON, (p_289630_) -> {
-
-                ModMessages.sendToServer(new PacketBlockBreakerOnOffButton(this.menu.blockEntity.getBlockPos()));
-                p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
-            }));
-        }
-        */
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
@@ -69,12 +53,10 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         renderToolSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderWhitelistTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderBlacklistTooltip(guiGraphics, mouseX, mouseY, x, y);
-
-
     }
 
     private void renderToolSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 40, 40, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 40, 26, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.tool_slot"), mouseX, mouseY);
             }
@@ -83,7 +65,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     }
 
     private void renderWhitelistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 40, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 26, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.whitelist_slot"), mouseX, mouseY);
             }
@@ -91,7 +73,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     }
 
     private void renderBlacklistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 120, 40, 16, 16)) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 120, 26, 16, 16)) {
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.blacklist_slot"), mouseX, mouseY);
             }

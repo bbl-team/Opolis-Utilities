@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
 import com.benbenlaw.opolisutilities.screen.BlockPlacerMenu;
 import com.mojang.serialization.MapCodec;
@@ -10,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -123,9 +125,11 @@ public class BlockPlacerBlock extends BaseEntityBlock {
             }
 
             //MENU OPEN//
-            else {
+
+            if (blockPlacerBlockEntity instanceof BlockPlacerBlockEntity) {
+                ContainerData data = blockPlacerBlockEntity.data;
                 player.openMenu(new SimpleMenuProvider(
-                        (windowId, playerInventory, playerEntity) -> new BlockPlacerMenu(windowId, playerInventory, blockPos),
+                        (windowId, playerInventory, playerEntity) -> new BlockPlacerMenu(windowId, playerInventory, blockPos, data),
                         Component.translatable("block.opolisutilities.block_placer")), (buf -> buf.writeBlockPos(blockPos)));
             }
             return InteractionResult.SUCCESS;

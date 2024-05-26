@@ -17,21 +17,22 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class DryingTableMenu extends AbstractContainerMenu {
-    protected DryingTableBlock blockEntity;
+    protected DryingTableBlockEntity blockEntity;
     protected Level level;
     protected ContainerData data;
     protected Player player;
     protected BlockPos blockPos;
 
     public DryingTableMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, extraData.readBlockPos());
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(2));
     }
 
-    public DryingTableMenu(int containerID, Inventory inventory, BlockPos blockPos) {
+    public DryingTableMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
         super(ModMenuTypes.DRYING_TABLE_MENU.get(), containerID);
         this.player = inventory.player;
         this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.data = data;
 
         DryingTableBlockEntity entity = (DryingTableBlockEntity) this.level.getBlockEntity(blockPos);
 
@@ -40,12 +41,12 @@ public class DryingTableMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         assert entity != null;
-        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 80, 18));
-        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), 1, 80, 60));
+        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 80, 16));
+        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), 1, 80, 64));
 
+        addDataSlots(data);
     }
 
-    /*
     public boolean isCrafting() {
         return data.get(0) > 0 ;
     }
@@ -60,7 +61,6 @@ public class DryingTableMenu extends AbstractContainerMenu {
 
     }
 
-     */
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;

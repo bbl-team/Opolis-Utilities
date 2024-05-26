@@ -37,6 +37,9 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
+        if(menu.isCrafting()) {
+            guiGraphics.blit(TEXTURE, x + 84, y + 45, 176, 0, 8, menu.getScaledProgress());
+        }
     }
 
     @Override

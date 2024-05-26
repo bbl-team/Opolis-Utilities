@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
 import com.mojang.serialization.MapCodec;
@@ -13,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -108,9 +110,11 @@ public class ResourceGeneratorBlock extends BaseEntityBlock {
             }
 
             //MENU OPEN//
-            else {
+
+            if (entity instanceof ResourceGeneratorBlockEntity resourceGeneratorBlockEntity) {
+                ContainerData data = resourceGeneratorBlockEntity.data;
                 player.openMenu(new SimpleMenuProvider(
-                        (windowId, playerInventory, playerEntity) -> new ResourceGeneratorMenu(windowId, playerInventory, blockPos),
+                        (windowId, playerInventory, playerEntity) -> new ResourceGeneratorMenu(windowId, playerInventory, blockPos, data),
                         Component.translatable("block.opolisutilities.resource_generator")), (buf -> buf.writeBlockPos(blockPos)));
             }
         }

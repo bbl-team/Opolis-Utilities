@@ -8,10 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -25,14 +22,15 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
     protected BlockPos blockPos;
 
     public BlockPlacerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, extraData.readBlockPos());
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(3));
     }
 
-    public BlockPlacerMenu(int containerID, Inventory inventory, BlockPos blockPos) {
+    public BlockPlacerMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
         super(ModMenuTypes.BLOCK_PLACER_MENU.get(), containerID);
         this.player = inventory.player;
         this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.data = data;
 
         BlockPlacerBlockEntity entity = (BlockPlacerBlockEntity) this.level.getBlockEntity(blockPos);
 
@@ -41,7 +39,22 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         assert entity != null;
-        this.addSlot(new BlacklistTagInputSlot(entity.getItemStackHandler(), 0, 80, 18, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
+        this.addSlot(new BlacklistTagInputSlot(entity.getItemStackHandler(), 0, 80, 26, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
+
+        addDataSlots(data);
+    }
+
+    public boolean isCrafting() {
+        return data.get(0) > 0 ;
+    }
+
+    public int getScaledProgress() {
+
+        int progress = this.data.get(0);
+        int maxProgress = this.data.get(1);  // Max Progress
+        int progressArrowSize = 26; // This is the height in pixels of your arrow
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
 
     }
 
