@@ -7,8 +7,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 public class EnderOreParticles extends TextureSheetParticle {
-    protected EnderOreParticles(ClientLevel level, double xCoord, double yCoord, double zCoord,
-                                SpriteSet spriteSet, double xd, double yd, double zd) {
+    public EnderOreParticles(ClientLevel level, double xCoord, double yCoord, double zCoord,
+                             SpriteSet spriteSet, double xd, double yd, double zd) {
         super(level, xCoord, yCoord, zCoord, xd, yd, zd);
 
         this.friction = 0.8F;

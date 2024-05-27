@@ -1,113 +1,146 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
+import com.benbenlaw.opolisutilities.particles.ModParticles;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class EnderOreBlock extends DropExperienceBlock {
+import java.util.function.Function;
+
+public class EnderOreBlock extends Block {
+
+    public static final MapCodec<EnderOreBlock> CODEC = simpleCodec(EnderOreBlock::new);
+
+    public EnderOreBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public @NotNull MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
+
     public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-    public EnderOreBlock(Properties properties, UniformInt uniformInt) {
-        super(uniformInt, properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(LIT, Boolean.FALSE);
+    }
+
+
+    //Interactions
+
+    @Override
+    protected void attack(BlockState blockState, Level level, BlockPos blockPos, Player player) {
+        interact(blockState, level, blockPos);
+        super.attack(blockState, level, blockPos, player);
     }
 
     @Override
-    public void attack(BlockState p_55467_, Level p_55468_, BlockPos p_55469_, Player p_55470_) {
-        interact(p_55467_, p_55468_, p_55469_);
-        super.attack(p_55467_, p_55468_, p_55469_, p_55470_);
-    }
-
-    @Override
-    public void stepOn(Level p_154299_, BlockPos p_154300_, BlockState p_154301_, Entity p_154302_) {
-        if (!p_154302_.isSteppingCarefully()) {
-            interact(p_154301_, p_154299_, p_154300_);
+    public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+        if (!entity.isSteppingCarefully()) {
+            interact(blockState, level, blockPos);
         }
 
-        super.stepOn(p_154299_, p_154300_, p_154301_, p_154302_);
+        super.stepOn(level, blockPos, blockState, entity);
     }
 
-    /*
     @Override
-    public InteractionResult use(BlockState p_55472_, Level p_55473_, BlockPos p_55474_, Player p_55475_, InteractionHand p_55476_, BlockHitResult p_55477_) {
-        if (p_55473_.isClientSide) {
-            spawnParticles(p_55473_, p_55474_);
+    protected ItemInteractionResult useItemOn(
+            ItemStack itemStack, BlockState blockState, Level level, BlockPos p_316592_, Player player, InteractionHand hand, BlockHitResult hitResult
+    ) {
+        if (level.isClientSide) {
+            spawnParticles(level, p_316592_);
         } else {
-            interact(p_55472_, p_55473_, p_55474_);
+            interact(blockState, level, p_316592_);
         }
 
-        ItemStack itemstack = p_55475_.getItemInHand(p_55476_);
-        return itemstack.getItem() instanceof BlockItem && (new BlockPlaceContext(p_55475_, p_55476_, itemstack, p_55477_)).canPlace() ? InteractionResult.PASS : InteractionResult.SUCCESS;
+        return itemStack.getItem() instanceof BlockItem && new BlockPlaceContext(player, hand, itemStack, hitResult).canPlace()
+                ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION
+                : ItemInteractionResult.SUCCESS;
     }
 
-     */
-
-    private static void interact(BlockState p_55493_, Level p_55494_, BlockPos p_55495_) {
-        spawnParticles(p_55494_, p_55495_);
-        if (!p_55493_.getValue(LIT)) {
-            p_55494_.setBlock(p_55495_, p_55493_.setValue(LIT, Boolean.valueOf(true)), 3);
+    private static void interact(BlockState blockState, Level level, BlockPos blockPos) {
+        spawnParticles(level, blockPos);
+        if (!blockState.getValue(LIT)) {
+            level.setBlock(blockPos, blockState.setValue(LIT, Boolean.TRUE), 3);
         }
-
-    }
-
-    public boolean isRandomlyTicking(BlockState p_55486_) {
-        return p_55486_.getValue(LIT);
     }
 
     @Override
-    public void randomTick(BlockState p_221918_, ServerLevel p_221919_, BlockPos p_221920_, RandomSource p_221921_) {
-        if (p_221918_.getValue(LIT)) {
-            p_221919_.setBlock(p_221920_, p_221918_.setValue(LIT, Boolean.valueOf(false)), 3);
-        }
-
-    }
-
-    public void spawnAfterBreak(BlockState p_221907_, ServerLevel p_221908_, BlockPos p_221909_, ItemStack p_221910_, boolean p_221911_) {
-        super.spawnAfterBreak(p_221907_, p_221908_, p_221909_, p_221910_, p_221911_);
+    protected boolean isRandomlyTicking(BlockState blockState) {
+        return blockState.getValue(LIT);
     }
 
     @Override
-    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelReader world, RandomSource randomSource, BlockPos pos, int fortune, int silktouch) {
+    protected void randomTick(BlockState blockState, @NotNull ServerLevel level, BlockPos blockPos, RandomSource randomSource) {
+        if (blockState.getValue(LIT)) {
+            level.setBlock(blockPos, blockState.setValue(LIT, Boolean.FALSE), 3);
+        }
+    }
+
+    @Override
+    protected void spawnAfterBreak(@NotNull BlockState blockState, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull ItemStack itemStack, boolean dropExperience) {
+        super.spawnAfterBreak(blockState, level, blockPos, itemStack, dropExperience);
+    }
+
+    @Override
+    public int getExpDrop(@NotNull BlockState blockState, net.minecraft.world.level.@NotNull LevelReader levelReader, @NotNull RandomSource randomSource, @NotNull BlockPos blockPos, int fortune, int silktouch) {
         return silktouch == 0 ? 1 + randomSource.nextInt(5) : 0;
     }
 
-    public void animateTick(BlockState p_221913_, Level p_221914_, BlockPos p_221915_, RandomSource p_221916_) {
-        if (p_221913_.getValue(LIT)) {
-            spawnParticles(p_221914_, p_221915_);
+    @Override
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
+        if (blockState.getValue(LIT)) {
+            spawnParticles(level, blockPos);
         }
-
     }
 
-    private static void spawnParticles(Level p_55455_, BlockPos p_55456_) {
-        double d0 = 0.5625D;
-        RandomSource randomsource = p_55455_.random;
+    private static void spawnParticles(Level level, BlockPos blockPosWorld) {
+        double d0 = 0.5625;
+        RandomSource randomsource = level.random;
 
-        for(Direction direction : Direction.values()) {
-            BlockPos blockpos = p_55456_.relative(direction);
-            if (!p_55455_.getBlockState(blockpos).isSolidRender(p_55455_, blockpos)) {
+        for (Direction direction : Direction.values()) {
+            BlockPos blockpos = blockPosWorld.relative(direction);
+            if (!level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
                 Direction.Axis direction$axis = direction.getAxis();
-                double d1 = direction$axis == Direction.Axis.X ? 0.5D + 0.5625D * (double)direction.getStepX() : (double)randomsource.nextFloat();
-                double d2 = direction$axis == Direction.Axis.Y ? 0.5D + 0.5625D * (double)direction.getStepY() : (double)randomsource.nextFloat();
-                double d3 = direction$axis == Direction.Axis.Z ? 0.5D + 0.5625D * (double)direction.getStepZ() : (double)randomsource.nextFloat();
-          //      p_55455_.addParticle(ModParticles.ENDER_ORE_PARTICLES.get(), (double)p_55456_.getX() + d1, (double)p_55456_.getY() + d2, (double)p_55456_.getZ() + d3, 0.0D, 0.0D, 0.0D);
+                double d1 = direction$axis == Direction.Axis.X ? 0.5 + 0.5625 * (double)direction.getStepX() : (double)randomsource.nextFloat();
+                double d2 = direction$axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double)direction.getStepY() : (double)randomsource.nextFloat();
+                double d3 = direction$axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double)direction.getStepZ() : (double)randomsource.nextFloat();
+                level.addParticle(
+                        ModParticles.ENDER_ORE_PARTICLES.get(), (double)blockPosWorld.getX() + d1, (double)blockPosWorld.getY() + d2, (double)blockPosWorld.getZ() + d3, 0.0, 0.0, 0.0
+                );
             }
         }
-
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
-        p_55484_.add(LIT);
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(LIT);
     }
 }
