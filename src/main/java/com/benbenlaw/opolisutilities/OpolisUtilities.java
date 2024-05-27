@@ -7,6 +7,7 @@ import com.benbenlaw.opolisutilities.item.ModCreativeTab;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
+import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.screen.*;
 import com.benbenlaw.opolisutilities.util.ModAttachments;

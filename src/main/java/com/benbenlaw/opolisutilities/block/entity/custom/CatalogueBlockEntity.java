@@ -161,7 +161,13 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
         assert this.level != null;
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
+
     public void tick() {
+    }
+}
+        /*
+
+
 
         assert level != null;
         if (!level.isClientSide()) {
@@ -175,6 +181,7 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
                     .getRecipeFor(CatalogueRecipe.Type.INSTANCE, inventory, level);
 
             if (canInsertItemIntoOutputSlot(inventory, match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()))
+                    && hasCorrectItem(this, match.get().value())
                     && hasOutputSpaceMaking(this, match.get().value())
                     && hasCorrectCountInInputSlot(this, match.get().value())) {
 
@@ -187,6 +194,7 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
 
         }
     }
+
 
     private void craftItem(@NotNull CatalogueBlockEntity entity) {
 
@@ -211,13 +219,20 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
         }
     }
 
+
+
     private boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
-        return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
+        return inventory.getItem(OUTPUT_SLOT).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
     }
 
     private boolean hasCorrectCountInInputSlot(CatalogueBlockEntity entity, CatalogueRecipe recipe) {
-        return entity.itemHandler.getStackInSlot(0).getCount() >= recipe.getIngredientStackCount();
+        return entity.itemHandler.getStackInSlot(INPUT_SLOT).getCount() >= recipe.getIngredientStackCount();
     }
+
+    private boolean hasCorrectItem(CatalogueBlockEntity entity, CatalogueRecipe recipe) {
+        return entity.itemHandler.getStackInSlot(INPUT_SLOT).getItem() == recipe.getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem();
+    }
+
 
     private boolean hasOutputSpaceMaking(CatalogueBlockEntity entity, CatalogueRecipe recipe) {
         ItemStack outputSlotStack = entity.itemHandler.getStackInSlot(OUTPUT_SLOT);
@@ -232,3 +247,4 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
         }
     }
 }
+*/

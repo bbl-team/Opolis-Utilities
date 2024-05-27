@@ -1,12 +1,12 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.entity.custom.CatalogueBlockEntity;
-import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
-import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
-import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
+import com.benbenlaw.opolisutilities.recipe.ModRecipes;
+import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.google.common.collect.Lists;
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
@@ -18,117 +18,264 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class CatalogueMenu extends AbstractContainerMenu {
+    public static final int INPUT_SLOT = 0;
+    public static final int RESULT_SLOT = 1;
+    private static final int INV_SLOT_START = 2;
+    private static final int INV_SLOT_END = 29;
+    private static final int USE_ROW_SLOT_START = 29;
+    private static final int USE_ROW_SLOT_END = 38;
+    private final ContainerLevelAccess access;
+    /**
+     * The index of the selected recipe in the GUI.
+     */
+    private final DataSlot selectedRecipeIndex = DataSlot.standalone();
+    private final Level level;
+    private List<RecipeHolder<CatalogueRecipe>> recipes = Lists.newArrayList();
+    /**
+     * The {@linkplain net.minecraft.world.item.ItemStack} set in the input slot by the player.
+     */
+    private ItemStack input = ItemStack.EMPTY;
+    /**
+     * Stores the game time of the last time the player took items from the the crafting result slot. This is used to prevent the sound from being played multiple times on the same tick.
+     */
+    long lastSoundTime;
+    final Slot inputSlot;
+    /**
+     * The inventory slot that stores the output of the crafting recipe.
+     */
+    final Slot resultSlot;
+    Runnable slotUpdateListener = () -> {
+    };
+    public final Container container = new SimpleContainer(2) {
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            CatalogueMenu.this.slotsChanged(this);
+            CatalogueMenu.this.slotUpdateListener.run();
+        }
+    };
+    /**
+     * The inventory that stores the output of the crafting recipe.
+     */
+    final ResultContainer resultContainer = new ResultContainer();
 
-    protected DryingTableBlockEntity blockEntity;
-    protected Level level;
-    protected ContainerData data;
-    protected Player player;
-    protected BlockPos blockPos;
-
-    private static final int INPUT_SLOT_X = 26;
-    private static final int INPUT_SLOT_Y = 44;
-    private static final int OUTPUT_SLOT_X = 142;
-    private static final int OUTPUT_SLOT_Y = 56;
-
-    public CatalogueMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf extraData) {
-        this(pContainerId, pPlayerInventory, extraData.readBlockPos(), new SimpleContainerData(2));
+    public CatalogueMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(2));
     }
 
     public CatalogueMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
         super(ModMenuTypes.CATALOGUE_MENU.get(), containerID);
-        this.player = inventory.player;
-        this.blockPos = blockPos;
+        this.access = ContainerLevelAccess.create(inventory.player.level(), blockPos);
         this.level = inventory.player.level();
-        this.data = data;
+        this.inputSlot = this.addSlot(new Slot(this.container, 0, 20, 33));
+        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 143, 33) {
+            @Override
+            public boolean mayPlace(ItemStack p_40362_) {
+                return false;
+            }
 
-        CatalogueBlockEntity entity = (CatalogueBlockEntity) this.level.getBlockEntity(blockPos);
+            @Override
+            public void onTake(Player p_150672_, ItemStack p_150673_) {
+                p_150673_.onCraftedBy(p_150672_.level(), p_150672_, p_150673_.getCount());
+                CatalogueMenu.this.resultContainer.awardUsedRecipes(p_150672_, this.getRelevantItems());
+                ItemStack itemstack = CatalogueMenu.this.inputSlot.remove(1);
+                if (!itemstack.isEmpty()) {
+                    CatalogueMenu.this.setupResultSlot();
+                }
 
-        checkContainerSize(inventory, 2);
-        addPlayerInventory(inventory);
-        addPlayerHotbar(inventory);
+                access.execute((p_40364_, p_40365_) -> {
+                    long l = p_40364_.getGameTime();
+                    if (CatalogueMenu.this.lastSoundTime != l) {
+                        p_40364_.playSound(null, p_40365_, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        CatalogueMenu.this.lastSoundTime = l;
+                    }
+                });
+                super.onTake(p_150672_, p_150673_);
+            }
 
-        assert entity != null;
-        // Add input and output slots
-        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, INPUT_SLOT_X, INPUT_SLOT_Y));
-        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), 1, OUTPUT_SLOT_X, OUTPUT_SLOT_Y));
+            private List<ItemStack> getRelevantItems() {
+                return List.of(CatalogueMenu.this.inputSlot.getItem());
+            }
+        });
 
-        addDataSlots(data);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
+                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+            }
+        }
+
+        for (int k = 0; k < 9; k++) {
+            this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
+        }
+
+        this.addDataSlot(this.selectedRecipeIndex);
+
     }
 
+    /**
+     * Returns the index of the selected recipe.
+     */
+    public int getSelectedRecipeIndex() {
+        return this.selectedRecipeIndex.get();
+    }
 
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    public List<RecipeHolder<CatalogueRecipe>> getRecipes() {
+        return this.recipes;
+    }
 
+    public int getNumRecipes() {
+        return this.recipes.size();
+    }
 
+    public boolean hasInputItem() {
+        return this.inputSlot.hasItem() && !this.recipes.isEmpty();
+    }
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
+    /**
+     * Determines whether supplied player can use this container
+     */
+    @Override
+    public boolean stillValid(Player pPlayer) {
+        return stillValid(this.access, pPlayer, ModBlocks.CATALOGUE.get());
+    }
+
+    /**
+     * Handles the given Button-click on the server, currently only used by enchanting. Name is for legacy.
+     */
+    @Override
+    public boolean clickMenuButton(Player pPlayer, int pId) {
+        if (this.isValidRecipeIndex(pId)) {
+            this.selectedRecipeIndex.set(pId);
+            this.setupResultSlot();
+        }
+
+        return true;
+    }
+
+    private boolean isValidRecipeIndex(int pRecipeIndex) {
+        return pRecipeIndex >= 0 && pRecipeIndex < this.recipes.size();
+    }
+
+    /**
+     * Callback for when the crafting matrix is changed.
+     */
+    @Override
+    public void slotsChanged(Container pInventory) {
+        ItemStack itemstack = this.inputSlot.getItem();
+        if (!itemstack.is(this.input.getItem())) {
+            this.input = itemstack.copy();
+            this.setupRecipeList(pInventory, itemstack);
+        }
+    }
+
+    private void setupRecipeList(Container pContainer, ItemStack pStack) {
+        this.recipes.clear();
+        this.selectedRecipeIndex.set(-1);
+        this.resultSlot.set(ItemStack.EMPTY);
+        if (!pStack.isEmpty()) {
+            this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE);
+
+        }
+        System.out.println("Container type: " + pContainer.getClass().getName());
+
+    }
+
+    void setupResultSlot() {
+        if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
+            RecipeHolder<CatalogueRecipe> recipeholder = this.recipes.get(this.selectedRecipeIndex.get());
+            ItemStack itemstack = recipeholder.value().assemble(new SimpleContainer(), this.level.registryAccess());
+            if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
+                this.resultContainer.setRecipeUsed(recipeholder);
+                this.resultSlot.set(itemstack);
+            } else {
+                this.resultSlot.set(ItemStack.EMPTY);
+            }
+        } else {
+            this.resultSlot.set(ItemStack.EMPTY);
+        }
+
+        this.broadcastChanges();
+    }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
+    public MenuType<?> getType() {
+        return ModMenuTypes.CATALOGUE_MENU.get();
+    }
 
-        // Check if the slot clicked is one of the vanilla container slots
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;  // EMPTY_ITEM
-            }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+    public void registerUpdateListener(Runnable pListener) {
+        this.slotUpdateListener = pListener;
+    }
+
+    /**
+     * Called to determine if the current slot is valid for the stack merging (double-click) code. The stack passed in is null for the initial slot that was double-clicked.
+     */
+    @Override
+    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
+        return pSlot.container != this.resultContainer && super.canTakeItemForPickAll(pStack, pSlot);
+    }
+
+    /**
+     * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player inventory and the other inventory(s).
+     */
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(pIndex);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            Item item = itemstack1.getItem();
+            itemstack = itemstack1.copy();
+            if (pIndex == 1) {
+                item.onCraftedBy(itemstack1, pPlayer.level(), pPlayer);
+                if (!this.moveItemStackTo(itemstack1, 2, 38, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot.onQuickCraft(itemstack1, itemstack);
+            } else if (pIndex == 0) {
+                if (!this.moveItemStackTo(itemstack1, 2, 38, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (this.level.getRecipeManager().getRecipeFor(CatalogueRecipe.Type.INSTANCE, new SimpleContainer(itemstack1), this.level).isPresent()) {
+                if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (pIndex >= 2 && pIndex < 29) {
+                if (!this.moveItemStackTo(itemstack1, 29, 38, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (pIndex >= 29 && pIndex < 38 && !this.moveItemStackTo(itemstack1, 2, 29, false)) {
                 return ItemStack.EMPTY;
             }
-        } else {
-            System.out.println("Invalid slotIndex:" + index);
-            return ItemStack.EMPTY;
-        }
-        // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
-        sourceSlot.onTake(playerIn, sourceStack);
-        return copyOfSourceStack;
-    }
 
-    @Override
-    public boolean stillValid(@NotNull Player player) {
-        return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
-                player, ModBlocks.CATALOGUE.get());
-    }
-
-    private void addPlayerInventory(Inventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
             }
+
+            slot.setChanged();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(pPlayer, itemstack1);
+            this.broadcastChanges();
         }
+
+        return itemstack;
     }
 
-    private void addPlayerHotbar(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
-        }
+    /**
+     * Called when the container is closed.
+     */
+    @Override
+    public void removed(Player pPlayer) {
+        super.removed(pPlayer);
+        this.resultContainer.removeItemNoUpdate(1);
+        this.access.execute((p_40313_, p_40314_) -> this.clearContainer(pPlayer, this.container));
     }
 }
