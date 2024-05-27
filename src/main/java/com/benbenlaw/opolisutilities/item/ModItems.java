@@ -35,7 +35,7 @@ public class ModItems {
             () -> new EliteLootBoxItem(new Item.Properties()));
 
     public static final DeferredItem<Item> B_BUCKS = ITEMS.register("b_bucks",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().stacksTo(99)));
 
     public static final DeferredItem<Item> LEAFY_STRING = ITEMS.register("leafy_string",
             () -> new Item(new Item.Properties()));

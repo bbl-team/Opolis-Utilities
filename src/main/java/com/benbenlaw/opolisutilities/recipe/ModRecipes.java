@@ -52,9 +52,18 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<UpgradeRecipeUtil>> UPGRADE_RECIPE_UTIL_SERIALIZER =
             SERIALIZER.register("upgrades", () -> UpgradeRecipeUtil.Serializer.INSTANCE);
 
-    public static final RegistryObject<RecipeSerializer<CatalogueRecipe>> CATALOGUE_SERIALIZER =
-            SERIALIZER.register("catalogue", () -> CatalogueRecipe.Serializer.INSTANCE);
-            */
+     */
+
+
+    //Catalogue
+
+    public static final Supplier<RecipeSerializer<CatalogueRecipe>> CATALOGUE_SERIALIZER =
+        SERIALIZER.register("catalogue", () -> CatalogueRecipe.Serializer.INSTANCE);
+
+    public static final Supplier<RecipeType<CatalogueRecipe>> CATALOGUE_TYPE =
+            TYPES.register("catalogue", () -> CatalogueRecipe.Type.INSTANCE);
+
+
 
 
     public static void register(IEventBus eventBus) {

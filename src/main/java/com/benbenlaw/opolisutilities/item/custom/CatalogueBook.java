@@ -20,6 +20,7 @@ public class CatalogueBook extends Item {
     }
 
 
+    /*
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (!level.isClientSide()) {
@@ -39,5 +40,7 @@ public class CatalogueBook extends Item {
             };
         }, Component.literal(" Catalogue"));
     }
+
+     */
 }
 

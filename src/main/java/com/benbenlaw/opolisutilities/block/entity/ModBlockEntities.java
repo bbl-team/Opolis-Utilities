@@ -35,6 +35,10 @@ public class ModBlockEntities {
             register("drying_table_block_entity", () ->
                     BlockEntityType.Builder.of(DryingTableBlockEntity::new, ModBlocks.DRYING_TABLE.get()));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CatalogueBlockEntity>> CATALOGUE_BLOCK_ENTITY =
+            register("catalogue_block_entity", () ->
+                    BlockEntityType.Builder.of(CatalogueBlockEntity::new, ModBlocks.CATALOGUE.get()));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemRepairerBlockEntity>> ITEM_REPAIRER_BLOCK_ENTITY =
             register("item_repairer_block_entity", () ->
                     BlockEntityType.Builder.of(ItemRepairerBlockEntity::new, ModBlocks.ITEM_REPAIRER.get()));

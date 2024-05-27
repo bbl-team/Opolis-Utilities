@@ -1,14 +1,31 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WalletItem extends Item {
+
     public WalletItem(Properties pProperties) {
         super(pProperties);
     }
 
-    /*
-    public static final ResourceLocation WALLET_CAP = new ResourceLocation(MOD_ID, "wallet");
+}
+/*
+
+
+    public static final ResourceLocation WALLET_CAP = new ResourceLocation(OpolisUtilities.MOD_ID, "wallet");
 
     public static class WalletSlot {
         private final ResourceLocation RL;
@@ -20,7 +37,7 @@ public class WalletItem extends Item {
         }
 
         public WalletSlot(ItemStack stack) {
-            this(ForgeRegistries.ITEMS.getKey(stack.getItem()));
+            this(BuiltInRegistries.ITEM.getKey(stack.getItem()));
         }
 
         public int getAmount() {
@@ -37,11 +54,11 @@ public class WalletItem extends Item {
 
         // Returns null if item doesn't exist
         public Item getItem() {
-            return ForgeRegistries.ITEMS.getValue(RL);
+            return BuiltInRegistries.ITEM.get(RL);
         }
     }
 
-    public static class CapabilityProvider implements ICapabilitySerializable<CompoundTag> {
+    public static class CapabilityProvider implements ICapabilitySync<CompoundTag> {
         public static class WalletItemHandler implements IItemHandler {
             final ItemStack stack;
             final ArrayList<WalletSlot> ITEMS = new ArrayList<>();
@@ -177,11 +194,11 @@ public class WalletItem extends Item {
         }
 
         private final WalletItemHandler handler;
-        private final LazyOptional<IItemHandler> ITEMLO;
+        private final Lazy<IItemHandler> ITEMLO;
 
         public CapabilityProvider(ItemStack stack) {
             this.handler = new WalletItemHandler(stack);
-            this.ITEMLO = LazyOptional.of(() -> handler);
+            this.ITEMLO = Lazy.of(() -> handler);
         }
 
         @Override
@@ -318,8 +335,10 @@ public class WalletItem extends Item {
         super.appendHoverText(stack, level, components, flag);
     }
 
-     */
+
 }
+
+ */
 
 
 
