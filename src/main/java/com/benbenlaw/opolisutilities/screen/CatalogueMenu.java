@@ -1,17 +1,12 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.entity.custom.CatalogueBlockEntity;
+import com.benbenlaw.opolisutilities.item.custom.WalletItem;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.google.common.collect.Lists;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -26,7 +21,11 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class CatalogueMenu extends AbstractContainerMenu {
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public class CatalogueMenu extends   AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private final Level level;
@@ -50,8 +49,6 @@ public class CatalogueMenu extends AbstractContainerMenu {
     };
     public final ResultContainer resultContainer = new ResultContainer();
 
-    protected CatalogueBlockEntity blockEntity;
-
     public CatalogueMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
         this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(2));
     }
@@ -60,7 +57,6 @@ public class CatalogueMenu extends AbstractContainerMenu {
         super(ModMenuTypes.CATALOGUE_MENU.get(), containerID);
         this.access = ContainerLevelAccess.create(inventory.player.level(), blockPos);
         this.level = inventory.player.level();
-        this.blockEntity = (CatalogueBlockEntity) this.level.getBlockEntity(blockPos);
         this.inputSlot = this.addSlot(new Slot(this.container, 0, 26, 44));
         this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 142, 56) {
 
@@ -82,13 +78,17 @@ public class CatalogueMenu extends AbstractContainerMenu {
             }
 
             public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
-
                 stack.onCraftedBy(player.level(), player, stack.getCount());
                 CatalogueMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
-                ItemStack input = CatalogueMenu.this.inputSlot.getItem();
-                input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).value().getIngredientStackCount());
+                ItemStack input = CatalogueMenu.this.inputSlot.getItem(); // Could be wallet or Currency!
+
+                // Deal with normally
+                if (!level.isClientSide)
+                    input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).value().getIngredientStackCount());
                 CatalogueMenu.this.inputSlot.setChanged();
                 CatalogueMenu.this.setupResultSlot();
+
+
 
                 access.execute((p_40364_, p_40365_) -> {
                     long l = p_40364_.getGameTime();
@@ -100,14 +100,11 @@ public class CatalogueMenu extends AbstractContainerMenu {
 
                 CatalogueMenu.this.slotsChanged(CatalogueMenu.this.container);
                 super.onTake(player, stack);
-
             }
 
             private List<ItemStack> getRelevantItems() {
                 return List.of(CatalogueMenu.this.inputSlot.getItem());
             }
-
-
 
         });
 
@@ -122,9 +119,10 @@ public class CatalogueMenu extends AbstractContainerMenu {
         }
 
         this.addDataSlot(this.selectedRecipeIndex);
-        addDataSlots(data);
         this.selectedRecipeIndex.set(-1);
     }
+
+
 
     public int getSelectedRecipeIndex() {
         return this.selectedRecipeIndex.get();
@@ -176,13 +174,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
                 this.lastInput = this.input;
         }
         if (!pStack.isEmpty()) {
-
-            SimpleContainer inventory = new SimpleContainer(blockEntity.itemHandler.getSlots());
-            for (int i = 0; i < blockEntity.itemHandler.getSlots(); i++) {
-                inventory.setItem(i, blockEntity.itemHandler.getStackInSlot(i));
-            }
-
-            this.recipes = this.level.getRecipeManager().getRecipesFor(CatalogueRecipe.Type.INSTANCE, inventory, this.level);
+                this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE);
 
         }
         if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1) {
@@ -208,7 +200,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
             RecipeHolder<CatalogueRecipe> catalogueRecipe = this.recipes.get(this.selectedRecipeIndex.get());
             this.resultContainer.setRecipeUsed(catalogueRecipe);
             this.lastUsedRecipe = catalogueRecipe.value();
-            this.resultSlot.set(catalogueRecipe.value().assemble(new SimpleContainer(), this.level.registryAccess()));
+            this.resultSlot.set(catalogueRecipe.value().assemble((SimpleContainer) this.container, this.level.registryAccess()));
         } else {
             this.resultSlot.set(ItemStack.EMPTY);
         }
