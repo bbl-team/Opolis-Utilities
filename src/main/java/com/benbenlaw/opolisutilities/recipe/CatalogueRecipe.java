@@ -28,14 +28,10 @@ public record CatalogueRecipe(SizedIngredient input, ItemStack output) implement
     @Override
     public boolean matches(SimpleContainer container, @NotNull Level level) {
 
-        return true;
-
-        /*
-
-        var itemIn = container.getItem(0);
-        return this.input.test(itemIn) && itemIn.getCount() >= this.getIngredientStackCount();
-
-         */
+        if (input.test(container.getItem(0))) {
+            return container.getItem(0).getCount() >= this.getIngredientStackCount();
+        }
+        return false;
     }
 
     @Override

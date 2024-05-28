@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CatalogueMenu extends   AbstractContainerMenu {
     private final ContainerLevelAccess access;
@@ -80,7 +81,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
             public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
                 stack.onCraftedBy(player.level(), player, stack.getCount());
                 CatalogueMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
-                ItemStack input = CatalogueMenu.this.inputSlot.getItem(); // Could be wallet or Currency!
+                ItemStack input = CatalogueMenu.this.inputSlot.getItem();
 
                 // Deal with normally
                 if (!level.isClientSide)
@@ -167,33 +168,40 @@ public class CatalogueMenu extends   AbstractContainerMenu {
     private void setupRecipeList(Container pContainer, ItemStack pStack) {
         this.recipes = new ArrayList<>();
 
-        if(!this.input.is(pStack.getItem())) {
-            if(!this.input.is(Items.AIR) && !this.input.is(lastInput.getItem()) && !this.lastInput.is(Items.AIR))
+        if (!this.input.is(pStack.getItem())) {
+            if (!this.input.is(Items.AIR) && !this.input.is(lastInput.getItem()) && !this.lastInput.is(Items.AIR))
                 this.selectedRecipeIndex.set(-1);
-            if(!this.input.is(lastInput.getItem()))
+            if (!this.input.is(lastInput.getItem()))
                 this.lastInput = this.input;
         }
+
         if (!pStack.isEmpty()) {
-                this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE);
+            // Filter recipes based on the input item
+            this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE).stream().filter(recipe ->
+                    recipe.value().getIngredients().stream().anyMatch(ingredient -> ingredient.test(pStack)))
+                    .filter(recipe -> recipe.value().getIngredientStackCount() <= pStack.getCount()).collect(Collectors.toList());
 
         }
-        if(this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1) {
-            for(int i = 0; i < this.recipes.size(); i++){
-                if(this.recipes.get(i).value() == this.lastUsedRecipe) {
+
+        if (this.recipesSize != this.recipes.size() && this.selectedRecipeIndex.get() != -1) {
+            for (int i = 0; i < this.recipes.size(); i++) {
+                if (this.recipes.get(i).value() == this.lastUsedRecipe) {
                     this.selectedRecipeIndex.set(i);
                     break;
                 }
             }
         }
+
         this.recipes = this.recipes.stream().sorted(Comparator.comparing(r -> r.id().toString())).toList();
         this.recipesSize = this.recipes.size();
 
-        if(!this.input.is(pStack.getItem()) || pStack.getCount() != this.input.getCount()) {
+        if (!this.input.is(pStack.getItem()) || pStack.getCount() != this.input.getCount()) {
             this.resultSlot.set(ItemStack.EMPTY);
-            if(this.lastInput.is(Items.AIR))
+            if (this.lastInput.is(Items.AIR))
                 setupResultSlot();
         }
     }
+
 
     void setupResultSlot() {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {

@@ -371,7 +371,7 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pScrollX, double pScrollY) {
         if (this.isScrollBarActive()) {
             int i = this.getOffscreenRows();
-            float f = (float) pScrollX / (float) i;
+            float f = (float) pScrollY / (float) i;
             this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
             this.startIndex = Math.max(0, ((int) ((double) (this.scrollOffs * (float) i) + 0.5D) * RECIPES_COLUMNS));
         }

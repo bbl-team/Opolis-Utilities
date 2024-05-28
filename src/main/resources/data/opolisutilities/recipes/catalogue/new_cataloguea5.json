@@ -1,0 +1,11 @@
+{
+  "type": "opolisutilities:catalogue",
+  "input":{
+    "item": "minecraft:emerald",
+    "count": 1
+  },
+  "output": {
+    "id": "minecraft:pink_wool",
+    "count": 3
+  }
+}
