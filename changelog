@@ -35,7 +35,8 @@ Resource Generator (2);
     - Updated right click information for resource generator
     - Both of these recipes now use Ingredients instead of strings and conversions in the block entity
     - Resource generator should have a bit of a performance boost as less tasks required
-
+Ender Ore - Ported
+Wallet - Removed (Vanilla stack size increase probably removes the point of the wallet
 
 Updated all utils package to 1.20.5
 Updated Particles

@@ -273,6 +273,7 @@ public class CatalogueScreen extends  AbstractContainerScreen<CatalogueMenu> {
         }
     }
 
+    @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         System.out.println("Mouse clicked at: (" + pMouseX + ", " + pMouseY + ")");
 
@@ -286,35 +287,36 @@ public class CatalogueScreen extends  AbstractContainerScreen<CatalogueMenu> {
             int j = this.topPos + RECIPES_Y;
             int k = this.startIndex + 12;
 
-            for (int l = this.startIndex; l < k; ++l) {
+            // Use filteredRecipes list when a search query is active
+            List<RecipeHolder<CatalogueRecipe>> recipesToUse = this.searchBar.getValue().isEmpty() ? menu.getRecipes() : this.filteredRecipes;
+
+            for (int l = this.startIndex; l < k && l < recipesToUse.size(); ++l) {
                 int i1 = l - this.startIndex;
-                double d0 = pMouseX - (double) (i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH + 2);
-                double d1 = pMouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 3);
+                double d0 = pMouseX - (double)(i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH + 2);
+                double d1 = pMouseY - (double)(j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 3);
 
                 System.out.println("Checking recipe slot " + l + ": (" + d0 + ", " + d1 + ")");
 
                 if (d0 >= 0.0D && d1 >= 0.0D && d0 < RECIPES_IMAGE_SIZE_WIDTH && d1 < RECIPES_IMAGE_SIZE_HEIGHT) {
-                    int recipeIndex = this.startIndex + i1;
+                    assert this.minecraft != null;
+                    assert this.minecraft.player != null;
+                    if (this.menu.clickMenuButton(this.minecraft.player, l)) {
+                        // Ensure the correct recipe is selected based on the filtered list
+                        if (l >= 0 && l < recipesToUse.size()) {
+                            CatalogueRecipe recipe = recipesToUse.get(l).value();
+                            int originalIndex = menu.getRecipes().indexOf(recipe);
 
-                    if (recipeIndex >= 0 && recipeIndex < filteredRecipes.size()) {
-                        CatalogueRecipe recipe = filteredRecipes.get(recipeIndex).value();
-                        int originalIndex = menu.getRecipes().indexOf(recipe);
+                            System.out.println("Recipe slot " + l + " clicked. Recipe index: " + originalIndex);
 
-                        System.out.println("Recipe slot " + recipeIndex + " clicked. Recipe index: " + originalIndex);
-
-                        if (originalIndex >= 0) {
-                            // Play sound or any other action related to recipe selection
-                            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-                            // Handle the recipe selection in the game mode
-                            assert Objects.requireNonNull(this.minecraft).gameMode != null;
-                            assert this.minecraft.gameMode != null;
-                            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, originalIndex);
-                            // Set the selected recipe index
-                            this.selectedRecipeIndex = originalIndex;
-                            // Reset the search bar value
-                            this.searchBar.setValue("");
-                            // Return true to indicate the click was handled
-                            return true;
+                            if (originalIndex >= 0) {
+                                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                                assert Objects.requireNonNull(this.minecraft).gameMode != null;
+                                assert this.minecraft.gameMode != null;
+                                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, originalIndex);
+                                this.selectedRecipeIndex = originalIndex;
+                                this.searchBar.setValue("");
+                                return true;
+                            }
                         }
                     }
                 }
@@ -322,7 +324,6 @@ public class CatalogueScreen extends  AbstractContainerScreen<CatalogueMenu> {
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
-
 
 
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
@@ -338,12 +339,12 @@ public class CatalogueScreen extends  AbstractContainerScreen<CatalogueMenu> {
         }
     }
 
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pScrollX, double pScrollY) {
         if (this.isScrollBarActive()) {
             int i = this.getOffscreenRows();
-            float f = (float) pDelta / (float) i;
+            float f = (float)pScrollY / (float)i;
             this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
-            this.startIndex = Math.max(0, ((int) ((double) (this.scrollOffs * (float) i) + 0.5D) * RECIPES_COLUMNS));
+            this.startIndex = (int)((double)(this.scrollOffs * (float)i) + 0.5) * 4;
         }
 
         return true;

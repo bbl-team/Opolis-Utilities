@@ -78,25 +78,17 @@ public class CatalogueMenu extends AbstractContainerMenu {
                 if (recipes.size() < CatalogueMenu.this.selectedRecipeIndex.get())
                     return false;
 
-
-
-
                 return super.mayPickup(pPlayer);
             }
 
             public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
+
                 stack.onCraftedBy(player.level(), player, stack.getCount());
                 CatalogueMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
-                ItemStack input = CatalogueMenu.this.inputSlot.getItem(); // Could be wallet or Currency!
-
-
-                // Deal with normally
-                if (!level.isClientSide)
-                    input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).value().getIngredientStackCount());
+                ItemStack input = CatalogueMenu.this.inputSlot.getItem();
+                input.shrink(CatalogueMenu.this.recipes.get(CatalogueMenu.this.selectedRecipeIndex.get()).value().getIngredientStackCount());
                 CatalogueMenu.this.inputSlot.setChanged();
                 CatalogueMenu.this.setupResultSlot();
-
-
 
                 access.execute((p_40364_, p_40365_) -> {
                     long l = p_40364_.getGameTime();
@@ -108,11 +100,14 @@ public class CatalogueMenu extends AbstractContainerMenu {
 
                 CatalogueMenu.this.slotsChanged(CatalogueMenu.this.container);
                 super.onTake(player, stack);
+
             }
 
             private List<ItemStack> getRelevantItems() {
                 return List.of(CatalogueMenu.this.inputSlot.getItem());
             }
+
+
 
         });
 
@@ -127,6 +122,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
         }
 
         this.addDataSlot(this.selectedRecipeIndex);
+        addDataSlots(data);
         this.selectedRecipeIndex.set(-1);
     }
 
