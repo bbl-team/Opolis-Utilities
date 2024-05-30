@@ -46,7 +46,7 @@ public class CatalogueBlock extends BaseEntityBlock {
         return CODEC;
     }
 
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     /* FACING */
 

@@ -31,29 +31,28 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
         this.player = inventory.player;
         this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.blockEntity = (BlockBreakerBlockEntity) this.level.getBlockEntity(blockPos);
         this.data = data;
-
-        BlockBreakerBlockEntity entity = (BlockBreakerBlockEntity) this.level.getBlockEntity(blockPos);
 
         checkContainerSize(inventory, 3);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
         //Add Slots
-        assert entity != null;
-        this.addSlot(new SlotItemHandler(entity.getItemStackHandler(), 0, 40, 26));
-        this.addSlot(new WhitelistMaxStackSizeOneSlot(entity.getItemStackHandler(), 1, 80, 26) {
+        assert blockEntity != null;
+        this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 0, 40, 26));
+        this.addSlot(new WhitelistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 1, 80, 26) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                ItemStack blacklistStack = entity.getItemStackHandler().getStackInSlot(2);
+                ItemStack blacklistStack = blockEntity.getItemStackHandler().getStackInSlot(2);
                 return blacklistStack.isEmpty() && super.mayPlace(stack);
             }
         });
 
-        this.addSlot(new BlacklistMaxStackSizeOneSlot(entity.getItemStackHandler(), 2, 120, 26) {
+        this.addSlot(new BlacklistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 2, 120, 26) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                ItemStack whitelistStack = entity.getItemStackHandler().getStackInSlot(1);
+                ItemStack whitelistStack = blockEntity.getItemStackHandler().getStackInSlot(1);
                 return whitelistStack.isEmpty() && super.mayPlace(stack);
             }
         });

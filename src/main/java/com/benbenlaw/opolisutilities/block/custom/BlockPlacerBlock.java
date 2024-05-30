@@ -52,31 +52,6 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final IntegerProperty TIMER = IntegerProperty.create("timer", MIN_TIMER, MAX_TIMER);
 
-    /* REDSTONE SIGNAL */
-    @Override
-    protected void neighborChanged(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos,
-                                   @NotNull Block neighborBlock, @NotNull BlockPos neighborBlockPos, boolean movedByPiston) {
-
-        if (!level.isClientSide()) {
-            boolean powered = level.hasNeighborSignal(blockPos);
-            if (powered != blockState.getValue(POWERED)) {
-                level.setBlock(blockPos, blockState.setValue(POWERED, powered), 3);
-            }
-        }
-    }
-
-    /* FACING WITH REDSTONE NEIGHBOUR CHECK */
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Level level = context.getLevel();
-        BlockPos blockPos = context.getClickedPos();
-        boolean powered = level.hasNeighborSignal(blockPos);
-        if (powered) {
-            return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, true).setValue(TIMER, MIN_TIMER);
-        }
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false).setValue(TIMER, MIN_TIMER);
-    }
-
     /* ROTATION */
     @SuppressWarnings("deprecation")
     @Override

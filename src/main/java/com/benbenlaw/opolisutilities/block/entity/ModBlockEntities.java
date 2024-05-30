@@ -55,10 +55,6 @@ public class ModBlockEntities {
             register("redstone_clock_block_entity", () ->
                     BlockEntityType.Builder.of(RedstoneClockBlockEntity::new, ModBlocks.REDSTONE_CLOCK.get()));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FanBlockEntity>> FAN_BLOCK_ENTITY =
-            register("fan_block_entity", () ->
-                    BlockEntityType.Builder.of(FanBlockEntity::new, ModBlocks.FAN.get()));
-
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnderScramblerBlockEntity>> ENDER_SCRAMBLER_BLOCK_ENTITY =
             register("ender_scrambler_block_entity", () ->
                     BlockEntityType.Builder.of(EnderScramblerBlockEntity::new, ModBlocks.ENDER_SCRAMBLER.get()));
@@ -78,6 +74,12 @@ public class ModBlockEntities {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.DRYING_TABLE_BLOCK_ENTITY.get(), DryingTableBlockEntity::getItemHandlerCapability);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.CATALOGUE_BLOCK_ENTITY.get(), CatalogueBlockEntity::getItemHandlerCapability);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.CRAFTER_BLOCK_ENTITY.get(), CrafterBlockEntity::getItemHandlerCapability);
 
     }
 

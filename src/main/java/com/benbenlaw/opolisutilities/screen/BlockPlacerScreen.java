@@ -1,27 +1,24 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
+import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/block_placer_gui.png");
-
-    private static final WidgetSprites ON_BUTTON = new WidgetSprites(
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_on_button.png"),
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_on_button.png"));
-
-    private static final ResourceLocation OFF_BUTTON =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button.png");
-
 
     public BlockPlacerScreen(BlockPlacerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -48,33 +45,22 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         renderLabels(guiGraphics, mouseX, mouseY);
 
-        //Power Button
-
-        /*
-        if (this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
-            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ON_BUTTON, (p_289630_) -> {
-
-                PacketDistributor.sendToServer(new PacketBlockPlacerOnOffButton(this.menu.blockEntity.getBlockPos()));
-
-                p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
-            }));
-        }
-
-        else {
-
-            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, OFF_BUTTON, (p_289630_) -> {
-
-                ModMessages.sendToServer(new PacketBlockPlacerOnOffButton(this.menu.blockEntity.getBlockPos()));
-                p_289630_.setPosition(this.leftPos + 5, this.height / 2 - 49);
-            }));
-
-
-        }
-        
-         */
-
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
+        
+        //Power Button
+
+        if (this.menu.blockEntity != null) {
+
+            if (!this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
+                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
+                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
+            } else {
+                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.ON_BUTTONS, (pressed) ->
+                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
+            }
+        }
+
 
     }
 }

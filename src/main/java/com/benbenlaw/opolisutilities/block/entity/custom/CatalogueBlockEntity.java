@@ -1,11 +1,14 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.custom.CatalogueBlock;
 import com.benbenlaw.opolisutilities.block.custom.ResourceGeneratorBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.recipe.*;
 import com.benbenlaw.opolisutilities.screen.CatalogueMenu;
+import com.benbenlaw.opolisutilities.screen.CatalogueScreen;
 import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
+import com.benbenlaw.opolisutilities.util.DirectionUtils;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,6 +45,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
+
 public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
@@ -56,16 +61,32 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
+    private final IItemHandler upItemHandlerSide = new InputOutputItemHandler(itemHandler,
+            (i, stack) -> i == INPUT_SLOT, // Allow in INPUT_SLOT
+            i -> false // No output slots
+    );
     private final IItemHandler outputItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> false, // No input slots
             i -> i == OUTPUT_SLOT // Allow output from OUTPUT_SLOT
     );
 
+    private final IItemHandler noSideItemHandlerSided = new InputOutputItemHandler(itemHandler,
+            (i, stack) -> false,
+            i -> false
+    );
+
+
     public IItemHandler getItemHandlerCapability(Direction side) {
-        if (side == null)
+        side = DirectionUtils.adjustPosition(this.getBlockState().getValue(FACING), side);
+        if(side == null)
             return itemHandler;
 
-        return outputItemHandler;
+        if(side == Direction.UP)
+            return upItemHandlerSide;
+        if(side == Direction.DOWN)
+            return outputItemHandler;
+
+        return noSideItemHandlerSided;
     }
 
     public void setHandler(ItemStackHandler handler) {
@@ -162,7 +183,10 @@ public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, I
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+
+
     public void tick() {
+
     }
 }
         /*

@@ -290,28 +290,15 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                         CatalogueRecipe recipe = filteredRecipes.get(recipeIndex).value();
                         int originalIndex = -1;
 
-                        // Get the list of RecipeHolder<CatalogueRecipe>
                         List<RecipeHolder<CatalogueRecipe>> recipeHolders = menu.getRecipes();
-
-                        // Log the size of the recipeHolders
-                        Log.info("Number of recipes in menu: " + recipeHolders.size());
-
-                        // Loop through the recipes to find the original index
                         for (int x = 0; x < recipeHolders.size(); x++) {
                             CatalogueRecipe holderRecipe = recipeHolders.get(x).value();
 
-                            // Log each recipe for debugging
-                            Log.info("Comparing recipe at index " + x + ": " + holderRecipe);
-                            Log.info("With target recipe: " + recipe);
-
-                            // If equals method is not working, compare fields directly
                             if (holderRecipe.equals(recipe)) {
                                 originalIndex = x;
                                 break;
                             }
                         }
-
-                        Log.info("Original index: " + originalIndex);
 
                         if (originalIndex >= 0) {
                             assert Minecraft.getInstance().level != null;
@@ -330,10 +317,7 @@ public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
                             }
                         }
                     }
-
                 }
-
-
             }
 
             i = this.leftPos + 123;

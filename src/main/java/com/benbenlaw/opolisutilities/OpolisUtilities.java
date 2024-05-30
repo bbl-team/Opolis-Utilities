@@ -11,6 +11,7 @@ import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.benbenlaw.opolisutilities.recipe.ModRecipes;
 import com.benbenlaw.opolisutilities.screen.*;
 import com.benbenlaw.opolisutilities.util.ModAttachments;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

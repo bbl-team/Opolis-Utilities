@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import static com.benbenlaw.opolisutilities.block.custom.CrafterBlock.TIMER;
 import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.POWERED;
 import static com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock.*;
 import static com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock.*;
@@ -72,19 +71,13 @@ public class WrenchItem extends Item {
                     if (!player.isCrouching() && !Screen.hasControlDown() && currentRange < maxTimer) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange + 10));
                         return InteractionResult.SUCCESS;
-                    }
-
-                    else if (!player.isCrouching() && Screen.hasControlDown() && currentRange < maxTimer) {
+                    } else if (!player.isCrouching() && Screen.hasControlDown() && currentRange < maxTimer) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange + 50));
                         return InteractionResult.SUCCESS;
-                    }
-
-                    else if (player.isCrouching() && !Screen.hasControlDown() && currentRange > minTimer) {
+                    } else if (player.isCrouching() && !Screen.hasControlDown() && currentRange > minTimer) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange - 10));
                         return InteractionResult.SUCCESS;
-                    }
-
-                    else if (player.isCrouching() && Screen.hasControlDown() && currentRange > minTimer) {
+                    } else if (player.isCrouching() && Screen.hasControlDown() && currentRange > minTimer) {
                         level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange - 50));
                         return InteractionResult.SUCCESS;
                     }
@@ -101,39 +94,13 @@ public class WrenchItem extends Item {
 
             if (blockState.is(ModBlocks.CRAFTER.get())) {
 
-                int currentTimer = blockState.getValue(TIMER);
-                CrafterBlockEntity entity = (CrafterBlockEntity) level.getBlockEntity(blockPos);
-
-                assert player != null;
-
-                if (player.getMainHandItem().is(this)) {
-
-                    if (blockState.getValue(CrafterBlock.POWERED).equals(true)) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.POWERED, false));
-
-                    } else if (blockState.getValue(CrafterBlock.POWERED).equals(false)) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.POWERED, true));
-                    }
-                }
-
-                if (player.getOffhandItem().is(this)) {
-
-                    if (!Screen.hasControlDown() && currentTimer < CrafterBlock.maxTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.TIMER, currentTimer + 10));
-                        return InteractionResult.SUCCESS;
-                    } else if (Screen.hasControlDown() && currentTimer > CrafterBlock.minTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(CrafterBlock.TIMER, currentTimer - 10));
-                        return InteractionResult.SUCCESS;
-                    }
-                }
-
-
             }
+
+            return InteractionResult.SUCCESS;
+
         }
 
-        return InteractionResult.SUCCESS;
-
+        return null;
     }
-
 }
 

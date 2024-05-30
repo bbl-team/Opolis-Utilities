@@ -3,17 +3,13 @@ package com.benbenlaw.opolisutilities.block;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.*;
 import com.benbenlaw.opolisutilities.item.ModItems;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -79,14 +75,14 @@ public class ModBlocks {
                     .strength(3.0f,3.0f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
-                    .lightLevel(litBlockEmission(9))));
+                    .lightLevel(litBlockEmission())));
 
     public static final DeferredBlock<Block> DEEPSLATE_ENDER_ORE = registerBlock("deepslate_ender_ore",
             () -> new EnderOreBlock(BlockBehaviour.Properties.of()
                     .strength(4.5f,3.0f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.DEEPSLATE)
-                    .lightLevel(litBlockEmission(9))));
+                    .lightLevel(litBlockEmission())));
 
     public static final DeferredBlock<Block> ENDER_SCRAMBLER = registerBlock("ender_scrambler",
             () -> new EnderScramblerBlock(BlockBehaviour.Properties.of()
@@ -94,29 +90,11 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)));
 
-    public static final DeferredBlock<Block> FAN = registerBlock("fan",
-            () -> new FanBlock(BlockBehaviour.Properties.of()
-                    .strength(4.5f,3.0f)
-                    .requiresCorrectToolForDrops()
-                    .sound(SoundType.STONE)));
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //Light Level When Interacted With
 
-    private static ToIntFunction<BlockState> litBlockEmission(int p_50760_) {
-        return (p_50763_) -> p_50763_.getValue(BlockStateProperties.LIT) ? p_50760_ : 0;
+    private static ToIntFunction<BlockState> litBlockEmission() {
+        return (lightLevel) -> lightLevel.getValue(BlockStateProperties.LIT) ? 9 : 0;
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

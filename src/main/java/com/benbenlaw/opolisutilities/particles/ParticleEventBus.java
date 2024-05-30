@@ -16,5 +16,6 @@ public class ParticleEventBus {
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
         Minecraft.getInstance().particleEngine.register(ModParticles.ENDER_ORE_PARTICLES.get(),
                 EnderOreParticles.Provider::new);
+
     }
 }

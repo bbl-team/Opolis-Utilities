@@ -50,7 +50,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
 
     public final ContainerData data;
     public int progress = 0;
-    public int maxProgress = 0;
+    public int maxProgress = 80;
     private static final int INPUT_SLOT = 0;
 
     private final IItemHandler upItemHandlerSide = new InputOutputItemHandler(itemHandler,

@@ -26,19 +26,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CatalogueMenu extends   AbstractContainerMenu {
-    private final ContainerLevelAccess access;
-    private final DataSlot selectedRecipeIndex = DataSlot.standalone();
-    private final Level level;
-    private List<RecipeHolder<CatalogueRecipe>> recipes = Lists.newArrayList();
-    private CatalogueRecipe lastUsedRecipe = null;
-    private int recipesSize = 0;
-    private ItemStack input = ItemStack.EMPTY;
-    private ItemStack lastNonAirInput = ItemStack.EMPTY;
-    private ItemStack lastInput = ItemStack.EMPTY;
+public class CatalogueMenu extends AbstractContainerMenu {
+    public final ContainerLevelAccess access;
+    public final DataSlot selectedRecipeIndex = DataSlot.standalone();
+    public final Level level;
+    public List<RecipeHolder<CatalogueRecipe>> recipes = Lists.newArrayList();
+    public CatalogueRecipe lastUsedRecipe = null;
+    public int recipesSize = 0;
+    public ItemStack input = ItemStack.EMPTY;
+    public ItemStack lastNonAirInput = ItemStack.EMPTY;
+    public ItemStack lastInput = ItemStack.EMPTY;
     long lastSoundTime;
-    final Slot inputSlot;
-    final Slot resultSlot;
+    public Slot inputSlot;
+    public Slot resultSlot;
     Runnable slotUpdateListener = () -> {
     };
     public final Container container = new SimpleContainer(1) {
@@ -178,7 +178,7 @@ public class CatalogueMenu extends   AbstractContainerMenu {
         if (!pStack.isEmpty()) {
             // Filter recipes based on the input item
             this.recipes = this.level.getRecipeManager().getAllRecipesFor(CatalogueRecipe.Type.INSTANCE).stream().filter(recipe ->
-                    recipe.value().getIngredients().stream().anyMatch(ingredient -> ingredient.test(pStack)))
+                            recipe.value().getIngredients().stream().anyMatch(ingredient -> ingredient.test(pStack)))
                     .filter(recipe -> recipe.value().getIngredientStackCount() <= pStack.getCount()).collect(Collectors.toList());
 
         }

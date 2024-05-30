@@ -30,16 +30,15 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
         this.player = inventory.player;
         this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.blockEntity = (BlockPlacerBlockEntity) this.level.getBlockEntity(blockPos);
         this.data = data;
-
-        BlockPlacerBlockEntity entity = (BlockPlacerBlockEntity) this.level.getBlockEntity(blockPos);
 
         checkContainerSize(inventory, 1);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
-        assert entity != null;
-        this.addSlot(new BlacklistTagInputSlot(entity.getItemStackHandler(), 0, 80, 26, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
+        assert blockEntity != null;
+        this.addSlot(new BlacklistTagInputSlot(blockEntity.getItemStackHandler(), 0, 80, 26, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
 
         addDataSlots(data);
     }
