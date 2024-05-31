@@ -4,14 +4,17 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
 import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
 import com.benbenlaw.opolisutilities.util.ModTags;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class BlockPlacerMenu extends AbstractContainerMenu {
@@ -38,7 +41,12 @@ public class BlockPlacerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         assert blockEntity != null;
-        this.addSlot(new BlacklistTagInputSlot(blockEntity.getItemStackHandler(), 0, 80, 26, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64));
+        this.addSlot(new BlacklistTagInputSlot(blockEntity.getItemStackHandler(), 0, 80, 26, ModTags.Items.BANNED_IN_BLOCK_PLACER, 64) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
+            }
+        });
 
         addDataSlots(data);
     }

@@ -218,6 +218,9 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
         if (maxTickChecker >= 20) {
             maxTickChecker = 0;
             maxProgress = blockState.getValue(BlockPlacerBlock.TIMER);
+            if (itemHandler.getStackInSlot(0).isEmpty()) {
+                progress = 0;
+            }
         }
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel && blockState.getValue(POWERED)) {

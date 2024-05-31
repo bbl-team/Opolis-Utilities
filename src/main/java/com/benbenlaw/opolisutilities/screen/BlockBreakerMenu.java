@@ -20,16 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockBreakerMenu extends AbstractContainerMenu {
-    private static final ResourceLocation EMPTY_TOOL_SLOT =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "item/empty_tool_slot");
-    private static final ResourceLocation BLACKLIST_SLOT =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "item/blacklist_slot");
-
-    private static final ResourceLocation WHITELIST_SLOT =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "item/whitelist_slot");
-    private static final ResourceLocation BLOCKED_SLOT =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "item/blocked_slot");
-
 
     protected BlockBreakerBlockEntity blockEntity;
     protected Level level;
@@ -59,7 +49,7 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 0, 40, 26) {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_TOOL_SLOT);
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.EMPTY_TOOL_SLOT);
             }
         });
         this.addSlot(new WhitelistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 1, 80, 26) {
@@ -72,16 +62,14 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 if (blockEntity.getItemStackHandler().getStackInSlot(2).isEmpty()) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, WHITELIST_SLOT);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.WHITELIST_SLOT);
                 }
                 else
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, BLOCKED_SLOT);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
             }
         });
 
         this.addSlot(new BlacklistMaxStackSizeOneSlot(blockEntity.getItemStackHandler(), 2, 120, 26) {
-
-            ItemStack whitelistStack = blockEntity.getItemStackHandler().getStackInSlot(1);
 
             @Override
             public boolean mayPlace(ItemStack stack) {
@@ -92,10 +80,10 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 if (blockEntity.getItemStackHandler().getStackInSlot(1).isEmpty()) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, BLACKLIST_SLOT);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLACKLIST_SLOT);
                 }
                 else
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, BLOCKED_SLOT);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
             }
         });
 
