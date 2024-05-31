@@ -89,6 +89,7 @@ public class OpolisUtilities {
             //    event.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
             event.register(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
             event.register(ModMenuTypes.CRAFTER_MENU.get(), CrafterScreen::new);
+            event.register(ModMenuTypes.REDSTONE_CLOCK_MENU.get(), RedstoneClockScreen::new);
 
         }
 

@@ -63,25 +63,6 @@ public class WrenchItem extends Item {
 
             if (blockState.is(ModBlocks.REDSTONE_CLOCK.get())) {
 
-                int currentRange = blockState.getValue(CLOCK_TIMER);
-
-                assert player != null;
-                if (player.getMainHandItem().is(ModItems.OPOLIS_WRENCH.get())) {
-
-                    if (!player.isCrouching() && !Screen.hasControlDown() && currentRange < maxTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange + 10));
-                        return InteractionResult.SUCCESS;
-                    } else if (!player.isCrouching() && Screen.hasControlDown() && currentRange < maxTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange + 50));
-                        return InteractionResult.SUCCESS;
-                    } else if (player.isCrouching() && !Screen.hasControlDown() && currentRange > minTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange - 10));
-                        return InteractionResult.SUCCESS;
-                    } else if (player.isCrouching() && Screen.hasControlDown() && currentRange > minTimer) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(RedstoneClockBlock.CLOCK_TIMER, currentRange - 50));
-                        return InteractionResult.SUCCESS;
-                    }
-                }
             }
 
             if (blockState.is(ModBlocks.BLOCK_BREAKER.get())) {

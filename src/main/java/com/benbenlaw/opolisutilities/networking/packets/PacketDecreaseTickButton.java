@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.networking.packets;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import net.minecraft.core.BlockPos;
@@ -46,6 +47,16 @@ public record PacketDecreaseTickButton() {
                 level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.TIMER, timer - 10)
                         .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
                         .setValue(CrafterBlock.POWERED, blockState.getValue(CrafterBlock.POWERED)));
+            }
+        }
+
+        //Redstone Clock Decrease Tick Button
+
+        if (blockState.getBlock() instanceof RedstoneClockBlock) {
+            int timer = blockState.getValue(RedstoneClockBlock.TIMER);
+            if (timer > RedstoneClockBlock.MIN_TIMER) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.TIMER, timer - 10)
+                        .setValue(RedstoneClockBlock.POWERED, blockState.getValue(RedstoneClockBlock.POWERED)));
             }
         }
     }

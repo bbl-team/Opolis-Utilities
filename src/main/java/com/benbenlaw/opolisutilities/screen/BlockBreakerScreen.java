@@ -76,11 +76,6 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.tool_slot"), mouseX, mouseY);
             }
         }
-
-        if (this.menu.getSlot(0).getItem() == ItemStack.EMPTY) {
-            guiGraphics.renderTooltip(this.font, Component.literal("AADASDASDSAD"), mouseX, mouseY);
-
-        }
     }
 
     private void renderWhitelistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {

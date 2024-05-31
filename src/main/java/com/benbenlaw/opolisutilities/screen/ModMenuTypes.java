@@ -19,6 +19,7 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<ResourceGeneratorMenu>> RESOURCE_GENERATOR_MENU;
     public static final DeferredHolder<MenuType<?>, MenuType<CrafterMenu>> CRAFTER_MENU;
     public static final DeferredHolder<MenuType<?>, MenuType<CatalogueMenu>> CATALOGUE_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<RedstoneClockMenu>> REDSTONE_CLOCK_MENU;
 
 
     static {
@@ -42,6 +43,9 @@ public class ModMenuTypes {
 
         CATALOGUE_MENU = MENUS.register("catalogue_menu", () ->
                 IMenuTypeExtension.create(CatalogueMenu::new));
+
+        REDSTONE_CLOCK_MENU = MENUS.register("redstone_clock_menu", () ->
+                IMenuTypeExtension.create(RedstoneClockMenu::new));
 
 
 
