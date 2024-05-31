@@ -1,7 +1,0 @@
-{
-  "type": "opolisutilities:rg2_speed_blocks",
-  "input": {
-    "tag": "minecraft:logs"
-  },
-  "tickRate": 180
-}

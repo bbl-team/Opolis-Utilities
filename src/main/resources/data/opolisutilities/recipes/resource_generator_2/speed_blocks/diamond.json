@@ -1,7 +1,0 @@
-{
-  "type": "opolisutilities:speed_blocks",
-  "input": {
-    "tag": "minecraft:coal_ores"
-  },
-  "tickRate": 100
-}

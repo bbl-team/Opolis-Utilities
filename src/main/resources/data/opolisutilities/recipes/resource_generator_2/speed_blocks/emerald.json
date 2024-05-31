@@ -1,7 +1,0 @@
-{
-  "type": "opolisutilities:speed_upgrades",
-  "input": {
-    "item": "minecraft:emerald_block"
-  },
-  "tickRate": 60
-}

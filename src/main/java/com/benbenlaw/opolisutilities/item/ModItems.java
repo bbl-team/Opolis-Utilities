@@ -61,9 +61,6 @@ public static final DeferredItem<Item> WOODEN_SHEARS = ITEMS.register("wooden_sh
     public static final DeferredItem<Item> FLOATING_BLOCK = ITEMS.register("floating_block_item",
             () -> new FloatingBlockItem(new Item.Properties()));
 
-    public static final DeferredItem<Item> BUNDLED_FLESH = ITEMS.register("bundled_flesh",
-            () -> new Item(new Item.Properties()));
-
     public static final DeferredItem<Item> ENDER_PEARL_FRAGMENT = ITEMS.register("ender_pearl_fragment",
             () -> new Item(new Item.Properties()));
 
@@ -81,11 +78,7 @@ public static final DeferredItem<Item> WOODEN_SHEARS = ITEMS.register("wooden_sh
 
     public static final DeferredItem<Item> CATALOGUE_BOOK = ITEMS.register("catalogue_book",
             () -> new CatalogueBook(new Item.Properties()));
-
-    public static final DeferredItem<Item> OPOLIS_WRENCH = ITEMS.register("opolis_wrench",
-            () -> new WrenchItem(new Item.Properties().stacksTo(1)));
-
-    public static final DeferredItem<Item> SAPLING_GROWER = ITEMS.register("sapling_grower",
+        public static final DeferredItem<Item> SAPLING_GROWER = ITEMS.register("sapling_grower",
             () -> new SaplingGrower(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> UPGRADE_BASE = ITEMS.register("upgrade_base",

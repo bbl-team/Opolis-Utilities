@@ -29,11 +29,8 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
     public final ContainerData data;
     public int progress = 0;
     public int maxProgress = 0;
-
     private int pulseDuration = 0;
     int maxTickChecker;
-
-
     public RedstoneClockBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.REDSTONE_CLOCK_BLOCK_ENTITY.get(), blockPos, blockState);
         this.data = new ContainerData() {
