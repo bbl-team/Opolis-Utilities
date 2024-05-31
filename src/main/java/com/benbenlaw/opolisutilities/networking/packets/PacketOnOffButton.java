@@ -61,10 +61,12 @@ public record PacketOnOffButton() {
 
             if (blockState.getValue(CrafterBlock.POWERED)) {
                 level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.POWERED, false)
-                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING)));
+                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
+                        .setValue(CrafterBlock.TIMER, blockState.getValue(CrafterBlock.TIMER)));
             } else {
                 level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.POWERED, true)
-                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING)));
+                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
+                        .setValue(CrafterBlock.TIMER, blockState.getValue(CrafterBlock.TIMER)));
             }
         }
     }

@@ -61,6 +61,12 @@ public class BlockBreakerBlock extends BaseEntityBlock {
         pBuilder.add(FACING, POWERED);
     }
 
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false);
+    }
+
+
     /* BLOCK ENTITY */
 
     @SuppressWarnings("deprecation")

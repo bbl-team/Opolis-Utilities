@@ -9,20 +9,20 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.recipebook.AbstractFurnaceRecipeBookComponent;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/block_breaker_gui.png");
-    private static final ResourceLocation ON_BUTTON =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_on_button.png");
-    private static final ResourceLocation OFF_BUTTON =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button.png");
     public BlockBreakerScreen(BlockBreakerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
 
@@ -50,7 +50,6 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         int y = (height - imageHeight) / 2;
 
         renderBackground(guiGraphics, mouseX, mouseY, delta);
-        renderLabels(guiGraphics, mouseX, mouseY);
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
@@ -69,7 +68,6 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
                         PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
             }
         }
-
     }
 
     private void renderToolSlotTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
@@ -79,6 +77,10 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
             }
         }
 
+        if (this.menu.getSlot(0).getItem() == ItemStack.EMPTY) {
+            guiGraphics.renderTooltip(this.font, Component.literal("AADASDASDSAD"), mouseX, mouseY);
+
+        }
     }
 
     private void renderWhitelistTooltip (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {

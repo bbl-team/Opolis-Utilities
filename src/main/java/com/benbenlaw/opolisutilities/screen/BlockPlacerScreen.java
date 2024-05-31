@@ -3,7 +3,10 @@ package com.benbenlaw.opolisutilities.screen;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
+import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
@@ -15,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> {
     private static final ResourceLocation TEXTURE =
@@ -43,24 +47,35 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 
         renderBackground(guiGraphics, mouseX, mouseY, delta);
-        renderLabels(guiGraphics, mouseX, mouseY);
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-        
+        renderTickRate(guiGraphics, mouseX, mouseY, this.leftPos + 5, this.height / 2 - 66);
+
         //Power Button
-
-        if (this.menu.blockEntity != null) {
-
-            if (!this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
-                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
-                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
-            } else {
-                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.ON_BUTTONS, (pressed) ->
-                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
-            }
+        if (!this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
+            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
+                    PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
+        } else {
+            this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.ON_BUTTONS, (pressed) ->
+                    PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
         }
 
+        //Tick Buttons
+        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 32, 20, 18, ModButtons.DECREASE_BUTTONS, (pressed) ->
+                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
 
+        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
+                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+
+
+    }
+
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
+            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(BlockPlacerBlock.TIMER) + " ticks", this.leftPos + 95,
+                    this.topPos + 55, 0x3F3F3F, false);
+        }
     }
 }

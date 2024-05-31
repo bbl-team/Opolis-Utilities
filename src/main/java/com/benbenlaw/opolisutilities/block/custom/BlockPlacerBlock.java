@@ -64,6 +64,11 @@ public class BlockPlacerBlock extends BaseEntityBlock {
         pBuilder.add(FACING, TIMER, POWERED);
     }
 
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false).setValue(TIMER, 80);
+    }
+
     /* BLOCK ENTITY */
 
     @SuppressWarnings("deprecation")

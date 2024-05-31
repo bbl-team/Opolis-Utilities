@@ -42,50 +42,28 @@ public class CrafterBlock extends BaseEntityBlock {
         return CODEC;
     }
 
+    public static final int MAX_TIMER = 1200; // 1 minute
+    public static final int MIN_TIMER = 40; // 2 seconds
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-
-    /* REDSTONE SIGNAL */
-    @Override
-    protected void neighborChanged(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos,
-                                   @NotNull Block neighborBlock, @NotNull BlockPos neighborBlockPos, boolean movedByPiston) {
-
-        if (!level.isClientSide()) {
-            boolean powered = level.hasNeighborSignal(blockPos);
-            if (powered != blockState.getValue(POWERED)) {
-                level.setBlock(blockPos, blockState.setValue(POWERED, powered), 3);
-            }
-        }
-    }
-
-    /* FACING WITH REDSTONE NEIGHBOUR CHECK */
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Level level = context.getLevel();
-        BlockPos blockPos = context.getClickedPos();
-        boolean powered = level.hasNeighborSignal(blockPos);
-        if (powered) {
-            return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, true);
-        }
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false);
-    }
-
-
-    /* FACING */
-
-
-    /* ROTATION */
+    public static final IntegerProperty TIMER = IntegerProperty.create("timer", MIN_TIMER, MAX_TIMER);
 
     @Override
-    public @NotNull BlockState rotate(BlockState blockState, @NotNull LevelAccessor level, @NotNull BlockPos blockPos, Rotation direction) {
-        return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, blockState.getValue(POWERED));
-
+    public @NotNull BlockState rotate(BlockState blockState, Rotation direction) {
+        return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, false).setValue(TIMER, MIN_TIMER);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, POWERED);
+        pBuilder.add(FACING, TIMER, POWERED);
     }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false).setValue(TIMER, 80);
+    }
+
+    /* FACING */
 
     /* BLOCK ENTITY */
 
@@ -112,7 +90,6 @@ public class CrafterBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
 
             CrafterBlockEntity crafterBlockEntity = (CrafterBlockEntity) level.getBlockEntity(blockPos);
-
 
             if (crafterBlockEntity instanceof CrafterBlockEntity) {
                 ContainerData data = crafterBlockEntity.data;

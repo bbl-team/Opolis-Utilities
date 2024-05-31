@@ -58,8 +58,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     };
 
     public final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 80;
+    public int progress = 0;
+    public int maxProgress = this.getBlockState().getValue(CrafterBlock.TIMER);
     private int recipeChecker = 0;
         public ItemStack craftingItem = ItemStack.EMPTY;
     private NonNullList<Ingredient> craftingIngredients;
@@ -265,9 +265,9 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
         if (recipeChecker >= 20) {
             recipeChecker = 0;
+            maxProgress = this.getBlockState().getValue(CrafterBlock.TIMER);
             updateRecipe();
         }
-    //    maxProgress = this.getBlockState().getValue(CrafterBlock.TIMER);
 
         assert level != null;
         if (level.isClientSide()) return;

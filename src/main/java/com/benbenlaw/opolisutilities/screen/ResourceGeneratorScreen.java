@@ -51,9 +51,8 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
         int y = (height - imageHeight) / 2;
 
         renderBackground(guiGraphics, mouseX, mouseY, delta);
-        renderLabels(guiGraphics, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, delta);
-    //    renderTooltip(guiGraphics, mouseX, mouseY);
+        renderTooltip(guiGraphics, mouseX, mouseY);
 
         renderOutputSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
 

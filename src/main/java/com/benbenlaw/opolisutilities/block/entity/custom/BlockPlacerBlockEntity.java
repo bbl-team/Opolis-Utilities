@@ -50,7 +50,8 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
 
     public final ContainerData data;
     public int progress = 0;
-    public int maxProgress = 80;
+    public int maxProgress = this.getBlockState().getValue(BlockPlacerBlock.TIMER);
+    private int maxTickChecker = 0;
     private static final int INPUT_SLOT = 0;
 
     private final IItemHandler upItemHandlerSide = new InputOutputItemHandler(itemHandler,
@@ -206,13 +207,18 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     }
     public void tick() {
 
+        maxTickChecker++;
 
         Level pLevel = this.level;
         BlockPos pPos = this.worldPosition;
         assert pLevel != null;
         BlockPlacerBlockEntity pBlockEntity = this;
         BlockState blockState = pLevel.getBlockState(pPos);
-        maxProgress = this.getBlockState().getValue(BlockPlacerBlock.TIMER);
+
+        if (maxTickChecker >= 20) {
+            maxTickChecker = 0;
+            maxProgress = blockState.getValue(BlockPlacerBlock.TIMER);
+        }
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel && blockState.getValue(POWERED)) {
 

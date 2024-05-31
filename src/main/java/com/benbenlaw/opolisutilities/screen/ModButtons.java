@@ -25,6 +25,16 @@ public class ModButtons {
             new ResourceLocation(OpolisUtilities.MOD_ID, "machine/off_hover")
     );
 
+    public static final WidgetSprites INCREASE_BUTTONS = new WidgetSprites(
+            new ResourceLocation(OpolisUtilities.MOD_ID, "machine/increase"),
+            new ResourceLocation(OpolisUtilities.MOD_ID, "machine/increase_hover")
+    );
+
+    public static final WidgetSprites DECREASE_BUTTONS = new WidgetSprites(
+            new ResourceLocation(OpolisUtilities.MOD_ID, "machine/decrease"),
+            new ResourceLocation(OpolisUtilities.MOD_ID, "machine/decrease_hover")
+    );
+
 
 
 }
