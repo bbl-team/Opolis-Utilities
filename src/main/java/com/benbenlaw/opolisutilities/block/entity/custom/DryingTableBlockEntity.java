@@ -10,6 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -33,6 +36,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -268,13 +272,9 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
                 ItemStack resultItem = new ItemStack(match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
                         entity.itemHandler.getStackInSlot(1).getCount() + match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount());
-           //     CompoundTag resultItemNBT = match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getTag();
 
-                /*
-                if (resultItemNBT != null) {
-                    resultItem.setTag(resultItemNBT);
-                }
-                */
+                DataComponentMap resultItemWithDataComponents = match.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getComponents();
+                resultItem.applyComponents(resultItemWithDataComponents);
 
                 entity.itemHandler.setStackInSlot(1, resultItem);
 
@@ -291,13 +291,9 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
 
                 ItemStack resultItem = new ItemStack(matchSoaking.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getItem(),
                         entity.itemHandler.getStackInSlot(1).getCount() + matchSoaking.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getCount());
-             //   CompoundTag resultItemNBT = matchSoaking.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getTag();
 
-                /*
-                if (resultItemNBT != null) {
-                    resultItem.setTag(resultItemNBT);
-                }
-                */
+                DataComponentMap resultItemWithDataComponents = matchSoaking.get().value().getResultItem(Objects.requireNonNull(getLevel()).registryAccess()).getComponents();
+                resultItem.applyComponents(resultItemWithDataComponents);
 
                 entity.itemHandler.setStackInSlot(1, resultItem);
 

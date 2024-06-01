@@ -1,15 +1,31 @@
 package com.benbenlaw.opolisutilities.datagen;
 
+import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.datagen.recipes.CatalogueRecipeBuilder;
+import com.benbenlaw.opolisutilities.datagen.recipes.DryingTableRecipeBuilder;
+import com.benbenlaw.opolisutilities.datagen.recipes.ResourceGeneratorRecipeBuilder;
+import com.benbenlaw.opolisutilities.datagen.recipes.SoakingTableRecipeBuilder;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import org.apache.commons.compress.harmony.pack200.PackingOptions;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,6 +38,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput consumer) {
 
+
         //Block Breaker
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BLOCK_BREAKER.get())
                 .pattern("SSS")
@@ -32,7 +49,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('M', Items.DISPENSER)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.DISPENSER))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "block_breaker"));
 
         //Block Placer
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BLOCK_PLACER.get())
@@ -79,13 +96,13 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL)
                 .requires(ModItems.MINI_CHARCOAL, 8)
                 .unlockedBy("has_item", has(ModItems.MINI_CHARCOAL))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "charcoal"));
 
         //Coal
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.COAL)
                 .requires(ModItems.MINI_COAL, 8)
                 .unlockedBy("has_item", has(ModItems.MINI_COAL))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "coal"));
 
         //Chests
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.CHEST, 4)
@@ -95,7 +112,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('L', ItemTags.LOGS)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(ItemTags.LOGS))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "chests"));
 
         //Copper Nugget
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.COPPER_NUGGET.get(), 9)
@@ -111,7 +128,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('C', ModItems.COPPER_NUGGET)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(ModItems.COPPER_NUGGET))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "copper_ingot"));
 
         //Crafter
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CRAFTER.get())
@@ -120,7 +137,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .pattern("SSS")
                 .define('S', Tags.Items.STONES)
                 .define('A', Tags.Items.INGOTS_IRON)
-                .define('M', Items.CRAFTING_TABLE)
+                .define('C', Items.CRAFTING_TABLE)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.CRAFTING_TABLE))
                 .save(consumer);
@@ -143,7 +160,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', Items.SADDLE)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.DIAMOND))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "diamond_horse_armour"));
 
         //Drying Table
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DRYING_TABLE.get())
@@ -160,7 +177,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.ENDER_PEARL)
                 .requires(ModItems.ENDER_PEARL_FRAGMENT, 8)
                 .unlockedBy("has_item", has(ModItems.ENDER_PEARL_FRAGMENT))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "ender_pearl"));
 
         //Ender Pearl Fragment
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENDER_PEARL_FRAGMENT, 8)
@@ -181,7 +198,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .save(consumer);
 
         //Floating Block
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLOATING_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLOATING_BLOCK.get())
                 .pattern(" F ")
                 .pattern("FWF")
                 .pattern(" F ")
@@ -211,7 +228,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', Items.SADDLE)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.GOLD_INGOT))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "golden_horse_armour"));
 
         //Green Wool
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.GREEN_WOOL)
@@ -220,7 +237,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', ModItems.LEAFY_STRING)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(ModItems.LEAFY_STRING))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "green_wool"));
 
         //Guide Book
 
@@ -246,7 +263,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', Items.SADDLE)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.IRON_INGOT))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "iron_horse_armour"));
 
         //Item Repairer
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ITEM_REPAIRER.get())
@@ -275,7 +292,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', Items.SADDLE)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.LEATHER))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "leather_horse_armour"));
 
         //Log Sheets
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.LOG_SHEET.get(), 6)
@@ -296,7 +313,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', Tags.Items.STRINGS)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.PAPER))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "name_tag"));
 
         //Redstone Clock
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.REDSTONE_CLOCK.get())
@@ -318,7 +335,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('S', Tags.Items.STRINGS)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(Items.LEATHER))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "saddle"));
 
         //Sapling Grower
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SAPLING_GROWER.get())
@@ -338,7 +355,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .define('W', ItemTags.LOGS)
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(ItemTags.LOGS))
-                .save(consumer);
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "sticks"));
 
         //Wooden Shears
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.WOODEN_SHEARS.get())
@@ -350,7 +367,97 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .save(consumer);
 
 
+        //Drying Tables Recipes
+
+        //Cracked Stone Bricks
+        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(Items.STONE_BRICKS), 1),
+                        new ItemStack(Items.CRACKED_STONE_BRICKS), 200)
+                .unlockedBy("has_item", has(Tags.Items.STONES))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/cracked_stone_bricks"));
+
+        //Dead Bush
+        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(ItemTags.SAPLINGS), 1),
+                        new ItemStack(Items.DEAD_BUSH), 100)
+                .unlockedBy("has_item", has(Items.DEAD_BUSH))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/dead_bush"));
+
+        //Jerky
+        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(Tags.Items.FOODS_RAW_MEATS), 1),
+                        new ItemStack(ModItems.JERKY.get()), 200)
+                .unlockedBy("has_item", has(Tags.Items.FOODS_RAW_MEATS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/jerky"));
+
+        //Paper
+        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(ModItems.SOAKED_PAPER), 1),
+                        new ItemStack(Items.PAPER), 200)
+                .unlockedBy("has_item", has(ModItems.SOAKED_PAPER))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/paper"));
+
+        //Sponge
+        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(Items.WET_SPONGE), 1),
+                        new ItemStack(Items.SPONGE), 200)
+                .unlockedBy("has_item", has(Items.WET_SPONGE))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/sponge"));
+
+        //Catalogue
+
+        //Catalogue Book
+        CatalogueRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ModItems.B_BUCKS), 2),
+                        new ItemStack(ModItems.CATALOGUE_BOOK.get()))
+                .unlockedBy("has_item", has(ModItems.B_BUCKS))
+                .save(consumer);
+
+        //Loot Bag
+        CatalogueRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ModItems.B_BUCKS), 4),
+                        new ItemStack(ModItems.BASIC_LOOT_BOX.get()))
+                .unlockedBy("has_item", has(ModItems.B_BUCKS))
+                .save(consumer);
+
+        //Resource Generator
+
+        //Stone
+        ResourceGeneratorRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.STONES))
+                .unlockedBy("has_item", has(Tags.Items.STONES))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "resource_generator/stones"));
+
+        //Cobblestone
+        ResourceGeneratorRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONES))
+                .unlockedBy("has_item", has(Tags.Items.COBBLESTONES))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "resource_generator/cobblestone"));
+
+        //Soaking Table
+
+        //Mud
+        SoakingTableRecipeBuilder.soakingTableRecipe(new SizedIngredient(Ingredient.of(ItemTags.DIRT), 1),
+                        new ItemStack(Items.MUD), 200)
+                .unlockedBy("has_item", has(ItemTags.DIRT))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "soaking_table/mud"));
+
+        //Soaked Paper
+        SoakingTableRecipeBuilder.soakingTableRecipe(new SizedIngredient(Ingredient.of(ModItems.LOG_SHEET), 1),
+                        new ItemStack(ModItems.SOAKED_PAPER.get()), 200)
+                .unlockedBy("has_item", has(ModItems.LOG_SHEET))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "soaking_table/soaked_paper"));
+
+        //Water Bottle
+        Holder<Potion> water = (Potions.WATER);
+        ItemStack itemStack = new ItemStack(Items.POTION);
+        itemStack.set(DataComponents.POTION_CONTENTS, new PotionContents(water));
+
+        SoakingTableRecipeBuilder.soakingTableRecipe(new SizedIngredient(Ingredient.of(Items.GLASS_BOTTLE), 1),
+                        itemStack, 200)
+                .unlockedBy("has_item", has(Items.GLASS_BOTTLE))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "soaking_table/water_bottle"));
+
+        //Wet Sponge
+        SoakingTableRecipeBuilder.soakingTableRecipe(new SizedIngredient(Ingredient.of(Items.SPONGE), 1),
+                        new ItemStack(Items.WET_SPONGE), 200)
+                .unlockedBy("has_item", has(Items.SPONGE))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "soaking_table/wet_sponge"));
+
+
 
 
     }
+
 }

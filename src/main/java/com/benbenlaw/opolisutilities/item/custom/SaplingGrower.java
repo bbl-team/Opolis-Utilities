@@ -7,6 +7,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +30,7 @@ public class SaplingGrower extends Item {
 
         if (!level.isClientSide()) {
 
-            if (blockState.is(BlockTags.SAPLINGS)) {
+            if (blockState.is(BlockTags.SAPLINGS) || blockState.is(Blocks.RED_MUSHROOM) || blockState.is(Blocks.BROWN_MUSHROOM)) {
                 tryToGrow(level, blockPos);
                 return InteractionResult.SUCCESS;
             }

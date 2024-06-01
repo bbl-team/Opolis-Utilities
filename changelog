@@ -8,6 +8,7 @@ TODO: Make recipes more consistent with values (eg. ingredient and ingredients) 
 TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
 TODO: Add screens for all opolis utilities blocks (1.21)
 TODD: Shift clicking into stack limited slots (1.21) (maybe fixed in block breaker)
+TODD: Sapling grower should work on mushrooms?
 
 3.0.0
 
@@ -40,6 +41,9 @@ Wallet - Removed (Vanilla stack size increase probably removes the point of the 
 
 Updated all utils package to 1.20.5
 Updated Particles
+
+Custom Recipes for vanilla items now use the opolis utilities name space
+now data generating recipes
 
 
 2.11.3
