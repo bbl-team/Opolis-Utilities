@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -52,7 +53,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         @Override
         protected int getStackLimit(int slot, @NotNull ItemStack stack) {
             if (slot <= 8)
-                return 2;
+                return 1;
             return super.getStackLimit(slot, stack);
         }
     };
@@ -61,8 +62,11 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     public int progress = 0;
     public int maxProgress = this.getBlockState().getValue(CrafterBlock.TIMER);
     private int recipeChecker = 0;
-        public ItemStack craftingItem = ItemStack.EMPTY;
+    public ItemStack craftingItem = ItemStack.EMPTY;
+
+    public ResourceLocation recipeID = new ResourceLocation("minecraft:air");
     private NonNullList<Ingredient> craftingIngredients;
+
 
     //Item Handler Per Sides
     private final IItemHandler upItemHandlerSide = new InputOutputItemHandler(itemHandler,
@@ -121,35 +125,20 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             i -> false // No output slots
     );
 
-    //If sides don't need to be handled use this
-    private final IItemHandler noSideItemHandlerSided = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> false,
-            i -> false
-    );
-
-
     //Called in startup for sides of the block
     public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
         side = DirectionUtils.adjustPosition(this.getBlockState().getValue(FACING), side);
-        if(side == null)
-            return itemHandler;
+        if (side == null) return itemHandler;
 
-        if(side == Direction.UP)
-            return upItemHandlerSide;
-        if(side == Direction.DOWN)
-            return downItemHandlerSide;
-        if(side == Direction.NORTH)
-            return northItemHandlerSide;
-        if(side == Direction.SOUTH)
-            return southItemHandlerSide;
-        if(side == Direction.EAST)
-            return eastItemHandlerSide;
-        if(side == Direction.WEST)
-            return westItemHandlerSide;
-
-        return noSideItemHandlerSided;
+        return switch (side) {
+            case UP -> upItemHandlerSide;
+            case DOWN -> downItemHandlerSide;
+            case NORTH -> northItemHandlerSide;
+            case SOUTH -> southItemHandlerSide;
+            case EAST -> eastItemHandlerSide;
+            case WEST -> westItemHandlerSide;
+        };
     }
-
 
     public void setHandler(ItemStackHandler handler) {
         for (int i = 0; i < handler.getSlots(); i++) {
@@ -232,6 +221,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         compoundTag.putInt("crafter.progress", progress);
         compoundTag.putInt("crafter.maxProgress", maxProgress);
         compoundTag.putInt("crafter.recipeChecker", recipeChecker);
+        compoundTag.putString("crafter.recipeID", recipeID.toString());
     }
 
     @Override
@@ -240,6 +230,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         progress = compoundTag.getInt("crafter.progress");
         maxProgress = compoundTag.getInt("crafter.maxProgress");
         recipeChecker = compoundTag.getInt("crafter.recipeChecker");
+        recipeID = new ResourceLocation(compoundTag.getString("crafter.recipeID"));
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -252,16 +243,17 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+    private void resetProgress() {
+        this.progress = 0;
+        setChanged();
+    }
+
     public void tick() {
-
-
         recipeChecker++;
-
-        Level pLevel = this.level;
-        BlockPos pPos  = this.worldPosition;
-        assert pLevel != null;
-        BlockState pState = pLevel.getBlockState(pPos);
-        CrafterBlockEntity pBlockEntity = this;
+        Level level = this.level;
+        assert level != null;
+        BlockPos blockPos = this.worldPosition;
+        BlockState blockState = level.getBlockState(blockPos);
 
         if (recipeChecker >= 20) {
             recipeChecker = 0;
@@ -269,30 +261,24 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             updateRecipe();
         }
 
-        assert level != null;
-        if (level.isClientSide()) return;
-
-        if (pState.getValue(POWERED)) {
-            if (!pBlockEntity.craftingItem.isEmpty()) {
-                if (pBlockEntity.canCraft()) {
-                    if (pBlockEntity.hasMaterial()) {
-                        pBlockEntity.progress++;
-                        if (pBlockEntity.progress >= this.maxProgress) {
-                            resetProgress();
-                            pBlockEntity.craft();
-                            setChanged(pLevel, pPos, pState);
-                        }
+        if (!level.isClientSide()) {
+            if (blockState.getValue(POWERED)) {
+                if (!craftingItem.isEmpty() && canCraft() && hasMaterial()) {
+                    progress++;
+                    if (progress >= maxProgress) {
+                        craft();
+                        resetProgress();
+                        setChanged();
                     }
+                } else {
+                    resetProgress();
+                    setChanged();
                 }
+            } else {
+                resetProgress();
+                setChanged();
             }
-        } else {
-            resetProgress();
-            setChanged(pLevel, pPos, pState);
         }
-    }
-
-    private void resetProgress() {
-        this.progress = 0;
     }
 
     public boolean canCraft() {
@@ -307,37 +293,68 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     public void updateRecipe() {
         CraftingContainer container = new CraftingContainer() {
             @Override
-            public int getWidth() {return 3;}
+            public int getWidth() {
+                return 3;
+            }
+
             @Override
-            public int getHeight() {return 3;}
+            public int getHeight() {
+                return 3;
+            }
+
             @Override
-            public List<ItemStack> getItems() {
+            public @NotNull List<ItemStack> getItems() {
                 List<ItemStack> list = new ArrayList<>();
-                for (int i = 0; i < 9; i++) list.add(Optional.of(itemHandler.getStackInSlot(i)).orElse(ItemStack.EMPTY));
+                for (int i = 0; i < 9; i++)
+                    list.add(Optional.of(itemHandler.getStackInSlot(i)).orElse(ItemStack.EMPTY));
                 return list;
             }
+
             @Override
-            public int getContainerSize() {return getWidth() * getHeight();}
+            public int getContainerSize() {
+                return getWidth() * getHeight();
+            }
+
             @Override
-            public boolean isEmpty() {return false;}
+            public boolean isEmpty() {
+                return false;
+            }
+
             @Override
-            public ItemStack getItem(int pSlot) {
+            public @NotNull ItemStack getItem(int pSlot) {
                 return getItems().get(pSlot);
             }
+
             @Override
-            public ItemStack removeItem(int pSlot, int pAmount) {return ItemStack.EMPTY;}
+            public @NotNull ItemStack removeItem(int pSlot, int pAmount) {
+                return ItemStack.EMPTY;
+            }
+
             @Override
-            public ItemStack removeItemNoUpdate(int pSlot) {return ItemStack.EMPTY;}
+            public @NotNull ItemStack removeItemNoUpdate(int pSlot) {
+                return ItemStack.EMPTY;
+            }
+
             @Override
-            public void setItem(int pSlot, ItemStack pStack) {}
+            public void setItem(int pSlot, @NotNull ItemStack pStack) {
+            }
+
             @Override
-            public void setChanged() {}
+            public void setChanged() {
+            }
+
             @Override
-            public boolean stillValid(Player pPlayer) {return true;}
+            public boolean stillValid(@NotNull Player pPlayer) {
+                return true;
+            }
+
             @Override
-            public void clearContent() {}
+            public void clearContent() {
+            }
+
             @Override
-            public void fillStackedContents(StackedContents pHelper) {}
+            public void fillStackedContents(@NotNull StackedContents pHelper) {
+            }
         };
 
 
@@ -347,6 +364,86 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             CraftingRecipe r = recipe.get().value();
             craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
             craftingIngredients = r.getIngredients();
+        } else {
+            craftingItem = ItemStack.EMPTY.copy();
+        }
+    }
+
+    public void updateRecipeButton() {
+        CraftingContainer container = new CraftingContainer() {
+            @Override
+            public int getWidth() {
+                return 3;
+            }
+
+            @Override
+            public int getHeight() {
+                return 3;
+            }
+
+            @Override
+            public @NotNull List<ItemStack> getItems() {
+                List<ItemStack> list = new ArrayList<>();
+                for (int i = 0; i < 9; i++)
+                    list.add(Optional.of(itemHandler.getStackInSlot(i)).orElse(ItemStack.EMPTY));
+                return list;
+            }
+
+            @Override
+            public int getContainerSize() {
+                return getWidth() * getHeight();
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public @NotNull ItemStack getItem(int pSlot) {
+                return getItems().get(pSlot);
+            }
+
+            @Override
+            public @NotNull ItemStack removeItem(int pSlot, int pAmount) {
+                return ItemStack.EMPTY;
+            }
+
+            @Override
+            public @NotNull ItemStack removeItemNoUpdate(int pSlot) {
+                return ItemStack.EMPTY;
+            }
+
+            @Override
+            public void setItem(int pSlot, @NotNull ItemStack pStack) {
+            }
+
+            @Override
+            public void setChanged() {
+            }
+
+            @Override
+            public boolean stillValid(@NotNull Player pPlayer) {
+                return true;
+            }
+
+            @Override
+            public void clearContent() {
+            }
+
+            @Override
+            public void fillStackedContents(@NotNull StackedContents pHelper) {
+            }
+        };
+
+
+        assert level != null;
+        Optional<RecipeHolder<CraftingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container, level);
+        if (recipe.isPresent()) {
+            CraftingRecipe r = recipe.get().value();
+            craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
+            craftingIngredients = r.getIngredients();
+            recipeID = recipe.get().id();
         } else {
             craftingItem = ItemStack.EMPTY.copy();
         }
@@ -373,12 +470,9 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
                     ItemStack extractedStack = itemHandler.extractItem(i, 1, false);
                     needs--;
 
-                    // Handle remaining item after extraction
                     if (!extractedStack.isEmpty()) {
-                        // If there's a remaining item after crafting, attempt to insert it back into the item handler
                         if (!extractedStack.getCraftingRemainingItem().isEmpty()) {
                             if (!tryInserting(extractedStack.getCraftingRemainingItem())) {
-                                // If insertion fails, drop the remaining item into the world
                                 Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), extractedStack.getCraftingRemainingItem());
                             }
                         }
@@ -387,12 +481,6 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             }
         }
     }
-
-
-
-
-
-
 
     private boolean tryInserting(ItemStack stack) {
         for (int i = 0; i < 8; i++) {
@@ -408,17 +496,37 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         return hasIngredientsForRecipe();
     }
 
-    private boolean checkContents(HashMap<Item, Integer> itemCount) {
-        for (int i = 0; i < 8 && itemCount.size() > 0; i++) {
-            ItemStack stack = itemHandler.getStackInSlot(i);
-            if (!itemCount.containsKey(stack.getItem())) continue;
-            int remaining = itemCount.get(stack.getItem()) - stack.getCount();
-            if (remaining > 0) {
-                itemCount.put(stack.getItem(), remaining);
-            } else itemCount.remove(stack.getItem());
+
+    //Tweak This
+    private boolean hasIngredientsForRecipe() {
+        // Verify the recipe type and structure
+        Optional<RecipeHolder<?>> recipeOptional = level.getRecipeManager().byKey(recipeID);
+        if (recipeOptional.isEmpty() || !(recipeOptional.get().value() instanceof CraftingRecipe)) {
+            return false;
         }
-        return itemCount.size() == 0;
+        CraftingRecipe recipe = (CraftingRecipe) recipeOptional.get().value();
+        NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+        // Check if each ingredient in the recipe can be found in the inventory
+        for (Ingredient ingredient : ingredients) {
+            boolean ingredientFound = false;
+            for (int i = 0; i < 9; i++) {
+                ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                if (ingredient.test(stackInSlot)) {
+                    ingredientFound = true;
+                    break;
+                }
+            }
+            // If any ingredient is not found in the inventory, return false
+            if (!ingredientFound) {
+                return false;
+            }
+        }
+
+        return true;
     }
+
+
 
     private HashMap<Item, Integer> countIngredients(NonNullList<Ingredient> ingredients) {
         HashMap<Item, Integer> map = new HashMap<>();
@@ -430,15 +538,6 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         return map;
     }
 
-    private boolean hasIngredientsForRecipe() {
-        for (int i = 0; i < 9; i++) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-            if (!stackInSlot.isEmpty() && stackInSlot.getCount() < 2) {
-                return false; // If any slot has an item with less than 2 count, return false immediately
-            }
-        }
-        return true;
-    }
 
 
 

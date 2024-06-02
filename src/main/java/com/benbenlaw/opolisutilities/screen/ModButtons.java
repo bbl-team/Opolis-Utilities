@@ -35,6 +35,11 @@ public class ModButtons {
             new ResourceLocation(OpolisUtilities.MOD_ID, "machine/decrease_hover")
     );
 
+    public static final WidgetSprites SAVED_RECIPE_BUTTONS = new WidgetSprites(
+            new ResourceLocation(OpolisUtilities.MOD_ID, "machine/save_recipe"),
+            new ResourceLocation(OpolisUtilities.MOD_ID, "machine/save_recipe_hover")
+    );
+
 
 
 }

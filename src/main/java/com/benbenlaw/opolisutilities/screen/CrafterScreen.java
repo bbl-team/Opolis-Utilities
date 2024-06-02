@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.SaveRecipePayload;
 import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -83,6 +84,12 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
                 PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+
+        //Recipe Button
+
+        this.addRenderableWidget(new ImageButton(this.leftPos + 148, this.height / 2 - 49, 20, 18, ModButtons.SAVED_RECIPE_BUTTONS, (pressed) ->
+                PacketDistributor.sendToServer(new SaveRecipePayload(this.menu.blockEntity.getBlockPos()))));
+
 
     }
 
