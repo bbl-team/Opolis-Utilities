@@ -357,16 +357,6 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             }
         };
 
-
-        assert level != null;
-        Optional<RecipeHolder<CraftingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container, level);
-        if (recipe.isPresent()) {
-            CraftingRecipe r = recipe.get().value();
-            craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
-            craftingIngredients = r.getIngredients();
-        } else {
-            craftingItem = ItemStack.EMPTY.copy();
-        }
     }
 
     public void updateRecipeButton() {
@@ -499,30 +489,23 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
     //Tweak This
     private boolean hasIngredientsForRecipe() {
-        // Verify the recipe type and structure
-        Optional<RecipeHolder<?>> recipeOptional = level.getRecipeManager().byKey(recipeID);
-        if (recipeOptional.isEmpty() || !(recipeOptional.get().value() instanceof CraftingRecipe)) {
-            return false;
+        if (craftingIngredients == null || craftingIngredients.isEmpty()) {
+            return false; // No recipe or ingredients
         }
-        CraftingRecipe recipe = (CraftingRecipe) recipeOptional.get().value();
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
-        // Check if each ingredient in the recipe can be found in the inventory
-        for (Ingredient ingredient : ingredients) {
-            boolean ingredientFound = false;
-            for (int i = 0; i < 9; i++) {
-                ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-                if (ingredient.test(stackInSlot)) {
-                    ingredientFound = true;
-                    break;
+        for (int i = 0; i < 9; i++) {
+            if (i < craftingIngredients.size()) {
+                ItemStack slotStack = itemHandler.getStackInSlot(i);
+                Ingredient ingredient = craftingIngredients.get(i);
+                if (!ingredient.test(slotStack)) {
+                    return false; // Ingredient doesn't match slot content
+                }
+            } else {
+                if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                    return false; // Slot contains unexpected item
                 }
             }
-            // If any ingredient is not found in the inventory, return false
-            if (!ingredientFound) {
-                return false;
-            }
         }
-
         return true;
     }
 

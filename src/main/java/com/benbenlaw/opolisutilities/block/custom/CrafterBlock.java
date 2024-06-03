@@ -7,6 +7,7 @@ import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
 import com.benbenlaw.opolisutilities.screen.CrafterMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
