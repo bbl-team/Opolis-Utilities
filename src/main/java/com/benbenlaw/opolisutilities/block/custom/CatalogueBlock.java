@@ -93,6 +93,10 @@ public class CatalogueBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
 
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
         if (!level.isClientSide()) {
 
             CatalogueBlockEntity catalogueBlockEntity = (CatalogueBlockEntity) level.getBlockEntity(blockPos);

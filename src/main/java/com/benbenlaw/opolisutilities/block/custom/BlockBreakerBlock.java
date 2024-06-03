@@ -90,6 +90,10 @@ public class BlockBreakerBlock extends BaseEntityBlock {
     @Override
     public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
 
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
         if (!level.isClientSide()) {
 
             BlockBreakerBlockEntity blockBreakerBlockEntity = (BlockBreakerBlockEntity) level.getBlockEntity(blockPos);

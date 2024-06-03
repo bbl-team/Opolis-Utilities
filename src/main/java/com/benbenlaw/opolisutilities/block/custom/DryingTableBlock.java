@@ -107,6 +107,10 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
     @Override
     public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
 
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
         if (!level.isClientSide()) {
 
             BlockEntity blockEntity = level.getBlockEntity(blockPos);

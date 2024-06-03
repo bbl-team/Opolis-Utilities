@@ -366,6 +366,18 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .unlockedBy("has_item", has(ItemTags.PLANKS))
                 .save(consumer);
 
+        //Resource Generator
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RESOURCE_GENERATOR.get())
+                .pattern("SSS")
+                .pattern("W L")
+                .pattern("SSS")
+                .define('S', Tags.Items.STONES)
+                .define('W', Tags.Items.BUCKETS_WATER)
+                .define('L', Tags.Items.BUCKETS_LAVA)
+                .group("opolisutilities")
+                .unlockedBy("has_item", has(Items.BUCKET))
+                .save(consumer);
+
 
         //Drying Tables Recipes
 

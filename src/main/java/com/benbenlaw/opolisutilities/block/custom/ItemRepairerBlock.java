@@ -83,6 +83,11 @@ public class ItemRepairerBlock extends BaseEntityBlock {
     @Override
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
                                                         @NotNull Player player , @NotNull BlockHitResult hit) {
+
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
         BlockEntity entity = level.getBlockEntity(pos);
         if (entity instanceof ItemRepairerBlockEntity) {
             player.openMenu((ItemRepairerBlockEntity) entity);

@@ -85,8 +85,12 @@ public class CrafterBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos blockPos,
-                                               @NotNull Player player , @NotNull BlockHitResult hit) {
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos blockPos,
+                                                        @NotNull Player player , @NotNull BlockHitResult hit) {
+        
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
 
         if (!level.isClientSide()) {
 
@@ -97,9 +101,9 @@ public class CrafterBlock extends BaseEntityBlock {
                 player.openMenu(new SimpleMenuProvider(
                         (windowId, playerInventory, playerEntity) -> new CrafterMenu(windowId, playerInventory, blockPos, data),
                         Component.translatable("block.opolisutilities.crafter")), (buf -> buf.writeBlockPos(blockPos)));
+                return InteractionResult.SUCCESS;
 
             }
-            return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }

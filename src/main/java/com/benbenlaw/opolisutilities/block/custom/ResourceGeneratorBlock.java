@@ -86,6 +86,10 @@ public class ResourceGeneratorBlock extends BaseEntityBlock {
     @Override
     public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
 
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
         int tickRate;
         ResourceGeneratorBlockEntity entity = (ResourceGeneratorBlockEntity) level.getBlockEntity(blockPos);
 

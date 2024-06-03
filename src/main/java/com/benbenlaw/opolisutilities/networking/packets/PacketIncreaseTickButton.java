@@ -44,7 +44,7 @@ public record PacketIncreaseTickButton() {
         if (blockState.getBlock() instanceof CrafterBlock) {
             int timer = blockState.getValue(CrafterBlock.TIMER);
             if (timer < CrafterBlock.MAX_TIMER) {
-                level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(CrafterBlock.TIMER, timer + 10)
+                level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.TIMER, timer + 10)
                         .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
                         .setValue(CrafterBlock.POWERED, blockState.getValue(CrafterBlock.POWERED)));
             }

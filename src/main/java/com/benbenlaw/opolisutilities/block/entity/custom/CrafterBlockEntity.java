@@ -8,6 +8,8 @@ import com.benbenlaw.opolisutilities.util.DirectionUtils;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -38,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.benbenlaw.opolisutilities.block.custom.CrafterBlock.FACING;
 import static com.benbenlaw.opolisutilities.block.custom.CrafterBlock.POWERED;
@@ -53,7 +56,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         @Override
         protected int getStackLimit(int slot, @NotNull ItemStack stack) {
             if (slot <= 8)
-                return 1;
+                return 2;
             return super.getStackLimit(slot, stack);
         }
     };
@@ -69,75 +72,33 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
 
     //Item Handler Per Sides
-    private final IItemHandler upItemHandlerSide = new InputOutputItemHandler(itemHandler,
+    private final IItemHandler crafterItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> { // Input condition
                 if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    ItemStack slotStack = itemHandler.getStackInSlot(i);
-                    return !slotStack.isEmpty() && ItemStack.isSameItem(slotStack, stack) && slotStack.getCount() < 2;  // Allow insertion if the item matches and count is less than 2
+                    // Check if the slot has a valid ingredient
+                    return isIngredientValidForSlot(stack, i);
                 }
                 return false;
             },
-            i -> false // No output slots
-    );
-    private final IItemHandler downItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> false,  // No input slots
-            i -> i == 9  // Allow output from slot 9
+            i -> i == 9 // Output condition for slot 9
     );
 
-    private final IItemHandler northItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> { // Input condition
-                if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    ItemStack slotStack = itemHandler.getStackInSlot(i);
-                    return !slotStack.isEmpty() && ItemStack.isSameItem(slotStack, stack) && slotStack.getCount() < 2;  // Allow insertion if the item matches and count is less than 2
-                }
-                return false;
-            },
-            i -> false // No output slots
-    );
-    private final IItemHandler southItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> { // Input condition
-                if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    ItemStack slotStack = itemHandler.getStackInSlot(i);
-                    return !slotStack.isEmpty() && ItemStack.isSameItem(slotStack, stack) && slotStack.getCount() < 2;  // Allow insertion if the item matches and count is less than 2
-                }
-                return false;
-            },
-            i -> false // No output slots
-    );
-    private final IItemHandler eastItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> { // Input condition
-                if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    ItemStack slotStack = itemHandler.getStackInSlot(i);
-                    return !slotStack.isEmpty() && ItemStack.isSameItem(slotStack, stack) && slotStack.getCount() < 2;  // Allow insertion if the item matches and count is less than 2
-                }
-                return false;
-            },
-            i -> false // No output slots
-    );
-    private final IItemHandler westItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> { // Input condition
-                if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    ItemStack slotStack = itemHandler.getStackInSlot(i);
-                    return !slotStack.isEmpty() && ItemStack.isSameItem(slotStack, stack) && slotStack.getCount() < 2;  // Allow insertion if the item matches and count is less than 2
-                }
-                return false;
-            },
-            i -> false // No output slots
-    );
+
+    private boolean isIngredientValidForSlot(ItemStack insertedItem, int slotIndex) {
+        // Check if the inserted item matches the ingredient for the slot
+        if (craftingIngredients != null && slotIndex < craftingIngredients.size()) {
+            Ingredient ingredient = craftingIngredients.get(slotIndex);
+            return ingredient.test(insertedItem);
+        }
+        return false;
+    }
+
 
     //Called in startup for sides of the block
     public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
-        side = DirectionUtils.adjustPosition(this.getBlockState().getValue(FACING), side);
-        if (side == null) return itemHandler;
 
-        return switch (side) {
-            case UP -> upItemHandlerSide;
-            case DOWN -> downItemHandlerSide;
-            case NORTH -> northItemHandlerSide;
-            case SOUTH -> southItemHandlerSide;
-            case EAST -> eastItemHandlerSide;
-            case WEST -> westItemHandlerSide;
-        };
+        return crafterItemHandler;
+
     }
 
     public void setHandler(ItemStackHandler handler) {
@@ -188,6 +149,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     @Override
     public void onLoad() {
         super.onLoad();
+        getCraftingIngredients();
         this.setChanged();
     }
 
@@ -222,6 +184,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         compoundTag.putInt("crafter.maxProgress", maxProgress);
         compoundTag.putInt("crafter.recipeChecker", recipeChecker);
         compoundTag.putString("crafter.recipeID", recipeID.toString());
+
     }
 
     @Override
@@ -231,6 +194,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         maxProgress = compoundTag.getInt("crafter.maxProgress");
         recipeChecker = compoundTag.getInt("crafter.recipeChecker");
         recipeID = new ResourceLocation(compoundTag.getString("crafter.recipeID"));
+
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -439,6 +403,18 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         }
     }
 
+    public void getCraftingIngredients() {
+        Optional<RecipeHolder<?>> recipe = level.getRecipeManager().byKey(recipeID);
+        if (recipe.isPresent()) {
+            CraftingRecipe r = (CraftingRecipe) recipe.get().value();
+            craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
+            craftingIngredients = r.getIngredients();
+            recipeID = recipe.get().id();
+        } else {
+            craftingItem = ItemStack.EMPTY.copy();
+        }
+    }
+
     public void craft() {
         extractIngredients();
         itemHandler.insertItem(9, craftingItem.copy(), false);
@@ -462,15 +438,15 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
                     if (!extractedStack.isEmpty()) {
                         if (!extractedStack.getCraftingRemainingItem().isEmpty()) {
-                            if (!tryInserting(extractedStack.getCraftingRemainingItem())) {
-                                Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), extractedStack.getCraftingRemainingItem());
-                            }
+                            // Instead of trying to insert, directly drop the crafting remainder item
+                            Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), extractedStack.getCraftingRemainingItem());
                         }
                     }
                 }
             }
         }
     }
+
 
     private boolean tryInserting(ItemStack stack) {
         for (int i = 0; i < 8; i++) {

@@ -8,8 +8,11 @@ public class DirectionUtils {
         return switch (facing) {
             case NORTH, UP, DOWN -> direction;
             case SOUTH -> direction.getOpposite();
-            case EAST -> direction.getCounterClockWise();
-            case WEST -> direction.getClockWise();
+            case EAST -> direction.getClockWise();
+            case WEST -> direction.getCounterClockWise();
+            // Handle default case
         };
     }
+
+
 }

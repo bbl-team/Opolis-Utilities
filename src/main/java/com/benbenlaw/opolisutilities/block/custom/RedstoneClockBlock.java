@@ -75,6 +75,10 @@ public class RedstoneClockBlock extends BaseEntityBlock {
     /* OPEN MENU */
     public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
 
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
         RedstoneClockBlockEntity redstoneClockBlockEntity = (RedstoneClockBlockEntity) level.getBlockEntity(blockPos);
 
         if (redstoneClockBlockEntity instanceof RedstoneClockBlockEntity) {
