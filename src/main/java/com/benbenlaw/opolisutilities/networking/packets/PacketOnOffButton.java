@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
 import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.block.custom.ItemRepairerBlock;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -54,8 +55,6 @@ public record PacketOnOffButton() {
             }
         }
 
-
-
         //Crafter Power Button
         if (blockState.getBlock() instanceof CrafterBlock) {
 
@@ -67,6 +66,18 @@ public record PacketOnOffButton() {
                 level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.POWERED, true)
                         .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
                         .setValue(CrafterBlock.TIMER, blockState.getValue(CrafterBlock.TIMER)));
+            }
+        }
+
+        //Item Repairer Power Button
+        if (blockState.getBlock() instanceof ItemRepairerBlock) {
+
+            if (blockState.getValue(ItemRepairerBlock.POWERED)) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.ITEM_REPAIRER.get().defaultBlockState().setValue(ItemRepairerBlock.POWERED, false)
+                        .setValue(ItemRepairerBlock.FACING, blockState.getValue(ItemRepairerBlock.FACING)));
+            } else {
+                level.setBlockAndUpdate(blockPos, ModBlocks.ITEM_REPAIRER.get().defaultBlockState().setValue(ItemRepairerBlock.POWERED, true)
+                        .setValue(ItemRepairerBlock.FACING, blockState.getValue(ItemRepairerBlock.FACING)));
             }
         }
     }

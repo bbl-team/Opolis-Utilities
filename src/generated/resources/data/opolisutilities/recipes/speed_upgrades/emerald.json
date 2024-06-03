@@ -1,0 +1,13 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:tag_empty",
+      "tag": "c:storage_blocks/emerald"
+    }
+  ],
+  "type": "opolisutilities:speed_upgrades",
+  "input": {
+    "tag": "c:storage_blocks/emerald"
+  },
+  "tickRate": 80
+}

@@ -40,7 +40,6 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         if(menu.isCrafting()) {
             guiGraphics.blit(TEXTURE, x + 84, y + 45, 176, 0, 8, menu.getScaledProgress());
         }
-
     }
 
     @Override

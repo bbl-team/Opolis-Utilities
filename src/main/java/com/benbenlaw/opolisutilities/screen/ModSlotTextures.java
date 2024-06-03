@@ -16,6 +16,8 @@ public class ModSlotTextures {
             new ResourceLocation(OpolisUtilities.MOD_ID, "item/gui/blocked_slot");
     public static final ResourceLocation BLOCK_SLOT =
             new ResourceLocation(OpolisUtilities.MOD_ID, "item/gui/block_slot");
+    public static final ResourceLocation SPEED_UPGRADE =
+            new ResourceLocation(OpolisUtilities.MOD_ID, "item/gui/speed_upgrade_slot");
 
 
 }

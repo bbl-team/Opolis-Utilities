@@ -96,9 +96,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
     //Called in startup for sides of the block
     public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
-
         return crafterItemHandler;
-
     }
 
     public void setHandler(ItemStackHandler handler) {
@@ -222,7 +220,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         if (recipeChecker >= 20) {
             recipeChecker = 0;
             maxProgress = this.getBlockState().getValue(CrafterBlock.TIMER);
-            updateRecipe();
+        //    updateRecipe();
         }
 
         if (!level.isClientSide()) {
@@ -320,7 +318,6 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             public void fillStackedContents(@NotNull StackedContents pHelper) {
             }
         };
-
     }
 
     public void updateRecipeButton() {
@@ -469,7 +466,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             return false; // No recipe or ingredients
         }
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             if (i < craftingIngredients.size()) {
                 ItemStack slotStack = itemHandler.getStackInSlot(i);
                 Ingredient ingredient = craftingIngredients.get(i);

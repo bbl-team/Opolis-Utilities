@@ -14,6 +14,7 @@ TODD: Sapling grower should work on mushrooms?
 
 Crafter, now smartly allows inputs based on a saved recipe
 Opening opolis blocks with gui no longer (uses the item/blocks) on client sides
+Re added item repairer
 
 
 3.0.0

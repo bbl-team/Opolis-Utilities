@@ -1,13 +1,22 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
+import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
+import com.benbenlaw.opolisutilities.screen.ItemRepairerMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -19,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -37,60 +47,66 @@ public class ItemRepairerBlock extends BaseEntityBlock {
         return CODEC;
     }
 
-    public static final VoxelShape SHAPE = Block.box(0,0,0,16,16,16);
-
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    //PLACEMENT
+
+    /* ROTATION */
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(POWERED, false);
-    }
+    public @NotNull BlockState rotate(BlockState blockState, @NotNull LevelAccessor level, @NotNull BlockPos blockPos, Rotation direction) {
+        return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, blockState.getValue(POWERED));
 
-    @Override
-    public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {
-        return pState.setValue(POWERED, false);
     }
-
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(POWERED);
+        pBuilder.add(FACING, POWERED);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false);
     }
 
     /* BLOCK ENTITY */
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
 
-    /*
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+    public void onRemove(BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, BlockState newBlockState, boolean isMoving) {
+        if (blockState.getBlock() != newBlockState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof ItemRepairerBlockEntity) {
                 ((ItemRepairerBlockEntity) blockEntity).drops();
             }
         }
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        super.onRemove(blockState, level, blockPos, newBlockState, isMoving);
     }
 
-     */
-
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
-                                                        @NotNull Player player , @NotNull BlockHitResult hit) {
+    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
 
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
 
-        BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof ItemRepairerBlockEntity) {
-            player.openMenu((ItemRepairerBlockEntity) entity);
+        if (!level.isClientSide()) {
+
+            ItemRepairerBlockEntity itemRepairerBlockEntity = (ItemRepairerBlockEntity) level.getBlockEntity(blockPos);
+
+            //MENU OPEN//
+
+            if (itemRepairerBlockEntity instanceof ItemRepairerBlockEntity) {
+                ContainerData data = itemRepairerBlockEntity.data;
+                player.openMenu(new SimpleMenuProvider(
+                        (windowId, playerInventory, playerEntity) -> new ItemRepairerMenu(windowId, playerInventory, blockPos, data),
+                        Component.translatable("block.opolisutilities.item_repairer")), (buf -> buf.writeBlockPos(blockPos)));
+
+            }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
@@ -98,15 +114,15 @@ public class ItemRepairerBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new ItemRepairerBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+        return new ItemRepairerBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.ITEM_REPAIRER_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, ModBlockEntities.ITEM_REPAIRER_BLOCK_ENTITY.get(),
+                (world, blockPos, thisBlockState, blockEntity) -> blockEntity.tick());
     }
 
 }

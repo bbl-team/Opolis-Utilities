@@ -41,6 +41,15 @@ public class CrafterMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         assert blockEntity != null;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), j + i * 3, 30 + j * 18, 17 + i * 18));
+            }
+        }
+
+        /*
+
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 0, 30, 17)); // table
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 1, 48, 17)); // table
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 2, 66, 17)); // table
@@ -50,6 +59,8 @@ public class CrafterMenu extends AbstractContainerMenu {
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 6, 30, 53)); // table
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 7, 48, 53)); // table
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), 8, 66, 53)); // table
+
+         */
 
         this.addSlot(new ModResultSlot(blockEntity.getItemStackHandler(), 9, 124, 35)); //result
 

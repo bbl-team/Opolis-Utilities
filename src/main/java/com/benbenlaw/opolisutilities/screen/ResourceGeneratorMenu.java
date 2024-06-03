@@ -6,13 +6,16 @@ import com.benbenlaw.opolisutilities.screen.slot.utils.MaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ResourceGeneratorInputSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ResourceGeneratorUpgradeSlot;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 public class ResourceGeneratorMenu extends AbstractContainerMenu {
@@ -42,8 +45,33 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
 
         assert entity != null;
 
-        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos));
-        this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 80, 16, level, blockPos));
+        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos) {
+
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+
+                if (level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
+                }
+
+                else {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
+                }
+            }
+        });
+        this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 80, 16, level, blockPos) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+
+                if (level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
+                }
+
+                else {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
+                }
+            }
+        });
         this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 80, 64));
      //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
 

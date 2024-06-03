@@ -1,53 +1,78 @@
 package com.benbenlaw.opolisutilities.screen;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
+import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ItemRepairerUpgradeSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
+import com.benbenlaw.opolisutilities.screen.slot.utils.ResourceGeneratorUpgradeSlot;
+import com.benbenlaw.opolisutilities.util.ModTags;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemRepairerMenu extends AbstractContainerMenu {
-    private final ItemRepairerBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
+
+    protected ItemRepairerBlockEntity blockEntity;
+    protected Level level;
+    protected ContainerData data;
+    protected Player player;
+    protected BlockPos blockPos;
 
     public ItemRepairerMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(3));
     }
 
-    public ItemRepairerMenu(int containerID, Inventory inventory, BlockEntity entity, ContainerData data) {
+    public ItemRepairerMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
         super(ModMenuTypes.ITEM_REPAIRER_MENU.get(), containerID);
-        checkContainerSize(inventory, 2);
-        blockEntity = ((ItemRepairerBlockEntity) entity);
+        this.player = inventory.player;
+        this.blockPos = blockPos;
         this.level = inventory.player.level();
+        this.blockEntity = (ItemRepairerBlockEntity) this.level.getBlockEntity(blockPos);
         this.data = data;
 
+        checkContainerSize(inventory, 2);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
-        /*
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new BlacklistTagInputSlot(handler, 0, 80, 18, ModTags.Items.BANNED_IN_ITEM_REPAIRER, 1));
-            this.addSlot(new ModResultSlot(handler, 1, 80, 60));
-      //      this.addSlot(new SlotItemHandler(handler, 2, 103, 18));
-      //      this.addSlot(new ModResultSlot(handler, 3, 80, 60));
+        this.addSlot(new BlacklistTagInputSlot(blockEntity.getItemStackHandler(), 0, 80, 16, ModTags.Items.BANNED_IN_ITEM_REPAIRER, 1) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.EMPTY_TOOL_SLOT);
+            }
+        });
+        this.addSlot(new ModResultSlot(blockEntity.getItemStackHandler(), 1, 80, 64));
+        this.addSlot(new ItemRepairerUpgradeSlot(blockEntity.getItemStackHandler(), 2, 116, 16, level, blockPos) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+
+                if (level.getBlockState(blockPos.above()).is(Blocks.AIR)) {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
+                }
+
+                else {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
+                }
+            }
         });
 
-         */
-
         addDataSlots(data);
-
     }
 
     public boolean isCrafting() {
         return data.get(0) > 0 ;
     }
-
 
     public int getScaledProgress() {
 
@@ -82,7 +107,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
 
 
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -118,9 +143,9 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.ITEM_REPAIRER.get());
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
+                player, ModBlocks.ITEM_REPAIRER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

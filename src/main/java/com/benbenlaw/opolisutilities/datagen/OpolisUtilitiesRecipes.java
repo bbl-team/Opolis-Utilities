@@ -2,10 +2,7 @@ package com.benbenlaw.opolisutilities.datagen;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.datagen.recipes.CatalogueRecipeBuilder;
-import com.benbenlaw.opolisutilities.datagen.recipes.DryingTableRecipeBuilder;
-import com.benbenlaw.opolisutilities.datagen.recipes.ResourceGeneratorRecipeBuilder;
-import com.benbenlaw.opolisutilities.datagen.recipes.SoakingTableRecipeBuilder;
+import com.benbenlaw.opolisutilities.datagen.recipes.*;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import net.minecraft.core.Holder;
@@ -17,16 +14,23 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class OpolisUtilitiesRecipes extends RecipeProvider {
@@ -37,6 +41,8 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput consumer) {
+
+
 
 
         //Block Breaker
@@ -379,7 +385,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .save(consumer);
 
 
-        //Drying Tables Recipes
+        // ********** Drying Tables Recipes ********** //
 
         //Cracked Stone Bricks
         DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(Items.STONE_BRICKS), 1),
@@ -411,7 +417,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .unlockedBy("has_item", has(Items.WET_SPONGE))
                 .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/sponge"));
 
-        //Catalogue
+        // ********** Catalogue ********** //
 
         //Catalogue Book
         CatalogueRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ModItems.B_BUCKS), 2),
@@ -437,7 +443,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .unlockedBy("has_item", has(Tags.Items.COBBLESTONES))
                 .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "resource_generator/cobblestone"));
 
-        //Soaking Table
+        // ********** Soaking Table ********** //
 
         //Mud
         SoakingTableRecipeBuilder.soakingTableRecipe(new SizedIngredient(Ingredient.of(ItemTags.DIRT), 1),
@@ -466,6 +472,437 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                         new ItemStack(Items.WET_SPONGE), 200)
                 .unlockedBy("has_item", has(Items.SPONGE))
                 .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "soaking_table/wet_sponge"));
+
+        // ********** Speed Upgrades (Vanilla) ********** //
+
+        //Coal
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.STORAGE_BLOCKS_COAL), 200)
+                .unlockedBy("has_item", has(Tags.Items.STORAGE_BLOCKS_COAL))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/coal"));
+
+        //Amethyst
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.AMETHYST_BLOCK), 120)
+                .unlockedBy("has_item", has(Items.AMETHYST_BLOCK))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/amethyst"));
+
+        //Beacon
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.BEACON), 200)
+                .unlockedBy("has_item", has(Items.BEACON))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/beacon"));
+
+        //Glowstone
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.GLOWSTONE), 120)
+                .unlockedBy("has_item", has(Items.GLOWSTONE))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/glowstone"));
+
+        //Fences
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.FENCES_WOODEN), 210)
+                .unlockedBy("has_item", has(Tags.Items.FENCES_WOODEN))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/wooden_fences"));
+
+        //Stone
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.STONES), 200)
+                .unlockedBy("has_item", has(Tags.Items.STONES))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/stone"));
+
+        //Obsidian
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.OBSIDIAN), 100)
+                .unlockedBy("has_item", has(Items.OBSIDIAN))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/obsidian"));
+
+        //Nether Star
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.NETHER_STAR), 20)
+                .unlockedBy("has_item", has(Items.NETHER_STAR))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/nether_star"));
+
+        // ********** Speed Upgrades (Tags) ********** //
+
+        //Aluminum
+
+        TagKey<Item> aluminumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/aluminum")))));
+
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(aluminumBlockTag), 100)
+                .unlockedBy("has_item", has(aluminumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(aluminumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/aluminum"));
+
+        //Dark Steel
+        TagKey<Item> darkSteelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/dark_steel")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(darkSteelBlockTag), 60)
+                .unlockedBy("has_item", has(darkSteelBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(darkSteelBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/dark_steel"));
+
+        //Cyanite
+        TagKey<Item> cyaniteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/cyanite")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(cyaniteBlockTag), 50)
+                .unlockedBy("has_item", has(cyaniteBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(cyaniteBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/cyanite"));
+
+        //Copper
+        TagKey<Item> copperBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/copper")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(copperBlockTag), 140)
+                .unlockedBy("has_item", has(copperBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(copperBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/copper"));
+
+        //Constantan
+        TagKey<Item> constantanBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/constantan")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(constantanBlockTag), 90)
+                .unlockedBy("has_item", has(constantanBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(constantanBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/constantan"));
+
+        //Conductive Iron
+        TagKey<Item> conductiveIronBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/conductive_iron")))));
+
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(conductiveIronBlockTag), 60)
+                .unlockedBy("has_item", has(conductiveIronBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(conductiveIronBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/conductive_iron"));
+
+        //Compressed Iron
+        TagKey<Item> compressedIronBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/compressed_iron")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(compressedIronBlockTag), 80)
+                .unlockedBy("has_item", has(compressedIronBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(compressedIronBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/compressed_iron"));
+
+        //Calorite
+        TagKey<Item> caloriteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/calorite")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(caloriteBlockTag), 60)
+                .unlockedBy("has_item", has(caloriteBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(caloriteBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/calorite"));
+
+        //Bronze
+        TagKey<Item> bronzeBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/bronze")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(bronzeBlockTag), 120)
+                .unlockedBy("has_item", has(bronzeBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(bronzeBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/bronze"));
+
+        //Brass
+        TagKey<Item> brassBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/brass")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(brassBlockTag), 100)
+                .unlockedBy("has_item", has(brassBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(brassBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/brass"));
+
+        //Blutonium
+        TagKey<Item> blutoniumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/blutonium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(blutoniumBlockTag), 50)
+                .unlockedBy("has_item", has(blutoniumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(blutoniumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/blutonium"));
+
+        //Lumium
+        TagKey<Item> lumiumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/lumium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(lumiumBlockTag), 40)
+                .unlockedBy("has_item", has(lumiumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(lumiumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/lumium"));
+
+        //Lead
+        TagKey<Item> leadBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/lead")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(leadBlockTag), 150)
+                .unlockedBy("has_item", has(leadBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(leadBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/lead"));
+
+        //Lapis
+        TagKey<Item> lapisBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/lapis")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(lapisBlockTag), 160)
+                .unlockedBy("has_item", has(lapisBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(lapisBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/lapis"));
+
+        //Iron
+        TagKey<Item> ironBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/iron")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(ironBlockTag), 190)
+                .unlockedBy("has_item", has(ironBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(ironBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/iron"));
+
+        //Invar
+        TagKey<Item> invarBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/invar")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(invarBlockTag), 130)
+                .unlockedBy("has_item", has(invarBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(invarBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/invar"));
+
+        //Graphite
+        TagKey<Item> graphiteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/graphite")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(graphiteBlockTag), 150)
+                .unlockedBy("has_item", has(graphiteBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(graphiteBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/graphite"));
+
+        //Gold
+        TagKey<Item> goldBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/gold")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(goldBlockTag), 160)
+                .unlockedBy("has_item", has(goldBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(goldBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/gold"));
+
+        //Energetic Alloy
+        TagKey<Item> energeticAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/energetic_alloy")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(energeticAlloyBlockTag), 70)
+                .unlockedBy("has_item", has(energeticAlloyBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(energeticAlloyBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/energetic_alloy"));
+
+        //End Steel
+        TagKey<Item> endSteelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/end_steel")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(endSteelBlockTag), 50)
+                .unlockedBy("has_item", has(endSteelBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(endSteelBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/end_steel"));
+
+        //Enderium
+        TagKey<Item> enderiumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/enderium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(enderiumBlockTag), 40)
+                .unlockedBy("has_item", has(enderiumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(enderiumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/enderium"));
+
+        //Emerald
+        TagKey<Item> emeraldBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/emerald")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(emeraldBlockTag), 80)
+                .unlockedBy("has_item", has(emeraldBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(emeraldBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/emerald"));
+
+        //Electrum
+        TagKey<Item> electrumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/electrum")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(electrumBlockTag), 115)
+                .unlockedBy("has_item", has(electrumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(electrumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/electrum"));
+
+        //Diamond
+        TagKey<Item> diamondBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/diamond")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(diamondBlockTag), 100)
+                .unlockedBy("has_item", has(diamondBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(diamondBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/diamond"));
+
+        //Desh
+        TagKey<Item> deshBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/desh")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(deshBlockTag), 60)
+                .unlockedBy("has_item", has(deshBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(deshBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/desh"));
+
+        //Signalum
+        TagKey<Item> signalumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/signalum")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(signalumBlockTag), 70)
+                .unlockedBy("has_item", has(signalumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(signalumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/signalum"));
+
+        //Sapphire
+        TagKey<Item> sapphireBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/sapphire")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(sapphireBlockTag), 80)
+                .unlockedBy("has_item", has(sapphireBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(sapphireBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/sapphire"));
+
+        //Ruby
+        TagKey<Item> rubyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/ruby")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(rubyBlockTag), 80)
+                .unlockedBy("has_item", has(rubyBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(rubyBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/ruby"));
+
+        //Redstone Alloy
+        TagKey<Item> redstoneAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/redstone_alloy")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(redstoneAlloyBlockTag), 100)
+                .unlockedBy("has_item", has(redstoneAlloyBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(redstoneAlloyBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/redstone_alloy"));
+
+        //Redstone
+        TagKey<Item> redstoneBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/redstone")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(redstoneBlockTag), 170)
+                .unlockedBy("has_item", has(redstoneBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(redstoneBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/redstone"));
+
+        //Quartz
+        TagKey<Item> quartzBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/quartz")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(quartzBlockTag), 140)
+                .unlockedBy("has_item", has(quartzBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(quartzBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/quartz"));
+
+        //Pulsating Alloy
+        TagKey<Item> pulsatingAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/pulsating_alloy")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(pulsatingAlloyBlockTag), 70)
+                .unlockedBy("has_item", has(pulsatingAlloyBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(pulsatingAlloyBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/pulsating_alloy"));
+
+        //Peridot
+        TagKey<Item> peridotBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/peridot")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(peridotBlockTag), 80)
+                .unlockedBy("has_item", has(peridotBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(peridotBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/peridot"));
+
+        //Ostrum
+        TagKey<Item> ostrumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/ostrum")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(ostrumBlockTag), 80)
+                .unlockedBy("has_item", has(ostrumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(ostrumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/ostrum"));
+
+        //Osmium
+        TagKey<Item> osmiumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/osmium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(osmiumBlockTag), 100)
+                .unlockedBy("has_item", has(osmiumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(osmiumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/osmium"));
+
+        //Nickel
+        TagKey<Item> nickelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/nickel")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(nickelBlockTag), 130)
+                .unlockedBy("has_item", has(nickelBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(nickelBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/nickel"));
+
+        //Netherite
+        TagKey<Item> netheriteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/netherite")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(netheriteBlockTag), 50)
+                .unlockedBy("has_item", has(netheriteBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(netheriteBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/netherite"));
+
+        //Zinc
+        TagKey<Item> zincBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/zinc")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(zincBlockTag), 120)
+                .unlockedBy("has_item", has(zincBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(zincBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/zinc"));
+
+        //Yellorium
+        TagKey<Item> yelloriumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/yellorium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(yelloriumBlockTag), 85)
+                .unlockedBy("has_item", has(yelloriumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(yelloriumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/yellorium"));
+
+        //Vibrant Alloy
+        TagKey<Item> vibrantAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/vibrant_alloy")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(vibrantAlloyBlockTag), 35)
+                .unlockedBy("has_item", has(vibrantAlloyBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(vibrantAlloyBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/vibrant_alloy"));
+
+        //uranium
+        TagKey<Item> uraniumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/uranium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(uraniumBlockTag), 85)
+                .unlockedBy("has_item", has(uraniumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(uraniumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/uranium"));
+
+        //Tin
+        TagKey<Item> tinBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/tin")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(tinBlockTag), 140)
+                .unlockedBy("has_item", has(tinBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(tinBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/tin"));
+
+        //Steel
+        TagKey<Item> steelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/steel")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(steelBlockTag), 130)
+                .unlockedBy("has_item", has(steelBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(steelBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/steel"));
+
+        //Soularium
+        TagKey<Item> solariumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/solarium")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(solariumBlockTag), 65)
+                .unlockedBy("has_item", has(solariumBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(solariumBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/solarium"));
+
+        //Silver
+        TagKey<Item> silverBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(new ResourceLocation("c", "storage_blocks/silver")))));
+        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(silverBlockTag), 110)
+                .unlockedBy("has_item", has(silverBlockTag))
+                .save(consumer.withConditions(new TagEmptyCondition(silverBlockTag)),
+                        new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/silver"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

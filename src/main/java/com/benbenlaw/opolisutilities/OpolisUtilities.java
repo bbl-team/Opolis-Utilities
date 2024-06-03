@@ -86,7 +86,7 @@ public class OpolisUtilities {
             event.register(ModMenuTypes.BLOCK_PLACER_MENU.get(), BlockPlacerScreen::new);
             event.register(ModMenuTypes.DRYING_TABLE_MENU.get(), DryingTableScreen::new);
             event.register(ModMenuTypes.RESOURCE_GENERATOR_MENU.get(), ResourceGeneratorScreen::new);
-            //    event.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
+            event.register(ModMenuTypes.ITEM_REPAIRER_MENU.get(), ItemRepairerScreen::new);
             event.register(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
             event.register(ModMenuTypes.CRAFTER_MENU.get(), CrafterScreen::new);
             event.register(ModMenuTypes.REDSTONE_CLOCK_MENU.get(), RedstoneClockScreen::new);
