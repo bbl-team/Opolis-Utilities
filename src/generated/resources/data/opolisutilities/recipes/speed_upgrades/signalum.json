@@ -1,8 +1,11 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:tag_empty",
-      "tag": "c:storage_blocks/signalum"
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:storage_blocks/signalum"
+      }
     }
   ],
   "type": "opolisutilities:speed_upgrades",

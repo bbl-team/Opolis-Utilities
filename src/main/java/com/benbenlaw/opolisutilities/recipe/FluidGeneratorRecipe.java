@@ -1,33 +1,28 @@
 package com.benbenlaw.opolisutilities.recipe;
 
-public class FluidGeneratorRecipe {} /* implements Recipe<NoInventoryRecipe> {
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredientType;
+import org.jetbrains.annotations.NotNull;
 
-    private final ResourceLocation id;
-    private final String fluid;
-    private final int fluidAmount;
-
-    public FluidGeneratorRecipe(ResourceLocation id, String fluid, int fluidAmount) {
-        this.id = id;
-        this.fluid = fluid;
-        this.fluidAmount = fluidAmount;
-    }
-
-    public String getFluid() {
-        return fluid;
-    }
-
-    public int getFluidAmount() {
-        return fluidAmount;
-    }
+public record FluidGeneratorRecipe(FluidStack input) implements Recipe<NoInventoryRecipe> {
 
     @Override
     public boolean matches(@NotNull NoInventoryRecipe inv, @NotNull Level pLevel) {
         return true;
-    }
-
-    @Override
-    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv, RegistryAccess p_267165_) {
-        return ItemStack.EMPTY;
     }
 
     @Override
@@ -36,28 +31,23 @@ public class FluidGeneratorRecipe {} /* implements Recipe<NoInventoryRecipe> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess p_267052_) {
+    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv, HolderLookup.@NotNull Provider provider) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public ResourceLocation getId() {
-        return id;
+    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider provider) {
+        return ItemStack.EMPTY;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return FluidGeneratorRecipe.Serializer.INSTANCE;
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NotNull RecipeType<?> getType() {
         return FluidGeneratorRecipe.Type.INSTANCE;
-    }
-    public static class Type implements RecipeType<FluidGeneratorRecipe> {
-        private Type() { }
-        public static final FluidGeneratorRecipe.Type INSTANCE = new FluidGeneratorRecipe.Type();
-        public static final String ID = "fluid_generator";
     }
 
     @Override
@@ -65,34 +55,40 @@ public class FluidGeneratorRecipe {} /* implements Recipe<NoInventoryRecipe> {
         return true;
     }
 
+    public static class Type implements RecipeType<FluidGeneratorRecipe> {
+        private Type() { }
+        public static final FluidGeneratorRecipe.Type INSTANCE = new FluidGeneratorRecipe.Type();
+    }
 
     public static class Serializer implements RecipeSerializer<FluidGeneratorRecipe> {
         public static final FluidGeneratorRecipe.Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID =
-                new ResourceLocation(OpolisUtilities.MOD_ID, "fluid_generator");
+
+        public final MapCodec<FluidGeneratorRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        FluidStack.CODEC.fieldOf("fluid").forGetter(FluidGeneratorRecipe::input)
+                ).apply(instance, FluidGeneratorRecipe::new)
+        );
+
+        private final StreamCodec<RegistryFriendlyByteBuf, FluidGeneratorRecipe> STREAM_CODEC = StreamCodec.of(
+                FluidGeneratorRecipe.Serializer::write, FluidGeneratorRecipe.Serializer::read);
 
         @Override
-        public FluidGeneratorRecipe fromJson(ResourceLocation id, JsonObject json) {
-            String fluid = GsonHelper.getAsString(json, "fluid");
-            int fluidAmount = GsonHelper.getAsInt(json, "fluidAmount", 100);
-
-            return new FluidGeneratorRecipe(id, fluid, fluidAmount);
+        public @NotNull MapCodec<FluidGeneratorRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public FluidGeneratorRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            String fluid = buf.readUtf();
-            int fluidAmount = buf.readInt();
-
-            return new FluidGeneratorRecipe(id, fluid, fluidAmount);
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, FluidGeneratorRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, FluidGeneratorRecipe recipe) {
+        private static FluidGeneratorRecipe read(RegistryFriendlyByteBuf buffer) {
+            FluidStack input = FluidStack.STREAM_CODEC.decode(buffer);
+            return new FluidGeneratorRecipe(input);
+        }
 
-            buf.writeUtf(recipe.getFluid(), Short.MAX_VALUE);
-            buf.writeInt(recipe.getFluidAmount());
+        private static void write(RegistryFriendlyByteBuf buffer, FluidGeneratorRecipe recipe) {
+            FluidStack.STREAM_CODEC.encode(buffer, recipe.input);
         }
     }
 }
-*/

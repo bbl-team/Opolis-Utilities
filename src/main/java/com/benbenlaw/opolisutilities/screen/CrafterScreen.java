@@ -68,6 +68,7 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
+    //    renderRecipeOutput(guiGraphics, mouseX, mouseY, x, y);
 
         //Power Button
         if (!this.menu.blockEntity.getBlockState().getValue(CrafterBlock.POWERED)) {
@@ -97,6 +98,14 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
             guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(CrafterBlock.TIMER) + " ticks", this.leftPos + 90,
+                    this.topPos + 60, 0x3F3F3F, false);
+        }
+    }
+
+    @Nullable
+    private void renderRecipeOutput(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 120, 13, 20, 18 * 3)) {
+            guiGraphics.drawString(this.font, "Crafting: "+ this.menu.blockEntity.recipeID.toString(), this.leftPos + 90,
                     this.topPos + 60, 0x3F3F3F, false);
         }
     }

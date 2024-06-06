@@ -12,9 +12,15 @@ TODD: Sapling grower should work on mushrooms?
 
 3.1.0
 
-Crafter, now smartly allows inputs based on a saved recipe
+Crafter, now smartly allows inputs based on a saved recipe (WIP Some recipe do not save the shape correctly)
 Opening opolis blocks with gui no longer (uses the item/blocks) on client sides
 Re added item repairer
+Re added all speed caps for resource generator 2 & Item Repairer
+Re added Ender Scrambler now uses GUI
+Re added rendering of drying table
+Re added fluid generator, supports speed upgrades#
+Fixed data gen error with speed blocks causing some not to load
+
 
 
 3.0.0

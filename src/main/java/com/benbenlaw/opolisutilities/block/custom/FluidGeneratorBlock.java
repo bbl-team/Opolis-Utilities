@@ -2,13 +2,30 @@ package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.FluidGeneratorBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
+import com.benbenlaw.opolisutilities.screen.FluidGeneratorMenu;
+import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,106 +33,136 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FluidGeneratorBlock extends BaseEntityBlock {
 
     public static final MapCodec<FluidGeneratorBlock> CODEC = simpleCodec(FluidGeneratorBlock::new);
 
-
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
-
-    public FluidGeneratorBlock(Properties p_49795_) {
-        super(p_49795_);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.FALSE));
+    public FluidGeneratorBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
-        p_55484_.add(LIT);
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+
+    /* ROTATION */
+    @Override
+    public @NotNull BlockState rotate(BlockState blockState, @NotNull LevelAccessor level, @NotNull BlockPos blockPos, @NotNull Rotation direction) {
+        return blockState.setValue(POWERED, blockState.getValue(POWERED));
+
+    }
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(POWERED);
     }
 
-    /*
     @Override
-    public @NotNull InteractionResult use(BlockState pState, Level level, BlockPos blockPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(POWERED, false);
+    }
 
-        int tickRate = 220;
+    /* BLOCK ENTITY */
 
-        //Check for Cap and apply correct tickrate
-        if (!level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
+        return RenderShape.MODEL;
+    }
 
-            for (RG2SpeedBlocksRecipe match : level.getRecipeManager().getRecipesFor(RG2SpeedBlocksRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-
-                String blockName = match.getBlock();
-                TagKey<Block> speedBlock = BlockTags.create(new ResourceLocation(blockName));
-                Block speedBlockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
-
-                if (level.getBlockState(blockPos.above(2)).getBlockHolder().containsTag(speedBlock) || level.getBlockState(blockPos.above(2)).is(Objects.requireNonNull(speedBlockBlock))) {
-                    tickRate = match.getTickRate();
-                }
+    @Override
+    public void onRemove(BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, BlockState newBlockState, boolean isMoving) {
+        if (blockState.getBlock() != newBlockState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof FluidGeneratorBlockEntity) {
+                ((FluidGeneratorBlockEntity) blockEntity).drops();
             }
         }
+        super.onRemove(blockState, level, blockPos, newBlockState, isMoving);
+    }
+
+    @Override
+    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull BlockHitResult hit) {
+
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        int tickRate;
+        FluidGeneratorBlockEntity entity = (FluidGeneratorBlockEntity) level.getBlockEntity(blockPos);
 
         if (!level.isClientSide()) {
-            if (pHand.equals(InteractionHand.MAIN_HAND)){
-                if (pState.getValue(FluidGeneratorBlock.LIT)) {
 
-                    BlockState block = level.getBlockState(blockPos.above(1));
-                    Block translatedBlock = block.getBlock();
-                    String translatedName;
+            //STAT CHECK//
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem().equals(Items.STICK)) {
+                if (blockState.getValue(FluidGeneratorBlock.POWERED)) {
 
-                    if (block.getBlock() instanceof SimpleWaterloggedBlock) {
-                        translatedName = "Water";
-                    } else {
-                        translatedName = translatedBlock.getName().getString();
+                    assert entity != null;
+                    tickRate = entity.maxProgress;
+                    ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(entity.resource)).getDefaultInstance();
+                    String itemName = itemStack.getDisplayName().getString();
+
+                    if (tickRate == 220) {
+                        player.sendSystemMessage(Component.translatable("block.in_world.no_speed_upgrade").withStyle(ChatFormatting.RED));
                     }
 
-                    if (tickRate == 220){
-                        pPlayer.sendSystemMessage(Component.literal("No speed block detected, place a valid block above the resource block").withStyle(ChatFormatting.RED));
-                    }
-                    pPlayer.sendSystemMessage(Component.literal("Current tick rate is " + tickRate).withStyle(ChatFormatting.GREEN));
-                    pPlayer.sendSystemMessage(Component.literal("Obtaining " + translatedName).withStyle(ChatFormatting.GREEN));
+                    player.sendSystemMessage(Component.translatable("block.in_world.tickrate", tickRate).withStyle(ChatFormatting.GREEN));
+                    player.sendSystemMessage(Component.translatable("block.in_world.obtaining", itemName).withStyle(ChatFormatting.GREEN));
                 }
 
-                if(!pState.getValue(FluidGeneratorBlock.LIT)) {
-                    pPlayer.sendSystemMessage(Component.literal("Not running! Check the fluid above is valid!").withStyle(ChatFormatting.RED));
+                if (!blockState.getValue(FluidGeneratorBlock.POWERED)) {
+                    {
+                        player.sendSystemMessage(Component.literal("Not running! Check the block above is valid!").withStyle(ChatFormatting.RED));
+                    }
                 }
+                return InteractionResult.SUCCESS;
             }
+
+            //FILL BUCKET//
+
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem().equals(Items.BUCKET)) {
+                if (blockState.getValue(FluidGeneratorBlock.POWERED)) {
+                    assert entity != null;
+                    FluidGeneratorBlockEntity fluidGeneratorBlockEntity = (FluidGeneratorBlockEntity) level.getBlockEntity(blockPos);
+                    if (fluidGeneratorBlockEntity != null && fluidGeneratorBlockEntity.onPlayerUse(player, InteractionHand.MAIN_HAND)) {
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                return InteractionResult.FAIL;
+            }
+
+            //MENU OPEN//
+
+            if (entity instanceof FluidGeneratorBlockEntity fluidGeneratorBlockEntity) {
+                ContainerData data = fluidGeneratorBlockEntity.data;
+                player.openMenu(new SimpleMenuProvider(
+                        (windowId, playerInventory, playerEntity) -> new FluidGeneratorMenu(windowId, playerInventory, blockPos, data),
+                        Component.translatable("block.opolisutilities.fluid_generator")), (buf -> buf.writeBlockPos(blockPos)));
+            }
+
         }
         return InteractionResult.SUCCESS;
     }
 
-     */
-
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(LIT, false);
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
-
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new FluidGeneratorBlockEntity(pos, state);
+    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+        return new FluidGeneratorBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(),
-                (world, blockPos, blockState, blockEntity) -> blockEntity.tick());
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(),
+                (world, blockPos, thisBlockState, blockEntity) -> blockEntity.tick());
     }
-
 
 }
 

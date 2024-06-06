@@ -1,10 +1,7 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
-import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
-import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
-import com.benbenlaw.opolisutilities.block.custom.ItemRepairerBlock;
+import com.benbenlaw.opolisutilities.block.custom.*;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -80,5 +77,18 @@ public record PacketOnOffButton() {
                         .setValue(ItemRepairerBlock.FACING, blockState.getValue(ItemRepairerBlock.FACING)));
             }
         }
+
+        //Ender Scrambler Power Button
+        if (blockState.getBlock() instanceof EnderScramblerBlock) {
+
+            if (blockState.getValue(EnderScramblerBlock.POWERED)) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.POWERED, false)
+                        .setValue(EnderScramblerBlock.SCRAMBLER_RANGE, blockState.getValue(EnderScramblerBlock.SCRAMBLER_RANGE)));
+            } else {
+                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.POWERED, true)
+                        .setValue(EnderScramblerBlock.SCRAMBLER_RANGE, blockState.getValue(EnderScramblerBlock.SCRAMBLER_RANGE)));
+            }
+        }
+
     }
 }

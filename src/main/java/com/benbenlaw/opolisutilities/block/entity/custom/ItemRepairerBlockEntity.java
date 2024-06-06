@@ -18,7 +18,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -40,12 +42,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.benbenlaw.opolisutilities.block.custom.ItemRepairerBlock.POWERED;
@@ -56,8 +60,22 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            sync();
         }
     };
+
+    public void sync() {
+        if (level instanceof ServerLevel serverLevel) {
+            LevelChunk chunk = serverLevel.getChunkAt(getBlockPos());
+            if (Objects.requireNonNull(chunk.getLevel()).getChunkSource() instanceof ServerChunkCache chunkCache) {
+                chunkCache.chunkMap.getPlayers(chunk.getPos(), false).forEach(this::syncContents);
+            }
+        }
+    }
+
+    public void syncContents(ServerPlayer player) {
+        player.connection.send(Objects.requireNonNull(getUpdatePacket()));
+    }
 
     public final ContainerData data;
     private int progress = 0;
@@ -187,6 +205,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         ItemStack copiedStack = stackInSlot0.copy();
 
         if (!level.isClientSide()) {
+            sync();
 
             // Set Tickrate
             boolean useInventoySpeedBlocks = true;
@@ -229,6 +248,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                     }
                     blockEntity.resetProgress();
                     setChanged();
+                    sync();
                 }
             }
 
@@ -239,6 +259,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                 blockEntity.resetProgress();
                 playCompletedSound(level, blockPos);
                 setChanged();
+                sync();
             }
 
             if (!inputAsStack.isDamageableItem() && blockEntity.itemHandler.getStackInSlot(1).isEmpty()) {
@@ -246,6 +267,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                 blockEntity.itemHandler.extractItem(0, copiedStack.getCount(), false);
                 blockEntity.resetProgress();
                 setChanged();
+                sync();
             }
         }
     }

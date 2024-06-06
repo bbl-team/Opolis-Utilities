@@ -20,6 +20,8 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<CrafterMenu>> CRAFTER_MENU;
     public static final DeferredHolder<MenuType<?>, MenuType<CatalogueMenu>> CATALOGUE_MENU;
     public static final DeferredHolder<MenuType<?>, MenuType<RedstoneClockMenu>> REDSTONE_CLOCK_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<EnderScramblerMenu>> ENDER_SCRAMBLER_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<FluidGeneratorMenu>> FLUID_GENERATOR_MENU;
 
 
     static {
@@ -47,7 +49,11 @@ public class ModMenuTypes {
         REDSTONE_CLOCK_MENU = MENUS.register("redstone_clock_menu", () ->
                 IMenuTypeExtension.create(RedstoneClockMenu::new));
 
+        ENDER_SCRAMBLER_MENU = MENUS.register("ender_scrambler_menu", () ->
+                IMenuTypeExtension.create(EnderScramblerMenu::new));
 
+        FLUID_GENERATOR_MENU = MENUS.register("fluid_generator_menu", () ->
+                IMenuTypeExtension.create(FluidGeneratorMenu::new));
 
 
     }

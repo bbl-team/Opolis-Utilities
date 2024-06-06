@@ -1,8 +1,11 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:tag_empty",
-      "tag": "c:storage_blocks/gold"
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:storage_blocks/gold"
+      }
     }
   ],
   "criteria": {

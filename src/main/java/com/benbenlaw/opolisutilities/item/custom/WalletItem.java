@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.capabillties.ICapabilitySync;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

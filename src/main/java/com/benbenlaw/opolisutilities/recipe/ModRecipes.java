@@ -37,16 +37,21 @@ public class ModRecipes{
             TYPES.register("speed_upgrades", () -> SpeedUpgradesRecipe.Type.INSTANCE);
 
     //Resource Generator
-    public static final Supplier<RecipeSerializer<ResourceGeneratorRecipe>> RG2_BLOCKS_SERIALIZER =
+    public static final Supplier<RecipeSerializer<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_SERIALIZER =
             SERIALIZER.register("resource_generator", () -> ResourceGeneratorRecipe.Serializer.INSTANCE);
 
-    public static final Supplier<RecipeType<ResourceGeneratorRecipe>> RG2_BLOCKS_TYPE =
+    public static final Supplier<RecipeType<ResourceGeneratorRecipe>> RESOURCE_GENERATOR_TYPE =
             TYPES.register("resource_generator", () -> ResourceGeneratorRecipe.Type.INSTANCE);
 
 
-    /*
-    public static final RegistryObject<RecipeSerializer<FluidGeneratorRecipe>> FLUID_GENERATOR_SERIALIZER =
+    //Fluid Generator
+    public static final Supplier<RecipeSerializer<FluidGeneratorRecipe>> FLUID_GENERATOR_SERIALIZER =
             SERIALIZER.register("fluid_generator", () -> FluidGeneratorRecipe.Serializer.INSTANCE);
+
+    public static final Supplier<RecipeType<FluidGeneratorRecipe>> FLUID_GENERATOR__TYPE =
+            TYPES.register("fluid_generator", () -> FluidGeneratorRecipe.Type.INSTANCE);
+
+    /*
 
 
     public static final RegistryObject<RecipeSerializer<UpgradeRecipeUtil>> UPGRADE_RECIPE_UTIL_SERIALIZER =

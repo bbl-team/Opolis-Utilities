@@ -78,8 +78,8 @@ public class ModBlockEntities {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.CATALOGUE_BLOCK_ENTITY.get(), CatalogueBlockEntity::getItemHandlerCapability);
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
-                ModBlockEntities.CRAFTER_BLOCK_ENTITY.get(), CrafterBlockEntity::getItemHandlerCapability);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(), FluidGeneratorBlockEntity::getFluidHandlerCapability);
 
     }
 

@@ -1,10 +1,7 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock;
-import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
-import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
-import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
+import com.benbenlaw.opolisutilities.block.custom.*;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
 import net.minecraft.core.BlockPos;
@@ -56,6 +53,16 @@ public record PacketIncreaseTickButton() {
             if (timer < RedstoneClockBlock.MAX_TIMER) {
                 level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.TIMER, timer + 10)
                         .setValue(RedstoneClockBlock.POWERED, blockState.getValue(RedstoneClockBlock.POWERED)));
+            }
+        }
+
+        //Ender Scrambler Increase Range Button
+
+        if (blockState.getBlock() instanceof EnderScramblerBlock) {
+            int range = blockState.getValue(EnderScramblerBlock.SCRAMBLER_RANGE);
+            if (range < EnderScramblerBlock.MAX_RANGE) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.SCRAMBLER_RANGE, range + 1)
+                        .setValue(EnderScramblerBlock.POWERED, blockState.getValue(EnderScramblerBlock.POWERED)));
             }
         }
     }

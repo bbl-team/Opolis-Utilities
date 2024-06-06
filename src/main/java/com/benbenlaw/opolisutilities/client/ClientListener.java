@@ -1,8 +1,17 @@
 package com.benbenlaw.opolisutilities.client;
 
-//@Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.client.DryingTableBlockEntityRenderer;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+
+@EventBusSubscriber(modid = OpolisUtilities.MOD_ID, bus = EventBusSubscriber.Bus.MOD ,value = Dist.CLIENT)
 public class ClientListener {
-    /*
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -10,15 +19,4 @@ public class ClientListener {
                 DryingTableBlockEntityRenderer::new);
 
     }
-
-    @SubscribeEvent
-    public static void registerOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "scrambler_information", (gui, guiGraphics, partialTick, screenWidth, screenHeight)
-                -> HoverInWorldEvents.renderEnderScramblerInfo(guiGraphics, partialTick));
-    }
-
-     */
-
-
-
 }

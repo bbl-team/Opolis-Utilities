@@ -2,9 +2,42 @@ package com.benbenlaw.opolisutilities.event;
 
 //@Mod.EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
 
-public class ModEvents {
+import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
+import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
-    /*
+@EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
+public class ModEvents {
 
     public static Vec3 globalEntity;
     public static Level globalLevel;
@@ -15,7 +48,7 @@ public class ModEvents {
         if (entity instanceof EnderMan) {
             BlockPos pos = entity.getOnPos();
 
-            int maxRange = EnderScramblerBlock.maxRange; // Get the maximum range
+            int maxRange = EnderScramblerBlock.MAX_RANGE; // Get the maximum range
 
             for (int x = -maxRange; x <= maxRange; x++) {
                 for (int y = -maxRange; y <= maxRange; y++) {
@@ -46,6 +79,8 @@ public class ModEvents {
             }
         }
     }
+
+
 
     @SubscribeEvent
     public static void getPlayerDeathPoint(LivingDeathEvent event) {
@@ -79,7 +114,9 @@ public class ModEvents {
             nbt.putString("namespace", dim.getNamespace());
             nbt.putString("path", dim.getPath());
 
-            deathStoneItem.setTag(nbt);
+            DataComponentMap dataComponents = (DataComponentMap) nbt.copy();
+
+            deathStoneItem.applyComponents(dataComponents);
         }
 
         if (level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
@@ -101,10 +138,10 @@ public class ModEvents {
         Level world = event.getEntity().level();
         Entity e = event.getEntity();
 
-        if (!(e instanceof ServerPlayer) && Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
+  //      if (!(e instanceof ServerPlayer) && Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
             world.addFreshEntity(new ItemEntity(world, entityPos.x(), entityPos.y(), entityPos.z(),
                     new ItemStack(ModItems.BASIC_LOOT_BOX.get())));
-        }
+   //     }
     }
 
     //Add Crook to sheep temp
@@ -126,6 +163,7 @@ public class ModEvents {
                 .orElse(-1);
     }
 
+    /*
 
     @SubscribeEvent
     public static void onEntityRightClickEvent(PlayerInteractEvent.EntityInteract event) {

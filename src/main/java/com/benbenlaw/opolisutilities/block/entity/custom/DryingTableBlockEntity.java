@@ -4,21 +4,20 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
 import com.benbenlaw.opolisutilities.recipe.SoakingTableRecipe;
 import com.benbenlaw.opolisutilities.screen.DryingTableMenu;
-import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -31,12 +30,13 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,8 +48,22 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            sync();
         }
     };
+
+    public void sync() {
+        if (level instanceof ServerLevel serverLevel) {
+            LevelChunk chunk = serverLevel.getChunkAt(getBlockPos());
+            if (Objects.requireNonNull(chunk.getLevel()).getChunkSource() instanceof ServerChunkCache chunkCache) {
+                chunkCache.chunkMap.getPlayers(chunk.getPos(), false).forEach(this::syncContents);
+            }
+        }
+    }
+
+    public void syncContents(ServerPlayer player) {
+        player.connection.send(Objects.requireNonNull(getUpdatePacket()));
+    }
 
 
     public ItemStack getRenderStack() {
@@ -81,10 +95,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     );
 
     public IItemHandler getItemHandlerCapability(Direction side) {
-        if (side == null)
-            return dryingTableItemHandlerSide;
-
-        return noSideItemHandlerSided;
+        return dryingTableItemHandlerSide;
     }
 
     public void setHandler(ItemStackHandler handler) {
@@ -193,11 +204,12 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     public void tick() {
 
         BlockPos blockPos = this.worldPosition;
-        DryingTableBlockEntity pBlockEntity = this;
+        DryingTableBlockEntity blockEntity = this;
 
         assert level != null;
         if (!level.isClientSide()) {
 
+            sync();
             SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
             for (int i = 0; i < this.itemHandler.getSlots(); i++) {
                 inventory.setItem(i, this.itemHandler.getStackInSlot(i));
@@ -237,6 +249,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                             && hasDurationSoaking(matchSoaking.get().value())) {
                         craftItem(this);
                         setChanged();
+                        sync();
                     }
                 }
             }
@@ -244,6 +257,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
             else {
                 resetProgress();
                 setChanged();
+                sync();
             }
 
         }

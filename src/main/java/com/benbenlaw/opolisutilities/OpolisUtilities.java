@@ -90,6 +90,8 @@ public class OpolisUtilities {
             event.register(ModMenuTypes.CATALOGUE_MENU.get(), CatalogueScreen::new);
             event.register(ModMenuTypes.CRAFTER_MENU.get(), CrafterScreen::new);
             event.register(ModMenuTypes.REDSTONE_CLOCK_MENU.get(), RedstoneClockScreen::new);
+            event.register(ModMenuTypes.ENDER_SCRAMBLER_MENU.get(), EnderScramblerScreen::new);
+            event.register(ModMenuTypes.FLUID_GENERATOR_MENU.get(), FluidGeneratorScreen::new);
 
         }
 

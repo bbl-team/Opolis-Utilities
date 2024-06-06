@@ -1,8 +1,11 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:tag_empty",
-      "tag": "c:storage_blocks/redstone"
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:storage_blocks/redstone"
+      }
     }
   ],
   "criteria": {

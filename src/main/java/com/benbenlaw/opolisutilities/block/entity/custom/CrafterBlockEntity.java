@@ -16,6 +16,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -34,6 +37,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +55,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            sync();
         }
 
         @Override
@@ -60,6 +65,19 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             return super.getStackLimit(slot, stack);
         }
     };
+
+    public void sync() {
+        if (level instanceof ServerLevel serverLevel) {
+            LevelChunk chunk = serverLevel.getChunkAt(getBlockPos());
+            if (Objects.requireNonNull(chunk.getLevel()).getChunkSource() instanceof ServerChunkCache chunkCache) {
+                chunkCache.chunkMap.getPlayers(chunk.getPos(), false).forEach(this::syncContents);
+            }
+        }
+    }
+
+    public void syncContents(ServerPlayer player) {
+        player.connection.send(Objects.requireNonNull(getUpdatePacket()));
+    }
 
     public final ContainerData data;
     public int progress = 0;
@@ -231,14 +249,17 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
                         craft();
                         resetProgress();
                         setChanged();
+                        sync();
                     }
                 } else {
                     resetProgress();
                     setChanged();
+                    sync();
                 }
             } else {
                 resetProgress();
                 setChanged();
+                sync();
             }
         }
     }

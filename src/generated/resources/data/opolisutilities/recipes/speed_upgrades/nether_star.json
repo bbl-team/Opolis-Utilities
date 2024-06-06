@@ -3,5 +3,5 @@
   "input": {
     "item": "minecraft:nether_star"
   },
-  "tickRate": 20
+  "tickRate": 30
 }

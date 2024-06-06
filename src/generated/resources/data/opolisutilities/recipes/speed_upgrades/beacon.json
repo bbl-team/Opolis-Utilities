@@ -3,5 +3,5 @@
   "input": {
     "item": "minecraft:beacon"
   },
-  "tickRate": 200
+  "tickRate": 20
 }
