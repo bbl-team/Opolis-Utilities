@@ -1,7 +1,8 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.screen.BlockBreakerMenu;
+import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItemHandler;
+import com.benbenlaw.opolisutilities.screen.custom.BlockBreakerMenu;
 import com.benbenlaw.opolisutilities.util.DirectionUtils;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import com.mojang.authlib.GameProfile;

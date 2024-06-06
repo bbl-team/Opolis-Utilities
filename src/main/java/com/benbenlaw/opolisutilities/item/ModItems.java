@@ -21,18 +21,8 @@ public class ModItems {
 
     public static final DeferredItem<Item> MINI_CHARCOAL = ITEMS.register("mini_charcoal",
             () -> new MiniCoalItem(true));
-
-    public static final DeferredItem<Item> WALLET = ITEMS.register("wallet",
-            () -> new WalletItem(new Item.Properties().stacksTo(1)));
-
     public static final DeferredItem<Item> BASIC_LOOT_BOX = ITEMS.register("basic_loot_box",
             () -> new BasicLootBoxItem(new Item.Properties()));
-
-    public static final DeferredItem<Item> ADVANCED_LOOT_BOX = ITEMS.register("advanced_loot_box",
-            () -> new AdvancedLootBoxItem(new Item.Properties()));
-
-    public static final DeferredItem<Item> ELITE_LOOT_BOX = ITEMS.register("elite_loot_box",
-            () -> new EliteLootBoxItem(new Item.Properties()));
 
     public static final DeferredItem<Item> B_BUCKS = ITEMS.register("b_bucks",
             () -> new Item(new Item.Properties().stacksTo(99)));
@@ -43,14 +33,8 @@ public class ModItems {
     public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
             () -> new Item(new Item.Properties()));
 
-public static final DeferredItem<Item> WOODEN_SHEARS = ITEMS.register("wooden_shears",
+    public static final DeferredItem<Item> WOODEN_SHEARS = ITEMS.register("wooden_shears",
             () -> new ShearsItem(new Item.Properties().durability(96)));
-
-    public static final DeferredItem<Item> HOME_STONE = ITEMS.register("home_stone",
-            () -> new HomeStoneItem(new Item.Properties().durability(32)));
-
-    public static final DeferredItem<Item> ADVANCED_HOME_STONE = ITEMS.register("advanced_home_stone",
-            () -> new AdvancedHomeStoneItem(new Item.Properties().durability(32)));
 
     public static final DeferredItem<Item> SUPER_HOME_STONE = ITEMS.register("super_home_stone",
             () -> new SuperHomeStoneItem(new Item.Properties().durability(32)));

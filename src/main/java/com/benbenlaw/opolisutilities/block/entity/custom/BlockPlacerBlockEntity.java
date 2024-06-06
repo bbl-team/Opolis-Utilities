@@ -2,7 +2,8 @@ package com.benbenlaw.opolisutilities.block.entity.custom;
 
 import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.screen.BlockPlacerMenu;
+import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItemHandler;
+import com.benbenlaw.opolisutilities.screen.custom.BlockPlacerMenu;
 import com.benbenlaw.opolisutilities.util.DirectionUtils;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import net.minecraft.core.BlockPos;

@@ -1,10 +1,14 @@
 package com.benbenlaw.opolisutilities.networking;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.block.custom.FluidGeneratorBlock;
-import com.benbenlaw.opolisutilities.networking.packets.*;
-
-import com.benbenlaw.opolisutilities.networking.payload.*;
+import com.benbenlaw.opolisutilities.networking.packets.PacketDecreaseTickButton;
+import com.benbenlaw.opolisutilities.networking.packets.PacketIncreaseTickButton;
+import com.benbenlaw.opolisutilities.networking.packets.PacketOnOffButton;
+import com.benbenlaw.opolisutilities.networking.packets.PacketSaveRecipeButton;
+import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.SaveRecipePayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 

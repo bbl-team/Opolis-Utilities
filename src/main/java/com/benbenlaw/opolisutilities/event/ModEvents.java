@@ -7,13 +7,14 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
-import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
+import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -138,10 +139,10 @@ public class ModEvents {
         Level world = event.getEntity().level();
         Entity e = event.getEntity();
 
-  //      if (!(e instanceof ServerPlayer) && Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
+        if (!(e instanceof ServerPlayer) && Math.random() > ConfigFile.basicLootBoxDropChance.get()) {
             world.addFreshEntity(new ItemEntity(world, entityPos.x(), entityPos.y(), entityPos.z(),
                     new ItemStack(ModItems.BASIC_LOOT_BOX.get())));
-   //     }
+        }
     }
 
     //Add Crook to sheep temp
@@ -210,6 +211,7 @@ public class ModEvents {
             }
         }
     }
+    */
 
     @SubscribeEvent
     public static void doorBellSounds(PlayerInteractEvent.RightClickBlock event) {
@@ -224,7 +226,7 @@ public class ModEvents {
         }
     }
 
-     */
+
 }
 
 

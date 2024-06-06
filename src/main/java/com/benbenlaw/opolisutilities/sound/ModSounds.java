@@ -1,22 +1,30 @@
 package com.benbenlaw.opolisutilities.sound;
 
+import com.benbenlaw.opolisutilities.OpolisUtilities;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.Objects;
+
 public class ModSounds {
-    /*
+
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-            DeferredRegister.create(NeoForgeRegistries.SOUND_EVENTS, OpolisUtilities.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, OpolisUtilities.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> DOORBELL = registerSoundEvents("doorbell");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DOORBELL =
+            createEvent("doorbell");
 
-    private static RegistryObject<SoundEvent> registerSoundEvents(String name) {
-        ResourceLocation id = new ResourceLocation(OpolisUtilities.MOD_ID, name);
-        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
+    private static DeferredHolder<SoundEvent, SoundEvent> createEvent(String sound) {
+        return SOUND_EVENTS.register(sound, () ->
+                SoundEvent.createVariableRangeEvent(Objects.requireNonNull(ResourceLocation.tryParse(OpolisUtilities.MOD_ID))));
     }
-
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
     }
-
-     */
 
 }

@@ -16,9 +16,7 @@ import net.minecraft.world.entity.player.Player;
 public class DiscordCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
-        dispatcher.register(Commands.literal("discord").executes((command) -> {
-            return execute(command);
-        }));
+        dispatcher.register(Commands.literal("discord").executes((command) -> execute(command)));
     }
 
     private static int execute(CommandContext<CommandSourceStack> command){

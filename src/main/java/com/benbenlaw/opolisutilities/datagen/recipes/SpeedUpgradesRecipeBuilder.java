@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.datagen.recipes;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
-import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import com.benbenlaw.opolisutilities.recipe.SpeedUpgradesRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;

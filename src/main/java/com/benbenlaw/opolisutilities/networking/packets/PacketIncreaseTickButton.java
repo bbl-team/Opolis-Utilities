@@ -1,9 +1,11 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.*;
+import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
+import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
+import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
-import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

@@ -6,7 +6,6 @@ import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
-import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

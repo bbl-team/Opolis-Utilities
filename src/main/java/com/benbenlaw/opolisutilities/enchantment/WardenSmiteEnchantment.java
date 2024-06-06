@@ -1,23 +1,15 @@
 package com.benbenlaw.opolisutilities.enchantment;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class WardenSmiteEnchantment extends Enchantment {
     public WardenSmiteEnchantment(EnchantmentDefinition p_335940_) {
         super(p_335940_);
     }
-
-
-    /*
-    public WardenSmiteEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 5;
-    }
-
 
     @Override
     public void doPostAttack(LivingEntity pUser, Entity pTarget, int pLevel) {
@@ -52,5 +44,5 @@ public class WardenSmiteEnchantment extends Enchantment {
 
     }
 
-     */
+
 }

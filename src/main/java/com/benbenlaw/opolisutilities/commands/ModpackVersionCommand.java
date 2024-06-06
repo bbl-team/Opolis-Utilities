@@ -13,9 +13,7 @@ import net.minecraft.world.entity.player.Player;
 public class ModpackVersionCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
-        dispatcher.register(Commands.literal("modpack_version").executes((command) -> {
-            return execute(command);
-        }));
+        dispatcher.register(Commands.literal("modpack_version").executes(ModpackVersionCommand::execute));
     }
 
     private static int execute(CommandContext<CommandSourceStack> command){

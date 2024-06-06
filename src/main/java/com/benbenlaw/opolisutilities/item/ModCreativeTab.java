@@ -19,23 +19,18 @@ public class ModCreativeTab {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> OPOLIS_UTILITIES_TAB = CREATIVE_MODE_TABS.register("opolisutilities", () -> CreativeModeTab.builder()
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> ModItems.HOME_STONE.get().getDefaultInstance())
+            .icon(() -> ModBlocks.DRYING_TABLE.get().asItem().getDefaultInstance())
             .title(Component.translatable("itemGroup.opolisutilities"))
             .displayItems((parameters, output) -> {
 
-                output.accept(ModItems.HOME_STONE.get());
-                output.accept(ModItems.ADVANCED_HOME_STONE.get());
                 output.accept(ModItems.SUPER_HOME_STONE.get());
                 output.accept(ModItems.BASIC_LOOT_BOX.get());
-                output.accept(ModItems.ADVANCED_LOOT_BOX.get());
-                output.accept(ModItems.ELITE_LOOT_BOX.get());
                 output.accept(ModItems.COPPER_NUGGET.get());
                 output.accept(ModItems.LOG_SHEET.get());
                 output.accept(ModItems.CROOK.get());
                 output.accept(ModItems.WOODEN_SHEARS.get());
                 output.accept(ModItems.ENDER_PEARL_FRAGMENT.get());
                 output.accept(ModItems.B_BUCKS.get());
-                output.accept(ModItems.WALLET.get());
                 output.accept(ModItems.JERKY.get());
                 output.accept(ModItems.MINI_CHARCOAL.get());
                 output.accept(ModItems.MINI_COAL.get());

@@ -4,12 +4,9 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.datagen.recipes.*;
 import com.benbenlaw.opolisutilities.item.ModItems;
-import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -22,14 +19,10 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -253,7 +246,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //TODO//
 
         //Home Stone
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HOME_STONE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SUPER_HOME_STONE.get())
                 .pattern("ECE")
                 .pattern("CDC")
                 .pattern("ECE")

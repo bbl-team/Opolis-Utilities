@@ -29,6 +29,7 @@ public enum ColorableBlocks {
     public record Instance<T, X>(DeferredRegister<T> ADR, DeferredRegister<X> BDR) {
 
         /*
+
         public <I extends T, L extends X> EnumMap<ColorableBlocks, DualRegistryObject<I, L>> register(Function<String, String> idMaker, Function<ColorableBlocks, Supplier<I>> supplierFunctionA, BiFunction<ColorableBlocks, RegistryObject<I>, Supplier<L>> supplierFunctionB) {
             EnumMap<ColorableBlocks, DualRegistryObject<I, L>> MAP = new EnumMap<>(ColorableBlocks.class);
             for (ColorableBlocks color : ColorableBlocks.values()) {
@@ -45,7 +46,9 @@ public enum ColorableBlocks {
         public RegistryObject<T> get() {
             return A();
         }
-        
+
          */
+        
+
     }
 }

@@ -1,9 +1,8 @@
 package com.benbenlaw.opolisutilities.block.custom;
 
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
-import com.benbenlaw.opolisutilities.block.entity.custom.DryingTableBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
-import com.benbenlaw.opolisutilities.screen.ResourceGeneratorMenu;
+import com.benbenlaw.opolisutilities.screen.custom.ResourceGeneratorMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

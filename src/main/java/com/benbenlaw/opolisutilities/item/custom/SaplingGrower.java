@@ -7,19 +7,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-//Thanks To https://github.com/bl4ckscor3/Growmeal/tree/1.19/src/main for the instant effect, changed for opolis utilities
 public class SaplingGrower extends Item {
-    public SaplingGrower(Properties p_41383_) {
-        super(p_41383_);
+    public SaplingGrower(Properties properties) {
+        super(properties);
     }
 
-    public static int totalGrowthAttempts = 128; //ConfigFile.totalGrowthAttempts.get();
+    public static int TOTAL_GROWTH_ATTEMPTS = 128;// ConfigFile.totalGrowthAttempts.get();
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext pContext) {
@@ -39,7 +37,7 @@ public class SaplingGrower extends Item {
     }
 
     public void tryToGrow(Level level, BlockPos pos) {
-        for (int i = 0; i < totalGrowthAttempts; i++) {
+        for (int i = 0; i < TOTAL_GROWTH_ATTEMPTS; i++) {
             doGrow(level, pos);
         }
     }

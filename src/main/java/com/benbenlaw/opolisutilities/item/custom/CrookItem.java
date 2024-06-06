@@ -5,8 +5,10 @@ import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -35,10 +37,10 @@ public class CrookItem extends Item {
                     spawnBlockAsEntity(level, blockPos, drop);
                 }
             }
-        //    if (entity instanceof Player) {
-        //        entity.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, entity,
-        //                (damage) -> entity.broadcastBreakEvent(entity.getUsedItemHand()));
-        //    }
+            if (entity instanceof Player) {
+                entity.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, entity,
+                        LivingEntity.getEquipmentSlotForItem(stack));
+            }
         }
         return super.mineBlock(stack, level, state, blockPos, entity);
     }
@@ -62,11 +64,4 @@ public class CrookItem extends Item {
         itemAsEntity.setDeltaMovement((level.random.nextFloat() * 0.1 - 0.05), (level.random.nextFloat() * 0.1 - 0.03), (level.random.nextFloat() * 0.1 - 0.05));
         level.addFreshEntity(itemAsEntity);
     }
-
-
-
-
-
-
-
 }
