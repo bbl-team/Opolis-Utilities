@@ -111,7 +111,7 @@ public record DryingTableRecipe(SizedIngredient input, ItemStack output, int dur
             buffer.writeInt(recipe.duration);
         }
 
-        private static DryingTableRecipe createDryingTableRecipe(SizedIngredient input, ItemStack output, int duration) {
+        static DryingTableRecipe createDryingTableRecipe(SizedIngredient input, ItemStack output, int duration) {
             return new DryingTableRecipe(input, output, duration);
         }
     }

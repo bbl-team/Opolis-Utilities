@@ -58,6 +58,9 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnderScramblerBlockEntity>> ENDER_SCRAMBLER_BLOCK_ENTITY =
             register("ender_scrambler_block_entity", () ->
                     BlockEntityType.Builder.of(EnderScramblerBlockEntity::new, ModBlocks.ENDER_SCRAMBLER.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SummoningBlockEntity>> SUMMONING_BLOCK_ENTITY =
+            register("summoning_block_entity", () ->
+                    BlockEntityType.Builder.of(SummoningBlockEntity::new, ModBlocks.SUMMONING_BLOCK.get()));
 
 
     //Capability Registration (Item Handler)
@@ -77,6 +80,12 @@ public class ModBlockEntities {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.CATALOGUE_BLOCK_ENTITY.get(), CatalogueBlockEntity::getItemHandlerCapability);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.CRAFTER_BLOCK_ENTITY.get(), CrafterBlockEntity::getItemHandlerCapability);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.SUMMONING_BLOCK_ENTITY.get(), SummoningBlockEntity::getItemHandlerCapability);
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
                 ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(), FluidGeneratorBlockEntity::getFluidHandlerCapability);

@@ -246,7 +246,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //TODO//
 
         //Home Stone
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SUPER_HOME_STONE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HOME_STONE.get())
                 .pattern("ECE")
                 .pattern("CDC")
                 .pattern("ECE")

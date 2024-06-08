@@ -2,7 +2,7 @@
   "parent": "minecraft:block/orientable",
   "textures": {
     "front": "opolisutilities:block/item_repairer",
-    "side": "opolisutilities:block/machine_side",
+    "side": "opolisutilities:block/machine_side_working",
     "top": "opolisutilities:block/machine_top"
   }
 }

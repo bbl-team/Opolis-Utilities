@@ -1,0 +1,10 @@
+{
+  "type": "opolisutilities:summoning_block",
+  "input": {
+    "tag": "c:cobblestones"
+  },
+  "catalyst": {
+    "item": "minecraft:stone"
+  },
+  "mob": "minecraft:zombie"
+}

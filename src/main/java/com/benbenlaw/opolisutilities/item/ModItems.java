@@ -36,8 +36,8 @@ public class ModItems {
     public static final DeferredItem<Item> WOODEN_SHEARS = ITEMS.register("wooden_shears",
             () -> new ShearsItem(new Item.Properties().durability(96)));
 
-    public static final DeferredItem<Item> SUPER_HOME_STONE = ITEMS.register("super_home_stone",
-            () -> new SuperHomeStoneItem(new Item.Properties().durability(32)));
+    public static final DeferredItem<Item> HOME_STONE = ITEMS.register("home_stone",
+            () -> new HomeStoneItem(new Item.Properties().durability(32)));
 
     public static final DeferredItem<Item> DEATH_STONE = ITEMS.register("death_stone",
             () -> new DeathStoneItem(new Item.Properties().durability(32)));

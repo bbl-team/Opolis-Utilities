@@ -1,0 +1,10 @@
+{
+  "type": "opolisutilities:summoning_block",
+  "input": {
+    "item": "minecraft:emerald"
+  },
+  "catalyst": {
+    "item": "minecraft:netherrack"
+  },
+  "mob": "minecraft:giant"
+}

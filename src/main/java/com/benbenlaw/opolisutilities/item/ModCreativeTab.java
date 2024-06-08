@@ -23,7 +23,7 @@ public class ModCreativeTab {
             .title(Component.translatable("itemGroup.opolisutilities"))
             .displayItems((parameters, output) -> {
 
-                output.accept(ModItems.SUPER_HOME_STONE.get());
+                output.accept(ModItems.HOME_STONE.get());
                 output.accept(ModItems.BASIC_LOOT_BOX.get());
                 output.accept(ModItems.COPPER_NUGGET.get());
                 output.accept(ModItems.LOG_SHEET.get());
@@ -54,6 +54,8 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.BLOCK_BREAKER.get());
                 output.accept(ModBlocks.BLOCK_PLACER.get());
                 output.accept(ModBlocks.CRAFTER.get());
+
+                output.accept(ModBlocks.SUMMONING_BLOCK.get());
 
 
             }).build());

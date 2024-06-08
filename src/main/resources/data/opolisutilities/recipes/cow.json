@@ -1,0 +1,12 @@
+{
+  "type": "opolisutilities:summoning_block",
+  "input": {
+    "item": "minecraft:diamond",
+    "count": 8
+  },
+  "catalyst": {
+    "item": "minecraft:stone",
+    "count": 1
+  },
+  "mob": "minecraft:cow"
+}

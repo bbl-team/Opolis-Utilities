@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.enchantment.ModEnchantments;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
+import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.networking.ModMessages;
 import com.benbenlaw.opolisutilities.particles.ModParticles;
@@ -36,6 +37,8 @@ public class OpolisUtilities {
     public OpolisUtilities(IEventBus modEventBus) {
 
         ModItems.register(modEventBus);
+        ModDataComponents.COMPONENTS.register(modEventBus);
+
         ModBlocks.register(modEventBus);
         ModCreativeTab.register(modEventBus);
         ModBlockEntities.register(modEventBus);
@@ -88,6 +91,7 @@ public class OpolisUtilities {
             event.register(ModMenuTypes.REDSTONE_CLOCK_MENU.get(), RedstoneClockScreen::new);
             event.register(ModMenuTypes.ENDER_SCRAMBLER_MENU.get(), EnderScramblerScreen::new);
             event.register(ModMenuTypes.FLUID_GENERATOR_MENU.get(), FluidGeneratorScreen::new);
+            event.register(ModMenuTypes.SUMMONING_BLOCK_MENU.get(), SummoningBlockScreen::new);
 
         }
     }

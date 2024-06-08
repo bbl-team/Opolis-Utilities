@@ -51,6 +51,13 @@ public class ModRecipes{
     public static final Supplier<RecipeType<FluidGeneratorRecipe>> FLUID_GENERATOR__TYPE =
             TYPES.register("fluid_generator", () -> FluidGeneratorRecipe.Type.INSTANCE);
 
+    //Summoning Block
+    public static final Supplier<RecipeSerializer<SummoningBlockRecipe>> SUMMONING_BLOCK_SERIALIZER =
+            SERIALIZER.register("summoning_block", () -> SummoningBlockRecipe.Serializer.INSTANCE);
+
+    public static final Supplier<RecipeType<SummoningBlockRecipe>> SUMMONING_BLOCK_TYPE =
+            TYPES.register("summoning_block", () -> SummoningBlockRecipe.Type.INSTANCE);
+
     /*
 
 

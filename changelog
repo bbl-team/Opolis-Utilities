@@ -21,6 +21,10 @@ Re added rendering of drying table
 Re added fluid generator, supports speed upgrades#
 Fixed data gen error with speed blocks causing some not to load
 Removed advanced and elite loot bag
+Removed home stone and advanced home stone
+Super Home stone now the home stone
+Re added death stone and home stone
+Added Summoning (Block WIP)
 
 
 

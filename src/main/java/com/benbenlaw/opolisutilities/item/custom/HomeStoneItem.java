@@ -1,21 +1,43 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.item.ModDataComponents;
+import com.benbenlaw.opolisutilities.util.ModTeleport;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
-public class SuperHomeStoneItem extends Item {
+import java.util.Objects;
 
-    public SuperHomeStoneItem(Properties properties) {
+public class HomeStoneItem extends Item {
+
+    public HomeStoneItem(Properties properties) {
         super(properties);
     }
 
-/*
+    public ResourceKey<Level> dimension = null;
+
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
         ItemStack itemstack = player.getItemInHand(hand);
-        CompoundTag nbt = itemstack.getTag();
-        if (nbt == null) nbt = new CompoundTag();
+        DataComponentMap dataComponentMap = itemstack.getComponents();
 
         //Check player is crouching and has item in off hand
 
@@ -23,18 +45,13 @@ public class SuperHomeStoneItem extends Item {
 
             //set x,y and x inside item nbt and playsound and print message
 
-            nbt.putFloat("x", player.getOnPos().getX());
-            nbt.putFloat("y", player.getOnPos().getY());
-            nbt.putFloat("z", player.getOnPos().getZ());
+            itemstack.set(ModDataComponents.INT_X.get(), player.getOnPos().getX());
+            itemstack.set(ModDataComponents.INT_Y.get(), player.getOnPos().getY());
+            itemstack.set(ModDataComponents.INT_Z.get(), player.getOnPos().getZ());
 
             ResourceLocation dim = level.dimension().location();
 
-            nbt.putString("dimension", dim.getNamespace() +":"+ dim.getPath());
-            nbt.putString("namespace", dim.getNamespace());
-            nbt.putString("path", dim.getPath());
-
-
-            itemstack.setTag(nbt);
+            itemstack.set(ModDataComponents.DIMENSION.get(), dim.getNamespace() +":"+ dim.getPath());
 
             player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.2f,1);
             player.sendSystemMessage(Component.translatable("tooltips.home_stone.location_set").withStyle(ChatFormatting.GREEN));
@@ -42,7 +59,7 @@ public class SuperHomeStoneItem extends Item {
 
         //Checks Location set if not nothing and send message
 
-        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && !nbt.contains("x")) {
+        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && Objects.requireNonNull(dataComponentMap.get(ModDataComponents.INT_X.get())).toString().isEmpty()) {
             player.playNotifySound(SoundEvents.SHIELD_BLOCK, SoundSource.AMBIENT, 0.2f,1);
             player.sendSystemMessage(Component.translatable("tooltips.home_stone.no_location").withStyle(ChatFormatting.RED));
         }
@@ -50,9 +67,9 @@ public class SuperHomeStoneItem extends Item {
         //If location set then teleport
         else if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND){
 
-           ResourceKey<Level> dimension = ResourceKey.create(ResourceKey.createRegistryKey(
-                   new ResourceLocation("minecraft", "dimension")),
-                   new ResourceLocation(nbt.getString("namespace"), nbt.getString("path")));
+            dimension = ResourceKey.create(ResourceKey.createRegistryKey(
+                            new ResourceLocation("minecraft", "dimension")),
+                    new ResourceLocation(Objects.requireNonNull(dataComponentMap.get(ModDataComponents.DIMENSION.get()))));
 
             MinecraftServer minecraftserver = player.getServer();
             assert minecraftserver != null;
@@ -60,10 +77,9 @@ public class SuperHomeStoneItem extends Item {
             assert destinationWorld != null;
             player.changeDimension(destinationWorld, new ModTeleport(destinationWorld));
 
-
             //TP COORDINATES
 
-            player.teleportTo(nbt.getFloat("x") + 0.5, nbt.getFloat("y") + 1, nbt.getFloat("z") + 0.5);
+            player.teleportTo(dataComponentMap.get(ModDataComponents.INT_X.get()) + 0.5, dataComponentMap.get(ModDataComponents.INT_Y.get()) + 1, dataComponentMap.get(ModDataComponents.INT_Z.get()) + 0.5);
             player.getCooldowns().addCooldown(this, ConfigFile.homeStoneCooldown.get());
             player.playNotifySound(SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.2f, 1);
             player.sendSystemMessage(Component.translatable("tooltips.home_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
@@ -71,41 +87,42 @@ public class SuperHomeStoneItem extends Item {
             if (ConfigFile.homeStoneTakesDamage.get().equals(true)) {
 
                 player.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, player,
-                        (damage) -> player.broadcastBreakEvent(player.getUsedItemHand()));
+                        EquipmentSlot.MAINHAND);
             }
         }
         return super.use(level, player, hand);
     }
 
-
     //Tooltip
 
+
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, java.util.List<Component> components, TooltipFlag flag) {
+        ;
 
         if(Screen.hasShiftDown()) {
             components.add(Component.translatable("tooltips.super_home_stone.shift.held")
                     .withStyle(ChatFormatting.GREEN));
-            }
+        }
         else {
             components.add(Component.translatable("tooltips.home_stone.hover.shift").withStyle(ChatFormatting.BLUE));
         }
 
         if(Screen.hasAltDown()) {
 
-            if(stack.hasTag()) {
+            if(!Objects.requireNonNull(stack.get(ModDataComponents.INT_X)).toString().isEmpty()) {
 
-                components.add(Component.literal("X: " + stack.getTag().getFloat("x"))
+                components.add(Component.literal("X: " + stack.get(ModDataComponents.INT_X))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal("Y: " + stack.getTag().getFloat("y"))
+                components.add(Component.literal("Y: " + stack.get(ModDataComponents.INT_Y))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal("Z: " + stack.getTag().getFloat("z"))
+                components.add(Component.literal("Z: " + stack.get(ModDataComponents.INT_Z))
                         .withStyle(ChatFormatting.GREEN));
-                components.add(Component.literal("Dimension: " + stack.getTag().getString("dimension"))
+                components.add(Component.literal("Dimension: " + stack.get(ModDataComponents.DIMENSION))
                         .withStyle(ChatFormatting.GREEN));
 
             }
-            if(!stack.hasTag()) {
+            if(Objects.requireNonNull(stack.get(ModDataComponents.INT_X.get())).toString().isEmpty()) {
                 components.add(Component.translatable("tooltips.home_stone.no_location_set")
                         .withStyle(ChatFormatting.RED));
             }
@@ -115,11 +132,8 @@ public class SuperHomeStoneItem extends Item {
                     .withStyle(ChatFormatting.BLUE));
         }
 
-        super.appendHoverText(stack, level, components, flag);
+        super.appendHoverText(stack, tooltipContext, components, flag);
     }
-
- */
-
 }
 
 

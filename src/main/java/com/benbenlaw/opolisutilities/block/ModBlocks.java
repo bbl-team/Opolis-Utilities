@@ -64,6 +64,10 @@ public class ModBlocks {
             () -> new CatalogueBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f,2.0f)
                     .noOcclusion()));
+    public static final DeferredBlock<Block> SUMMONING_BLOCK = registerBlock("summoning_block",
+            () -> new SummoningBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f,2.0f)
+                    .noOcclusion()));
 
     public static final DeferredBlock<Block> REDSTONE_CLOCK = registerBlock("redstone_clock",
             () -> new RedstoneClockBlock(BlockBehaviour.Properties.of()

@@ -78,6 +78,18 @@ public record PacketOnOffButton() {
             }
         }
 
+        //Summoning Block Power Button
+        if (blockState.getBlock() instanceof SummoningBlock) {
+
+            if (blockState.getValue(SummoningBlock.POWERED)) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.SUMMONING_BLOCK.get().defaultBlockState().setValue(SummoningBlock.POWERED, false)
+                        .setValue(SummoningBlock.FACING, blockState.getValue(SummoningBlock.FACING)));
+            } else {
+                level.setBlockAndUpdate(blockPos, ModBlocks.SUMMONING_BLOCK.get().defaultBlockState().setValue(SummoningBlock.POWERED, true)
+                        .setValue(SummoningBlock.FACING, blockState.getValue(SummoningBlock.FACING)));
+            }
+        }
+
         //Ender Scrambler Power Button
         if (blockState.getBlock() instanceof EnderScramblerBlock) {
 

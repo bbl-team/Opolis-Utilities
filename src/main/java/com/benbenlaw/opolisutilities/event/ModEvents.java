@@ -6,22 +6,34 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
 import com.benbenlaw.opolisutilities.sound.ModSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -36,11 +48,15 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
 public class ModEvents {
 
-    public static Vec3 globalEntity;
+    public static BlockPos globalEntity;
     public static Level globalLevel;
 
     @SubscribeEvent
@@ -88,11 +104,12 @@ public class ModEvents {
         Entity entity = event.getEntity();
 
         if (entity instanceof ServerPlayer) {
-            globalEntity = entity.position();
+            globalEntity = entity.getOnPos();
             globalLevel = entity.level();
         }
 
     }
+
 
 
     @SubscribeEvent
@@ -102,22 +119,17 @@ public class ModEvents {
         Level level = player.level();
 
         ItemStack deathStoneItem = new ItemStack(ModItems.DEATH_STONE.get());
-        CompoundTag nbt = new CompoundTag();
 
         if (!(globalEntity == null) && !(globalLevel == null)) {
 
-            nbt.putInt("Age", -32768);
-            nbt.putDouble("x", globalEntity.x);
-            nbt.putDouble("y", globalEntity.y);
-            nbt.putDouble("z", globalEntity.z);
+            deathStoneItem.set(ModDataComponents.INT_X.get(), globalEntity.getX());
+            deathStoneItem.set(ModDataComponents.INT_Y.get(), globalEntity.getY());
+            deathStoneItem.set(ModDataComponents.INT_Z.get(), globalEntity.getZ());
+
             ResourceLocation dim = globalLevel.dimension().location();
-            nbt.putString("dimension", dim.getNamespace() + ":" + dim.getPath());
-            nbt.putString("namespace", dim.getNamespace());
-            nbt.putString("path", dim.getPath());
 
-            DataComponentMap dataComponents = (DataComponentMap) nbt.copy();
+            deathStoneItem.set(ModDataComponents.DIMENSION.get(), dim.getNamespace() +":"+ dim.getPath());
 
-            deathStoneItem.applyComponents(dataComponents);
         }
 
         if (level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
@@ -164,7 +176,7 @@ public class ModEvents {
                 .orElse(-1);
     }
 
-    /*
+
 
     @SubscribeEvent
     public static void onEntityRightClickEvent(PlayerInteractEvent.EntityInteract event) {
@@ -177,10 +189,18 @@ public class ModEvents {
 
         if (!level.isClientSide()) {
 
-            if (stack.getItem() instanceof AnimalNetItem && !stack.getTag().contains("entity")) {
+            if (stack.getItem() instanceof AnimalNetItem && stack.get(ModDataComponents.ENTITY_TYPE.get()) == null) {
 
                 ItemStack itemstack = player.getItemInHand(hand);
-                CompoundTag nbt = itemstack.getTag();
+                DataComponentMap resultItemWithDataComponents = itemstack.getComponents();
+                itemstack.applyComponents(resultItemWithDataComponents);
+                CompoundTag tag = new CompoundTag() {
+                    @Override
+                    public @NotNull CompoundTag copy() {
+                        return (CompoundTag) itemstack.getComponents();
+                    }
+
+                };
 
                 boolean hostileMobs = ConfigFile.animalNetHostileMobs.get();
                 boolean waterMobs = ConfigFile.animalNetWaterMobs.get();
@@ -196,10 +216,10 @@ public class ModEvents {
                     if (captureHostile || captureWater || captureAnimal || captureVillagers || livingEntity.isAlliedTo(player)) {
 
                         // Capture the mob
-                        assert nbt != null;
-                        nbt.putString("entity", EntityType.getKey(livingEntity.getType()).toString());
-                        livingEntity.saveWithoutId(nbt);
-                        stack.setTag(nbt);
+                        assert resultItemWithDataComponents != null;
+                        itemstack.set(ModDataComponents.ENTITY_TYPE.get(), EntityType.getKey(livingEntity.getType()).toString());
+                        livingEntity.saveWithoutId(tag);
+                        stack.applyComponents(resultItemWithDataComponents);
                         livingEntity.remove(Entity.RemovalReason.DISCARDED);
                         player.sendSystemMessage(Component.translatable("tooltips.animal_net.mob_caught").withStyle(ChatFormatting.GREEN));
                         level.playSound(null, livingEntity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS);
@@ -211,7 +231,7 @@ public class ModEvents {
             }
         }
     }
-    */
+
 
     @SubscribeEvent
     public static void doorBellSounds(PlayerInteractEvent.RightClickBlock event) {
