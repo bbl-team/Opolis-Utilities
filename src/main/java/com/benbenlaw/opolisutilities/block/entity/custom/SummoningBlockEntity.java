@@ -77,8 +77,6 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
     public int progress = 0;
     public int maxProgress = 220;
     public String mob = "";
-    public boolean isValidStructure = false;
-
     public static final int INPUT_SLOT = 0;
     public static final int CATALYST = 1;
     public static final int UPGRADE_SLOT = 2;
@@ -198,8 +196,8 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
     }
 
     public void tick() {
+        assert level != null;
         if (!level.isClientSide()) {
-
             if (this.getBlockState().getValue(SummoningBlock.POWERED)) {
                 // Check for existing entities of the same type within a 3-block range
                 AABB boundingBox = new AABB(getBlockPos().offset(-2, -2, -2).getCenter(), getBlockPos().offset(2, 2, 2).getCenter());
@@ -232,27 +230,29 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
                 }
 
                 sync();
-                Optional<RecipeHolder<SummoningBlockRecipe>> match = level.getRecipeManager()
-                        .getRecipeFor(SummoningBlockRecipe.Type.INSTANCE, inventory, level);
 
-                if (match.isPresent()) {
-                    if (hasInput(this, match.get().value())) {
-                        if (hasCatalyst(this, match.get().value())) {
-                            progress++;
-                            mob = match.get().value().mob();
-                            if (progress >= maxProgress) {
-                                progress = 0;
-                                EntityType<?> entity = Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(mob)));
-                                Entity mobAsEntity = entity.create(level);
-                                mobAsEntity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + 1, getBlockPos().getZ() + 0.5);
-                                level.addFreshEntity(mobAsEntity);
-                                itemHandler.getStackInSlot(INPUT_SLOT).shrink(match.get().value().input().count());
-                            }
-                        } else {
-                            resetProgress();
-                        }
-                    } else {
-                        resetProgress();
+                Optional<RecipeHolder<SummoningBlockRecipe>> selectedRecipe = Optional.empty();
+
+                for (RecipeHolder<SummoningBlockRecipe> recipeHolder : level.getRecipeManager().getRecipesFor(SummoningBlockRecipe.Type.INSTANCE, inventory, level)) {
+                    SummoningBlockRecipe recipe = recipeHolder.value();
+                    if (hasInput(this, recipe) && hasCatalyst(this, recipe)) {
+                        selectedRecipe = Optional.of(recipeHolder);
+                        break;
+                    }
+                }
+
+                if (selectedRecipe.isPresent()) {
+                    RecipeHolder<SummoningBlockRecipe> match = selectedRecipe.get();
+                    progress++;
+                    mob = match.value().mob();
+                    if (progress >= maxProgress) {
+                        progress = 0;
+                        EntityType<?> entity = Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(mob)));
+                        Entity mobAsEntity = entity.create(level);
+                        assert mobAsEntity != null;
+                        mobAsEntity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + 1, getBlockPos().getZ() + 0.5);
+                        level.addFreshEntity(mobAsEntity);
+                        itemHandler.getStackInSlot(INPUT_SLOT).shrink(match.value().input().count());
                     }
                 } else {
                     resetProgress();
@@ -260,6 +260,7 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
             }
         }
     }
+
 
     public Entity getEntity() {
         if (mob.isEmpty()) {
@@ -281,7 +282,7 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
 
     private boolean hasInput(SummoningBlockEntity entity, SummoningBlockRecipe recipe) {
 
-        if (recipe.input().test(entity.itemHandler.getStackInSlot(INPUT_SLOT))) {
+        if (recipe.input().test(entity.itemHandler.getStackInSlot(INPUT_SLOT)) && recipe.catalyst().test(entity.itemHandler.getStackInSlot(CATALYST))) {
             return recipe.input().count() <= entity.itemHandler.getStackInSlot(INPUT_SLOT).getCount();
         }
         return false;

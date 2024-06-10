@@ -10,6 +10,16 @@ TODO: Add screens for all opolis utilities blocks (1.21)
 TODD: Shift clicking into stack limited slots (1.21) (maybe fixed in block breaker)
 TODD: Sapling grower should work on mushrooms?
 
+3.2.0
+
+Added correct summoning block recipes
+Added tags back
+Fixed shift click on resource generator
+Resource generator slot capacity now handled inside the block entity
+Resource generator now has a max output stack of 1024
+Fixed ender ore not dropping fragments
+
+
 3.1.0
 
 Crafter, now smartly allows inputs based on a saved recipe (WIP Some recipe do not save the shape correctly)

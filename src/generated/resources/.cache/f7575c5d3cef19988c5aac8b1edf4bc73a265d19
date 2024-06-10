@@ -1,0 +1,8 @@
+// 1.20.6	2024-06-10T12:20:14.8289104	opolisutilities Item Tags
+aa506fac3c8cecad7354c90d482755034f296a07 data/c/tags/items/nuggets.json
+aa506fac3c8cecad7354c90d482755034f296a07 data/c/tags/items/nuggets/copper.json
+49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/c/tags/items/ores.json
+49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/c/tags/items/ores/ender_ore.json
+e2d1b98f488ceab539404aa58ddf7d93a0fe2505 data/c/tags/items/tools/shears.json
+33ded67d2c6aa30d1d3fa7232a3a3fa3ca2a7f8a data/opolisutilities/tags/items/banned_in_block_placer.json
+2ebc817b7f61aeeb885f4d7afb12ee80152bb798 data/opolisutilities/tags/items/banned_in_item_repairer.json

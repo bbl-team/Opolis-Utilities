@@ -5,6 +5,7 @@ import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItem
 import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
 import com.benbenlaw.opolisutilities.recipe.SpeedUpgradesRecipe;
 import com.benbenlaw.opolisutilities.screen.custom.ItemRepairerMenu;
+import com.benbenlaw.opolisutilities.util.ModTags;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
@@ -82,7 +83,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
 
 
     private final IItemHandler itemRepairerHandler = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> i == INPUT_SLOT,
+            (i, stack ) -> i == INPUT_SLOT && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER),
             i -> i == OUTPUT_SLOT
     );
 

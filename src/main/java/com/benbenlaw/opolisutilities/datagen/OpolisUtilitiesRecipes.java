@@ -886,6 +886,166 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .unlockedBy("has_item", has(Items.LAVA_BUCKET))
                 .save(consumer);
 
+        // ********** Summoning Block ********** //
+
+        //Chicken
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.SEEDS), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:chicken")
+                .unlockedBy("has_item", has(Tags.Items.SEEDS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/chicken"));
+
+        //Cow
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEATHER), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:cow")
+                .unlockedBy("has_item", has(Items.LEATHER))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/cow"));
+
+        //Pig
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.POTATO), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:pig")
+                .unlockedBy("has_item", has(Items.POTATO))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/pig"));
+
+        //Sheep
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.WOOL), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:sheep")
+                .unlockedBy("has_item", has(ItemTags.WOOL))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/sheep"));
+
+        //Wolf
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BONE), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:wolf")
+                .unlockedBy("has_item", has(Items.BONE))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/wolf"));
+
+        //Cat
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:cat")
+                .unlockedBy("has_item", has(Items.COD))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/cat"));
+
+        //Fox
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SWEET_BERRIES), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:fox")
+                .unlockedBy("has_item", has(Items.SWEET_BERRIES))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/fox"));
+
+        //Panda
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BAMBOO), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:panda")
+                .unlockedBy("has_item", has(Items.BAMBOO))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/panda"));
+
+        //Polar Bear
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SALMON), 1),
+                        Ingredient.of( new ItemStack(Items.SNOW)), "minecraft:polar_bear")
+                .unlockedBy("has_item", has(Items.SALMON))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/polar_bear"));
+
+        //Bee
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.SMALL_FLOWERS), 1),
+                        Ingredient.of( new ItemStack(Items.BEEHIVE)), "minecraft:bee")
+                .unlockedBy("has_item", has(ItemTags.SMALL_FLOWERS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/bee"));
+
+        //Armadillo
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SAND), 1),
+                        Ingredient.of( new ItemStack(Items.SAND)), "minecraft:armadillo")
+                .unlockedBy("has_item", has(Items.SAND))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/armadillo"));
+
+        //Goat
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.WHEAT), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:goat")
+                .unlockedBy("has_item", has(Items.WHEAT))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/goat"));
+
+        //Horse
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.HAY_BLOCK), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:horse")
+                .unlockedBy("has_item", has(Items.HAY_BLOCK))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/horse"));
+
+        //Donkey
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GOLDEN_CARROT), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:donkey")
+                .unlockedBy("has_item", has(Items.GOLDEN_CARROT))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/donkey"));
+
+        //Bat
+        /*
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.PUMPKIN_PIE), 1),
+                        Ingredient.of( new ItemStack(Items.CAVE_AIR)), "minecraft:bat")
+                .unlockedBy("has_item", has(Items.PUMPKIN_PIE))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/bat"));
+         */
+
+        //Rabbit
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CARROT), 1),
+                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:rabbit")
+                .unlockedBy("has_item", has(Items.CARROT))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/rabbit"));
+
+        //Squid
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.INK_SAC), 1),
+                        Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:squid")
+                .unlockedBy("has_item", has(Items.INK_SAC))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/squid"));
+
+        //Glow Squid
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GLOW_INK_SAC), 1),
+                        Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:glow_squid")
+                .unlockedBy("has_item", has(Items.GLOW_INK_SAC))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/glow_squid"));
+
+        //Dolphin
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
+                        Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:dolphin")
+                .unlockedBy("has_item", has(Items.COD))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/dolphin"));
+
+        //Turtle
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SEAGRASS), 1),
+                        Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:turtle")
+                .unlockedBy("has_item", has(Items.SEAGRASS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/turtle"));
+
+        //Axolotl
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.TROPICAL_FISH), 1),
+                        Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:axolotl")
+                .unlockedBy("has_item", has(Items.TROPICAL_FISH))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/axolotl"));
+
+        //Parrot
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COCOA_BEANS), 1),
+                        Ingredient.of(new ItemStack(Items.JUNGLE_LEAVES)), "minecraft:parrot")
+                .unlockedBy("has_item", has(Items.COCOA_BEANS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/parrot"));
+
+        //Camel
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CACTUS), 1),
+                        Ingredient.of(new ItemStack(Items.SAND)), "minecraft:camel")
+                .unlockedBy("has_item", has(Items.CACTUS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/camel"));
+
+        //Frog
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LILY_PAD), 1),
+                        Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:frog")
+                .unlockedBy("has_item", has(Items.LILY_PAD))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/frog"));
+
+        //Mooshroom
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.MUSHROOMS), 1),
+                        Ingredient.of(new ItemStack(Items.MYCELIUM)), "minecraft:mooshroom")
+                .unlockedBy("has_item", has(Tags.Items.MUSHROOMS))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/mooshroom"));
+
+        //Llama
+        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEAD), 1),
+                        Ingredient.of(new ItemStack(Items.GRASS_BLOCK)), "minecraft:llama")
+                .unlockedBy("has_item", has(Items.LEAD))
+                .save(consumer, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning_block/llama"));
+
 
 
 

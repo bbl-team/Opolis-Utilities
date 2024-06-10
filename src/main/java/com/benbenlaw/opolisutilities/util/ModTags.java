@@ -12,16 +12,19 @@ public class ModTags {
 
     public static class Blocks {
 
-        public static final TagKey<Block> EMPTY = tag("empty");
+        //OpolisUtilities Tags
         public static final TagKey<Block> BANNED_IN_BLOCK_PLACER = tag("banned_in_block_placer");
-        public static final TagKey<Block> BANNED_IN_ITEM_REPAIRER = tag("banned_in_item_repairer");
+
+
+        //Common Tags
+        public static final TagKey<Block> ENDER_ORE = commonTags("ores/ender_ore");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
         }
 
-        private static TagKey<Block> forgeTag(String name) {
-            return BlockTags.create(new ResourceLocation("forge", name));
+        private static TagKey<Block> commonTags(String name) {
+            return BlockTags.create(new ResourceLocation("c", name));
         }
 
     }
@@ -29,19 +32,22 @@ public class ModTags {
 
     public static class Items {
 
-        public static final TagKey<Item> WALLET_ITEM = tag("wallet_item");
-        public static final TagKey<Item> UPGRADES = tag("upgrades");
+        //OpolisUtilities Item Tags
         public static final TagKey<Item> BANNED_IN_BLOCK_PLACER = tag("banned_in_block_placer");
         public static final TagKey<Item> BANNED_IN_ITEM_REPAIRER = tag("banned_in_item_repairer");
 
+
+        //Common Tags
+        public static final TagKey<Item> ENDER_ORE = commonTags("ores/ender_ore");
+        public static final TagKey<Item> NUGGETS_COPPER = commonTags("nuggets/copper");
 
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
         }
 
-        private static TagKey<Item> forgeTag(String name) {
-            return ItemTags.create(new ResourceLocation("forge", name));
+        private static TagKey<Item> commonTags(String name) {
+            return ItemTags.create(new ResourceLocation("c", name));
         }
 
     }

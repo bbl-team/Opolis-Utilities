@@ -1,0 +1,11 @@
+{
+  "type": "opolisutilities:summoning_block",
+  "catalyst": {
+    "item": "minecraft:grass_block"
+  },
+  "input": {
+    "count": 1,
+    "item": "minecraft:golden_carrot"
+  },
+  "mob": "minecraft:donkey"
+}

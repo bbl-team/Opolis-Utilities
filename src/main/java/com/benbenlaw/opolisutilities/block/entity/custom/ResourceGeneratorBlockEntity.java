@@ -50,6 +50,24 @@ import java.util.Objects;
 public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
+
+        @Override
+        protected int getStackLimit(int slot, ItemStack stack) {
+
+            if (slot == UPGRADE_SLOT) {
+                return 1;
+            }
+
+            if (slot == OUTPUT_SLOT) {
+                return 1024;
+            }
+
+            if (slot == INPUT_SLOT) {
+                return 1;
+            }
+            return slot;
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();

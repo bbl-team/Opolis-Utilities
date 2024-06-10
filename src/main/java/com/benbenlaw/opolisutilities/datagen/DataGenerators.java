@@ -23,6 +23,12 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new OpolisUtilitiesRecipes(packOutput, event.getLookupProvider()));
 
+        OpolisUtilitiesBlockTags blockTags = new OpolisUtilitiesBlockTags(packOutput, lookupProvider, event.getExistingFileHelper());
+        generator.addProvider(event.includeServer(), blockTags);
+
+        OpolisUtilitiesItemTags itemTags = new OpolisUtilitiesItemTags(packOutput, lookupProvider, blockTags, event.getExistingFileHelper());
+        generator.addProvider(event.includeServer(), itemTags);
+
 
 
 

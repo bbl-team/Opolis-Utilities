@@ -66,7 +66,6 @@ public class OpolisUtilities {
 
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
-
         ModBlockEntities.registerCapabilities(event);
     }
 

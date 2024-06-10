@@ -46,20 +46,6 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
 
         assert entity != null;
 
-        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos) {
-
-            @Override
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-
-                if (level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
-                }
-
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
-            }
-        });
         this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 80, 16, level, blockPos) {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
@@ -73,6 +59,20 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
                 }
             }
         });
+        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+
+                if (level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
+                }
+
+                else {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
+                }
+            }
+        });
+
         this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 80, 64));
      //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
 
@@ -104,7 +104,7 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
 
 
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
