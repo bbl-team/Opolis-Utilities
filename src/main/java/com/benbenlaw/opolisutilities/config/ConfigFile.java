@@ -24,6 +24,9 @@ public final class ConfigFile {
     public static final ModConfigSpec.ConfigValue<Boolean> animalNetVillagerMobs;
     public static final ModConfigSpec.ConfigValue<Boolean> animalNetTakesDamage;
     public static final ModConfigSpec.ConfigValue<Boolean> woodenButtonsMakeDoorbellSound;
+    public static final ModConfigSpec.ConfigValue<Boolean> summoningBlockCheckForSameEntityBeforeSpawningNewEntity;
+
+    public static final ModConfigSpec.ConfigValue<Integer> summoningBlockRangeCheck;
 
 
     static {
@@ -77,6 +80,11 @@ public final class ConfigFile {
         woodenButtonsMakeDoorbellSound = BUILDER.comment("Do wooden buttons make a doorbell sound, default = false")
                 .define("Wooden Buttons Make Doorbell Sound", false);
 
+        summoningBlockCheckForSameEntityBeforeSpawningNewEntity = BUILDER.comment("Does the summoning block check for the same entity before spawning a new entity, default = true")
+                .define("Summoning Block Checks For Same Entity Before Spawning New Entity", true);
+
+        summoningBlockRangeCheck = BUILDER.comment("The range the summoning block checks for entities, default = 2")
+                .define("Summoning Block Range Check", 2);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

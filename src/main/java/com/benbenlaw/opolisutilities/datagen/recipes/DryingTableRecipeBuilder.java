@@ -57,7 +57,7 @@ public class DryingTableRecipeBuilder implements RecipeBuilder {
     }
 
     public void save(@NotNull RecipeOutput recipeOutput) {
-        this.save(recipeOutput, new ResourceLocation(OpolisUtilities.MOD_ID, "drying_table/" +
+        this.save(recipeOutput, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "drying_table/" +
                 BuiltInRegistries.ITEM.getKey(this.output.getItem()).getPath()));
     }
 

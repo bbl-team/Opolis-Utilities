@@ -4,7 +4,6 @@ package com.benbenlaw.opolisutilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
-import com.benbenlaw.opolisutilities.enchantment.ModEnchantments;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
@@ -45,25 +44,16 @@ public class OpolisUtilities {
         ModMenuTypes.register(modEventBus);
         ModAttachments.register(modEventBus);
 
-
         modEventBus.addListener(this::registerCapabilities);
 
         ModRecipes.register(modEventBus);
         ModParticles.register(modEventBus);
-        ModEnchantments.register(modEventBus);
         ModSounds.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
 
-
-
     }
-
-
-
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
         ModBlockEntities.registerCapabilities(event);

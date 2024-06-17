@@ -31,9 +31,9 @@ public class ModRecipes{
 
 
     //Speed Upgrades
-    public static final Supplier<RecipeSerializer<SpeedUpgradesRecipe>> RG2_SPEED_BLOCKS_SERIALIZER =
+    public static final Supplier<RecipeSerializer<SpeedUpgradesRecipe>> SPEED_UPGRADE_SERIALIZER =
             SERIALIZER.register("speed_upgrades", () -> SpeedUpgradesRecipe.Serializer.INSTANCE);
-    public static final Supplier<RecipeType<SpeedUpgradesRecipe>> RG2_SPEED_BLOCKS_TYPE =
+    public static final Supplier<RecipeType<SpeedUpgradesRecipe>> SPEED_UPGRADE_TYPE =
             TYPES.register("speed_upgrades", () -> SpeedUpgradesRecipe.Type.INSTANCE);
 
     //Resource Generator
@@ -48,7 +48,7 @@ public class ModRecipes{
     public static final Supplier<RecipeSerializer<FluidGeneratorRecipe>> FLUID_GENERATOR_SERIALIZER =
             SERIALIZER.register("fluid_generator", () -> FluidGeneratorRecipe.Serializer.INSTANCE);
 
-    public static final Supplier<RecipeType<FluidGeneratorRecipe>> FLUID_GENERATOR__TYPE =
+    public static final Supplier<RecipeType<FluidGeneratorRecipe>> FLUID_GENERATOR_TYPE =
             TYPES.register("fluid_generator", () -> FluidGeneratorRecipe.Type.INSTANCE);
 
     //Summoning Block
@@ -57,15 +57,6 @@ public class ModRecipes{
 
     public static final Supplier<RecipeType<SummoningBlockRecipe>> SUMMONING_BLOCK_TYPE =
             TYPES.register("summoning_block", () -> SummoningBlockRecipe.Type.INSTANCE);
-
-    /*
-
-
-    public static final RegistryObject<RecipeSerializer<UpgradeRecipeUtil>> UPGRADE_RECIPE_UTIL_SERIALIZER =
-            SERIALIZER.register("upgrades", () -> UpgradeRecipeUtil.Serializer.INSTANCE);
-
-     */
-
 
     //Catalogue
 
@@ -80,6 +71,7 @@ public class ModRecipes{
 
     public static void register(IEventBus eventBus) {
         SERIALIZER.register(eventBus);
+        TYPES.register(eventBus);
     }
 
 

@@ -1,9 +1,10 @@
 package com.benbenlaw.opolisutilities.recipe;
 
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
-public class NoInventoryRecipe extends RecipeWrapper {
+public class NoInventoryRecipe extends RecipeWrapper implements RecipeInput {
     public static final NoInventoryRecipe INSTANCE = new NoInventoryRecipe();
 
     private NoInventoryRecipe() {
@@ -11,5 +12,9 @@ public class NoInventoryRecipe extends RecipeWrapper {
     }
 
 
+    @Override
+    public int size() {
+        return 0;
+    }
 }
 

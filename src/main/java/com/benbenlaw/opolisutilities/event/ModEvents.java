@@ -50,6 +50,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -177,6 +178,9 @@ public class ModEvents {
     }
 
 
+    public static final List<String> TAGS_TO_REMOVE = List.of(
+            "SleepingX", "SleepingY", "SleepingZ" // We need to remove sleeping tags because they case issues
+    );
 
     @SubscribeEvent
     public static void onEntityRightClickEvent(PlayerInteractEvent.EntityInteract event) {
@@ -194,13 +198,6 @@ public class ModEvents {
                 ItemStack itemstack = player.getItemInHand(hand);
                 DataComponentMap resultItemWithDataComponents = itemstack.getComponents();
                 itemstack.applyComponents(resultItemWithDataComponents);
-                CompoundTag tag = new CompoundTag() {
-                    @Override
-                    public @NotNull CompoundTag copy() {
-                        return (CompoundTag) itemstack.getComponents();
-                    }
-
-                };
 
                 boolean hostileMobs = ConfigFile.animalNetHostileMobs.get();
                 boolean waterMobs = ConfigFile.animalNetWaterMobs.get();
@@ -217,10 +214,14 @@ public class ModEvents {
 
                         // Capture the mob
                         assert resultItemWithDataComponents != null;
+
+                        final var nbt = new CompoundTag();
+                        livingEntity.saveWithoutId(nbt);
+                        TAGS_TO_REMOVE.forEach(nbt::remove);
                         itemstack.set(ModDataComponents.ENTITY_TYPE.get(), EntityType.getKey(livingEntity.getType()).toString());
-                        livingEntity.saveWithoutId(tag);
-                        stack.applyComponents(resultItemWithDataComponents);
+                        itemstack.set(ModDataComponents.ENTITY_DATA.get(), nbt);
                         livingEntity.remove(Entity.RemovalReason.DISCARDED);
+
                         player.sendSystemMessage(Component.translatable("tooltips.animal_net.mob_caught").withStyle(ChatFormatting.GREEN));
                         level.playSound(null, livingEntity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS);
 

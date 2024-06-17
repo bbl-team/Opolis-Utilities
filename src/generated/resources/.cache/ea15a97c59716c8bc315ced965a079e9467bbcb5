@@ -1,7 +1,7 @@
-// 1.20.6	2024-06-10T12:20:14.8273927	opolisutilities Block Tags
-49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/c/tags/blocks/ores.json
-49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/c/tags/blocks/ores/ender_ore.json
-cd8bff4f1b87e1fa189c987a3d46e8491230c04e data/minecraft/tags/blocks/mineable/axe.json
-adaa30c226e2b454898ab6739f8be8b93b3b1837 data/minecraft/tags/blocks/mineable/pickaxe.json
-49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/minecraft/tags/blocks/needs_iron_tool.json
-d69997a1f00957f15f8f4cc638bee90336e63587 data/opolisutilities/tags/blocks/banned_in_block_placer.json
+// 1.21	2024-06-14T17:23:03.4254214	opolisutilities Block Tags
+49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/c/tags/block/ores.json
+49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/c/tags/block/ores/ender_ore.json
+cd8bff4f1b87e1fa189c987a3d46e8491230c04e data/minecraft/tags/block/mineable/axe.json
+adaa30c226e2b454898ab6739f8be8b93b3b1837 data/minecraft/tags/block/mineable/pickaxe.json
+49a3a75f78714273f04a2c47b9be7ce3bc184d61 data/minecraft/tags/block/needs_iron_tool.json
+d69997a1f00957f15f8f4cc638bee90336e63587 data/opolisutilities/tags/block/banned_in_block_placer.json

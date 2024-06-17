@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class ResourceGeneratorInputSlot extends SlotItemHandler {
 
@@ -15,4 +16,11 @@ public class ResourceGeneratorInputSlot extends SlotItemHandler {
         this.level = level;
         this.blockPos = blockPos;
     }
+
+    @Override
+    public boolean mayPlace(@NotNull ItemStack stack) {
+        return level.getBlockState(blockPos.above()).isAir();
+
+    }
+
 }

@@ -9,15 +9,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 
-public record SummoningBlockRecipe(SizedIngredient input, Ingredient catalyst, String mob) implements Recipe<SimpleContainer> {
+public record SummoningBlockRecipe(SizedIngredient input, Ingredient catalyst, String mob) implements Recipe<RecipeInput> {
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
@@ -27,12 +24,12 @@ public record SummoningBlockRecipe(SizedIngredient input, Ingredient catalyst, S
     }
 
     @Override
-    public boolean matches(SimpleContainer container, @NotNull Level level) {
+    public boolean matches(RecipeInput container, @NotNull Level level) {
         return input.test(container.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer container, HolderLookup.Provider provider) {
+    public ItemStack assemble(RecipeInput container, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 

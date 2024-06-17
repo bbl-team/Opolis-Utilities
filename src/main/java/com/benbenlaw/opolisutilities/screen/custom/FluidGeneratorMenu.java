@@ -44,6 +44,20 @@ public class FluidGeneratorMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
 
         assert blockEntity != null;
+
+        this.addSlot(new ResourceGeneratorInputSlot(blockEntity.getItemStackHandler(), 0, 80, 16, level, blockPos) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+
+                if (level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
+                }
+
+                else {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
+                }
+            }
+        });
         this.addSlot(new ResourceGeneratorUpgradeSlot(blockEntity.getItemStackHandler(), 1, 116, 16, level, blockPos) {
 
             @Override
@@ -58,19 +72,7 @@ public class FluidGeneratorMenu extends AbstractContainerMenu {
                 }
             }
         });
-        this.addSlot(new ResourceGeneratorInputSlot(blockEntity.getItemStackHandler(), 0, 80, 16, level, blockPos) {
-            @Override
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
 
-                if (level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
-                }
-
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
-            }
-        });
 
         addDataSlots(data);
 

@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity.INPUT_SLOT;
 import static com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity.UPGRADE_SLOT;
@@ -27,7 +28,7 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
 
     Level level;
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/summoning_block_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/summoning_block_gui.png");
 
     public SummoningBlockScreen(SummoningBlockMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -59,9 +60,9 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
+        renderTickRate(guiGraphics, mouseX, mouseY, x, y);
 
         if (this.menu.blockEntity != null) {
-
             if (!this.menu.blockEntity.getBlockState().getValue(SummoningBlock.POWERED)) {
                 this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
                         PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
@@ -70,6 +71,13 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
                         PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
             }
         }
+    }
 
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
+            guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
+                    this.topPos + 68, 0x3F3F3F, false);
+        }
     }
 }

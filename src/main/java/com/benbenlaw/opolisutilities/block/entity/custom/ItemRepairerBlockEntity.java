@@ -61,6 +61,8 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         }
     };
 
+    private FakePlayer fakePlayer;
+
     public void sync() {
         if (level instanceof ServerLevel serverLevel) {
             LevelChunk chunk = serverLevel.getChunkAt(getBlockPos());
@@ -81,7 +83,6 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     private static final int OUTPUT_SLOT = 1;
     public static final int UPGRADE_SLOT = 2;
 
-
     private final IItemHandler itemRepairerHandler = new InputOutputItemHandler(itemHandler,
             (i, stack ) -> i == INPUT_SLOT && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER),
             i -> i == OUTPUT_SLOT
@@ -100,6 +101,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     public ItemStackHandler getItemStackHandler() {
         return this.itemHandler;
     }
+
     public ItemRepairerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.ITEM_REPAIRER_BLOCK_ENTITY.get(), blockPos, blockState);
         this.data = new ContainerData() {
@@ -122,6 +124,11 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                 return 2;
             }
         };
+
+        // Initialize fakePlayer if level is a ServerLevel
+        if (level instanceof ServerLevel serverLevel) {
+            this.fakePlayer = createFakePlayer(serverLevel);
+        }
     }
 
     @Override
@@ -171,6 +178,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         compoundTag.putInt("item_repairer.progress", progress);
         compoundTag.putInt("item_repairer.maxProgress", maxProgress);
     }
+
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
@@ -202,10 +210,13 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         ItemStack copiedStack = stackInSlot0.copy();
 
         if (!level.isClientSide()) {
-            sync();
+            // Ensure fakePlayer is initialized
+            if (this.fakePlayer == null && level instanceof ServerLevel serverLevel) {
+                this.fakePlayer = createFakePlayer(serverLevel);
+            }
 
             // Set Tickrate
-            boolean useInventoySpeedBlocks = true;
+            boolean useInventorySpeedBlocks = true;
 
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
@@ -215,7 +226,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
                             Block speedBlock = Block.byItem(itemStack.getItem());
                             if (level.getBlockState(blockPos.above(1)).is(speedBlock)) {
                                 maxProgress = match.value().tickRate();
-                                useInventoySpeedBlocks = false;
+                                useInventorySpeedBlocks = false;
                                 break;
                             }
                         }
@@ -228,20 +239,18 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             }
 
             // Reset if upgrade is removed
-            if (itemHandler.getStackInSlot(2).isEmpty() && useInventoySpeedBlocks) {
+            if (itemHandler.getStackInSlot(2).isEmpty() && useInventorySpeedBlocks) {
                 maxProgress = 220;
             }
 
             if (inputAsStack.isDamageableItem() && !(damageValue == 0) && blockState.getValue(POWERED)) {
-
                 blockEntity.progress++;
                 playBreakingSound(level, blockPos);
                 if (blockEntity.progress > blockEntity.maxProgress) {
 
                     if (!isDamaged) {
-                        blockEntity.itemHandler.getStackInSlot(0).hurtAndBreak(-1, createFakePlayer((ServerLevel) level), LivingEntity.getEquipmentSlotForItem(ItemStack.EMPTY));
+                        blockEntity.itemHandler.getStackInSlot(0).hurtAndBreak(-1, fakePlayer, fakePlayer.getEquipmentSlotForItem(ItemStack.EMPTY));
                         level.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, (float) 0.5, 3, false);
-
                     }
                     blockEntity.resetProgress();
                     setChanged();
@@ -272,9 +281,11 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     private FakePlayer createFakePlayer(ServerLevel level) {
         return new FakePlayer(level, new GameProfile(UUID.randomUUID(), "ItemRepairer"));
     }
+
     private void resetProgress() {
         this.progress = 0;
     }
+
     // PLAY REPAIRER SOUND //
     int playingSound = 0;
     private void playBreakingSound(Level level, BlockPos blockPos) {
@@ -285,6 +296,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             playingSound = 0;
         }
     }
+
     // PLAY COMPLETED SOUND //
     private void playCompletedSound(Level level, BlockPos blockPos) {
         level.playSound(null, blockPos, SoundEvents.PLAYER_LEVELUP,

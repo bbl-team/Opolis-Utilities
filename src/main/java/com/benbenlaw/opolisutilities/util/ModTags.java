@@ -20,11 +20,11 @@ public class ModTags {
         public static final TagKey<Block> ENDER_ORE = commonTags("ores/ender_ore");
 
         private static TagKey<Block> tag(String name) {
-            return BlockTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, name));
         }
 
         private static TagKey<Block> commonTags(String name) {
-            return BlockTags.create(new ResourceLocation("c", name));
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }
 
     }
@@ -43,11 +43,11 @@ public class ModTags {
 
 
         private static TagKey<Item> tag(String name) {
-            return ItemTags.create(new ResourceLocation(OpolisUtilities.MOD_ID, name));
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, name));
         }
 
         private static TagKey<Item> commonTags(String name) {
-            return ItemTags.create(new ResourceLocation("c", name));
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }
 
     }

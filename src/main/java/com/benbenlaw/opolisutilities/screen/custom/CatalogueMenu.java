@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -207,7 +208,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
             RecipeHolder<CatalogueRecipe> catalogueRecipe = this.recipes.get(this.selectedRecipeIndex.get());
             this.resultContainer.setRecipeUsed(catalogueRecipe);
             this.lastUsedRecipe = catalogueRecipe.value();
-            this.resultSlot.set(catalogueRecipe.value().assemble((SimpleContainer) this.container, this.level.registryAccess()));
+            this.resultSlot.set(catalogueRecipe.value().assemble((RecipeInput) this.container, this.level.registryAccess()));
         } else {
             this.resultSlot.set(ItemStack.EMPTY);
         }
@@ -236,6 +237,7 @@ public class CatalogueMenu extends AbstractContainerMenu {
             ItemStack itemstack1 = slot.getItem();
             Item item = itemstack1.getItem();
             itemstack = itemstack1.copy();
+
             if (pIndex == 1) {
                 item.onCraftedBy(itemstack1, pPlayer.level(), pPlayer);
                 if (!this.moveItemStackTo(itemstack1, 2, 38, true)) {
@@ -246,10 +248,10 @@ public class CatalogueMenu extends AbstractContainerMenu {
                 if (!this.moveItemStackTo(itemstack1, 2, 38, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (this.level.getRecipeManager().getRecipeFor(CatalogueRecipe.Type.INSTANCE, new SimpleContainer(itemstack1), this.level).isPresent()) {
-                if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
-                    return ItemStack.EMPTY;
-                }
+       //     } else if (this.level.getRecipeManager().getRecipeFor(CatalogueRecipe.Type.INSTANCE, new SimpleContainer(itemstack1), this.level).isPresent()) {
+      //          if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+        //            return ItemStack.EMPTY;
+        //        }
             } else if (pIndex >= 2 && pIndex < 29) {
                 if (!this.moveItemStackTo(itemstack1, 29, 38, false)) {
                     return ItemStack.EMPTY;

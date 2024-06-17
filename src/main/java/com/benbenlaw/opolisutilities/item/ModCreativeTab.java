@@ -12,9 +12,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 
 public class ModCreativeTab {
-
-
-
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpolisUtilities.MOD_ID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> OPOLIS_UTILITIES_TAB = CREATIVE_MODE_TABS.register("opolisutilities", () -> CreativeModeTab.builder()

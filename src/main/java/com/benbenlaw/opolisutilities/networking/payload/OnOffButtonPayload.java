@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record OnOffButtonPayload(BlockPos blockPos) implements CustomPacketPayload {
 
-    public static final Type<OnOffButtonPayload> TYPE = new Type<>(new ResourceLocation(OpolisUtilities.MOD_ID, "on_off_button"));
+    public static final Type<OnOffButtonPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "on_off_button"));
 
     @Override
     public Type<OnOffButtonPayload> type() {

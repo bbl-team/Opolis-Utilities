@@ -19,10 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -102,7 +99,7 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
 
                     assert entity != null;
                     tickRate = entity.maxProgress;
-                    ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(entity.resource)).getDefaultInstance();
+                    ItemStack itemStack = BuiltInRegistries.ITEM.get(ResourceLocation.parse(entity.resource)).getDefaultInstance();
                     String itemName = itemStack.getDisplayName().getString();
 
                     if (tickRate == 220) {

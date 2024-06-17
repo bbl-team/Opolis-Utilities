@@ -13,7 +13,7 @@ import java.util.Set;
 public class ModLootTables {
 
     private static ResourceKey<LootTable> register(String string) {
-        return register(new ResourceLocation(OpolisUtilities.MOD_ID, string));
+        return register(ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, string));
     }
 
     private static final Set<ResourceKey<LootTable>> LOCATIONS = Sets.newHashSet();

@@ -364,13 +364,13 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
             // Check if input slot is empty or there is no valid block above
             if (this.itemHandler.getStackInSlot(0).isEmpty() && !hasInputInWorld) {
                 progress = 0;
-            } else if (isValidStructure) {
+            } else if (isValidStructure && FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity()) {
                 progress++;
 
                 if (progress >= maxProgress) {
                     progress = 0;
                     if (level.getBlockState(blockPos).is(ModBlocks.FLUID_GENERATOR.get())) {
-                        Fluid fluidStack = BuiltInRegistries.FLUID.get(new ResourceLocation(resource));
+                        Fluid fluidStack = BuiltInRegistries.FLUID.get(ResourceLocation.parse(resource));
                         this.FLUID_TANK.fill(new FluidStack(fluidStack, fluidAmount), IFluidHandler.FluidAction.EXECUTE);
                         setChanged();
                         sync();

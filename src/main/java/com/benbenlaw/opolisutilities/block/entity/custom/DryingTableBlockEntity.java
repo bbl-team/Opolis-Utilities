@@ -19,6 +19,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -26,8 +27,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -210,13 +213,20 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         if (!level.isClientSide()) {
 
             sync();
-            SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
-            for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-                inventory.setItem(i, this.itemHandler.getStackInSlot(i));
-            }
+            RecipeInput inventory = new RecipeInput() {
+                @Override
+                public @NotNull ItemStack getItem(int index) {
+                    return itemHandler.getStackInSlot(index);
+                }
 
-            Optional<RecipeHolder<DryingTableRecipe>> match = level.getRecipeManager()
-                    .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
+                @Override
+                public int size() {
+                    return itemHandler.getSlots();
+                }
+            };
+
+            Optional<RecipeHolder<DryingTableRecipe>> match = Optional.ofNullable(level.getRecipeManager()
+                    .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level).orElse(null));
 
             Optional<RecipeHolder<SoakingTableRecipe>> matchSoaking = level.getRecipeManager()
                     .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);
@@ -270,10 +280,17 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         assert level != null;
         if(!level.isClientSide()) {
 
-            SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-            for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-                inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-            }
+            RecipeInput inventory = new RecipeInput() {
+                @Override
+                public @NotNull ItemStack getItem(int index) {
+                    return itemHandler.getStackInSlot(index);
+                }
+
+                @Override
+                public int size() {
+                    return itemHandler.getSlots();
+                }
+            };
 
             //DRYING
 
@@ -328,7 +345,7 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
         return 0 <= recipe.getDuration();
     }
 
-    private boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
+    private boolean canInsertItemIntoOutputSlot(RecipeInput inventory, ItemStack output) {
         return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
     }
 

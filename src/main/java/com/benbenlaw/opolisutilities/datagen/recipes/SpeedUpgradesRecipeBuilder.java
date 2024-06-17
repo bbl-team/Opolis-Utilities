@@ -55,7 +55,7 @@ public class SpeedUpgradesRecipeBuilder implements RecipeBuilder {
     }
 
     public void save(@NotNull RecipeOutput recipeOutput) {
-        this.save(recipeOutput, new ResourceLocation(OpolisUtilities.MOD_ID, "speed_upgrades/" +
+        this.save(recipeOutput, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/" +
                 BuiltInRegistries.ITEM.getKey(Objects.requireNonNull(this.input.getItems()[0].getItem())).getPath()));
     }
 

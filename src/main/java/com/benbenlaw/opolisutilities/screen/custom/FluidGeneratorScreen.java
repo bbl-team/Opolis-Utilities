@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.screen.utils.FluidStackWidget;
 import com.benbenlaw.opolisutilities.screen.utils.FluidTankRenderer;
 import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -23,26 +25,13 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
     private FluidTankRenderer renderer;
 
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/fluid_generator_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/fluid_generator_gui.png");
 
     public FluidGeneratorScreen(FluidGeneratorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.level = pMenu.level;
     }
 
-    @Override
-    protected void init() {
-        super.init();
-        assignFluidRenderer();
-    }
-
-    @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-
-        renderFluidAreaTooltips(guiGraphics, mouseX, mouseY, x, y);
-    }
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -51,6 +40,7 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
         if(menu.isCrafting()) {
@@ -58,19 +48,24 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         }
     }
 
-
-
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+        assignFluidRenderer();
+
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
+        addRenderableOnly(new FluidStackWidget(this, getMenu().blockEntity.FLUID_TANK, this.leftPos + 14, this.topPos + 15, 14, 56));
+
+   //     assignFluidRenderer();
+   //     renderFluidAreaTooltips(guiGraphics, mouseX, mouseY, x, y);
 
         renderOutputSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
-        renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
+    //    renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
+        renderTickRate(guiGraphics, mouseX, mouseY, x, y);
 
         if (!menu.blockEntity.FLUID_TANK.getFluid().isEmpty()) {
             renderer.render(guiGraphics, x + 14, y + 11, menu.blockEntity.FLUID_TANK.getFluid());
@@ -124,9 +119,22 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         renderer = new FluidTankRenderer(64000, 14, 64, 1);
     }
 
+
     private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(pMouseX, pMouseY, x, y, 14, 11, 14, 64)) {
-            guiGraphics.renderTooltip(this.font, renderer.getTooltips(menu.blockEntity.FLUID_TANK.getFluid()), Optional.empty(), pMouseX - x, pMouseY - y);
+            guiGraphics.renderTooltip(this.font, renderer.getTooltips(menu.blockEntity.FLUID_TANK.getFluid()), Optional.empty(), pMouseX, pMouseY);
+        }
+    }
+
+
+
+
+
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
+            guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
+                    this.topPos + 68, 0x3F3F3F, false);
         }
     }
 }

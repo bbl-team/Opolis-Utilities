@@ -59,7 +59,7 @@ public class SummoningRecipeBuilder implements RecipeBuilder {
     }
 
     public void save(@NotNull RecipeOutput recipeOutput) {
-        this.save(recipeOutput, new ResourceLocation(OpolisUtilities.MOD_ID, "summoning/")
+        this.save(recipeOutput, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning/")
         );
     }
 

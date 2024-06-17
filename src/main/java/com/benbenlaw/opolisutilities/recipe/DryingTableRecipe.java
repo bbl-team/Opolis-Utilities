@@ -9,15 +9,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 
-public record DryingTableRecipe(SizedIngredient input, ItemStack output, int duration) implements Recipe<SimpleContainer> {
+public record DryingTableRecipe(SizedIngredient input, ItemStack output, int duration) implements Recipe<RecipeInput> {
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
@@ -27,7 +24,7 @@ public record DryingTableRecipe(SizedIngredient input, ItemStack output, int dur
     }
 
     @Override
-    public boolean matches(SimpleContainer container, @NotNull Level level) {
+    public boolean matches(RecipeInput container, @NotNull Level level) {
         return input.test(container.getItem(0)) && duration >= 0;
     }
 
@@ -42,7 +39,7 @@ public record DryingTableRecipe(SizedIngredient input, ItemStack output, int dur
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull SimpleContainer container, HolderLookup.@NotNull Provider provider) {
+    public @NotNull ItemStack assemble(@NotNull RecipeInput container, HolderLookup.@NotNull Provider provider) {
         return this.output.copy();
     }
 

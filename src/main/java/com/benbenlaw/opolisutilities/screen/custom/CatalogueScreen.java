@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class CatalogueScreen extends AbstractContainerScreen<CatalogueMenu> {
 
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/shop_inventory.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/shop_inventory.png");
 
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;

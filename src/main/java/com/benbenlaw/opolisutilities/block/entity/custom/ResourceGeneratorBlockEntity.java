@@ -334,7 +334,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 if (progress >= maxProgress) {
                     progress = 0;
                     if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
-                        ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(resource)).getDefaultInstance();
+                        ItemStack itemStack = BuiltInRegistries.ITEM.get(ResourceLocation.parse(resource)).getDefaultInstance();
                         this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemStack.getItem()), false);
                         setChanged();
                         sync();

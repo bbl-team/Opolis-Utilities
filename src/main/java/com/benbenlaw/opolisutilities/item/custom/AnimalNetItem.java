@@ -49,7 +49,7 @@ public class AnimalNetItem extends Item {
         InteractionHand hand = context.getHand();
         assert player != null;
         ItemStack itemstack = player.getItemInHand(hand);
-        BlockPos pos = context.getClickedPos();
+        BlockPos blockPos = context.getClickedPos();
         Direction direction = context.getClickedFace();
     //    CompoundTag nbt = itemstack.getTag();
 
@@ -65,20 +65,18 @@ public class AnimalNetItem extends Item {
                     // Spawn the mob
                     Entity entity = type.create(level);
                     assert entity != null;
-                //    entity.load(itemstack.getTag());
-                    entity.absMoveTo(pos.relative(direction).getX() + 0.5, pos.relative(direction).getY(), pos.relative(direction).getZ() + 0.5, 0, 0);
-
-
+                    entity.load(Objects.requireNonNull(itemstack.get(ModDataComponents.ENTITY_DATA)));
+                    entity.absMoveTo(blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, 0, 0);
                     itemstack.remove(ModDataComponents.ENTITY_TYPE);
-
+                    itemstack.remove(ModDataComponents.ENTITY_DATA);
 
                     //TODO Fix Damage Values not being applied correctly
                     if (ConfigFile.animalNetTakesDamage.get().equals(true)) {
-                        player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getEquipmentSlotForItem(this.asItem().getDefaultInstance()));
+                        player.getItemInHand(hand).hurtAndBreak(1, player, player.getEquipmentSlotForItem(this.asItem().getDefaultInstance()));
                     }
 
                     level.addFreshEntity(entity);
-                    level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS);
+                    level.playSound(null, blockPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS);
 
 
                 } else {

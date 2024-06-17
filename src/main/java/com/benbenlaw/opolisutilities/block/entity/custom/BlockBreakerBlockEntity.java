@@ -62,7 +62,15 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
             sync();
         }
 
+        @Override
+        protected int getStackLimit(int slot, @NotNull ItemStack stack) {
+            if (slot == 1 || slot == 2)
+                return 1;
+            return super.getStackLimit(slot, stack);
+        }
     };
+
+    private FakePlayer fakePlayer;
 
     public void sync() {
         if (level instanceof ServerLevel serverLevel) {
@@ -168,6 +176,12 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                 return 2;
             }
         };
+
+
+        // Initialize fakePlayer if level is a ServerLevel
+        if (level instanceof ServerLevel serverLevel) {
+            this.fakePlayer = createFakePlayer(serverLevel);
+        }
     }
 
     @Override
@@ -307,7 +321,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                                     maxProgress = 0;
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), LivingEntity.getEquipmentSlotForItem(tool));
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -325,7 +339,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), LivingEntity.getEquipmentSlotForItem(tool));
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -344,7 +358,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), LivingEntity.getEquipmentSlotForItem(tool));
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {

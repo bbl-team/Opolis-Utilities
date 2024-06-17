@@ -53,7 +53,7 @@ public class FluidGeneratorRecipeBuilder implements RecipeBuilder {
     }
 
     public void save(@NotNull RecipeOutput recipeOutput) {
-        this.save(recipeOutput, new ResourceLocation(OpolisUtilities.MOD_ID, "fluid_generator/" +
+        this.save(recipeOutput, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "fluid_generator/" +
                 BuiltInRegistries.FLUID.getKey(this.input.getFluid()).getPath()));
     }
 

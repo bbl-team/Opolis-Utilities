@@ -115,15 +115,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
         Level pLevel = this.level;
         BlockPos pPos = this.worldPosition;
         assert pLevel != null;
-        BlockState blockState = pLevel.getBlockState(pPos);
 
-        if (maxTickChecker >= 20) {
-            maxTickChecker = 0;
-            maxProgress = blockState.getValue(RedstoneClockBlock.TIMER);
-        }
-
-
-        assert level != null;
         if (!level.isClientSide()) {
 
             progress++;

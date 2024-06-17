@@ -11,11 +11,6 @@ public class BlacklistMaxStackSizeOneSlot extends SlotItemHandler {
     }
 
     @Override
-    public boolean mayPlace(ItemStack stack) {
-        return stack.getCount() <= 1;
-    }
-
-    @Override
     public int getMaxStackSize(ItemStack stack) {
         ItemStack maxAdd = stack.copy();
         int maxInput = 1;

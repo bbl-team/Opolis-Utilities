@@ -14,6 +14,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -102,8 +103,9 @@ public class EnderOreBlock extends Block {
     }
 
     @Override
-    public int getExpDrop(@NotNull BlockState blockState, net.minecraft.world.level.@NotNull LevelReader levelReader, @NotNull RandomSource randomSource, @NotNull BlockPos blockPos, int fortune, int silktouch) {
-        return silktouch == 0 ? 1 + randomSource.nextInt(5) : 0;
+    public int getExpDrop(BlockState state, LevelReader level, RandomSource randomSource, BlockPos pos) {
+        return  1 + randomSource.nextInt(5);
+
     }
 
     @Override
@@ -114,7 +116,6 @@ public class EnderOreBlock extends Block {
     }
 
     private static void spawnParticles(Level level, BlockPos blockPosWorld) {
-        double d0 = 0.5625;
         RandomSource randomsource = level.random;
 
         for (Direction direction : Direction.values()) {

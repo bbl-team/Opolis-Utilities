@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class EnderScramblerScreen extends AbstractContainerScreen<EnderScramblerMenu> {
         private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/ender_scrambler_gui.png");
+                ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/ender_scrambler_gui.png");
 
     public EnderScramblerScreen(EnderScramblerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

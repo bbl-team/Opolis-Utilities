@@ -39,7 +39,10 @@
   "block.opolisutilities.fluid_generator": "Fluid Generator",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
+
   "block.opolisutilities.redstone_clock": "Redstone Clock",
+  "gui.opolisutilities.shift": "SHIFT +/- 50",
+
   "block.opolisutilities.ender_scrambler": "Ender Scrambler",
   "block.opolisutilities.item_repairer": "Item Repairer",
   "block.opolisutilities.block_placer": "Block Placer",
@@ -63,7 +66,9 @@
 
   "block.opolisutilities.catalogue": "Catalogue",
   "block.opolisutilities.clicker": "Clicker",
-  "block.opolisutilities.crafter": "Crafter (BETA)",
+  "block.opolisutilities.crafter": "Advanced Crafter (BETA)",
+
+  "enchantment.opolisutilities.wardens_smite": "Warden's Smite",
 
   "tooltips.home_stone.hover.shift": "Press SHIFT for more info",
   "tooltips.home_stone.hover.alt": "Press ALT for more info",

@@ -5,7 +5,9 @@ import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.RedstoneClockBlockEntity;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -51,11 +53,22 @@ public record PacketIncreaseTickButton() {
 
         //Redstone Clock Increase Tick Button
         if (blockState.getBlock() instanceof RedstoneClockBlock) {
+
+            int increment = Screen.hasShiftDown() ? 50 : 10;
             int timer = blockState.getValue(RedstoneClockBlock.TIMER);
+
             if (timer < RedstoneClockBlock.MAX_TIMER) {
-                level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get().defaultBlockState().setValue(RedstoneClockBlock.TIMER, timer + 10)
+                level.setBlockAndUpdate(blockPos, ModBlocks.REDSTONE_CLOCK.get()
+                        .defaultBlockState()
+                        .setValue(RedstoneClockBlock.TIMER, timer + increment)
                         .setValue(RedstoneClockBlock.POWERED, blockState.getValue(RedstoneClockBlock.POWERED)));
+
+                RedstoneClockBlockEntity entity = (RedstoneClockBlockEntity) level.getBlockEntity(blockPos);
+                assert entity != null;
+                entity.maxProgress = timer + increment;
+                entity.progress = 0;
             }
+
         }
 
         //Ender Scrambler Increase Range Button

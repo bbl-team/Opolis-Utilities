@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/block_placer_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/block_placer_gui.png");
 
     public BlockPlacerScreen(BlockPlacerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

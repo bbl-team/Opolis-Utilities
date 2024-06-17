@@ -26,6 +26,10 @@ public class OpolisUtilitiesItemTags extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
 
+        //Enchantments
+
+        this.tag(ItemTags.DURABILITY_ENCHANTABLE).add(ModItems.WOODEN_SHEARS.get(), ModItems.HOME_STONE.get());
+
         //Ores
         tag(ModTags.Items.ENDER_ORE).add(ModBlocks.ENDER_ORE.get().asItem(), ModBlocks.DEEPSLATE_ENDER_ORE.get().asItem());
         tag(Tags.Items.ORES).add(ModBlocks.ENDER_ORE.get().asItem(), ModBlocks.DEEPSLATE_ENDER_ORE.get().asItem());

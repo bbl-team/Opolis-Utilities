@@ -23,16 +23,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
-    public static final WidgetSprites RECIPE_BUTTON_SPRITES = new WidgetSprites(
-            new ResourceLocation(OpolisUtilities.MOD_ID, "on"), new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button"));
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/crafter_gui.png");
 
-    private static final ResourceLocation ON_BUTTON =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_on_button.png");
-
-    private static final ResourceLocation OFF_BUTTON =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/crafter_off_button.png");
 
     public CrafterScreen(CrafterMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

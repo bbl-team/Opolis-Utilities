@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record SaveRecipePayload(BlockPos blockPos) implements CustomPacketPayload {
 
-    public static final Type<SaveRecipePayload> TYPE = new Type<>(new ResourceLocation(OpolisUtilities.MOD_ID, "save_recipe"));
+    public static final Type<SaveRecipePayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "save_recipe"));
 
     @Override
     public Type<SaveRecipePayload> type() {

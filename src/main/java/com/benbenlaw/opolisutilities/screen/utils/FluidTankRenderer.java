@@ -58,19 +58,21 @@ public class FluidTankRenderer {
         float uMax = textureSprite.getU1();
         float vMin = textureSprite.getV0();
         float vMax = textureSprite.getV1();
-        uMax = uMax - (maskRight / 16F * (uMax - uMin));
-        vMax = vMax - (maskTop / 16F * (vMax - vMin));
+
+        // Calculate the adjusted uMax and vMax based on the mask values
+        uMax = uMin + ((16 - maskRight) / 16.0f) * (uMax - uMin);
+        vMax = vMin + ((16 - maskTop) / 16.0f) * (vMax - vMin);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.vertex(matrix, xCoord, yCoord + 16, zLevel).uv(uMin, vMax).endVertex();
-        bufferBuilder.vertex(matrix, xCoord + 16 - maskRight, yCoord + 16, zLevel).uv(uMax, vMax).endVertex();
-        bufferBuilder.vertex(matrix, xCoord + 16 - maskRight, yCoord + maskTop, zLevel).uv(uMax, vMin).endVertex();
-        bufferBuilder.vertex(matrix, xCoord, yCoord + maskTop, zLevel).uv(uMin, vMin).endVertex();
-        tessellator.end();
+        BufferBuilder bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+        bufferBuilder.addVertex(matrix, xCoord, yCoord + 16 - maskTop, zLevel).setUv(uMin, vMax);
+        bufferBuilder.addVertex(matrix, xCoord + 16 - maskRight, yCoord + 16 - maskTop, zLevel).setUv(uMax, vMax);
+        bufferBuilder.addVertex(matrix, xCoord + 16 - maskRight, yCoord, zLevel).setUv(uMax, vMin);
+        bufferBuilder.addVertex(matrix, xCoord, yCoord, zLevel).setUv(uMin, vMin);
+
     }
 
     public void render(GuiGraphics graphics, final int xPosition, final int yPosition, @Nullable FluidStack fluidStack) {
@@ -135,6 +137,6 @@ public class FluidTankRenderer {
     }
 
     public List<Component> getTooltips(FluidStack fluidStack) {
-        return List.of(Component.literal(fluidStack.getAmount()+" / "+capacityMb+" mB"));
+        return List.of(Component.literal(fluidStack.getAmount() + " / " + capacityMb + " mB"));
     }
 }

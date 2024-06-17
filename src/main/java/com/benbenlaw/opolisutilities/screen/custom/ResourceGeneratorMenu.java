@@ -37,16 +37,15 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
         this.blockPos = blockPos;
         this.level = inventory.player.level();
         this.data = data;
-
-        ResourceGeneratorBlockEntity entity = (ResourceGeneratorBlockEntity) this.level.getBlockEntity(blockPos);
+        this.blockEntity = (ResourceGeneratorBlockEntity) this.level.getBlockEntity(blockPos);
 
         checkContainerSize(inventory, 3);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
-        assert entity != null;
+        assert blockEntity != null;
 
-        this.addSlot(new ResourceGeneratorInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 80, 16, level, blockPos) {
+        this.addSlot(new ResourceGeneratorInputSlot(blockEntity.getItemStackHandler(), ResourceGeneratorBlockEntity.INPUT_SLOT, 80, 16, level, blockPos) {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
 
@@ -59,7 +58,7 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
                 }
             }
         });
-        this.addSlot(new ResourceGeneratorUpgradeSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos) {
+        this.addSlot(new ResourceGeneratorUpgradeSlot(blockEntity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos) {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
 
@@ -73,11 +72,8 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
             }
         });
 
-        this.addSlot(new ModResultSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 80, 64));
-     //   this.addSlot(new WhitelistTagInputSlot(entity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 109, 26, ModTags.Items.UPGRADES, 1));
-
+        this.addSlot(new ModResultSlot(blockEntity.getItemStackHandler(), ResourceGeneratorBlockEntity.OUTPUT_SLOT, 80, 64));
         addDataSlots(data);
-
     }
 
 

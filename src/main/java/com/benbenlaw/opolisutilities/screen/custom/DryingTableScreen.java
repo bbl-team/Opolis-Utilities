@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DryingTableScreen extends AbstractContainerScreen<DryingTableMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/drying_table_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/drying_table_gui.png");
 
     public DryingTableScreen(DryingTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

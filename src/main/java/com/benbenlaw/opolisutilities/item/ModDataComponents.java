@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.item;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -19,6 +20,10 @@ public class ModDataComponents {
             COMPONENTS.register("entity_type", () ->
                     DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CompoundTag>> ENTITY_DATA =
+            COMPONENTS.register("entity_data", () ->
+                    DataComponentType.<CompoundTag>builder().persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG).build());
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> DIMENSION =
             COMPONENTS.register("dimension", () ->
                     DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
@@ -34,6 +39,9 @@ public class ModDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> INT_Z =
             COMPONENTS.register("int_z", () ->
                     DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> FLOAT =
+            COMPONENTS.register("float", () ->
+                    DataComponentType.<Float>builder().persistent(Codec.FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).build());
 
 
 

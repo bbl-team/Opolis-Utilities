@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/block_breaker_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/block_breaker_gui.png");
     public BlockBreakerScreen(BlockBreakerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
 

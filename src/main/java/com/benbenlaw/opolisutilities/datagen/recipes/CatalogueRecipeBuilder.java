@@ -55,7 +55,7 @@ public class CatalogueRecipeBuilder implements RecipeBuilder {
     }
 
     public void save(@NotNull RecipeOutput recipeOutput) {
-        this.save(recipeOutput, new ResourceLocation(OpolisUtilities.MOD_ID, "catalogue/" +
+        this.save(recipeOutput, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "catalogue/" +
                 BuiltInRegistries.ITEM.getKey(this.output.getItem()).getPath()));
     }
 

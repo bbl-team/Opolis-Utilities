@@ -58,6 +58,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> FLUID_GENERATOR = registerBlock("fluid_generator",
             () -> new FluidGeneratorBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f,2.0f)
+
                     .noOcclusion()));
 
     public static final DeferredBlock<Block> CATALOGUE = registerBlock("catalogue",

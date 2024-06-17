@@ -1,7 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
-import com.benbenlaw.opolisutilities.util.ModTeleport;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.component.DataComponentMap;
@@ -19,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.DimensionTransition;
 
 import java.util.Objects;
 
@@ -48,14 +48,14 @@ public class DeathStoneItem extends Item {
         else if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
 
             dimension = ResourceKey.create(ResourceKey.createRegistryKey(
-                            new ResourceLocation("minecraft", "dimension")),
-                    new ResourceLocation(Objects.requireNonNull(dataComponentMap.get(ModDataComponents.DIMENSION.get()))));
+                            ResourceLocation.fromNamespaceAndPath("minecraft", "dimension")),
+                    ResourceLocation.parse(Objects.requireNonNull(dataComponentMap.get(ModDataComponents.DIMENSION.get()))));
 
             MinecraftServer minecraftserver = player.getServer();
             assert minecraftserver != null;
             ServerLevel destinationWorld = minecraftserver.getLevel(dimension);
             assert destinationWorld != null;
-            player.changeDimension(destinationWorld, new ModTeleport(destinationWorld));
+            player.changeDimension(new DimensionTransition(destinationWorld, player, DimensionTransition.DO_NOTHING));
 
             //TP COORDINATES
 

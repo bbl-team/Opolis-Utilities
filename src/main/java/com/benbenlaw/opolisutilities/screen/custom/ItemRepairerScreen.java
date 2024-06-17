@@ -23,7 +23,7 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
 
     Level level;
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/item_repairer_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/item_repairer_gui.png");
 
     public ItemRepairerScreen(ItemRepairerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

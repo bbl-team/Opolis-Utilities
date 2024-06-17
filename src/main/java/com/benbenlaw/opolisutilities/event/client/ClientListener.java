@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.event.client;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.client.DryingTableBlockEntityRenderer;
+import com.benbenlaw.opolisutilities.block.entity.client.FluidGeneratorBlockEntityRenderer;
 import com.benbenlaw.opolisutilities.block.entity.client.SummoningBlockEntityRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -20,6 +21,9 @@ public class ClientListener {
 
         event.registerBlockEntityRenderer(ModBlockEntities.SUMMONING_BLOCK_ENTITY.get(),
                 SummoningBlockEntityRenderer::new);
+
+        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(),
+                FluidGeneratorBlockEntityRenderer::new);
     }
 
 }

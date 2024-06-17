@@ -7,7 +7,7 @@
       "tag": "c:ingots/iron"
     },
     "C": {
-      "item": "minecraft:crafting_table"
+      "item": "minecraft:crafter"
     },
     "S": {
       "tag": "c:stones"

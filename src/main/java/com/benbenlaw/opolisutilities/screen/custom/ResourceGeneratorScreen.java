@@ -1,6 +1,9 @@
 package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.block.custom.ResourceGeneratorBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity;
 import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity.INPUT_SLOT;
 import static com.benbenlaw.opolisutilities.block.entity.custom.ResourceGeneratorBlockEntity.UPGRADE_SLOT;
@@ -21,7 +25,7 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
 
     Level level;
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/resource_generator_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/resource_generator_gui.png");
 
     public ResourceGeneratorScreen(ResourceGeneratorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -55,8 +59,8 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
         renderTooltip(guiGraphics, mouseX, mouseY);
 
         renderOutputSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
-
         renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
+        renderTickRate(guiGraphics, mouseX, mouseY, x, y);
 
     }
 
@@ -103,6 +107,14 @@ public class ResourceGeneratorScreen extends AbstractContainerScreen<ResourceGen
             if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                 guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.output"), mouseX, mouseY);
             }
+        }
+    }
+
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
+            guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
+                    this.topPos + 68, 0x3F3F3F, false);
         }
     }
 }

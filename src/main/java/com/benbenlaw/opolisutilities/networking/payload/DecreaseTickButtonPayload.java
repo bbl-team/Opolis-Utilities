@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record DecreaseTickButtonPayload(BlockPos blockPos) implements CustomPacketPayload {
 
-    public static final Type<DecreaseTickButtonPayload> TYPE = new Type<>(new ResourceLocation(OpolisUtilities.MOD_ID, "decrease_tick"));
+    public static final Type<DecreaseTickButtonPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "decrease_tick"));
 
     @Override
     public Type<DecreaseTickButtonPayload> type() {

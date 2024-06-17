@@ -8,15 +8,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 
-public record CatalogueRecipe(SizedIngredient input, ItemStack output) implements Recipe<SimpleContainer> {
+public record CatalogueRecipe(SizedIngredient input, ItemStack output) implements Recipe<RecipeInput> {
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
@@ -26,7 +23,7 @@ public record CatalogueRecipe(SizedIngredient input, ItemStack output) implement
     }
 
     @Override
-    public boolean matches(SimpleContainer container, @NotNull Level level) {
+    public boolean matches(RecipeInput container, @NotNull Level level) {
 
         if (input.test(container.getItem(0))) {
             return container.getItem(0).getCount() >= this.getIngredientStackCount();
@@ -45,7 +42,7 @@ public record CatalogueRecipe(SizedIngredient input, ItemStack output) implement
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull SimpleContainer container, HolderLookup.@NotNull Provider provider) {
+    public @NotNull ItemStack assemble(@NotNull RecipeInput container, HolderLookup.@NotNull Provider provider) {
         return this.output.copy();
     }
 

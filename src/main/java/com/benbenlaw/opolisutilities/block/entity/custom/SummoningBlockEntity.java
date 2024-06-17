@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.block.entity.custom;
 import com.benbenlaw.opolisutilities.block.custom.SummoningBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItemHandler;
+import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.recipe.*;
 import com.benbenlaw.opolisutilities.screen.custom.SummoningBlockMenu;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,7 +49,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 
 public class SummoningBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
@@ -86,7 +87,7 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
             i -> false
     );
 
-    public IItemHandler getItemHandlerCapability(Direction side){
+    public IItemHandler getItemHandlerCapability(Direction side) {
         return summoningBlockItemHandler;
     }
 
@@ -160,7 +161,6 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
         super.onDataPacket(connection, clientboundBlockEntityDataPacket, provider);
     }
 
-
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
@@ -173,7 +173,7 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
         compoundTag.putInt("summoning_block.progress", progress);
         compoundTag.putInt("summoning_block.maxProgress", maxProgress);
         compoundTag.putInt("summoning_block.validCheck", validCheck);
-        compoundTag.putString("summoning_block.resource", mob);
+        compoundTag.putString("summoning_block.mob", mob);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
         progress = compoundTag.getInt("summoning_block.progress");
         maxProgress = compoundTag.getInt("summoning_block.maxProgress");
         validCheck = compoundTag.getInt("summoning_block.validCheck");
-        mob = compoundTag.getString("summoning_block.resource");
+        mob = compoundTag.getString("summoning_block.mob");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -198,19 +198,47 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
     public void tick() {
         assert level != null;
         if (!level.isClientSide()) {
+            sync();
+
+            for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
+                NonNullList<Ingredient> input = match.value().getIngredients();
+                for (Ingredient ingredient : input) {
+                    for (ItemStack itemStack : ingredient.getItems()) {
+                        if (this.itemHandler.getStackInSlot(UPGRADE_SLOT).is(itemStack.getItem())) {
+                            maxProgress = match.value().tickRate();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Reset if upgrade is removed
+            if (itemHandler.getStackInSlot(2).isEmpty()) {
+                maxProgress = 220;
+            }
+
             if (this.getBlockState().getValue(SummoningBlock.POWERED)) {
-                // Check for existing entities of the same type within a 3-block range
-                AABB boundingBox = new AABB(getBlockPos().offset(-2, -2, -2).getCenter(), getBlockPos().offset(2, 2, 2).getCenter());
-                List<Entity> nearbyEntities = level.getEntitiesOfClass(Entity.class, boundingBox, entity -> entity.getType().equals(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(mob)))));
 
-                if (!nearbyEntities.isEmpty()) {
-                    return; // PAUSE if entity of same type is nearby
+                if (ConfigFile.summoningBlockCheckForSameEntityBeforeSpawningNewEntity.get()) {
+                    int range = ConfigFile.summoningBlockRangeCheck.get();
+                    AABB boundingBox = new AABB(getBlockPos().offset(-range, -range, -range).getCenter(), getBlockPos().offset(2, 2, 2).getCenter());
+                    List<Entity> nearbyEntities = level.getEntitiesOfClass(Entity.class, boundingBox, entity -> entity.getType().equals(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(mob)))));
+                    if (!nearbyEntities.isEmpty()) {
+                        return; // PAUSE if entity of same type is nearby and in the range and config true
+                    }
                 }
 
-                SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
-                for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-                    inventory.setItem(i, this.itemHandler.getStackInSlot(i));
-                }
+                RecipeInput inventory = new RecipeInput() {
+                    @Override
+                    public @NotNull ItemStack getItem(int index) {
+                        return itemHandler.getStackInSlot(index);
+                    }
+
+                    @Override
+                    public int size() {
+                        return itemHandler.getSlots();
+                    }
+                };
 
                 for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                     NonNullList<Ingredient> input = match.value().getIngredients();
@@ -247,12 +275,14 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
                     mob = match.value().mob();
                     if (progress >= maxProgress) {
                         progress = 0;
-                        EntityType<?> entity = Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(mob)));
+                        EntityType<?> entity = Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(mob)));
                         Entity mobAsEntity = entity.create(level);
                         assert mobAsEntity != null;
                         mobAsEntity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + 1, getBlockPos().getZ() + 0.5);
                         level.addFreshEntity(mobAsEntity);
                         itemHandler.getStackInSlot(INPUT_SLOT).shrink(match.value().input().count());
+                        // Clear mob state after summoning
+                        mob = "";
                     }
                 } else {
                     resetProgress();
@@ -261,13 +291,12 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
         }
     }
 
-
     public Entity getEntity() {
         if (mob.isEmpty()) {
             return null;
         } else {
             assert level != null;
-            return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(mob))).create(level);
+            return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(mob))).create(level);
         }
     }
 
@@ -281,19 +310,13 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
     }
 
     private boolean hasInput(SummoningBlockEntity entity, SummoningBlockRecipe recipe) {
-
         if (recipe.input().test(entity.itemHandler.getStackInSlot(INPUT_SLOT)) && recipe.catalyst().test(entity.itemHandler.getStackInSlot(CATALYST))) {
             return recipe.input().count() <= entity.itemHandler.getStackInSlot(INPUT_SLOT).getCount();
         }
         return false;
-    };
-
-    private boolean hasCatalyst(SummoningBlockEntity entity, SummoningBlockRecipe recipe) {
-    //    return true;
-        return recipe.catalyst().test(entity.itemHandler.getStackInSlot(CATALYST));
-
     }
 
-
-
+    private boolean hasCatalyst(SummoningBlockEntity entity, SummoningBlockRecipe recipe) {
+        return recipe.catalyst().test(entity.itemHandler.getStackInSlot(CATALYST));
+    }
 }

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(OpolisUtilities.MOD_ID, "textures/gui/redstone_clock_gui.png");
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/redstone_clock_gui.png");
     public RedstoneClockScreen(RedstoneClockMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
 
@@ -60,8 +60,12 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
     @Nullable
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 0, 0, 20, 18 * 3)) {
+
+            guiGraphics.drawString(this.font, Component.translatable("gui.opolisutilities.shift"), this.leftPos + 95,
+                    this.topPos + 45, 0x3F3F3F, false);
+
             guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(RedstoneClockBlock.TIMER) + " ticks", this.leftPos + 95,
-                    this.topPos + 40, 0x3F3F3F, false);
+                    this.topPos + 35, 0x3F3F3F, false);
         }
     }
 

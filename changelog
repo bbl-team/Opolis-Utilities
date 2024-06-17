@@ -10,6 +10,40 @@ TODO: Add screens for all opolis utilities blocks (1.21)
 TODD: Shift clicking into stack limited slots (1.21) (maybe fixed in block breaker)
 TODD: Sapling grower should work on mushrooms?
 
+4.1.0
+
+Animal now works as previous 1.19.2 version copy the entity completely
+
+4.0.1
+
+Fixed memory leak with item repairer
+
+4.0.0
+
+Updated to neo forge 1.21
+Removed ModTeleport class, no longer needed now using internal teleportation
+Change to the new enchantment system using data driven enchantments
+Removed enchantments package
+Renamed crafter to advanced crafter, crafter recipe now uses vanilla crafters in its recipe
+//Fixed from previous versions
+Block breaker now allows a single item to be placed from a stack with right click
+Resource Generator; added tick rate when hovering over upgrade slot
+Summoning Block; added tick rate when hovering over upgrade slot
+Fluid Generator; added tick rate when hovering over upgrade slot, fixed some tootips rendering incorrectly,
+    fixed name and inventory labels not being rendered,
+    improved fluid rendering (thanks to EnderIO fluidwidget renderer)
+    fluid generator no longer progress if the tank is full
+    fluid generator texture change, tank fluid now renders on the sides
+    fixed shift clicking in items going into the wrong positions
+
+Redstone Clock; changing the tick rate will now reset the progress of the clock,
+    tick rate no longer checked every 20 tick, tick rate is only checked on world load and when the tick rate is changed
+    tick tate can now be increased and decrease by 50 by holding shift
+
+Catalogue broken! (will be fixed in 4.1.0)
+
+
+
 3.2.0
 
 Added correct summoning block recipes
@@ -18,7 +52,13 @@ Fixed shift click on resource generator
 Resource generator slot capacity now handled inside the block entity
 Resource generator now has a max output stack of 1024
 Fixed ender ore not dropping fragments
-
+Fixed version naming
+Summoning block recipes added
+Summoning block now supports speed upgrades
+Summoning block now saves its mob as mob not as resource in block entity data
+Summoning block now has a config to enable or disable mob checking when spawning new mobs
+Summoning block now has a config of range when checking for mobs
+JEI integration now fixed and added summoning block
 
 3.1.0
 

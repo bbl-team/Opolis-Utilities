@@ -100,7 +100,7 @@ public class ResourceGeneratorBlock extends BaseEntityBlock {
 
                     assert entity != null;
                     tickRate = entity.maxProgress;
-                    ItemStack itemStack = BuiltInRegistries.ITEM.get(new ResourceLocation(entity.resource)).getDefaultInstance();
+                    ItemStack itemStack = BuiltInRegistries.ITEM.get(ResourceLocation.parse(entity.resource)).getDefaultInstance();
                     String itemName = itemStack.getDisplayName().getString();
 
                     if (tickRate == 220) {

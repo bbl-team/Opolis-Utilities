@@ -80,7 +80,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     private int recipeChecker = 0;
     public ItemStack craftingItem = ItemStack.EMPTY;
 
-    public ResourceLocation recipeID = new ResourceLocation("minecraft:air");
+    public ResourceLocation recipeID = ResourceLocation.parse("minecraft:air");
     private NonNullList<Ingredient> craftingIngredients;
 
 
@@ -204,7 +204,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         progress = compoundTag.getInt("crafter.progress");
         maxProgress = compoundTag.getInt("crafter.maxProgress");
         recipeChecker = compoundTag.getInt("crafter.recipeChecker");
-        recipeID = new ResourceLocation(compoundTag.getString("crafter.recipeID"));
+        recipeID = ResourceLocation.parse(compoundTag.getString("crafter.recipeID"));
 
         super.loadAdditional(compoundTag, provider);
     }
@@ -405,7 +405,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
 
 
         assert level != null;
-        Optional<RecipeHolder<CraftingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container, level);
+        Optional<RecipeHolder<CraftingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container.asCraftInput(),  level);
         if (recipe.isPresent()) {
             CraftingRecipe r = recipe.get().value();
             craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
@@ -417,6 +417,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     }
 
     public void getCraftingIngredients() {
+        assert level != null;
         Optional<RecipeHolder<?>> recipe = level.getRecipeManager().byKey(recipeID);
         if (recipe.isPresent()) {
             CraftingRecipe r = (CraftingRecipe) recipe.get().value();

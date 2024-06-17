@@ -9,11 +9,6 @@ public class WhitelistMaxStackSizeOneSlot extends SlotItemHandler {
     public WhitelistMaxStackSizeOneSlot(IItemHandler itemHandler, int index, int x, int y) {
         super(itemHandler, index, x, y);
     }
-
-    @Override
-    public boolean mayPlace(ItemStack stack) {
-        return stack.getCount() <= 1;
-    }
     @Override
     public int getMaxStackSize(ItemStack stack) {
         ItemStack maxAdd = stack.copy();
