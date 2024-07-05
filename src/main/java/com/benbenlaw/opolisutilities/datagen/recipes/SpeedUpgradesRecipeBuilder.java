@@ -33,7 +33,7 @@ public class SpeedUpgradesRecipeBuilder implements RecipeBuilder {
         this.tickRate = tickRate;
     }
 
-    public static SpeedUpgradesRecipeBuilder resourceGeneratorRecipeBuilder(Ingredient input, int tickRate) {
+    public static SpeedUpgradesRecipeBuilder SpeedUpgradesRecipeBuilder(Ingredient input, int tickRate) {
         return new SpeedUpgradesRecipeBuilder(input, tickRate);
     }
 

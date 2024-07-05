@@ -25,7 +25,12 @@ public class EnderScramblerScreen extends AbstractContainerScreen<EnderScrambler
 
     public EnderScramblerScreen(EnderScramblerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+    }
 
+    @Override
+    protected void init() {
+        super.init();
+        addMenuButtons();
     }
 
     @Override
@@ -54,6 +59,18 @@ public class EnderScramblerScreen extends AbstractContainerScreen<EnderScrambler
         renderTooltip(guiGraphics, mouseX, mouseY);
         renderRange(guiGraphics, mouseX, mouseY, x, y);
 
+    }
+
+    @Nullable
+    private void renderRange(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
+            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(EnderScramblerBlock.SCRAMBLER_RANGE) + " range", this.leftPos + 90,
+                    this.topPos + 60, 0x3F3F3F, false);
+        }
+    }
+
+    private void addMenuButtons() {
+
         //Power Button
         if (!this.menu.blockEntity.getBlockState().getValue(EnderScramblerBlock.POWERED)) {
             this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
@@ -70,14 +87,6 @@ public class EnderScramblerScreen extends AbstractContainerScreen<EnderScrambler
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
                 PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
 
-    }
-
-    @Nullable
-    private void renderRange(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(EnderScramblerBlock.SCRAMBLER_RANGE) + " range", this.leftPos + 90,
-                    this.topPos + 60, 0x3F3F3F, false);
-        }
     }
 
 }

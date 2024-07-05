@@ -58,6 +58,14 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
             setChanged();
             sync();
         }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            if (slot == CATALYST) {
+                return 1;
+            }
+            return slot;
+        }
     };
 
     public void sync() {
@@ -279,6 +287,9 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
                         Entity mobAsEntity = entity.create(level);
                         assert mobAsEntity != null;
                         mobAsEntity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + 1, getBlockPos().getZ() + 0.5);
+
+                        mobAsEntity.setYRot(getRotation());
+                        mobAsEntity.setYHeadRot(getRotation());
                         level.addFreshEntity(mobAsEntity);
                         itemHandler.getStackInSlot(INPUT_SLOT).shrink(match.value().input().count());
                         // Clear mob state after summoning
@@ -298,6 +309,28 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
             assert level != null;
             return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(mob))).create(level);
         }
+    }
+
+    public float getRotation() {
+        Direction direction = getBlockState().getValue(SummoningBlock.FACING);
+        float yaw = 0;
+        switch (direction) {
+            case NORTH:
+                yaw = 180;
+                break;
+            case SOUTH:
+                yaw = 0;
+                break;
+            case EAST:
+                yaw = -90;
+                break;
+            case WEST:
+                yaw = 90;
+                break;
+            default:
+                break;
+        }
+        return yaw;
     }
 
     public float getScaledProgress() {

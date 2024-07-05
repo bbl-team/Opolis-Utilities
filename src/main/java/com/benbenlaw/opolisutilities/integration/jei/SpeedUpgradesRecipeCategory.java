@@ -36,7 +36,7 @@ public class SpeedUpgradesRecipeCategory implements IRecipeCategory<SpeedUpgrade
     public final static ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/jei_dynamic.png");
 
-    static final RecipeType<SpeedUpgradesRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "speed_upgrades",
+    public static final RecipeType<SpeedUpgradesRecipe> RECIPE_TYPE = RecipeType.create(OpolisUtilities.MOD_ID, "speed_upgrades",
             SpeedUpgradesRecipe.class);
 
     private IDrawable background;

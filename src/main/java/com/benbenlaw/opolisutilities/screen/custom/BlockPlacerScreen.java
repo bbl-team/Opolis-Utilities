@@ -28,6 +28,12 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
     }
 
     @Override
+    protected void init() {
+        super.init();
+        addMenuButtons();
+    }
+
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -44,13 +50,22 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-
         renderBackground(guiGraphics, mouseX, mouseY, delta);
 
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
         renderTickRate(guiGraphics, mouseX, mouseY, this.leftPos + 5, this.height / 2 - 66);
+    }
 
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 0, 0, 20, 18 * 3)) {
+            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(BlockPlacerBlock.TIMER) + " ticks", this.leftPos + 95,
+                    this.topPos + 55, 0x3F3F3F, false);
+        }
+    }
+
+    private void addMenuButtons() {
         //Power Button
         if (!this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
             this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
@@ -66,15 +81,5 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
 
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
                 PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
-
-
-    }
-
-    @Nullable
-    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 0, 0, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(BlockPlacerBlock.TIMER) + " ticks", this.leftPos + 95,
-                    this.topPos + 55, 0x3F3F3F, false);
-        }
     }
 }

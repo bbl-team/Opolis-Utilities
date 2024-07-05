@@ -10,6 +10,19 @@ TODO: Add screens for all opolis utilities blocks (1.21)
 TODD: Shift clicking into stack limited slots (1.21) (maybe fixed in block breaker)
 TODD: Sapling grower should work on mushrooms?
 
+4.2.0
+Fixed various screen issues with rendering the same things to many times
+
+Improved Summoning block rendering
+Summoning block now only allows a single item in the catalyst slot
+
+4.1.4
+Updated various methods to latest neo forge 30beta
+
+4.1.1
+
+Make speed upgrade recipe type public
+
 4.1.0
 
 Animal now works as previous 1.19.2 version copy the entity completely

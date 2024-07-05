@@ -473,42 +473,42 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         // ********** Speed Upgrades (Vanilla) ********** //
 
         //Coal
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.STORAGE_BLOCKS_COAL), 200)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Tags.Items.STORAGE_BLOCKS_COAL), 200)
                 .unlockedBy("has_item", has(Tags.Items.STORAGE_BLOCKS_COAL))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/coal"));
 
         //Amethyst
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.AMETHYST_BLOCK), 120)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Items.AMETHYST_BLOCK), 120)
                 .unlockedBy("has_item", has(Items.AMETHYST_BLOCK))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/amethyst"));
 
         //Beacon
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.BEACON), 20)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Items.BEACON), 20)
                 .unlockedBy("has_item", has(Items.BEACON))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/beacon"));
 
         //Glowstone
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.GLOWSTONE), 120)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Items.GLOWSTONE), 120)
                 .unlockedBy("has_item", has(Items.GLOWSTONE))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/glowstone"));
 
         //Fences
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.FENCES_WOODEN), 210)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Tags.Items.FENCES_WOODEN), 210)
                 .unlockedBy("has_item", has(Tags.Items.FENCES_WOODEN))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/wooden_fences"));
 
         //Stone
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Tags.Items.STONES), 200)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Tags.Items.STONES), 200)
                 .unlockedBy("has_item", has(Tags.Items.STONES))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/stone"));
 
         //Obsidian
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.OBSIDIAN), 100)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Items.OBSIDIAN), 100)
                 .unlockedBy("has_item", has(Items.OBSIDIAN))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/obsidian"));
 
         //Nether Star
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(Items.NETHER_STAR), 30)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(Items.NETHER_STAR), 30)
                 .unlockedBy("has_item", has(Items.NETHER_STAR))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/nether_star"));
 
@@ -518,7 +518,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
         TagKey<Item> aluminumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/aluminum")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(aluminumBlockTag), 100)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(aluminumBlockTag), 100)
                 .unlockedBy("has_item", has(aluminumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(aluminumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/aluminum"));
@@ -526,7 +526,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Dark Steel
         TagKey<Item> darkSteelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/dark_steel")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(darkSteelBlockTag), 60)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(darkSteelBlockTag), 60)
                 .unlockedBy("has_item", has(darkSteelBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(darkSteelBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/dark_steel"));
@@ -534,7 +534,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Cyanite
         TagKey<Item> cyaniteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/cyanite")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(cyaniteBlockTag), 50)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(cyaniteBlockTag), 50)
                 .unlockedBy("has_item", has(cyaniteBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(cyaniteBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/cyanite"));
@@ -542,7 +542,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Copper
         TagKey<Item> copperBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/copper")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(copperBlockTag), 140)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(copperBlockTag), 140)
                 .unlockedBy("has_item", has(copperBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(copperBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/copper"));
@@ -550,7 +550,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Constantan
         TagKey<Item> constantanBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/constantan")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(constantanBlockTag), 90)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(constantanBlockTag), 90)
                 .unlockedBy("has_item", has(constantanBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(constantanBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/constantan"));
@@ -559,7 +559,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         TagKey<Item> conductiveIronBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/conductive_iron")))));
 
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(conductiveIronBlockTag), 60)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(conductiveIronBlockTag), 60)
                 .unlockedBy("has_item", has(conductiveIronBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(conductiveIronBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/conductive_iron"));
@@ -567,7 +567,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Compressed Iron
         TagKey<Item> compressedIronBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/compressed_iron")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(compressedIronBlockTag), 80)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(compressedIronBlockTag), 80)
                 .unlockedBy("has_item", has(compressedIronBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(compressedIronBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/compressed_iron"));
@@ -575,7 +575,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Calorite
         TagKey<Item> caloriteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/calorite")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(caloriteBlockTag), 60)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(caloriteBlockTag), 60)
                 .unlockedBy("has_item", has(caloriteBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(caloriteBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/calorite"));
@@ -583,7 +583,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Bronze
         TagKey<Item> bronzeBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/bronze")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(bronzeBlockTag), 120)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(bronzeBlockTag), 120)
                 .unlockedBy("has_item", has(bronzeBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(bronzeBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/bronze"));
@@ -591,7 +591,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Brass
         TagKey<Item> brassBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/brass")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(brassBlockTag), 100)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(brassBlockTag), 100)
                 .unlockedBy("has_item", has(brassBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(brassBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/brass"));
@@ -599,7 +599,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Blutonium
         TagKey<Item> blutoniumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/blutonium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(blutoniumBlockTag), 50)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(blutoniumBlockTag), 50)
                 .unlockedBy("has_item", has(blutoniumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(blutoniumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/blutonium"));
@@ -607,7 +607,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Lumium
         TagKey<Item> lumiumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/lumium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(lumiumBlockTag), 40)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(lumiumBlockTag), 40)
                 .unlockedBy("has_item", has(lumiumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(lumiumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/lumium"));
@@ -615,7 +615,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Lead
         TagKey<Item> leadBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/lead")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(leadBlockTag), 150)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(leadBlockTag), 150)
                 .unlockedBy("has_item", has(leadBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(leadBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/lead"));
@@ -623,7 +623,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Lapis
         TagKey<Item> lapisBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/lapis")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(lapisBlockTag), 160)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(lapisBlockTag), 160)
                 .unlockedBy("has_item", has(lapisBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(lapisBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/lapis"));
@@ -631,7 +631,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Iron
         TagKey<Item> ironBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/iron")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(ironBlockTag), 190)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(ironBlockTag), 190)
                 .unlockedBy("has_item", has(ironBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(ironBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/iron"));
@@ -639,7 +639,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Invar
         TagKey<Item> invarBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/invar")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(invarBlockTag), 130)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(invarBlockTag), 130)
                 .unlockedBy("has_item", has(invarBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(invarBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/invar"));
@@ -647,7 +647,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Graphite
         TagKey<Item> graphiteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/graphite")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(graphiteBlockTag), 150)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(graphiteBlockTag), 150)
                 .unlockedBy("has_item", has(graphiteBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(graphiteBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/graphite"));
@@ -655,7 +655,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Gold
         TagKey<Item> goldBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/gold")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(goldBlockTag), 160)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(goldBlockTag), 160)
                 .unlockedBy("has_item", has(goldBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(goldBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/gold"));
@@ -663,7 +663,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Energetic Alloy
         TagKey<Item> energeticAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/energetic_alloy")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(energeticAlloyBlockTag), 70)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(energeticAlloyBlockTag), 70)
                 .unlockedBy("has_item", has(energeticAlloyBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(energeticAlloyBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/energetic_alloy"));
@@ -671,7 +671,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //End Steel
         TagKey<Item> endSteelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/end_steel")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(endSteelBlockTag), 50)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(endSteelBlockTag), 50)
                 .unlockedBy("has_item", has(endSteelBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(endSteelBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/end_steel"));
@@ -679,7 +679,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Enderium
         TagKey<Item> enderiumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/enderium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(enderiumBlockTag), 40)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(enderiumBlockTag), 40)
                 .unlockedBy("has_item", has(enderiumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(enderiumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/enderium"));
@@ -687,7 +687,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Emerald
         TagKey<Item> emeraldBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/emerald")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(emeraldBlockTag), 80)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(emeraldBlockTag), 80)
                 .unlockedBy("has_item", has(emeraldBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(emeraldBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/emerald"));
@@ -695,7 +695,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Electrum
         TagKey<Item> electrumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/electrum")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(electrumBlockTag), 115)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(electrumBlockTag), 115)
                 .unlockedBy("has_item", has(electrumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(electrumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/electrum"));
@@ -703,14 +703,14 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Diamond
         TagKey<Item> diamondBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/diamond")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(diamondBlockTag), 100)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(diamondBlockTag), 100)
                 .unlockedBy("has_item", has(diamondBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(diamondBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/diamond"));
         //Desh
         TagKey<Item> deshBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/desh")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(deshBlockTag), 60)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(deshBlockTag), 60)
                 .unlockedBy("has_item", has(deshBlockTag))
                 .save(consumer.withConditions(new NotCondition (new TagEmptyCondition(deshBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/desh"));
@@ -718,7 +718,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Signalum
         TagKey<Item> signalumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/signalum")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(signalumBlockTag), 70)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(signalumBlockTag), 70)
                 .unlockedBy("has_item", has(signalumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(signalumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/signalum"));
@@ -726,7 +726,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Sapphire
         TagKey<Item> sapphireBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/sapphire")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(sapphireBlockTag), 80)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(sapphireBlockTag), 80)
                 .unlockedBy("has_item", has(sapphireBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(sapphireBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/sapphire"));
@@ -734,7 +734,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Ruby
         TagKey<Item> rubyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/ruby")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(rubyBlockTag), 80)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(rubyBlockTag), 80)
                 .unlockedBy("has_item", has(rubyBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(rubyBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/ruby"));
@@ -742,7 +742,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Redstone Alloy
         TagKey<Item> redstoneAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/redstone_alloy")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(redstoneAlloyBlockTag), 100)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(redstoneAlloyBlockTag), 100)
                 .unlockedBy("has_item", has(redstoneAlloyBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(redstoneAlloyBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/redstone_alloy"));
@@ -750,7 +750,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Redstone
         TagKey<Item> redstoneBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/redstone")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(redstoneBlockTag), 170)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(redstoneBlockTag), 170)
                 .unlockedBy("has_item", has(redstoneBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(redstoneBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/redstone"));
@@ -758,7 +758,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Quartz
         TagKey<Item> quartzBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/quartz")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(quartzBlockTag), 140)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(quartzBlockTag), 140)
                 .unlockedBy("has_item", has(quartzBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(quartzBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/quartz"));
@@ -766,7 +766,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Pulsating Alloy
         TagKey<Item> pulsatingAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/pulsating_alloy")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(pulsatingAlloyBlockTag), 70)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(pulsatingAlloyBlockTag), 70)
                 .unlockedBy("has_item", has(pulsatingAlloyBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(pulsatingAlloyBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/pulsating_alloy"));
@@ -774,7 +774,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Peridot
         TagKey<Item> peridotBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/peridot")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(peridotBlockTag), 80)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(peridotBlockTag), 80)
                 .unlockedBy("has_item", has(peridotBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(peridotBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/peridot"));
@@ -782,7 +782,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Ostrum
         TagKey<Item> ostrumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/ostrum")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(ostrumBlockTag), 80)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(ostrumBlockTag), 80)
                 .unlockedBy("has_item", has(ostrumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(ostrumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/ostrum"));
@@ -790,7 +790,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Osmium
         TagKey<Item> osmiumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/osmium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(osmiumBlockTag), 100)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(osmiumBlockTag), 100)
                 .unlockedBy("has_item", has(osmiumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(osmiumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/osmium"));
@@ -798,7 +798,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Nickel
         TagKey<Item> nickelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/nickel")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(nickelBlockTag), 130)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(nickelBlockTag), 130)
                 .unlockedBy("has_item", has(nickelBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(nickelBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/nickel"));
@@ -806,7 +806,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Netherite
         TagKey<Item> netheriteBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/netherite")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(netheriteBlockTag), 50)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(netheriteBlockTag), 50)
                 .unlockedBy("has_item", has(netheriteBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(netheriteBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/netherite"));
@@ -814,7 +814,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Zinc
         TagKey<Item> zincBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/zinc")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(zincBlockTag), 120)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(zincBlockTag), 120)
                 .unlockedBy("has_item", has(zincBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(zincBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/zinc"));
@@ -822,7 +822,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Yellorium
         TagKey<Item> yelloriumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/yellorium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(yelloriumBlockTag), 85)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(yelloriumBlockTag), 85)
                 .unlockedBy("has_item", has(yelloriumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(yelloriumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/yellorium"));
@@ -830,7 +830,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Vibrant Alloy
         TagKey<Item> vibrantAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/vibrant_alloy")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(vibrantAlloyBlockTag), 35)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(vibrantAlloyBlockTag), 35)
                 .unlockedBy("has_item", has(vibrantAlloyBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(vibrantAlloyBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/vibrant_alloy"));
@@ -838,7 +838,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //uranium
         TagKey<Item> uraniumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/uranium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(uraniumBlockTag), 85)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(uraniumBlockTag), 85)
                 .unlockedBy("has_item", has(uraniumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(uraniumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/uranium"));
@@ -846,7 +846,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Tin
         TagKey<Item> tinBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/tin")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(tinBlockTag), 140)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(tinBlockTag), 140)
                 .unlockedBy("has_item", has(tinBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(tinBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/tin"));
@@ -854,7 +854,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Steel
         TagKey<Item> steelBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/steel")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(steelBlockTag), 130)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(steelBlockTag), 130)
                 .unlockedBy("has_item", has(steelBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(steelBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/steel"));
@@ -862,7 +862,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Soularium
         TagKey<Item> solariumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/solarium")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(solariumBlockTag), 65)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(solariumBlockTag), 65)
                 .unlockedBy("has_item", has(solariumBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(solariumBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/solarium"));
@@ -870,7 +870,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         //Silver
         TagKey<Item> silverBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
                 String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/silver")))));
-        SpeedUpgradesRecipeBuilder.resourceGeneratorRecipeBuilder(Ingredient.of(silverBlockTag), 110)
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(silverBlockTag), 110)
                 .unlockedBy("has_item", has(silverBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(silverBlockTag))),
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/silver"));
@@ -878,97 +878,97 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
         // ********** Fluid Generator ********** //
 
         //Water
-        FluidGeneratorRecipeBuilder.resourceGeneratorRecipeBuilder(new FluidStack(Fluids.WATER, 100))
+        FluidGeneratorRecipeBuilder.FluidGeneratorRecipeBuilder(new FluidStack(Fluids.WATER, 100))
                 .unlockedBy("has_item", has(Items.WATER_BUCKET))
                 .save(consumer);
 
         //Lava
-        FluidGeneratorRecipeBuilder.resourceGeneratorRecipeBuilder(new FluidStack(Fluids.LAVA, 50))
+        FluidGeneratorRecipeBuilder.FluidGeneratorRecipeBuilder(new FluidStack(Fluids.LAVA, 50))
                 .unlockedBy("has_item", has(Items.LAVA_BUCKET))
                 .save(consumer);
 
         // ********** Summoning Block ********** //
 
         //Chicken
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.SEEDS), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.SEEDS), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:chicken")
                 .unlockedBy("has_item", has(Tags.Items.SEEDS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/chicken"));
 
         //Cow
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEATHER), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEATHER), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:cow")
                 .unlockedBy("has_item", has(Items.LEATHER))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/cow"));
 
         //Pig
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.POTATO), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.POTATO), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:pig")
                 .unlockedBy("has_item", has(Items.POTATO))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/pig"));
 
         //Sheep
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.WOOL), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.WOOL), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:sheep")
                 .unlockedBy("has_item", has(ItemTags.WOOL))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/sheep"));
 
         //Wolf
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BONE), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BONE), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:wolf")
                 .unlockedBy("has_item", has(Items.BONE))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/wolf"));
 
         //Cat
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:cat")
                 .unlockedBy("has_item", has(Items.COD))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/cat"));
 
         //Fox
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SWEET_BERRIES), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SWEET_BERRIES), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:fox")
                 .unlockedBy("has_item", has(Items.SWEET_BERRIES))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/fox"));
 
         //Panda
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BAMBOO), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BAMBOO), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:panda")
                 .unlockedBy("has_item", has(Items.BAMBOO))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/panda"));
 
         //Polar Bear
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SALMON), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SALMON), 1),
                         Ingredient.of( new ItemStack(Blocks.SNOW_BLOCK)), "minecraft:polar_bear")
                 .unlockedBy("has_item", has(Items.SALMON))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/polar_bear"));
 
         //Bee
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.SMALL_FLOWERS), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.SMALL_FLOWERS), 1),
                         Ingredient.of( new ItemStack(Items.BEEHIVE)), "minecraft:bee")
                 .unlockedBy("has_item", has(ItemTags.SMALL_FLOWERS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/bee"));
 
         //Armadillo
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SAND), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SAND), 1),
                         Ingredient.of( new ItemStack(Items.SAND)), "minecraft:armadillo")
                 .unlockedBy("has_item", has(Items.SAND))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/armadillo"));
 
         //Goat
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.WHEAT), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.WHEAT), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:goat")
                 .unlockedBy("has_item", has(Items.WHEAT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/goat"));
 
         //Horse
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.HAY_BLOCK), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.HAY_BLOCK), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:horse")
                 .unlockedBy("has_item", has(Items.HAY_BLOCK))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/horse"));
 
         //Donkey
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GOLDEN_CARROT), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GOLDEN_CARROT), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:donkey")
                 .unlockedBy("has_item", has(Items.GOLDEN_CARROT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/donkey"));
@@ -982,67 +982,67 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
          */
 
         //Rabbit
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CARROT), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CARROT), 1),
                         Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:rabbit")
                 .unlockedBy("has_item", has(Items.CARROT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/rabbit"));
 
         //Squid
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.INK_SAC), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.INK_SAC), 1),
                         Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:squid")
                 .unlockedBy("has_item", has(Items.INK_SAC))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/squid"));
 
         //Glow Squid
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GLOW_INK_SAC), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GLOW_INK_SAC), 1),
                         Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:glow_squid")
                 .unlockedBy("has_item", has(Items.GLOW_INK_SAC))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/glow_squid"));
 
         //Dolphin
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
                         Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:dolphin")
                 .unlockedBy("has_item", has(Items.COD))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/dolphin"));
 
         //Turtle
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SEAGRASS), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SEAGRASS), 1),
                         Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:turtle")
                 .unlockedBy("has_item", has(Items.SEAGRASS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/turtle"));
 
         //Axolotl
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.TROPICAL_FISH), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.TROPICAL_FISH), 1),
                         Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:axolotl")
                 .unlockedBy("has_item", has(Items.TROPICAL_FISH))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/axolotl"));
 
         //Parrot
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COCOA_BEANS), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COCOA_BEANS), 1),
                         Ingredient.of(new ItemStack(Items.JUNGLE_LEAVES)), "minecraft:parrot")
                 .unlockedBy("has_item", has(Items.COCOA_BEANS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/parrot"));
 
         //Camel
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CACTUS), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CACTUS), 1),
                         Ingredient.of(new ItemStack(Items.SAND)), "minecraft:camel")
                 .unlockedBy("has_item", has(Items.CACTUS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/camel"));
 
         //Frog
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LILY_PAD), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LILY_PAD), 1),
                         Ingredient.of(new ItemStack(Items.WATER_BUCKET)), "minecraft:frog")
                 .unlockedBy("has_item", has(Items.LILY_PAD))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/frog"));
 
         //Mooshroom
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.MUSHROOMS), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.MUSHROOMS), 1),
                         Ingredient.of(new ItemStack(Items.MYCELIUM)), "minecraft:mooshroom")
                 .unlockedBy("has_item", has(Tags.Items.MUSHROOMS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/mooshroom"));
 
         //Llama
-        SummoningRecipeBuilder.CatalogueRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEAD), 1),
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEAD), 1),
                         Ingredient.of(new ItemStack(Items.GRASS_BLOCK)), "minecraft:llama")
                 .unlockedBy("has_item", has(Items.LEAD))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/llama"));

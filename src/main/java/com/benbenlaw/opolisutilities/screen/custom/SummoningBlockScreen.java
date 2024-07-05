@@ -36,6 +36,12 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
     }
 
     @Override
+    protected void init() {
+        super.init();
+        addMenuButtons();
+    }
+
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -44,7 +50,6 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
 
         if(menu.isCrafting()) {
             guiGraphics.blit(TEXTURE, x + 84, y + 35, 176, 0, 8, menu.getScaledProgress());
@@ -62,6 +67,18 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
         renderTooltip(guiGraphics, mouseX, mouseY);
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
 
+    }
+
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
+            guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
+                    this.topPos + 68, 0x3F3F3F, false);
+        }
+    }
+
+    private void addMenuButtons() {
+        //Off Button
         if (this.menu.blockEntity != null) {
             if (!this.menu.blockEntity.getBlockState().getValue(SummoningBlock.POWERED)) {
                 this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
@@ -70,14 +87,6 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
                 this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.ON_BUTTONS, (pressed) ->
                         PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
             }
-        }
-    }
-
-    @Nullable
-    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
-            guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
-                    this.topPos + 68, 0x3F3F3F, false);
         }
     }
 }

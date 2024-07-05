@@ -36,7 +36,7 @@ public class SummoningRecipeBuilder implements RecipeBuilder {
         this.mob = mob;
     }
 
-    public static SummoningRecipeBuilder CatalogueRecipeBuilder(SizedIngredient input, Ingredient catalyst, String mob) {
+    public static SummoningRecipeBuilder SummoningRecipeBuilder(SizedIngredient input, Ingredient catalyst, String mob) {
         return new SummoningRecipeBuilder(input, catalyst, mob);
     }
 

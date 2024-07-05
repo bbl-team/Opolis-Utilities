@@ -23,8 +23,14 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/redstone_clock_gui.png");
     public RedstoneClockScreen(RedstoneClockMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-
     }
+
+    @Override
+    protected void init() {
+        super.init();
+        addMenuButtons();
+    }
+
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
 
@@ -49,12 +55,6 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
         renderTooltip(guiGraphics, mouseX, mouseY);
         renderTickRate(guiGraphics, mouseX, mouseY, this.leftPos + 5, this.height / 2 - 66);
 
-        //Tick Buttons
-        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 32, 20, 18, ModButtons.DECREASE_BUTTONS, (pressed) ->
-                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
-
-        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
-                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
     }
 
     @Nullable
@@ -67,6 +67,16 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
             guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(RedstoneClockBlock.TIMER) + " ticks", this.leftPos + 95,
                     this.topPos + 35, 0x3F3F3F, false);
         }
+    }
+
+    private void addMenuButtons() {
+
+        //Tick Buttons
+        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 32, 20, 18, ModButtons.DECREASE_BUTTONS, (pressed) ->
+                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+
+        this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
+                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
     }
 
 }

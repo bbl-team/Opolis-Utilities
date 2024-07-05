@@ -22,7 +22,6 @@ import java.util.Optional;
 public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGeneratorMenu> {
 
     Level level;
-    private FluidTankRenderer renderer;
 
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/fluid_generator_gui.png");
@@ -30,6 +29,12 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
     public FluidGeneratorScreen(FluidGeneratorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.level = pMenu.level;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        addFluidWidgets();
     }
 
     @Override
@@ -53,23 +58,20 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        assignFluidRenderer();
-
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-        addRenderableOnly(new FluidStackWidget(this, getMenu().blockEntity.FLUID_TANK, this.leftPos + 14, this.topPos + 15, 14, 56));
 
-   //     assignFluidRenderer();
-   //     renderFluidAreaTooltips(guiGraphics, mouseX, mouseY, x, y);
-
+        renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
         renderOutputSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
-    //    renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
 
+        /*
         if (!menu.blockEntity.FLUID_TANK.getFluid().isEmpty()) {
             renderer.render(guiGraphics, x + 14, y + 11, menu.blockEntity.FLUID_TANK.getFluid());
         }
+
+         */
     }
 
     private void renderInWorldBlocksAsItems(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
@@ -115,19 +117,9 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         }
     }
 
-    private void assignFluidRenderer() {
-        renderer = new FluidTankRenderer(64000, 14, 64, 1);
+    private void addFluidWidgets() {
+        addRenderableOnly(new FluidStackWidget(this, getMenu().blockEntity.FLUID_TANK, leftPos + 14, topPos + 15, 14, 56));
     }
-
-
-    private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(pMouseX, pMouseY, x, y, 14, 11, 14, 64)) {
-            guiGraphics.renderTooltip(this.font, renderer.getTooltips(menu.blockEntity.FLUID_TANK.getFluid()), Optional.empty(), pMouseX, pMouseY);
-        }
-    }
-
-
-
 
 
     @Nullable

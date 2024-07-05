@@ -60,7 +60,7 @@ public class OpolisUtilitiesItemTags extends ItemTagsProvider {
         tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
 
         //Shears
-        tag(Tags.Items.TOOLS_SHEARS).add(ModItems.WOODEN_SHEARS.get());
+        tag(Tags.Items.TOOLS_SHEAR).add(ModItems.WOODEN_SHEARS.get());
 
 
     }

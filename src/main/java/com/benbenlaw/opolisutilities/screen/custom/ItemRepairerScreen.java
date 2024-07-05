@@ -31,6 +31,12 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
     }
 
     @Override
+    protected void init() {
+        super.init();
+        addMenuButtons();
+    }
+
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -39,7 +45,6 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
 
         if(menu.isCrafting()) {
             guiGraphics.blit(TEXTURE, x + 84, y + 35, 176, 0, 8, menu.getScaledProgress());
@@ -56,17 +61,6 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        if (this.menu.blockEntity != null) {
-
-            if (!this.menu.blockEntity.getBlockState().getValue(ItemRepairerBlock.POWERED)) {
-                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
-                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
-            } else {
-                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.ON_BUTTONS, (pressed) ->
-                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
-            }
-        }
-
         renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
     }
 
@@ -77,6 +71,20 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
                 if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
                     guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
                 }
+            }
+        }
+    }
+
+    private void addMenuButtons() {
+        //Power Button
+        if (this.menu.blockEntity != null) {
+
+            if (!this.menu.blockEntity.getBlockState().getValue(ItemRepairerBlock.POWERED)) {
+                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
+                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
+            } else {
+                this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.ON_BUTTONS, (pressed) ->
+                        PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
             }
         }
     }

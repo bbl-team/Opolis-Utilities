@@ -30,7 +30,7 @@ public class FluidGeneratorRecipeBuilder implements RecipeBuilder {
         this.input = input;
     }
 
-    public static FluidGeneratorRecipeBuilder resourceGeneratorRecipeBuilder(FluidStack input) {
+    public static FluidGeneratorRecipeBuilder FluidGeneratorRecipeBuilder(FluidStack input) {
         return new FluidGeneratorRecipeBuilder(input);
     }
 

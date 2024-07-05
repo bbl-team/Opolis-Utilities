@@ -33,6 +33,12 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
     }
 
     @Override
+    protected void init() {
+        super.init();
+        addMenuButtons();
+    }
+
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
 
 
@@ -61,7 +67,18 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
-    //    renderRecipeOutput(guiGraphics, mouseX, mouseY, x, y);
+
+    }
+
+    @Nullable
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
+            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(CrafterBlock.TIMER) + " ticks", this.leftPos + 90,
+                    this.topPos + 60, 0x3F3F3F, false);
+        }
+    }
+
+    private void addMenuButtons() {
 
         //Power Button
         if (!this.menu.blockEntity.getBlockState().getValue(CrafterBlock.POWERED)) {
@@ -84,22 +101,5 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
         this.addRenderableWidget(new ImageButton(this.leftPos + 148, this.height / 2 - 49, 20, 18, ModButtons.SAVED_RECIPE_BUTTONS, (pressed) ->
                 PacketDistributor.sendToServer(new SaveRecipePayload(this.menu.blockEntity.getBlockPos()))));
 
-
-    }
-
-    @Nullable
-    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(CrafterBlock.TIMER) + " ticks", this.leftPos + 90,
-                    this.topPos + 60, 0x3F3F3F, false);
-        }
-    }
-
-    @Nullable
-    private void renderRecipeOutput(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 120, 13, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, "Crafting: "+ this.menu.blockEntity.recipeID.toString(), this.leftPos + 90,
-                    this.topPos + 60, 0x3F3F3F, false);
-        }
     }
 }

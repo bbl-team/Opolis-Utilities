@@ -14,9 +14,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -103,9 +105,8 @@ public class EnderOreBlock extends Block {
     }
 
     @Override
-    public int getExpDrop(BlockState state, LevelReader level, RandomSource randomSource, BlockPos pos) {
-        return  1 + randomSource.nextInt(5);
-
+    public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity breaker, ItemStack tool) {
+        return  1 + level.getRandom().nextInt(5);
     }
 
     @Override
