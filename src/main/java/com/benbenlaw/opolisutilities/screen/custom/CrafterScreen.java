@@ -2,6 +2,8 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
@@ -38,6 +40,14 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
         addMenuButtons();
     }
 
+
+    @Override
+    protected void containerTick() {
+        this.clearWidgets();
+        addMenuButtons();
+    }
+
+
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
 
@@ -73,7 +83,11 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
     @Nullable
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(CrafterBlock.TIMER) + " ticks", this.leftPos + 90,
+            int ticks = 0;
+            if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof CrafterBlockEntity crafterBlockEntity) {
+                ticks = crafterBlockEntity.maxProgress;
+            }
+            guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 90,
                     this.topPos + 60, 0x3F3F3F, false);
         }
     }

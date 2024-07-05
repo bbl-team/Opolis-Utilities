@@ -41,6 +41,14 @@ public class SummoningBlockScreen extends AbstractContainerScreen<SummoningBlock
         addMenuButtons();
     }
 
+
+    @Override
+    protected void containerTick() {
+        this.clearWidgets();
+        addMenuButtons();
+    }
+
+
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);

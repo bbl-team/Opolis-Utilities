@@ -49,7 +49,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
-        protected void onContentsChanged(int slot) {
+        public void onContentsChanged(int slot) {
             setChanged();
             sync();
         }
@@ -70,7 +70,7 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
 
     public final ContainerData data;
     public int progress = 0;
-    public int maxProgress = this.getBlockState().getValue(BlockPlacerBlock.TIMER);
+    public int maxProgress = 220;
     private int maxTickChecker = 0;
     private static final int INPUT_SLOT = 0;
 
@@ -237,10 +237,6 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
 
         if (maxTickChecker >= 20) {
             maxTickChecker = 0;
-            maxProgress = blockState.getValue(BlockPlacerBlock.TIMER);
-            if (itemHandler.getStackInSlot(0).isEmpty()) {
-                progress = 0;
-            }
         }
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel && blockState.getValue(POWERED)) {

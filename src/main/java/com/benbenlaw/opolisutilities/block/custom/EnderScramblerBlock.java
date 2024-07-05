@@ -42,30 +42,24 @@ public class EnderScramblerBlock extends BaseEntityBlock {
         return CODEC;
     }
 
-    /* PROPERTIES */
-    public static final int MAX_RANGE = 8;// ConfigFile.maxScramblerRange.get();
-    public static final int MIN_RANGE = 1;// ConfigFile.minScramblerRange.get();
-
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final IntegerProperty SCRAMBLER_RANGE = IntegerProperty.create("scrambler_range", MIN_RANGE, MAX_RANGE);
-
 
     /* ROTATION */
 
     @Override
     public @NotNull BlockState rotate(BlockState blockState, @NotNull LevelAccessor level, @NotNull BlockPos blockPos, Rotation direction) {
-        return blockState.setValue(POWERED, blockState.getValue(POWERED)).setValue(SCRAMBLER_RANGE, blockState.getValue(SCRAMBLER_RANGE));
+        return blockState.setValue(POWERED, blockState.getValue(POWERED));
 
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(POWERED, SCRAMBLER_RANGE);
+        pBuilder.add(POWERED);
     }
 
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(POWERED, false).setValue(SCRAMBLER_RANGE, MIN_RANGE);
+        return this.defaultBlockState().setValue(POWERED, false);
     }
 
 

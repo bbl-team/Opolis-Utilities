@@ -31,12 +31,10 @@ public record PacketOnOffButton() {
 
             if (blockState.getValue(BlockPlacerBlock.POWERED)) {
                 level.setBlockAndUpdate(blockPos, ModBlocks.BLOCK_PLACER.get().defaultBlockState().setValue(BlockPlacerBlock.POWERED, false)
-                        .setValue(BlockPlacerBlock.FACING, blockState.getValue(BlockPlacerBlock.FACING))
-                        .setValue(BlockPlacerBlock.TIMER, blockState.getValue(BlockPlacerBlock.TIMER)));
+                        .setValue(BlockPlacerBlock.FACING, blockState.getValue(BlockPlacerBlock.FACING)));
             } else {
                 level.setBlockAndUpdate(blockPos, ModBlocks.BLOCK_PLACER.get().defaultBlockState().setValue(BlockPlacerBlock.POWERED, true)
-                        .setValue(BlockPlacerBlock.FACING, blockState.getValue(BlockPlacerBlock.FACING))
-                        .setValue(BlockPlacerBlock.TIMER, blockState.getValue(BlockPlacerBlock.TIMER)));
+                        .setValue(BlockPlacerBlock.FACING, blockState.getValue(BlockPlacerBlock.FACING)));
             }
         }
 
@@ -57,12 +55,10 @@ public record PacketOnOffButton() {
 
             if (blockState.getValue(CrafterBlock.POWERED)) {
                 level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.POWERED, false)
-                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
-                        .setValue(CrafterBlock.TIMER, blockState.getValue(CrafterBlock.TIMER)));
+                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING)));
             } else {
                 level.setBlockAndUpdate(blockPos, ModBlocks.CRAFTER.get().defaultBlockState().setValue(CrafterBlock.POWERED, true)
-                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING))
-                        .setValue(CrafterBlock.TIMER, blockState.getValue(CrafterBlock.TIMER)));
+                        .setValue(CrafterBlock.FACING, blockState.getValue(CrafterBlock.FACING)));
             }
         }
 
@@ -94,11 +90,9 @@ public record PacketOnOffButton() {
         if (blockState.getBlock() instanceof EnderScramblerBlock) {
 
             if (blockState.getValue(EnderScramblerBlock.POWERED)) {
-                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.POWERED, false)
-                        .setValue(EnderScramblerBlock.SCRAMBLER_RANGE, blockState.getValue(EnderScramblerBlock.SCRAMBLER_RANGE)));
+                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.POWERED, false));
             } else {
-                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.POWERED, true)
-                        .setValue(EnderScramblerBlock.SCRAMBLER_RANGE, blockState.getValue(EnderScramblerBlock.SCRAMBLER_RANGE)));
+                level.setBlockAndUpdate(blockPos, ModBlocks.ENDER_SCRAMBLER.get().defaultBlockState().setValue(EnderScramblerBlock.POWERED, true));
             }
         }
 

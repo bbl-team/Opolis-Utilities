@@ -4,17 +4,17 @@ TODO: Shift Click Support for the wallet item in the catalogue
 TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
-TODO: Make recipes more consistent with values (eg. ingredient and ingredients) (1.21)
-TODO: Auto Summoning Block & Summoning block moved from strainers to opolis utilities (1.21)
-TODO: Add screens for all opolis utilities blocks (1.21)
-TODD: Shift clicking into stack limited slots (1.21) (maybe fixed in block breaker)
-TODD: Sapling grower should work on mushrooms?
 
 4.2.0
 Fixed various screen issues with rendering the same things to many times
-
 Improved Summoning block rendering
 Summoning block now only allows a single item in the catalyst slot
+Fixed Fluid Generator JEI category not showing
+Removed the timer and scrambler values being saved in block states now saved as data in the block entity
+Redstone clock and ender scrambler now sync there data to the client better
+Ender Scrambler max range now configurable in the config default is 8
+Fixed some placing issues with the catalogue block
+Improved the crafter client to server syncing
 
 4.1.4
 Updated various methods to latest neo forge 30beta

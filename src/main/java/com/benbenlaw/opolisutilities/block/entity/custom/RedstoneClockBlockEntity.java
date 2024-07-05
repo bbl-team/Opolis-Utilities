@@ -12,6 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,13 +23,16 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvider {
     public final ContainerData data;
     public int progress = 0;
-    public int maxProgress = 0;
+    public int maxProgress = 220;
     private int pulseDuration = 0;
     int maxTickChecker;
     public RedstoneClockBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -51,6 +57,18 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
                 return 2;
             }
         };
+    }
+
+    public void sync() {
+        if (level instanceof ServerLevel serverLevel) {
+            LevelChunk chunk = serverLevel.getChunkAt(getBlockPos());
+            if (Objects.requireNonNull(chunk.getLevel()).getChunkSource() instanceof ServerChunkCache chunkCache) {
+                chunkCache.chunkMap.getPlayers(chunk.getPos(), false).forEach(this::syncContents);
+            }
+        }
+    }
+    public void syncContents(ServerPlayer player) {
+        player.connection.send(Objects.requireNonNull(getUpdatePacket()));
     }
 
     @Override
@@ -109,6 +127,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
     }
 
     public void tick() {
+        sync();
 
         maxTickChecker++;
 
@@ -127,13 +146,13 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
                 }
             } else if (progress >= maxProgress && this.getBlockState().is(ModBlocks.REDSTONE_CLOCK.get())) {
                 if (progress == maxProgress) {
-                    level.setBlock(this.worldPosition, this.getBlockState().setValue(RedstoneClockBlock.TIMER, maxProgress)
+                    level.setBlock(this.worldPosition, this.getBlockState()
                             .setValue(RedstoneClockBlock.POWERED, true), 3);
                 }
                 progress = -20;
                 pulseDuration = 20;
             } else if (progress == (maxProgress / 2) && this.getBlockState().is(ModBlocks.REDSTONE_CLOCK.get())) {
-                level.setBlock(this.worldPosition, this.getBlockState().setValue(RedstoneClockBlock.TIMER, maxProgress)
+                level.setBlock(this.worldPosition, this.getBlockState()
                         .setValue(RedstoneClockBlock.POWERED, false), 3);
             }
         }

@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.opolisutilities.screen.utils.ConfigValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -17,7 +18,7 @@ public class SaplingGrower extends Item {
         super(properties);
     }
 
-    public static int TOTAL_GROWTH_ATTEMPTS = 128;// ConfigFile.totalGrowthAttempts.get();
+    public int TOTAL_GROWTH_ATTEMPTS = 128; //ConfigValues.TOTAL_ATTEMPTS_FOR_SAPLING_GROWER;
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext pContext) {

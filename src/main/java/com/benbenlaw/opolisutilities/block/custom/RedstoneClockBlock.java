@@ -42,21 +42,18 @@ public class RedstoneClockBlock extends BaseEntityBlock {
     }
 
     /* PROPERTIES */
-    public static final int MAX_TIMER = 1200; // 1 min
-    public static final int MIN_TIMER = 20; // 1 seconds
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final IntegerProperty TIMER = IntegerProperty.create("timer", MIN_TIMER, MAX_TIMER);
 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(POWERED, TIMER);
+        pBuilder.add(POWERED);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(POWERED, false).setValue(TIMER, 80);
+        return this.defaultBlockState().setValue(POWERED, false);
     }
     @SuppressWarnings("deprecation")
     @Override

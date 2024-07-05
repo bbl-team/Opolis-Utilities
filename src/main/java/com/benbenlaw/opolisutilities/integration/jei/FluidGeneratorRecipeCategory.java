@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,13 +31,15 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
 
     private IDrawable background;
    // private final IDrawable icon;
+
+    private final IDrawable icon;
     private final IGuiHelper helper;
     private int tabs_used = 0;
 
     public FluidGeneratorRecipeCategory(IGuiHelper helper) {
         this.helper = helper;
         this.background = helper.createDrawable(TEXTURE, 0, 0, 175, 57);
-   //     this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.FLUID_GENERATOR.get()));
     }
 
     @Override
@@ -69,9 +72,9 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
 
         tabs_used++;
 
-        /*
 
-     //   List<FluidGeneratorRecipe> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(FluidGeneratorRecipe.Type.INSTANCE);
+
+        List<RecipeHolder<FluidGeneratorRecipe>> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(FluidGeneratorRecipe.Type.INSTANCE);
 
         // Calculate the number of rows and columns based on the number of recipes
         int numRows = (int) Math.ceil((double) recipes.size() / 9);
@@ -88,14 +91,10 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
             final int slotX = 4 + (i % 9 * 19);
             final int slotY = 2 + i / 9 * 19;
 
-            String fluidAsString = recipes.get(i).getFluid();
-            Fluid fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.fromNamespaceAndPath(fluidAsString));
+            int finalI = i;
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, slotX, slotY).addFluidStack(recipes.get(i).value().input().getFluid(), 1000)
+                    .addTooltipCallback((fluidStack, addTooltip) -> addTooltip.add(Component.literal("Fluid Generated: " + recipes.get(finalI).value().input().getAmount() + "mB")));
 
-            assert fluid != null;
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, slotX, slotY).addFluidStack(fluid, recipes.get(i).getFluidAmount())
-                    .setFluidRenderer(recipes.get(i).getFluidAmount(), true, 16, 16);
         }
-
-         */
     }
 }

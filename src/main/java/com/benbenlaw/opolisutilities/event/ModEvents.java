@@ -5,10 +5,12 @@ package com.benbenlaw.opolisutilities.event;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.EnderScramblerBlockEntity;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
+import com.benbenlaw.opolisutilities.screen.utils.ConfigValues;
 import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -39,6 +41,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -65,8 +68,9 @@ public class ModEvents {
         Entity entity = event.getEntity();
         if (entity instanceof EnderMan) {
             BlockPos pos = entity.getOnPos();
+            BlockEntity blockEntity = entity.level().getBlockEntity(pos);
 
-            int maxRange = EnderScramblerBlock.MAX_RANGE; // Get the maximum range
+            int maxRange = ConfigValues.ENDER_SCRAMBLER_MAX_RANGE; // Get the maximum range
 
             for (int x = -maxRange; x <= maxRange; x++) {
                 for (int y = -maxRange; y <= maxRange; y++) {
@@ -74,18 +78,21 @@ public class ModEvents {
                         BlockPos p = pos.offset(x, y, z);
                         BlockState state = entity.level().getBlockState(p);
                         if (state.is(ModBlocks.ENDER_SCRAMBLER.get())) {
+                            BlockEntity enderScramblerBlockEntity = entity.level().getBlockEntity(p);
 
-                            int r1 = state.getValue(EnderScramblerBlock.SCRAMBLER_RANGE);
+                            if (enderScramblerBlockEntity instanceof EnderScramblerBlockEntity e) {
+                                int r1 = e.SCRAMBLER_RANGE;
 
-                            for (int x1 = -r1; x1 <= r1; x1++) {
-                                for (int y1 = -r1; y1 <= r1; y1++) {
-                                    for (int z1 = -r1; z1 <= r1; z1++) {
-                                        BlockPos p1 = pos.offset(x1, y1, z1);
-                                        BlockState state1 = entity.level().getBlockState(p1);
-                                        if (state1.is(ModBlocks.ENDER_SCRAMBLER.get())) {
-                                            if (state1.getValue(EnderScramblerBlock.POWERED).equals(true)) {
-                                                event.setCanceled(true);
-                                                return;
+                                for (int x1 = -r1; x1 <= r1; x1++) {
+                                    for (int y1 = -r1; y1 <= r1; y1++) {
+                                        for (int z1 = -r1; z1 <= r1; z1++) {
+                                            BlockPos p1 = pos.offset(x1, y1, z1);
+                                            BlockState state1 = entity.level().getBlockState(p1);
+                                            if (state1.is(ModBlocks.ENDER_SCRAMBLER.get())) {
+                                                if (state1.getValue(EnderScramblerBlock.POWERED).equals(true)) {
+                                                    event.setCanceled(true);
+                                                    return;
+                                                }
                                             }
                                         }
                                     }

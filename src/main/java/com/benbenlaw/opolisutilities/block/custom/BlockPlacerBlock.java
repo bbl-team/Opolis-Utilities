@@ -43,29 +43,26 @@ public class BlockPlacerBlock extends BaseEntityBlock {
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
-    public static final int MAX_TIMER = 1200; // 1 minute
-    public static final int MIN_TIMER = 10; // 0.5 seconds
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final IntegerProperty TIMER = IntegerProperty.create("timer", MIN_TIMER, MAX_TIMER);
 
     /* ROTATION */
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState rotate(BlockState blockState, Rotation direction) {
-        return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, false).setValue(TIMER, MIN_TIMER);
+        return blockState.setValue(FACING, direction.rotate(blockState.getValue(FACING))).setValue(POWERED, false);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, TIMER, POWERED);
+        pBuilder.add(FACING, POWERED);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false).setValue(TIMER, 80);
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(POWERED, false);
     }
 
     /* BLOCK ENTITY */

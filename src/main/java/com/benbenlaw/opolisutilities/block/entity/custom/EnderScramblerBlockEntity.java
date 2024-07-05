@@ -11,6 +11,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -18,13 +21,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class EnderScramblerBlockEntity extends BlockEntity implements MenuProvider {
 
     public final ContainerData data;
-    public int SCRAMBLER_RANGE = this.getBlockState().getValue(EnderScramblerBlock.SCRAMBLER_RANGE);
+    public int SCRAMBLER_RANGE = 1;
 
     public EnderScramblerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.ENDER_SCRAMBLER_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -45,6 +51,18 @@ public class EnderScramblerBlockEntity extends BlockEntity implements MenuProvid
                 return 0;
             }
         };
+    }
+
+    public void sync() {
+        if (level instanceof ServerLevel serverLevel) {
+            LevelChunk chunk = serverLevel.getChunkAt(getBlockPos());
+            if (Objects.requireNonNull(chunk.getLevel()).getChunkSource() instanceof ServerChunkCache chunkCache) {
+                chunkCache.chunkMap.getPlayers(chunk.getPos(), false).forEach(this::syncContents);
+            }
+        }
+    }
+    public void syncContents(ServerPlayer player) {
+        player.connection.send(Objects.requireNonNull(getUpdatePacket()));
     }
 
     @Override
@@ -99,6 +117,8 @@ public class EnderScramblerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void tick() {
+
+        sync();
 
         //Usage Handler in Mod Events
 

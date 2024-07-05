@@ -2,6 +2,8 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.EnderScramblerBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.RedstoneClockBlockEntity;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
@@ -32,6 +34,14 @@ public class EnderScramblerScreen extends AbstractContainerScreen<EnderScrambler
         super.init();
         addMenuButtons();
     }
+
+
+    @Override
+    protected void containerTick() {
+        this.clearWidgets();
+        addMenuButtons();
+    }
+
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
@@ -64,7 +74,11 @@ public class EnderScramblerScreen extends AbstractContainerScreen<EnderScrambler
     @Nullable
     private void renderRange(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 4, 13, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(EnderScramblerBlock.SCRAMBLER_RANGE) + " range", this.leftPos + 90,
+            int ticks = 0;
+            if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof EnderScramblerBlockEntity enderScramblerBlockEntity) {
+                ticks = enderScramblerBlockEntity.SCRAMBLER_RANGE;
+            }
+            guiGraphics.drawString(this.font, ticks + " range", this.leftPos + 90,
                     this.topPos + 60, 0x3F3F3F, false);
         }
     }

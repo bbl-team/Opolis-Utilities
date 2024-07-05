@@ -30,6 +30,12 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
     }
 
     @Override
+    protected void containerTick() {
+        this.clearWidgets();
+        addMenuButtons();
+    }
+
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -98,12 +104,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
                 }));
             }
 
-            refreshButtons();
         }
     }
 
-    private void refreshButtons() {
-        this.clearWidgets();
-        addMenuButtons();
-    }
 }

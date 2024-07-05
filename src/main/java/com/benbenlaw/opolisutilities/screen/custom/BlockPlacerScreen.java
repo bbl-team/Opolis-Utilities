@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
@@ -34,6 +35,13 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
     }
 
     @Override
+    protected void containerTick() {
+        this.clearWidgets();
+        addMenuButtons();
+    }
+
+
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -60,7 +68,12 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
     @Nullable
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 0, 0, 20, 18 * 3)) {
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(BlockPlacerBlock.TIMER) + " ticks", this.leftPos + 95,
+
+            int ticks = 0;
+            if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof BlockPlacerBlockEntity blockPlacerBlockEntity) {
+                ticks = blockPlacerBlockEntity.maxProgress;
+            }
+            guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 95,
                     this.topPos + 55, 0x3F3F3F, false);
         }
     }

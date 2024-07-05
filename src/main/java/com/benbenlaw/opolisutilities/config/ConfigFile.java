@@ -16,8 +16,6 @@ public final class ConfigFile {
     public static final ModConfigSpec.ConfigValue<Double> basicLootBoxDropChance;
     public static final ModConfigSpec.ConfigValue<Integer> crookBoost;
     public static final ModConfigSpec.ConfigValue<Integer> maxScramblerRange;
-    public static final ModConfigSpec.ConfigValue<Integer> minScramblerRange;
-    public static final ModConfigSpec.ConfigValue<Integer> totalGrowthAttempts;
     public static final ModConfigSpec.ConfigValue<Boolean> animalNetHostileMobs;
     public static final ModConfigSpec.ConfigValue<Boolean> animalNetWaterMobs;
     public static final ModConfigSpec.ConfigValue<Boolean> animalNetAnimalMobs;
@@ -54,13 +52,7 @@ public final class ConfigFile {
                 .define("Additional Crook Rolls", 3);
 
         maxScramblerRange = BUILDER.comment("The max range of the Ender Scrambler")
-                .define("(WIP)Max Ender Scrambler Range", 8);
-
-        minScramblerRange = BUILDER.comment("The min range of the Ender Scrambler")
-                .define("(WIP)Min Ender Scrambler Range", 8);
-
-        totalGrowthAttempts = BUILDER.comment("The number of attempts to grow a sapling per right click")
-                .define("(WIP)Total Attempts for Sapling Grower", 128);
+                .define("Max Ender Scrambler Range", 8);
 
         animalNetHostileMobs = BUILDER.comment("Can the animal net capture hostile mobs, default = false")
                 .define("Animal Net: Hostile Mobs", false);

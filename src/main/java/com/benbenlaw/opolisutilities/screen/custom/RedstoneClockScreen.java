@@ -2,6 +2,8 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
+import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
+import com.benbenlaw.opolisutilities.block.entity.custom.RedstoneClockBlockEntity;
 import com.benbenlaw.opolisutilities.networking.payload.DecreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.screen.utils.ModButtons;
@@ -30,6 +32,14 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
         super.init();
         addMenuButtons();
     }
+
+
+    @Override
+    protected void containerTick() {
+        this.clearWidgets();
+        addMenuButtons();
+    }
+
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
@@ -64,7 +74,11 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
             guiGraphics.drawString(this.font, Component.translatable("gui.opolisutilities.shift"), this.leftPos + 95,
                     this.topPos + 45, 0x3F3F3F, false);
 
-            guiGraphics.drawString(this.font, this.menu.level.getBlockState(this.menu.blockPos).getValue(RedstoneClockBlock.TIMER) + " ticks", this.leftPos + 95,
+            int ticks = 0;
+            if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
+                ticks = redstoneClockBlockEntity.maxProgress;
+            }
+            guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 95,
                     this.topPos + 35, 0x3F3F3F, false);
         }
     }

@@ -4,6 +4,7 @@ package com.benbenlaw.opolisutilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupConfigFile;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
@@ -19,13 +20,19 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ConfigTracker;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openjdk.nashorn.internal.ir.annotations.Ignore;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
 
 
 @Mod(OpolisUtilities.MOD_ID)
@@ -34,6 +41,10 @@ public class OpolisUtilities {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public OpolisUtilities(IEventBus modEventBus) {
+
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP, StartupConfigFile.SPEC, "opolis_utilities_startup.toml");
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
+
 
         ModItems.register(modEventBus);
         ModDataComponents.COMPONENTS.register(modEventBus);
@@ -51,7 +62,7 @@ public class OpolisUtilities {
         ModSounds.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
+
 
     }
 
