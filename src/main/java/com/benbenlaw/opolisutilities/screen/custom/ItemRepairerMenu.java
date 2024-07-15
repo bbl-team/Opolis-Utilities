@@ -59,10 +59,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
                 if (level.getBlockState(blockPos.above()).is(Blocks.AIR)) {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
                 }
-
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
+                return null;
             }
         });
 

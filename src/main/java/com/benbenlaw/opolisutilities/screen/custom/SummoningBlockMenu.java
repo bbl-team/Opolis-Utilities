@@ -45,8 +45,8 @@ public class SummoningBlockMenu extends AbstractContainerMenu {
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
-        this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), SummoningBlockEntity.INPUT_SLOT, 80, 16));
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), SummoningBlockEntity.CATALYST, 44, 16));
+        this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), SummoningBlockEntity.INPUT_SLOT, 80, 16));
         this.addSlot(new SlotItemHandler(blockEntity.getItemStackHandler(), SummoningBlockEntity.UPGRADE_SLOT, 116, 16));
 
         addDataSlots(data);

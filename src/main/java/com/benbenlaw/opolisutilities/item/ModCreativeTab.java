@@ -54,7 +54,6 @@ public class ModCreativeTab {
 
                 output.accept(ModBlocks.SUMMONING_BLOCK.get());
 
-
             }).build());
 
     public static void register(IEventBus eventBus) {

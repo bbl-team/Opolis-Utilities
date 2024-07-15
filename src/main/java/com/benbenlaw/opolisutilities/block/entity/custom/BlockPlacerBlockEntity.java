@@ -207,14 +207,14 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
-        compoundTag.putInt("block_placer.progress", progress);
-        compoundTag.putInt("block_placer.maxProgress", maxProgress);
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
     }
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
-        progress = compoundTag.getInt("block_placer.progress");
-        maxProgress = compoundTag.getInt("block_placer.maxProgress");
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
         super.loadAdditional(compoundTag, provider);
     }
     public void drops() {

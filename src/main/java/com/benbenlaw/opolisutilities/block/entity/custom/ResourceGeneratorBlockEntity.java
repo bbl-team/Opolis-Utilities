@@ -59,7 +59,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             if (slot == OUTPUT_SLOT) {
-                return 1024;
+                return stack.getMaxStackSize();
             }
 
             if (slot == INPUT_SLOT) {
@@ -98,6 +98,8 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
     public static final int UPGRADE_SLOT = 2;
+    public boolean useInventorySpeedBlocks;
+    public boolean hasInputInWorld;
 
     private final IItemHandler outputItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> false, // No input slots
@@ -191,19 +193,23 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
-        compoundTag.putInt("resource_generator.progress", progress);
-        compoundTag.putInt("resource_generator.maxProgress", maxProgress);
-        compoundTag.putInt("resource_generator.validCheck", validCheck);
-        compoundTag.putString("resource_generator.resource", resource);
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
+        compoundTag.putInt("validCheck", validCheck);
+        compoundTag.putString("resource", resource);
+        compoundTag.putBoolean("useInventorySpeedBlocks", useInventorySpeedBlocks);
+        compoundTag.putBoolean("hasInputInWorld", hasInputInWorld);
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
-        progress = compoundTag.getInt("resource_generator.progress");
-        maxProgress = compoundTag.getInt("resource_generator.maxProgress");
-        validCheck = compoundTag.getInt("resource_generator.validCheck");
-        resource = compoundTag.getString("resource_generator.resource");
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
+        validCheck = compoundTag.getInt("validCheck");
+        resource = compoundTag.getString("resource");
+        useInventorySpeedBlocks = compoundTag.getBoolean("useInventorySpeedBlocks");
+        hasInputInWorld = compoundTag.getBoolean("hasInputInWorld");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -226,7 +232,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         if (!level.isClientSide()) {
 
             // Set Tickrate
-            boolean useInventoySpeedBlocks = true;
+            useInventorySpeedBlocks = true;
 
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
@@ -236,7 +242,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                             Block speedBlock = Block.byItem(itemStack.getItem());
                             if (level.getBlockState(blockPos.above(2)).is(speedBlock)) {
                                 maxProgress = match.value().tickRate();
-                                useInventoySpeedBlocks = false;
+                                useInventorySpeedBlocks = false;
                                 break;
                             }
                         }
@@ -249,7 +255,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             // Reset if upgrade is removed
-            if (itemHandler.getStackInSlot(UPGRADE_SLOT).isEmpty() && useInventoySpeedBlocks) {
+            if (itemHandler.getStackInSlot(UPGRADE_SLOT).isEmpty() && useInventorySpeedBlocks) {
                 maxProgress = 220;
             }
 
@@ -306,7 +312,7 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             // Check for input and reset progress if no input is found
-            boolean hasInputInWorld = false;
+            hasInputInWorld = false;
 
             // Check if there is a valid block above the resource generator
             for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
@@ -329,7 +335,9 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             // Check if input slot is empty or there is no valid block above
             if (this.itemHandler.getStackInSlot(INPUT_SLOT).isEmpty() && !hasInputInWorld) {
                 progress = 0;
-            } else if (isValidStructure) {
+            } else if (isValidStructure && (itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
+                    (itemHandler.getStackInSlot(OUTPUT_SLOT).getItem() == BuiltInRegistries.ITEM.get(ResourceLocation.parse(resource)) &&
+                            itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize()))) {
                 progress++;
                 if (progress >= maxProgress) {
                     progress = 0;
@@ -341,6 +349,8 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                     }
                 }
             }
+
+
         }
     }
 

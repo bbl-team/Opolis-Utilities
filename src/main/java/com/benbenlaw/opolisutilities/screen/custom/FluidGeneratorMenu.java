@@ -52,10 +52,7 @@ public class FluidGeneratorMenu extends AbstractContainerMenu {
                 if (level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
                 }
-
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
+                return null;
             }
         });
         this.addSlot(new ResourceGeneratorUpgradeSlot(blockEntity.getItemStackHandler(), 1, 116, 16, level, blockPos) {
@@ -66,10 +63,7 @@ public class FluidGeneratorMenu extends AbstractContainerMenu {
                 if (level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
                 }
-
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
+                return null;
             }
         });
 

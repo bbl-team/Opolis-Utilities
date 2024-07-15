@@ -60,12 +60,17 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
         }
 
         @Override
-        public int getSlotLimit(int slot) {
+        protected int getStackLimit(int slot, ItemStack stack) {
             if (slot == CATALYST) {
                 return 1;
             }
-            return slot;
+            if (slot == UPGRADE_SLOT) {
+                return 1;
+            }
+
+            return stack.getMaxStackSize();
         }
+
     };
 
     public void sync() {
@@ -86,8 +91,8 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
     public int progress = 0;
     public int maxProgress = 220;
     public String mob = "";
-    public static final int INPUT_SLOT = 0;
-    public static final int CATALYST = 1;
+    public static final int INPUT_SLOT = 1;
+    public static final int CATALYST = 0;
     public static final int UPGRADE_SLOT = 2;
 
     private final IItemHandler summoningBlockItemHandler = new InputOutputItemHandler(itemHandler,
@@ -178,19 +183,19 @@ public class SummoningBlockEntity extends BlockEntity implements MenuProvider, I
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
-        compoundTag.putInt("summoning_block.progress", progress);
-        compoundTag.putInt("summoning_block.maxProgress", maxProgress);
-        compoundTag.putInt("summoning_block.validCheck", validCheck);
-        compoundTag.putString("summoning_block.mob", mob);
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
+        compoundTag.putInt("validCheck", validCheck);
+        compoundTag.putString("mob", mob);
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
-        progress = compoundTag.getInt("summoning_block.progress");
-        maxProgress = compoundTag.getInt("summoning_block.maxProgress");
-        validCheck = compoundTag.getInt("summoning_block.validCheck");
-        mob = compoundTag.getString("summoning_block.mob");
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
+        validCheck = compoundTag.getInt("validCheck");
+        mob = compoundTag.getString("mob");
         super.loadAdditional(compoundTag, provider);
     }
 

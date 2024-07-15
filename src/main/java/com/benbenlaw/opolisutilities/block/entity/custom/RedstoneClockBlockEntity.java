@@ -114,15 +114,15 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
     @Override
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
-        compoundTag.putInt("redstone_clock.progress", progress);
-        compoundTag.putInt("redstone_clock.maxProgress", maxProgress);
-        compoundTag.putInt("redstone_clock.pulseDuration", pulseDuration);
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
+        compoundTag.putInt("pulseDuration", pulseDuration);
     }
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
-        progress = compoundTag.getInt("redstone_clock.progress");
-        maxProgress = compoundTag.getInt("redstone_clock.maxProgress");
-        pulseDuration = compoundTag.getInt("redstone_clock.pulseDuration");
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
+        pulseDuration = compoundTag.getInt("pulseDuration");
         super.loadAdditional(compoundTag, provider);
     }
 

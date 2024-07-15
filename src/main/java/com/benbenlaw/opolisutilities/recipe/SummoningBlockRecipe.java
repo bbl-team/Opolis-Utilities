@@ -25,7 +25,7 @@ public record SummoningBlockRecipe(SizedIngredient input, Ingredient catalyst, S
 
     @Override
     public boolean matches(RecipeInput container, @NotNull Level level) {
-        return input.test(container.getItem(0));
+        return input.test(container.getItem(1));
     }
 
     @Override

@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -69,16 +71,26 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
+        renderTickRate(guiGraphics, mouseX, mouseY, x, y);
+        renderInWorldBlocks(guiGraphics, mouseX, mouseY, x, y);
     }
 
-    private void renderInWorldBlocksAsItems (GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        Block speedBlock = level.getBlockState(this.menu.blockPos.above(1)).getBlock();
-        if (menu.getSlot(ItemRepairerBlockEntity.UPGRADE_SLOT).getItem().isEmpty() && speedBlock != Blocks.AIR) {
+    private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
+            guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
+                    this.topPos + 68, 0x3F3F3F, false);
+        }
+    }
+
+    private void renderInWorldBlocks(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+
+        //Render Speed Upgrade Block In GUI
+        if (!this.menu.blockEntity.useInventorySpeedBlocks) {
+            Item inWorldBlockAsItem = level.getBlockState(this.menu.blockPos.above(1)).getBlock().asItem();
+            guiGraphics.renderFakeItem(new ItemStack(inWorldBlockAsItem), x + 116, y + 16);
+
             if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
-                if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                    guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
-                }
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade_in_world"), mouseX, mouseY);
             }
         }
     }

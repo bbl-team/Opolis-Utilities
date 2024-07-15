@@ -41,7 +41,7 @@ public class EnderScramblerMenu extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
-        return null;
+        return pPlayer.getInventory().getItem(pIndex);
     }
 
     @Override

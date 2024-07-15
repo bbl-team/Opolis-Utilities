@@ -77,11 +77,13 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 220;
+    public int progress = 0;
+    public int maxProgress = 220;
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
     public static final int UPGRADE_SLOT = 2;
+
+    public boolean useInventorySpeedBlocks;
 
     private final IItemHandler itemRepairerHandler = new InputOutputItemHandler(itemHandler,
             (i, stack ) -> i == INPUT_SLOT && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER),
@@ -175,15 +177,17 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
-        compoundTag.putInt("item_repairer.progress", progress);
-        compoundTag.putInt("item_repairer.maxProgress", maxProgress);
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
+        compoundTag.putBoolean("useInventorySpeedBlocks", useInventorySpeedBlocks);
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
-        progress = compoundTag.getInt("item_repairer.progress");
-        maxProgress = compoundTag.getInt("item_repairer.maxProgress");
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
+        useInventorySpeedBlocks = compoundTag.getBoolean("useInventorySpeedBlocks");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -216,7 +220,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             }
 
             // Set Tickrate
-            boolean useInventorySpeedBlocks = true;
+            useInventorySpeedBlocks = true;
 
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();

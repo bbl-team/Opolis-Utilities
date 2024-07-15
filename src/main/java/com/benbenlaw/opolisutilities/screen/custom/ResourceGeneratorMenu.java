@@ -52,12 +52,15 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
                 if (level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
                 }
+                return null;
+            }
 
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
+            @Override
+            public boolean isFake() {
+                return super.isFake();
             }
         });
+
         this.addSlot(new ResourceGeneratorUpgradeSlot(blockEntity.getItemStackHandler(), ResourceGeneratorBlockEntity.UPGRADE_SLOT, 116, 16, level, blockPos) {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
@@ -65,10 +68,7 @@ public class ResourceGeneratorMenu extends AbstractContainerMenu {
                 if (level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
                 }
-
-                else {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCKED_SLOT);
-                }
+                return null;
             }
         });
 

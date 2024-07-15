@@ -397,9 +397,9 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "drying_table/dead_bush"));
 
         //Jerky
-        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(Tags.Items.FOODS_RAW_MEATS), 1),
+        DryingTableRecipeBuilder.dryingTableRecipe(new SizedIngredient(Ingredient.of(Tags.Items.FOODS_RAW_MEAT), 1),
                         new ItemStack(ModItems.JERKY.get()), 200)
-                .unlockedBy("has_item", has(Tags.Items.FOODS_RAW_MEATS))
+                .unlockedBy("has_item", has(Tags.Items.FOODS_RAW_MEAT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "drying_table/jerky"));
 
         //Paper

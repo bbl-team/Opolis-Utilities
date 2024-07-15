@@ -59,8 +59,10 @@
   "block.gui.speed_upgrade": "Speed Cap Block",
   "block.gui.resource": "Resource to Generate",
   "block.gui.output": "Resource Generated",
-  "block.gui.block_in_world": "In World Speed Upgrade!",
-  "block.in_world.no_speed_upgrade": "No Speed Upgrade Detected!",
+  "block.gui.block_in_world": "Resource In World!",
+  "block.gui.speed_upgrade_in_world": "Speed Upgrade In World!",
+
+    "block.in_world.no_speed_upgrade": "No Speed Upgrade Detected!",
   "block.in_world.tickrate": "Current Tick Rate: %s",
   "block.in_world.obtaining": "Obtaining %s",
 

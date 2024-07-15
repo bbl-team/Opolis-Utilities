@@ -1,9 +1,23 @@
 Changelog Opolis Utilities
 
-TODO: Shift Click Support for the wallet item in the catalogue
+TODO: Fix Shift clicking into output slots
 TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
+
+4.3.0
+Fluid generator will now longer try to generate fluid if the tank is full or the tank contains a different fluid
+Catalogue now supports shift clicking items in
+Catalogue now doesn't crash when taking out an item
+Resource Generator will now stop it the input changes to a different item ore the output is full,
+    slot capacity now change to the same as the item being generated max stack size
+Fixed some strange itemhandler behaviors with the summoning block
+Fixed crash when trying to shift click items into a ender scrambler
+Updated to neoforge 21.0.91
+Tweaked internal rendering of the blocks in world for most resource generator, fluid generator and item repairer
+Item Repairer now show tick rate when hovering over upgrade slot
+Changed some block data names
+
 
 4.2.0
 Fixed various screen issues with rendering the same things to many times
@@ -15,6 +29,8 @@ Redstone clock and ender scrambler now sync there data to the client better
 Ender Scrambler max range now configurable in the config default is 8
 Fixed some placing issues with the catalogue block
 Improved the crafter client to server syncing
+Added fluid creation helpers, allow easy additions of fluids and buckets to mods
+
 
 4.1.4
 Updated various methods to latest neo forge 30beta

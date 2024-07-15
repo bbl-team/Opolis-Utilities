@@ -2,7 +2,6 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.screen.utils.FluidStackWidget;
-import com.benbenlaw.opolisutilities.screen.utils.FluidTankRenderer;
 import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,13 +10,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGeneratorMenu> {
 
@@ -62,72 +58,48 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        renderInWorldBlocksAsItems(guiGraphics, mouseX, mouseY, x, y);
-        renderOutputSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
+        renderInWorldBlocks(guiGraphics, mouseX, mouseY, x, y);
 
-        /*
-        if (!menu.blockEntity.FLUID_TANK.getFluid().isEmpty()) {
-            renderer.render(guiGraphics, x + 14, y + 11, menu.blockEntity.FLUID_TANK.getFluid());
-        }
-
-         */
     }
 
-    private void renderInWorldBlocksAsItems(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        Block speedBlock = level.getBlockState(this.menu.blockPos.above(2)).getBlock();
-        Block genBlock = level.getBlockState(this.menu.blockPos.above(1)).getBlock();
-
-        if (!menu.getSlot(0).getItem().isEmpty() && genBlock != Blocks.AIR) {
-            guiGraphics.renderFakeItem(genBlock.asItem().getDefaultInstance(), x + 80, y + 16);
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 16, 16, 16)) {
-                if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                    guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
-                }
-            }
-        }
-
-        if (genBlock == Blocks.AIR && !menu.getSlot(0).getItem().isEmpty()) {
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 16, 16, 16)) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.resource"), mouseX, mouseY);
-            }
-        }
-
-        if (!menu.getSlot(1).getItem().isEmpty() && speedBlock != Blocks.AIR) {
-            guiGraphics.renderFakeItem(speedBlock.asItem().getDefaultInstance(), x + 116, y + 16);
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
-                if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                    guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
-                }
-            }
-        }
-
-        if (speedBlock == Blocks.AIR && !menu.getSlot(1).getItem().isEmpty()) {
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade"), mouseX, mouseY);
-            }
-        }
-    }
-
-    private void renderOutputSlotTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 64, 16, 16)) {
-            if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem()) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.output"), mouseX, mouseY);
-            }
-        }
-    }
-
-    private void addFluidWidgets() {
-        addRenderableOnly(new FluidStackWidget(this, getMenu().blockEntity.FLUID_TANK, leftPos + 14, topPos + 15, 14, 56));
-    }
-
-
-    @Nullable
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
             guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
                     this.topPos + 68, 0x3F3F3F, false);
         }
     }
+
+    private void renderInWorldBlocks(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
+
+        //Render Speed Upgrade Block In GUI
+        if (!this.menu.blockEntity.useInventorySpeedBlocks) {
+            Item inWorldBlockAsItem = level.getBlockState(this.menu.blockPos.above(2)).getBlock().asItem();
+            guiGraphics.renderFakeItem(new ItemStack(inWorldBlockAsItem), x + 116, y + 16);
+
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade_in_world"), mouseX, mouseY);
+            }
+        }
+
+        //Render Resource Block In GUI
+        if (this.menu.blockEntity.hasInputInWorld) {
+            Item inWorldFluidAsBucket = level.getFluidState(this.menu.blockPos.above(1)).getType().getBucket();
+            guiGraphics.renderFakeItem(new ItemStack(inWorldFluidAsBucket), x + 80, y + 16);
+
+
+            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 16, 16, 16)) {
+                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
+            }
+        }
+    }
+
+
+    private void addFluidWidgets() {
+        addRenderableOnly(new FluidStackWidget(this, getMenu().blockEntity.FLUID_TANK, leftPos + 14, topPos + 15, 14, 56));
+    }
+
+
+
 }
 

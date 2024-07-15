@@ -108,11 +108,11 @@ public class EnderScramblerBlockEntity extends BlockEntity implements MenuProvid
     @Override
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
-        compoundTag.putInt("ender_scrambler.range", SCRAMBLER_RANGE);
+        compoundTag.putInt("range", SCRAMBLER_RANGE);
     }
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
-        SCRAMBLER_RANGE = compoundTag.getInt("ender_scrambler.range");
+        SCRAMBLER_RANGE = compoundTag.getInt("range");
         super.loadAdditional(compoundTag, provider);
     }
 

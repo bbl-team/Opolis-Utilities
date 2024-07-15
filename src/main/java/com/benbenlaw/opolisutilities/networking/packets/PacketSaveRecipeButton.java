@@ -29,7 +29,7 @@ public record PacketSaveRecipeButton() {
         if (blockState.getBlock() instanceof CrafterBlock) {
             CrafterBlockEntity entity = (CrafterBlockEntity) level.getBlockEntity(blockPos);
             assert entity != null;
-            entity.updateRecipeButton();
+            entity.updateRecipe();
         }
     }
 }

@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -206,9 +208,10 @@ public class CatalogueMenu extends AbstractContainerMenu {
     void setupResultSlot() {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
             RecipeHolder<CatalogueRecipe> catalogueRecipe = this.recipes.get(this.selectedRecipeIndex.get());
+            ItemStack itemstack = catalogueRecipe.value().assemble(createRecipeInput(this.container), this.level.registryAccess());
             this.resultContainer.setRecipeUsed(catalogueRecipe);
             this.lastUsedRecipe = catalogueRecipe.value();
-            this.resultSlot.set(catalogueRecipe.value().assemble((RecipeInput) this.container, this.level.registryAccess()));
+            this.resultSlot.set(itemstack);
         } else {
             this.resultSlot.set(ItemStack.EMPTY);
         }
@@ -217,6 +220,9 @@ public class CatalogueMenu extends AbstractContainerMenu {
         this.broadcastChanges();
     }
 
+    private static SingleRecipeInput createRecipeInput(Container container) {
+        return new SingleRecipeInput(container.getItem(0));
+    }
 
     public @NotNull MenuType<?> getType() {
         return ModMenuTypes.CATALOGUE_MENU.get();
@@ -248,10 +254,10 @@ public class CatalogueMenu extends AbstractContainerMenu {
                 if (!this.moveItemStackTo(itemstack1, 2, 38, false)) {
                     return ItemStack.EMPTY;
                 }
-       //     } else if (this.level.getRecipeManager().getRecipeFor(CatalogueRecipe.Type.INSTANCE, new SimpleContainer(itemstack1), this.level).isPresent()) {
-      //          if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
-        //            return ItemStack.EMPTY;
-        //        }
+            } else if (this.level.getRecipeManager().getRecipeFor(CatalogueRecipe.Type.INSTANCE, new SingleRecipeInput(itemstack1), this.level).isPresent()) {
+                if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                    return ItemStack.EMPTY;
+                }
             } else if (pIndex >= 2 && pIndex < 29) {
                 if (!this.moveItemStackTo(itemstack1, 29, 38, false)) {
                     return ItemStack.EMPTY;

@@ -182,15 +182,15 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
-        compoundTag.putInt("resource_generator.progress", progress);
-        compoundTag.putInt("resource_generator.maxProgress", maxProgress);
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
-        progress = compoundTag.getInt("resource_generator.progress");
-        maxProgress = compoundTag.getInt("resource_generator.maxProgress");
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -225,8 +225,8 @@ public class DryingTableBlockEntity extends BlockEntity implements MenuProvider,
                 }
             };
 
-            Optional<RecipeHolder<DryingTableRecipe>> match = Optional.ofNullable(level.getRecipeManager()
-                    .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level).orElse(null));
+            Optional<RecipeHolder<DryingTableRecipe>> match = level.getRecipeManager()
+                    .getRecipeFor(DryingTableRecipe.Type.INSTANCE, inventory, level);
 
             Optional<RecipeHolder<SoakingTableRecipe>> matchSoaking = level.getRecipeManager()
                     .getRecipeFor(SoakingTableRecipe.Type.INSTANCE, inventory, level);

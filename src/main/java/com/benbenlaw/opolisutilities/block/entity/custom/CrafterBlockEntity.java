@@ -83,22 +83,18 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     public ResourceLocation recipeID = ResourceLocation.parse("minecraft:air");
     private NonNullList<Ingredient> craftingIngredients;
 
-
-    //Item Handler Per Sides
+    // Item Handler Per Sides
     private final IItemHandler crafterItemHandler = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> { // Input condition
+            (i, stack) -> {
                 if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    // Check if the slot has a valid ingredient
                     return isIngredientValidForSlot(stack, i);
                 }
                 return false;
             },
-            i -> i == 9 // Output condition for slot 9
+            i -> i == 9
     );
 
-
     private boolean isIngredientValidForSlot(ItemStack insertedItem, int slotIndex) {
-        // Check if the inserted item matches the ingredient for the slot
         if (craftingIngredients != null && slotIndex < craftingIngredients.size()) {
             Ingredient ingredient = craftingIngredients.get(slotIndex);
             return ingredient.test(insertedItem);
@@ -106,8 +102,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         return false;
     }
 
-
-    //Called in startup for sides of the block
+    // Called in startup for sides of the block
     public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
         return crafterItemHandler;
     }
@@ -191,20 +186,19 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
-        compoundTag.putInt("crafter.progress", progress);
-        compoundTag.putInt("crafter.maxProgress", maxProgress);
-        compoundTag.putInt("crafter.recipeChecker", recipeChecker);
-        compoundTag.putString("crafter.recipeID", recipeID.toString());
-
+        compoundTag.putInt("progress", progress);
+        compoundTag.putInt("maxProgress", maxProgress);
+        compoundTag.putInt("recipeChecker", recipeChecker);
+        compoundTag.putString("recipeID", recipeID.toString());
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
-        progress = compoundTag.getInt("crafter.progress");
-        maxProgress = compoundTag.getInt("crafter.maxProgress");
-        recipeChecker = compoundTag.getInt("crafter.recipeChecker");
-        recipeID = ResourceLocation.parse(compoundTag.getString("crafter.recipeID"));
+        progress = compoundTag.getInt("progress");
+        maxProgress = compoundTag.getInt("maxProgress");
+        recipeChecker = compoundTag.getInt("recipeChecker");
+        recipeID = ResourceLocation.parse(compoundTag.getString("recipeID"));
 
         super.loadAdditional(compoundTag, provider);
     }
@@ -254,11 +248,10 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     public boolean canCraft() {
         ItemStack stack = itemHandler.getStackInSlot(9);
         int count = stack.getCount();
-        boolean same = stack.getItem() == craftingItem.getItem();
+        boolean same = ItemStack.isSameItem(stack, craftingItem) && ItemStack.isSameItemSameComponents(stack, craftingItem);
         boolean fits = count + craftingItem.getCount() <= craftingItem.getMaxStackSize();
         return stack.isEmpty() || (same && fits);
     }
-
 
     public void updateRecipe() {
         CraftingContainer container = new CraftingContainer() {
@@ -275,8 +268,9 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             @Override
             public @NotNull List<ItemStack> getItems() {
                 List<ItemStack> list = new ArrayList<>();
-                for (int i = 0; i < 9; i++)
-                    list.add(Optional.of(itemHandler.getStackInSlot(i)).orElse(ItemStack.EMPTY));
+                for (int i = 0; i < 9; i++) {
+                    list.add(itemHandler.getStackInSlot(i));
+                }
                 return list;
             }
 
@@ -291,22 +285,22 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             }
 
             @Override
-            public @NotNull ItemStack getItem(int pSlot) {
-                return getItems().get(pSlot);
+            public @NotNull ItemStack getItem(int slot) {
+                return getItems().get(slot);
             }
 
             @Override
-            public @NotNull ItemStack removeItem(int pSlot, int pAmount) {
+            public @NotNull ItemStack removeItem(int slot, int amount) {
                 return ItemStack.EMPTY;
             }
 
             @Override
-            public @NotNull ItemStack removeItemNoUpdate(int pSlot) {
+            public @NotNull ItemStack removeItemNoUpdate(int slot) {
                 return ItemStack.EMPTY;
             }
 
             @Override
-            public void setItem(int pSlot, @NotNull ItemStack pStack) {
+            public void setItem(int slot, @NotNull ItemStack stack) {
             }
 
             @Override
@@ -314,7 +308,7 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             }
 
             @Override
-            public boolean stillValid(@NotNull Player pPlayer) {
+            public boolean stillValid(@NotNull Player player) {
                 return true;
             }
 
@@ -323,88 +317,25 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             }
 
             @Override
-            public void fillStackedContents(@NotNull StackedContents pHelper) {
-            }
-        };
-    }
-
-    public void updateRecipeButton() {
-        CraftingContainer container = new CraftingContainer() {
-            @Override
-            public int getWidth() {
-                return 3;
-            }
-
-            @Override
-            public int getHeight() {
-                return 3;
-            }
-
-            @Override
-            public @NotNull List<ItemStack> getItems() {
-                List<ItemStack> list = new ArrayList<>();
-                for (int i = 0; i < 9; i++)
-                    list.add(Optional.of(itemHandler.getStackInSlot(i)).orElse(ItemStack.EMPTY));
-                return list;
-            }
-
-            @Override
-            public int getContainerSize() {
-                return getWidth() * getHeight();
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public @NotNull ItemStack getItem(int pSlot) {
-                return getItems().get(pSlot);
-            }
-
-            @Override
-            public @NotNull ItemStack removeItem(int pSlot, int pAmount) {
-                return ItemStack.EMPTY;
-            }
-
-            @Override
-            public @NotNull ItemStack removeItemNoUpdate(int pSlot) {
-                return ItemStack.EMPTY;
-            }
-
-            @Override
-            public void setItem(int pSlot, @NotNull ItemStack pStack) {
-            }
-
-            @Override
-            public void setChanged() {
-            }
-
-            @Override
-            public boolean stillValid(@NotNull Player pPlayer) {
-                return true;
-            }
-
-            @Override
-            public void clearContent() {
-            }
-
-            @Override
-            public void fillStackedContents(@NotNull StackedContents pHelper) {
+            public void fillStackedContents(@NotNull StackedContents helper) {
             }
         };
 
+        for (int i = 0; i < 9; i++) {
+            container.setItem(i, itemHandler.getStackInSlot(i));
+        }
 
         assert level != null;
-        Optional<RecipeHolder<CraftingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container.asCraftInput(),  level);
+        Optional<RecipeHolder<CraftingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, container.asCraftInput(), level);
         if (recipe.isPresent()) {
             CraftingRecipe r = recipe.get().value();
             craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
             craftingIngredients = r.getIngredients();
             recipeID = recipe.get().id();
+            System.out.println("Recipe found: " + recipeID);
         } else {
             craftingItem = ItemStack.EMPTY.copy();
+            System.out.println("No recipe found.");
         }
     }
 
@@ -427,32 +358,19 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     }
 
     public void extractIngredients() {
-        HashMap<Item, Integer> itemCount = countIngredients(craftingIngredients);
-
-        // Iterate over each item in the recipe
-        for (Map.Entry<Item, Integer> entry : itemCount.entrySet()) {
-            Item item = entry.getKey();
-            int needs = entry.getValue();
-
-            // Iterate over the slots containing the item
-            for (int i = 0; i < 9 && needs > 0; i++) {
-                ItemStack stack = itemHandler.getStackInSlot(i);
-                if (!stack.isEmpty() && stack.getItem() == item) {
-                    // Extract one item from this slot
+        if (craftingIngredients != null) {
+            for (int i = 0; i < 9; i++) {
+                if (i >= craftingIngredients.size()) break;
+                ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                if (!stackInSlot.isEmpty()) {
                     ItemStack extractedStack = itemHandler.extractItem(i, 1, false);
-                    needs--;
-
-                    if (!extractedStack.isEmpty()) {
-                        if (!extractedStack.getCraftingRemainingItem().isEmpty()) {
-                            // Instead of trying to insert, directly drop the crafting remainder item
-                            Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), extractedStack.getCraftingRemainingItem());
-                        }
+                    if (!extractedStack.isEmpty() && !extractedStack.getCraftingRemainingItem().isEmpty()) {
+                        Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), extractedStack.getCraftingRemainingItem());
                     }
                 }
             }
         }
     }
-
 
     private boolean tryInserting(ItemStack stack) {
         for (int i = 0; i < 8; i++) {
@@ -468,30 +386,26 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         return hasIngredientsForRecipe();
     }
 
-
-    //Tweak This
     private boolean hasIngredientsForRecipe() {
         if (craftingIngredients == null || craftingIngredients.isEmpty()) {
-            return false; // No recipe or ingredients
+            return false;
         }
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 9; i++) {
             if (i < craftingIngredients.size()) {
                 ItemStack slotStack = itemHandler.getStackInSlot(i);
                 Ingredient ingredient = craftingIngredients.get(i);
                 if (!ingredient.test(slotStack)) {
-                    return false; // Ingredient doesn't match slot content
+                    return false;
                 }
             } else {
                 if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                    return false; // Slot contains unexpected item
+                    return false;
                 }
             }
         }
         return true;
     }
-
-
 
     private HashMap<Item, Integer> countIngredients(NonNullList<Ingredient> ingredients) {
         HashMap<Item, Integer> map = new HashMap<>();
@@ -502,10 +416,4 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         }
         return map;
     }
-
-
-
-
-
-
 }
