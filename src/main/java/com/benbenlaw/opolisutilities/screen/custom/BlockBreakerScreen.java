@@ -59,6 +59,7 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
+        renderTickRate(guiGraphics);
         renderToolSlotTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderWhitelistTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderBlacklistTooltip(guiGraphics, mouseX, mouseY, x, y);
@@ -107,4 +108,13 @@ public class BlockBreakerScreen extends AbstractContainerScreen<BlockBreakerMenu
         }
     }
 
+    private void renderTickRate(GuiGraphics guiGraphics) {
+        if (this.menu.blockEntity.progress != 0) {
+            guiGraphics.drawString(this.font, "Breaking Time", this.leftPos + 100,
+                    this.topPos + 50, 0x3F3F3F, false);
+            guiGraphics.drawString(this.font, this.menu.blockEntity.progress + "/" + this.menu.blockEntity.maxProgress, this.leftPos + 100,
+                    this.topPos + 60, 0x3F3F3F, false);
+
+        }
+    }
 }

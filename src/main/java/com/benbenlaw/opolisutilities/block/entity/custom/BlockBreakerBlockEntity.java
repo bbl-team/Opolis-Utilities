@@ -8,7 +8,10 @@ import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntit
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -24,13 +27,16 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -43,15 +49,19 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.POWERED;
+import static net.neoforged.neoforge.event.EventHooks.getBreakSpeed;
 
 public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
@@ -270,9 +280,15 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
         assert level != null;
         BlockState blockState = level.getBlockState(pos);
 
-        setChanged(level, worldPosition, blockState);
+        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && !level.isClientSide()) {
 
-        if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && level instanceof ServerLevel) {
+
+            sync();
+
+            // Ensure fakePlayer is initialized
+            if (this.fakePlayer == null && level instanceof ServerLevel serverLevel) {
+                this.fakePlayer = createFakePlayer(serverLevel);
+            }
 
             if (blockState.hasProperty(FACING) && blockState.getValue(POWERED)) {
 
@@ -287,22 +303,46 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                 boolean blockRequiresCorrectTool = block.defaultBlockState().requiresCorrectToolForDrops();
                 boolean hasCorrectTool = tool.isCorrectToolForDrops(block.defaultBlockState());
 
+
+
                 if (level.getBlockState(placeHere).getBlock() != Blocks.AIR && !blockState.is(Blocks.VOID_AIR) && !blockState.isAir()) {
 
                     if (!blockRequiresCorrectTool || hasCorrectTool) {
 
-                        // Calculate the time it takes to break the block
-                        float destroySpeed = block.defaultBlockState().getDestroySpeed(this.level, pos);
-                        float explosionResistance = block.defaultBlockState().getExplosionResistance(this.level, pos,
-                                new Explosion(level, null, 0, 0, 0, 0, false, Explosion.BlockInteraction.KEEP));
-                        float combined = destroySpeed + explosionResistance;
-                        int calculatedBreakTime = (int) (combined * 50);
+                        //Get Breaking Speed - Start//
+                        float destroySpeed = block.defaultBlockState().getDestroySpeed(level, placeHere);
 
-                        if (calculatedBreakTime > 1000) {
-                            calculatedBreakTime = 1000;
+                        float baseToolSpeed;
+
+                        if (tool.getItem() instanceof TieredItem tier) {
+                            baseToolSpeed = tier.getTier().getSpeed();
+                        } else {
+                            baseToolSpeed = 0.0f;
                         }
 
-                        maxProgress = calculatedBreakTime;
+                        maxProgress = (int) (destroySpeed * (20 - baseToolSpeed));
+
+                        int efficiencyLevel = tool.getEnchantmentLevel(this.level.registryAccess().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT)
+                                .getOrThrow(Enchantments.EFFICIENCY));
+
+                        if (efficiencyLevel > 0) {
+                            if (efficiencyLevel == 1) {
+                                maxProgress = (int) (maxProgress * 0.75f);
+                            }
+                            if (efficiencyLevel == 2) {
+                                maxProgress = (int) (maxProgress * 0.70f);
+                            }
+                            if (efficiencyLevel == 3) {
+                                maxProgress = (int) (maxProgress * 0.65f);
+                            }
+                            if (efficiencyLevel == 4) {
+                                maxProgress = (int) (maxProgress * 0.60f);
+                            }
+                            if (efficiencyLevel == 5) {
+                                maxProgress = (int) (maxProgress * 0.55f);
+                            }
+                        }
+                        //Get Breaking Speed - End//
 
                         // Play the breaking sound
                         playBreakingSound(level, placeHere);
@@ -339,7 +379,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), fakePlayer.getEquipmentSlotForItem(tool));
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, fakePlayer, fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -358,7 +398,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), fakePlayer.getEquipmentSlotForItem(tool));
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, fakePlayer, fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {
@@ -382,6 +422,45 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
             sync();
         }
     }
+
+    private float getBreakingSpeed(ItemStack tool, Block block, BlockPos pos) {
+        assert this.level != null;
+        BlockState state = block.defaultBlockState();
+
+        float baseSpeed = tool.getDestroySpeed(state);
+        if (baseSpeed > 1.0f) {
+            int efficiencyLevel = tool.getEnchantmentLevel(this.level.registryAccess().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT)
+                    .getOrThrow(Enchantments.EFFICIENCY));;
+            if (efficiencyLevel > 0) {
+                baseSpeed += efficiencyLevel * efficiencyLevel + 1;
+            }
+        }
+
+        return baseSpeed;
+    }
+
+
+
+    /*
+    private float getToolBreakingSpeed(ItemStack tool) {
+
+        float baseToolSpeed;
+
+        if (tool.getItem() instanceof TieredItem tier) {
+            baseToolSpeed = tier.getTier().getSpeed();
+        } else {
+            baseToolSpeed = 1.0f;
+        }
+
+        assert this.level != null;
+
+        float finalSpeed = (float) (baseToolSpeed + ((enchantmentLevel / 0.2)));
+        System.out.println("Final Speed: " + finalSpeed);
+
+        return finalSpeed;
+    }
+
+     */
 
 
     // PLAY BLOCK BREAKING SOUND //

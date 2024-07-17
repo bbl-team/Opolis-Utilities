@@ -5,6 +5,13 @@ TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 
+4.3.1
+
+Fixed block breaker crashing when breaking blocks
+Block breaker now has more varied break times based on a tools tier, eg
+    a diamond pickaxe will break blocks faster than a iron pickaxe. Now support efficiency enchantments
+Block breaker now displays its breaking time in the GUI
+
 4.3.0
 Fluid generator will now longer try to generate fluid if the tank is full or the tank contains a different fluid
 Catalogue now supports shift clicking items in

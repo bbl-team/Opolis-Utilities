@@ -95,4 +95,5 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
                 PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
     }
+
 }

@@ -28,7 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class ResourceGeneratorRecipeCategory  implements IRecipeCategory<ResourceGeneratorRecipe> {
+public class ResourceGeneratorRecipeCategory implements IRecipeCategory<ResourceGeneratorRecipe> {
     public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "resource_generator");
     public final static ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/jei_dynamic.png");
