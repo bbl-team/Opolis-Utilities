@@ -45,7 +45,7 @@ import java.util.Optional;
 
 import static com.benbenlaw.opolisutilities.block.custom.DryingTableBlock.WATERLOGGED;
 
-public class DryingTableBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
+public class DryingTableBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override

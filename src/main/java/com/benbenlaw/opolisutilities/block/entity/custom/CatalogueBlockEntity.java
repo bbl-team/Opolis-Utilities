@@ -36,7 +36,7 @@ import java.util.Objects;
 
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
 
-public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
+public class CatalogueBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
 
     public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override

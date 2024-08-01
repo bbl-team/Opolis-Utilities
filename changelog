@@ -5,6 +5,22 @@ TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 
+4.4.0
+
+Fixed catalogue book - shift right click onto a catalogue to bind the book to that location
+Added opolisBlockEntity interface, when implemented on a block entity can be used on the new item coming soon
+Added extra validation check to allow for the new item to open guis anywhere in the world
+Added portable item gui opener wip and BETA, right click to open the gui of the block entity when set
+    hold shift right click with the item to open, blocks must be in loaded chunks
+Added animal net and summoning block recipes
+Animal net no longer in BETA
+Fixed mod version not showing in the mod menu correctly
+Re run data gen to fix some recipes and tags being incorrect
+
+4.3.2
+
+Fixed jei not showing the correct input values for the catalogue recipes
+
 4.3.1
 
 Fixed block breaker crashing when breaking blocks

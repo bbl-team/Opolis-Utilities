@@ -18,6 +18,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Arrays;
+
 public class CatalogueRecipeCategory implements IRecipeCategory<CatalogueRecipe> {
 
     public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "catalogue");
@@ -58,7 +60,7 @@ public class CatalogueRecipeCategory implements IRecipeCategory<CatalogueRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CatalogueRecipe recipe, IFocusGroup focusGroup) {
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(recipe.input().ingredient());
+        builder.addSlot(RecipeIngredientRole.INPUT, 4, 2).addIngredients(VanillaTypes.ITEM_STACK, Arrays.asList(recipe.input().getItems()));
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 51, 2).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
 

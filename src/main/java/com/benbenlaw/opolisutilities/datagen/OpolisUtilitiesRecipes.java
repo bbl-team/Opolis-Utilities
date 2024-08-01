@@ -41,6 +41,29 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
 
 
+        //Animal Net
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ANIMAL_NET.get())
+                .pattern("SLS")
+                .pattern("L L")
+                .pattern("SLS")
+                .define('S', Tags.Items.RODS_WOODEN)
+                .define('L', Items.LEATHER)
+                .group("opolisutilities")
+                .unlockedBy("has_item", has(Tags.Items.RODS_WOODEN))
+                .save(consumer);
+
+        //Summoning Block
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BLOCK_BREAKER.get())
+                .pattern("SSS")
+                .pattern("AMA")
+                .pattern("SSS")
+                .define('S', Tags.Items.STONES)
+                .define('A', Tags.Items.INGOTS_IRON)
+                .define('M', Items.HAY_BLOCK)
+                .group("opolisutilities")
+                .unlockedBy("has_item", has(Items.DISPENSER))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block"));
+
 
         //Block Breaker
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BLOCK_BREAKER.get())
