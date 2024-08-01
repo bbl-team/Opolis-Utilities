@@ -47,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 
-public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
+public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
 

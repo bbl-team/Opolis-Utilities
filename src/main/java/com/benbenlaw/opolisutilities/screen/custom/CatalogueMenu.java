@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.CatalogueRecipe;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.google.common.collect.Lists;
@@ -143,8 +144,12 @@ public class CatalogueMenu extends AbstractContainerMenu {
         return this.inputSlot.hasItem() && !this.recipes.isEmpty();
     }
 
-    public boolean stillValid(@NotNull Player pPlayer) {
-        return stillValid(this.access, pPlayer, ModBlocks.CATALOGUE.get());
+    public boolean stillValid(@NotNull Player player) {
+
+        if (player.getItemInHand(player.getUsedItemHand()).is(ModItems.PORTABLE_GUI))
+            return true;
+
+        return stillValid(this.access, player, ModBlocks.CATALOGUE.get());
     }
 
     public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {

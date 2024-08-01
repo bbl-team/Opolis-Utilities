@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ModResultSlot;
 import net.minecraft.core.BlockPos;
@@ -131,6 +132,10 @@ public class CrafterMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
+
+        if (player.getItemInHand(player.getUsedItemHand()).is(ModItems.PORTABLE_GUI))
+            return true;
+
         return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
                 player, ModBlocks.CRAFTER.get());
     }

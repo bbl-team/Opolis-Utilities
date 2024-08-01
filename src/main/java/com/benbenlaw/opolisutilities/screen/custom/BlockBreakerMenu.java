@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockBreakerBlockEntity;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistMaxStackSizeOneSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.WhitelistMaxStackSizeOneSlot;
@@ -150,6 +151,10 @@ public class BlockBreakerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
+
+        if (player.getItemInHand(player.getUsedItemHand()).is(ModItems.PORTABLE_GUI))
+            return true;
+
         return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
                 player, ModBlocks.BLOCK_BREAKER.get());
     }

@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.custom.ItemRepairerBlockEntity;
+import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.benbenlaw.opolisutilities.screen.slot.utils.BlacklistTagInputSlot;
 import com.benbenlaw.opolisutilities.screen.slot.utils.ItemRepairerUpgradeSlot;
@@ -62,6 +63,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
                 return null;
             }
         });
+
 
         addDataSlots(data);
     }
@@ -140,6 +142,10 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
+
+        if (player.getItemInHand(player.getUsedItemHand()).is(ModItems.PORTABLE_GUI))
+            return true;
+
         return stillValid(ContainerLevelAccess.create(player.level(), blockPos),
                 player, ModBlocks.ITEM_REPAIRER.get());
     }

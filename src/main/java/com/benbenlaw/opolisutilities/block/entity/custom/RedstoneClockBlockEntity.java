@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvider {
+public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvider, OpolisBlockEntity {
     public final ContainerData data;
     public int progress = 0;
     public int maxProgress = 220;

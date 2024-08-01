@@ -28,10 +28,8 @@
   "item.opolisutilities.crook": "Crook",
   "item.opolisutilities.opolis_wrench": "Opolis Wrench",
   "item.opolisutilities.sapling_grower": "Sapling Grower",
-
-  "item.opolisutilities.animal_net": "Animal Net (BETA)",
-
-
+  "item.opolisutilities.animal_net": "Animal Net",
+  "item.opolisutilities.portable_gui": "Portable GUI (BETA)",
 
   "block.opolisutilities.floating_block_block": "Floating Block",
   "block.opolisutilities.drying_table": "Drying Table",
@@ -103,11 +101,21 @@
   "tooltips.animal_net.water_mobs": "Water Mobs",
   "tooltips.animal_net.animal_mobs": "Animal Mobs",
   "tooltips.animal_net.villager_mobs": "Villager Mobs",
+  "tooltips.catalogue_book.no_catalogue": "No Catalogue in location!",
+  "tooltips.catalogue_book.hover.shift": "Press SHIFT for more info",
+  "tooltips.catalogue_book.shift.held": "Catalogue Location: ",
+  "tooltips.catalogue_book.hover.alt": "Press ALT for more info",
+
+  "tooltips.portable_gui.no_block": "No Opolis Block in this location!",
+  "tooltips.portable_gui.shift.held": " Location: ",
+  "tooltips.portable_gui.hover.shift": "Press SHIFT for more info",
+  "tooltips.portable_gui.not_loaded": "Block in unloaded chunk!",
+  "tooltips.portable_gui.in_spawn_chunk": "Block in Spawn chunk, this will not work!",
+
 
   "sounds.opolisutilities.doorbell": "Doorbell Rings",
 
-  "tooltips.scrambler_item.shift.held": "Used to control the Ender Scrambler! Right click in main hand to increase range, Shift right click in main hand to decrease range, Right click in off hand to toggle between on and off!",
-  "tooltips.scrambler_item.hover.shift": "Press SHIFT for more info",
+
 
   "hover_effects.ender_scrambler.range": "Range: ",
 

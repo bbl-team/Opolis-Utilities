@@ -13,8 +13,8 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS =
             DeferredRegister.createItems(OpolisUtilities.MOD_ID);
 
-    public static final DeferredItem<Item> JEI_NULL_ITEM = ITEMS .register("jei_null_item",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> PORTABLE_GUI = ITEMS .register("portable_gui",
+            () -> new PortableGUIItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> MINI_COAL = ITEMS.register("mini_coal",
             () -> new MiniCoalItem(true));

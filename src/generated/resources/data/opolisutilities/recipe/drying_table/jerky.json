@@ -3,7 +3,7 @@
   "duration": 200,
   "input": {
     "count": 1,
-    "tag": "c:foods/raw_meats"
+    "tag": "c:foods/raw_meat"
   },
   "output": {
     "count": 1,

@@ -55,7 +55,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 
-public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
+public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
 
     FluidGeneratorBlockEntity entity = this;
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
