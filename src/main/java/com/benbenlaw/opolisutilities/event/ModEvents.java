@@ -248,7 +248,7 @@ public class ModEvents {
             BlockState state = event.getLevel().getBlockState(event.getPos());
             if (!level.isClientSide()) {
                 if (state.is(BlockTags.WOODEN_BUTTONS)) {
-                    level.playSound(null, event.getPos(), ModSounds.DOORBELL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(null, event.getPos(), ModSounds.DOORBELL.get(), SoundSource.BLOCKS, 0.25F, 1.0F);
                 }
             }
         }

@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class ModSounds {
 
@@ -16,12 +17,12 @@ public class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
             DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, OpolisUtilities.MOD_ID);
 
-    public static final DeferredHolder<SoundEvent, SoundEvent> DOORBELL =
-            createEvent("doorbell");
+    public static final Supplier<SoundEvent> DOORBELL =
+            registerSoundEvent("doorbell");
 
-    private static DeferredHolder<SoundEvent, SoundEvent> createEvent(String sound) {
-        return SOUND_EVENTS.register(sound, () ->
-                SoundEvent.createVariableRangeEvent(Objects.requireNonNull(ResourceLocation.tryParse(OpolisUtilities.MOD_ID))));
+    private static Supplier<SoundEvent> registerSoundEvent(String name) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, name);
+        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);

@@ -16,12 +16,18 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
@@ -87,8 +93,39 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
             if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof CrafterBlockEntity crafterBlockEntity) {
                 ticks = crafterBlockEntity.maxProgress;
             }
+
             guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 90,
                     this.topPos + 60, 0x3F3F3F, false);
+
+        }
+
+        if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 148, 30, 20, 18)) {
+            ItemStack itemStack = ItemStack.EMPTY;
+            if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof CrafterBlockEntity crafterBlockEntity) {
+                if (crafterBlockEntity.recipeID != null) {
+
+                    Optional<RecipeHolder<?>> recipe = this.menu.level.getRecipeManager().byKey(ResourceLocation.parse(String.valueOf(crafterBlockEntity.recipeID)));
+                    if (recipe.isPresent()) {
+                        CraftingRecipe r = (CraftingRecipe) recipe.get().value();
+                        itemStack = r.getResultItem(RegistryAccess.EMPTY).copy();
+
+                    }
+                }
+
+                String additionalInfo;
+
+                if (itemStack.getCount() == 1) {
+                    additionalInfo = itemStack.getDisplayName().getString().replace("[", "").replace("]", "");
+                } else {
+                    additionalInfo = itemStack.getCount() + "x " + itemStack.getDisplayName().getString().replace("[", "").replace("]", "") ;
+                }
+
+                guiGraphics.drawString(this.font, "Current Recipe:", this.leftPos + 87,
+                        this.topPos + 60, 0x3F3F3F, false);
+
+                guiGraphics.drawString(this.font, additionalInfo, this.leftPos + 87,
+                        this.topPos + 70, 0x3F3F3F, false);
+            }
         }
     }
 

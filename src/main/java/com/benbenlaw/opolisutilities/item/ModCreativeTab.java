@@ -10,12 +10,13 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Supplier;
+
 
 public class ModCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OpolisUtilities.MOD_ID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> OPOLIS_UTILITIES_TAB = CREATIVE_MODE_TABS.register("opolisutilities", () -> CreativeModeTab.builder()
-            .withTabsBefore(CreativeModeTabs.COMBAT)
+    public static final Supplier<CreativeModeTab> OPOLIS_UTILITIES_TAB = CREATIVE_MODE_TABS.register("opolisutilities", () -> CreativeModeTab.builder()
             .icon(() -> ModBlocks.DRYING_TABLE.get().asItem().getDefaultInstance())
             .title(Component.translatable("itemGroup.opolisutilities"))
             .displayItems((parameters, output) -> {

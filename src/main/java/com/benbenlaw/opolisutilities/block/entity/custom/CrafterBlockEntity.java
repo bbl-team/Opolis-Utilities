@@ -6,7 +6,10 @@ import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItem
 import com.benbenlaw.opolisutilities.screen.custom.CrafterMenu;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
 import net.minecraft.core.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -59,7 +62,9 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
                 return 2;
             return super.getStackLimit(slot, stack);
         }
+
     };
+
 
     public void sync() {
         if (level instanceof ServerLevel serverLevel) {
@@ -78,29 +83,26 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     public int progress = 0;
     public int maxProgress = 220;
     private int recipeChecker = 0;
-    public ItemStack craftingItem = ItemStack.EMPTY;
+    public ItemStack craftingItem;
+    public Map<Integer, ItemStack> ingredientMap = new HashMap<>();
 
+    public List<ItemStack> remainingItems;
     public ResourceLocation recipeID = ResourceLocation.parse("minecraft:air");
     private NonNullList<Ingredient> craftingIngredients;
 
     // Item Handler Per Sides
     private final IItemHandler crafterItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> {
-                if (i >= 0 && i <= 8 && itemHandler.isItemValid(i, stack)) {
-                    return isIngredientValidForSlot(stack, i);
+                if (i >= 0 && i <= 8) {
+                    ItemStack requiredStack = ingredientMap.get(i);
+                    if (requiredStack != null && !requiredStack.isEmpty()) {
+                        return ItemStack.isSameItem(stack, requiredStack) && stack.getCount() <= requiredStack.getCount();
+                    }
                 }
                 return false;
             },
-            i -> i == 9
+            i -> i == 9 // Allow insertion only in the output slot (index 9)
     );
-
-    private boolean isIngredientValidForSlot(ItemStack insertedItem, int slotIndex) {
-        if (craftingIngredients != null && slotIndex < craftingIngredients.size()) {
-            Ingredient ingredient = craftingIngredients.get(slotIndex);
-            return ingredient.test(insertedItem);
-        }
-        return false;
-    }
 
     // Called in startup for sides of the block
     public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
@@ -139,6 +141,8 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
                 return 2;
             }
         };
+        this.remainingItems = new ArrayList<>(); // Initialize here
+
     }
 
     @Override
@@ -190,6 +194,24 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         compoundTag.putInt("maxProgress", maxProgress);
         compoundTag.putInt("recipeChecker", recipeChecker);
         compoundTag.putString("recipeID", recipeID.toString());
+
+        //save ingredientMap
+        ListTag ingredientList = new ListTag();
+        for (Map.Entry<Integer, ItemStack> entry : ingredientMap.entrySet()) {
+            CompoundTag ingredientTag = new CompoundTag();
+            ingredientTag.putInt("slot", entry.getKey());
+            ingredientTag.put("item", entry.getValue().save(provider));
+            ingredientList.add(ingredientTag);
+        }
+        compoundTag.put("ingredientMap", ingredientList);
+
+        //remainingItems
+        ListTag remainingItemsTag = new ListTag();
+        for (ItemStack stack : remainingItems) {
+            remainingItemsTag.add(stack.save(provider));
+        }
+        compoundTag.put("remainingItems", remainingItemsTag);
+
     }
 
     @Override
@@ -199,6 +221,22 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         maxProgress = compoundTag.getInt("maxProgress");
         recipeChecker = compoundTag.getInt("recipeChecker");
         recipeID = ResourceLocation.parse(compoundTag.getString("recipeID"));
+
+        //load ingredientMap
+        ListTag ingredientList = compoundTag.getList("ingredientMap", 10);
+        for (Tag tag : ingredientList) {
+            CompoundTag ingredientTag = (CompoundTag) tag;
+            int slot = ingredientTag.getInt("slot");
+            ItemStack item = ItemStack.parseOptional(provider, ingredientTag.getCompound("item"));
+            ingredientMap.put(slot, item);
+        }
+
+        //remainingItems
+        ListTag remainingItemsTag = compoundTag.getList("remainingItems", 10);
+        for (Tag tag : remainingItemsTag) {
+            ItemStack stack = ItemStack.parseOptional(provider, (CompoundTag) tag);
+            remainingItems.add(stack);
+        }
 
         super.loadAdditional(compoundTag, provider);
     }
@@ -222,10 +260,22 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
         Level level = this.level;
         assert level != null;
         BlockPos blockPos = this.worldPosition;
+
         BlockState blockState = level.getBlockState(blockPos);
-        sync();
+
 
         if (!level.isClientSide()) {
+            sync();
+
+
+            if (!remainingItems.isEmpty()) {
+                if (itemHandler.getStackInSlot(9).isEmpty()) {
+                    itemHandler.setStackInSlot(9, remainingItems.get(0));
+
+                    remainingItems.remove(0);
+                }
+            }
+
             if (blockState.getValue(POWERED)) {
                 if (!craftingItem.isEmpty() && canCraft() && hasMaterial()) {
                     progress++;
@@ -332,7 +382,28 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
             craftingItem = r.getResultItem(RegistryAccess.EMPTY).copy();
             craftingIngredients = r.getIngredients();
             recipeID = recipe.get().id();
+
             System.out.println("Recipe found: " + recipeID);
+
+            ingredientMap.clear();
+
+            for (Ingredient ingredient : craftingIngredients) {
+                ItemStack[] matches = ingredient.getItems();
+
+                if (matches.length > 0) {
+                    for (int slot = 0; slot < container.getContainerSize(); slot++) {
+                        ItemStack slotItem = container.getItem(slot);
+                        for (ItemStack match : matches) {
+                            if (ItemStack.isSameItem(slotItem, match)) {
+                                ingredientMap.put(slot, new ItemStack(slotItem.getItemHolder(), 1));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            System.out.println("Ingredient map: " + ingredientMap);
         } else {
             craftingItem = ItemStack.EMPTY.copy();
             System.out.println("No recipe found.");
@@ -358,53 +429,60 @@ public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IIn
     }
 
     public void extractIngredients() {
-        if (craftingIngredients != null) {
-            for (int i = 0; i < 9; i++) {
-                if (i >= craftingIngredients.size()) break;
-                ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-                if (!stackInSlot.isEmpty()) {
-                    ItemStack extractedStack = itemHandler.extractItem(i, 1, false);
-                    if (!extractedStack.isEmpty() && !extractedStack.getCraftingRemainingItem().isEmpty()) {
-                        Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), extractedStack.getCraftingRemainingItem());
+        if (ingredientMap != null && !ingredientMap.isEmpty()) {
+            // List to store all crafting remainders
+            List<ItemStack> remainders = new ArrayList<>();
+
+            for (Map.Entry<Integer, ItemStack> entry : ingredientMap.entrySet()) {
+                int slot = entry.getKey();
+                ItemStack requiredStack = entry.getValue();
+
+                if (!requiredStack.isEmpty()) {
+                    ItemStack stackInSlot = itemHandler.getStackInSlot(slot);
+
+                    // Ensure there are enough items in the slot to extract
+                    if (!stackInSlot.isEmpty() && stackInSlot.getCount() >= requiredStack.getCount()) {
+                        int extractCount = requiredStack.getCount();
+                        ItemStack extractedStack = itemHandler.extractItem(slot, extractCount, false);
+
+                        if (!extractedStack.isEmpty()) {
+                            ItemStack remainder = extractedStack.getCraftingRemainingItem();
+                            if (!remainder.isEmpty()) {
+                                // Add the remainder to the list
+                                remainingItems.add(remainder);
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    private boolean tryInserting(ItemStack stack) {
-        for (int i = 0; i < 8; i++) {
-            if (itemHandler.insertItem(i, stack, true).isEmpty()) {
-                itemHandler.insertItem(i, stack, false);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public boolean hasMaterial() {
         return hasIngredientsForRecipe();
     }
 
     private boolean hasIngredientsForRecipe() {
-        if (craftingIngredients == null || craftingIngredients.isEmpty()) {
+
+        if (ingredientMap == null || ingredientMap.isEmpty()) {
             return false;
         }
 
-        for (int i = 0; i < 9; i++) {
-            if (i < craftingIngredients.size()) {
-                ItemStack slotStack = itemHandler.getStackInSlot(i);
-                Ingredient ingredient = craftingIngredients.get(i);
-                if (!ingredient.test(slotStack)) {
-                    return false;
-                }
-            } else {
-                if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                    return false;
-                }
+        for (Map.Entry<Integer, ItemStack> entry : ingredientMap.entrySet()) {
+            int slot = entry.getKey();
+            ItemStack ingredient = entry.getValue();
+
+            ItemStack slotStack = itemHandler.getStackInSlot(slot);
+
+            if (slotStack.isEmpty() || !ItemStack.isSameItem(slotStack, ingredient) || slotStack.getCount() < ingredient.getCount()) {
+                return false;
             }
+
         }
+
         return true;
+
     }
 
     private HashMap<Item, Integer> countIngredients(NonNullList<Ingredient> ingredients) {

@@ -4,6 +4,16 @@ TODO: Fix Shift clicking into output slots
 TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
+TODO: fix portable gui crashing clients in single player in spawn chunks
+
+4.4.1
+Slight tweak to creative mode tab
+Fixed doorbell sounds not playing when wooden buttons are pressed
+Advanced Crafter now follow the saved recipe pattern correctly
+Hovering over save recipe button not shows the saved recipe output
+Crafting remainers (empty buckets an bottles use in recipe) now longer dropped in world
+    now moves into the output slot when the output slot is empty
+
 
 4.4.0
 
