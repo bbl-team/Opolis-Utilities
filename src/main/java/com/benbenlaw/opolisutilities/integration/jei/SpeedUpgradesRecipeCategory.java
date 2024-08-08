@@ -5,8 +5,10 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.SpeedUpgradesRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -99,18 +101,23 @@ public class SpeedUpgradesRecipeCategory implements IRecipeCategory<SpeedUpgrade
 
             int duration = mutableRecipes.get(i).tickRate();
 
-            builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addIngredients(mutableRecipes.get(i).input()).addTooltipCallback(durationTime(duration));
-            builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addIngredients(mutableRecipes.get(i).input()).addTooltipCallback(durationTime(duration))
+            builder.addSlot(RecipeIngredientRole.INPUT, slotX, slotY).addIngredients(mutableRecipes.get(i).input())
+                    .addTooltipCallback(new OpolisIRecipeSlotTooltipCallback() {
+                        @Override
+                        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
+                            tooltipBuilder.add(Component.literal("Duration: " + duration / 20 + "s / " + duration + " ticks"));
+                        }
+                    });
+
+            builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY).addIngredients(mutableRecipes.get(i).input())
+                    .addTooltipCallback(new OpolisIRecipeSlotTooltipCallback() {
+                        @Override
+                        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
+                            tooltipBuilder.add(Component.literal("Duration: " + duration / 20 + "s / " + duration + " ticks"));
+                        }})
                     .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, slotX - (i % 9 * 19) - 5, slotY - (2 + i / 9 * 19) - 1);
 
         }
-    }
-
-    @Contract(pure = true)
-    private @NotNull IRecipeSlotTooltipCallback durationTime(int duration) {
-        return (chance, addTooltip) -> {
-            addTooltip.add(Component.literal(duration / 20 + "s / " + duration + " ticks"));
-        };
     }
 }
 

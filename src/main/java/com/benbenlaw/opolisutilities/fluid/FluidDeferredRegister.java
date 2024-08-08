@@ -266,35 +266,38 @@ public class FluidDeferredRegister {
             return false;
         }
 
-        @SuppressWarnings("deprecation")
+
+
+        @SuppressWarnings({"initializeClient"})
         public IClientFluidTypeExtensions getClientExtensions() {
             return new IClientFluidTypeExtensions() {
 
-                public @NotNull ResourceLocation getStillTexture () {
+
+                public @NotNull ResourceLocation getStillTexture() {
                     return OpolisUtilitiesFluidTypes.this.stillTexture;
                 }
 
-                public @NotNull ResourceLocation getFlowingTexture () {
+                public @NotNull ResourceLocation getFlowingTexture() {
                     return OpolisUtilitiesFluidTypes.this.flowingTexture;
                 }
 
-                public ResourceLocation getOverlayTexture () {
+                public ResourceLocation getOverlayTexture() {
                     return OpolisUtilitiesFluidTypes.this.overlayTexture;
                 }
 
-                public @Nullable ResourceLocation getRenderOverlayTexture (Minecraft mc){
+                public @Nullable ResourceLocation getRenderOverlayTexture(Minecraft mc) {
                     return OpolisUtilitiesFluidTypes.this.renderOverlayTexture;
                 }
 
-                public @NotNull Vector3f modifyFogColor (@NotNull Camera camera,float partialTick,
-                @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount,
-                @NotNull Vector3f fluidFogColor){
+                public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick,
+                                                        @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount,
+                                                        @NotNull Vector3f fluidFogColor) {
                     return new Vector3f(RenderUtil.getRed(OpolisUtilitiesFluidTypes.this.color), RenderUtil.getGreen(OpolisUtilitiesFluidTypes.this.color), RenderUtil.getBlue(OpolisUtilitiesFluidTypes.this.color));
                 }
 
-                public void modifyFogRender (@NotNull Camera camera, @NotNull FogRenderer.@NotNull FogMode mode,
-                float renderDistance, float partialTick, float nearDistance, float farDistance,
-                @NotNull FogShape shape){
+                public void modifyFogRender(@NotNull Camera camera, @NotNull FogRenderer.@NotNull FogMode mode,
+                                            float renderDistance, float partialTick, float nearDistance, float farDistance,
+                                            @NotNull FogShape shape) {
                     farDistance = 24.0F;
                     if (farDistance > renderDistance) {
                         farDistance = renderDistance;
@@ -306,10 +309,9 @@ public class FluidDeferredRegister {
                     RenderSystem.setShaderFogShape(shape);
                 }
 
-                public int getTintColor () {
+                public int getTintColor() {
                     return OpolisUtilitiesFluidTypes.this.color;
                 }
-
             };
         }
     }

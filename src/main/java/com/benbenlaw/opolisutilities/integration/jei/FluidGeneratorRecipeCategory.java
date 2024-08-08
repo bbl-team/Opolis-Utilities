@@ -5,7 +5,10 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.FluidGeneratorRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -92,9 +95,17 @@ public class FluidGeneratorRecipeCategory implements IRecipeCategory<FluidGenera
             final int slotY = 2 + i / 9 * 19;
 
             int finalI = i;
-            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, slotX, slotY).addFluidStack(recipes.get(i).value().input().getFluid(), 1000)
-                    .addTooltipCallback((fluidStack, addTooltip) -> addTooltip.add(Component.literal("Fluid Generated: " + recipes.get(finalI).value().input().getAmount() + "mB")));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY)
+                    .addFluidStack(recipes.get(i).value().input().getFluid(), 1000)
+                    .addTooltipCallback(new OpolisIRecipeSlotTooltipCallback() {
 
+                        @Override
+                        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
+                            int amount = recipes.get(finalI).value().input().getAmount();
+                            tooltipBuilder.add(Component.literal("Fluid Generated: " + amount + "mB"));
+                            // Additional lines or formatting can be added here
+                        }
+                    });
         }
     }
 }

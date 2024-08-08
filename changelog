@@ -6,9 +6,23 @@ TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
 
+2.5.4
+Valid fluid generator fluids now show recipes in JEI
+Fixed various JEI issues with new JEI version
+
+2.5.3
+updated to neo forge 21.0.166, out of beta neo forge hopefully no more big changes
+
+2.5.2
+More fluid tweaks again
+
+2.5.1
+more fluid tweaks
+
 4.5.0
 Bumped forge version neoforge 118
 Internal changes to the fluid deferred register
+JEI dependency updated jei-1.21-neoforge-19.8.0.97
 
 4.4.2
 Fixed fluid generator crashing when extracting null silly ben
