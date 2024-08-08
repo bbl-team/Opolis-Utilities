@@ -63,8 +63,8 @@ dependencies {
 
     //JEI
 
-    compileOnly "curse.maven:jei-238222:5533450"
-    runtimeOnly "curse.maven:jei-238222:5533450"
+    compileOnly "curse.maven:jei-238222:5606861"
+    runtimeOnly "curse.maven:jei-238222:5606861"
 
 }
 

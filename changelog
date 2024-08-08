@@ -6,6 +6,13 @@ TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
 
+4.5.0
+Bumped forge version neoforge 118
+Internal changes to the fluid deferred register
+
+4.4.2
+Fixed fluid generator crashing when extracting null silly ben
+
 4.4.1
 Slight tweak to creative mode tab
 Fixed doorbell sounds not playing when wooden buttons are pressed

@@ -57,7 +57,6 @@ import java.util.Objects;
 
 public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
 
-    FluidGeneratorBlockEntity entity = this;
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -125,12 +124,20 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
 
         @Override
         public FluidStack drain(FluidStack resource, FluidAction action) {
-            return null;
+
+            if (resource.getFluid() == FLUID_TANK.getFluid().getFluid()) {
+                return FLUID_TANK.drain(resource.getAmount(), action);
+            }
+
+            return FluidStack.EMPTY;
         }
 
         @Override
         public FluidStack drain(int maxDrain, FluidAction action) {
-            return null;
+            if (FLUID_TANK.getFluidAmount() > 0) {
+                return FLUID_TANK.drain(maxDrain, action);
+            }
+            return FluidStack.EMPTY;
         }
     };
 
