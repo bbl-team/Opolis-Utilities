@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-abstract class OpolisIRecipeSlotTooltipCallback implements IRecipeSlotTooltipCallback {
+public abstract class OpolisIRecipeSlotTooltipCallback implements IRecipeSlotTooltipCallback {
     @Override
     @Deprecated
     public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
