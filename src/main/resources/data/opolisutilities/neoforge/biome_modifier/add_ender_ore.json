@@ -1,6 +1,6 @@
 {
-  "type": "forge:add_features",
-  "biomes": "#is_overworld",
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_overworld",
   "features": "opolisutilities:ender_ore_placed",
   "step": "underground_ores"
 }

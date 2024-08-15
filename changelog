@@ -6,6 +6,10 @@ TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
 
+4.5.6
+
+Fixed ender ore not spawning (works in new chunks)
+
 4.5.5
 
 Made the opolisIRecipe class public

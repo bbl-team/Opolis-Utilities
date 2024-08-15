@@ -271,10 +271,8 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && !level.isClientSide()) {
 
-
             sync();
 
-            // Ensure fakePlayer is initialized
             if (this.fakePlayer == null && level instanceof ServerLevel serverLevel) {
                 this.fakePlayer = createFakePlayer(serverLevel);
             }
