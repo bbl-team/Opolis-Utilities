@@ -5,13 +5,12 @@ import com.benbenlaw.opolisutilities.block.entity.custom.OpolisBlockEntity;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.screen.custom.CatalogueMenu;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuConstructor;
@@ -25,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 public class PortableGUIItem extends Item {
@@ -42,22 +42,21 @@ public class PortableGUIItem extends Item {
         ItemStack itemstack = player.getItemInHand(hand);
 
         if (!level.isClientSide() && player.isCrouching()) {
-
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof OpolisBlockEntity opolisBlockEntity && itemstack.getItem() instanceof PortableGUIItem) {
+
+            if (blockEntity != null && itemstack.getItem() instanceof PortableGUIItem) {
                 itemstack.set(ModDataComponents.INT_X, blockPos.getX());
                 itemstack.set(ModDataComponents.INT_Y, blockPos.getY());
                 itemstack.set(ModDataComponents.INT_Z, blockPos.getZ());
-                itemstack.set(ModDataComponents.ENTITY_TYPE, opolisBlockEntity.getDisplayName().getString());
                 return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.FAIL;
     }
+
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-
 
         if (!level.isClientSide()) {
             if (itemstack.getItem() instanceof PortableGUIItem) {
@@ -65,7 +64,6 @@ public class PortableGUIItem extends Item {
                 Integer x = itemstack.get(ModDataComponents.INT_X);
                 Integer y = itemstack.get(ModDataComponents.INT_Y);
                 Integer z = itemstack.get(ModDataComponents.INT_Z);
-                String block = itemstack.get(ModDataComponents.ENTITY_TYPE);
 
                 if (x != null && y != null && z != null) {
                     BlockPos blockPos = new BlockPos(x, y, z);
@@ -73,24 +71,21 @@ public class PortableGUIItem extends Item {
                     if (level.isLoaded(blockPos)) {
 
                         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-                        if (blockEntity instanceof OpolisBlockEntity opolisBlockEntity) {
+                        if (blockEntity != null) {
 
                             if (level.isAreaLoaded(blockPos, 16)) {
 
-                                assert block != null;
-                                player.openMenu(new SimpleMenuProvider(
-                                        opolisBlockEntity::createMenu,
-                                        Component.literal(block)
-                                ), buf -> buf.writeBlockPos(blockPos));
-                                return InteractionResultHolder.success(itemstack);
-
-
+                                if (blockEntity instanceof MenuConstructor menuConstructor) {
+                                    player.openMenu((MenuProvider) menuConstructor, blockPos);
+                                    return InteractionResultHolder.success(itemstack);
+                                } else {
+                                    player.sendSystemMessage(Component.translatable("tooltips.portable_gui.no_gui").withStyle(ChatFormatting.RED));
+                                }
                             } else {
                                 player.sendSystemMessage(Component.translatable("tooltips.portable_gui.in_spawn_chunk").withStyle(ChatFormatting.RED));
                             }
                         }
-                    }
-                    else {
+                    } else {
                         player.sendSystemMessage(Component.translatable("tooltips.portable_gui.not_loaded").withStyle(ChatFormatting.RED));
                     }
                 }
@@ -99,19 +94,24 @@ public class PortableGUIItem extends Item {
         return InteractionResultHolder.fail(itemstack);
     }
 
-
-
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, java.util.List<Component> components, TooltipFlag flag) {
 
-        String block = stack.get(ModDataComponents.ENTITY_TYPE);
+        Level level = Minecraft.getInstance().level;
+
+        assert level != null;
+        String block = "No Block";
+
+        if (stack.get(ModDataComponents.INT_X) != null && stack.get(ModDataComponents.INT_Y) != null && stack.get(ModDataComponents.INT_Z) != null) {
+            block = level.getBlockState(new BlockPos(stack.get(ModDataComponents.INT_X), stack.get(ModDataComponents.INT_Y), stack.get(ModDataComponents.INT_Z))).getBlock().getDescriptionId();
+
+        }
 
         if (Screen.hasShiftDown()) {
             if (block != null) {
                 components.add(Component.translatable(block)
                         .withStyle(ChatFormatting.GREEN).append(Component.translatable("tooltips.portable_gui.shift.held")));
-            }
-            else {
+            } else {
                 components.add(Component.translatable("tooltips.portable_gui.shift.held")
                         .withStyle(ChatFormatting.RED));
             }
@@ -128,5 +128,4 @@ public class PortableGUIItem extends Item {
 
         super.appendHoverText(stack, tooltipContext, components, flag);
     }
-
 }
