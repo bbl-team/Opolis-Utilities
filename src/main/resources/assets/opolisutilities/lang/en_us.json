@@ -111,6 +111,7 @@
   "tooltips.portable_gui.hover.shift": "Press SHIFT for more info",
   "tooltips.portable_gui.not_loaded": "Block in unloaded chunk!",
   "tooltips.portable_gui.in_spawn_chunk": "Block in Spawn chunk, this will not work!",
+  "tooltips.portable_gui.no_gui": "This block does not have a GUI/ doesnt work with the portable GUI!",
 
 
   "sounds.opolisutilities.doorbell": "Doorbell Rings",

@@ -9,6 +9,7 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 4.5.6
 
 Fixed ender ore not spawning (works in new chunks)
+Various tweaks to portable gui
 
 4.5.5
 

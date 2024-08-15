@@ -66,6 +66,10 @@ dependencies {
     compileOnly "curse.maven:jei-238222:5606861"
     runtimeOnly "curse.maven:jei-238222:5606861"
 
+    //Mekanism
+ //   compileOnly "curse.maven:mekanism-268560:5574951"
+    runtimeOnly "curse.maven:mekanism-268560:5574951"
+
 }
 
 tasks.withType(ProcessResources).configureEach {
