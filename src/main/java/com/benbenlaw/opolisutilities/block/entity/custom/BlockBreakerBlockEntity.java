@@ -52,7 +52,7 @@ import java.util.UUID;
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.FACING;
 import static com.benbenlaw.opolisutilities.block.custom.BlockBreakerBlock.POWERED;
 
-public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
+public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override

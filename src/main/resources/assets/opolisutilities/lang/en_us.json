@@ -47,7 +47,6 @@
   "block.opolisutilities.summoning_block": "Summoning Block",
 
   "block.opolisutilities.block_breaker": "Block Breaker",
-
   "block.gui.whitelist_slot": "Whitelist Slot",
   "block.gui.blacklist_slot": "Blacklist Slot",
   "block.gui.tool_slot": "Tool Slot",
@@ -60,13 +59,19 @@
   "block.gui.block_in_world": "Resource In World!",
   "block.gui.speed_upgrade_in_world": "Speed Upgrade In World!",
 
-    "block.in_world.no_speed_upgrade": "No Speed Upgrade Detected!",
+  "block.in_world.no_speed_upgrade": "No Speed Upgrade Detected!",
   "block.in_world.tickrate": "Current Tick Rate: %s",
   "block.in_world.obtaining": "Obtaining %s",
 
   "block.opolisutilities.catalogue": "Catalogue",
   "block.opolisutilities.clicker": "Clicker",
-  "block.opolisutilities.crafter": "Advanced Crafter (BETA)",
+  "block.opolisutilities.crafter": "Advanced Crafter",
+
+  "block.opolisutilities.cloche": "Cloche (BETA)",
+
+  "block.gui.catalyst_slot": "Catalyst",
+  "block.gui.seed_slot": "Seed/Plant",
+  "block.gui.soil_slot": "Soil",
 
   "enchantment.opolisutilities.wardens_smite": "Warden's Smite",
 

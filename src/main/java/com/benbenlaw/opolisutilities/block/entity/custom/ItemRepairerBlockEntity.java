@@ -51,7 +51,7 @@ import java.util.UUID;
 
 import static com.benbenlaw.opolisutilities.block.custom.ItemRepairerBlock.POWERED;
 
-public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
+public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override

@@ -52,6 +52,7 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.BLOCK_BREAKER.get());
                 output.accept(ModBlocks.BLOCK_PLACER.get());
                 output.accept(ModBlocks.CRAFTER.get());
+                output.accept(ModBlocks.CLOCHE.get());
                 output.accept(ModItems.PORTABLE_GUI.get());
 
                 output.accept(ModBlocks.SUMMONING_BLOCK.get());

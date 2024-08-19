@@ -49,6 +49,9 @@ public class  JEIOpolisUtilitiesPlugin implements IModPlugin {
     public static RecipeType<SummoningBlockRecipe> SUMMOMING_BLOCK =
             new RecipeType<>(SummoningRecipeCategory.UID, SummoningBlockRecipe.class);
 
+    public static RecipeType<ClocheRecipe> CLOCHE =
+            new RecipeType<>(ClocheRecipeCategory.UID, ClocheRecipe.class);
+
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -60,13 +63,16 @@ public class  JEIOpolisUtilitiesPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.DRYING_TABLE.get()), DryingTableRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.DRYING_TABLE.get()), SoakingTableRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), ResourceGeneratorRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.ITEM_REPAIRER.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), FluidGeneratorRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CATALOGUE.get()), CatalogueRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CATALOGUE_BOOK.get()), CatalogueRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.SUMMONING_BLOCK.get()), SummoningRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CLOCHE.get()), ClocheRecipeCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.RESOURCE_GENERATOR.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.ITEM_REPAIRER.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CLOCHE.get()), SpeedUpgradesRecipeCategory.RECIPE_TYPE);
 
     }
 
@@ -95,6 +101,9 @@ public class  JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 SummoningRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new
+                ClocheRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
 
         slotDrawable = guiHelper.getSlotDrawable();
@@ -127,6 +136,9 @@ public class  JEIOpolisUtilitiesPlugin implements IModPlugin {
 
         registration.addRecipes(SummoningRecipeCategory.RECIPE_TYPE,
                 recipeManager.getAllRecipesFor(ModRecipes.SUMMONING_BLOCK_TYPE.get()).stream().map(RecipeHolder::value).toList());
+
+        registration.addRecipes(ClocheRecipeCategory.RECIPE_TYPE,
+                recipeManager.getAllRecipesFor(ModRecipes.CLOCHE_TYPE.get()).stream().map(RecipeHolder::value).toList());
 
 
 

@@ -91,7 +91,7 @@ public class DryingTableBlock extends BaseEntityBlock implements SimpleWaterlogg
     @Override
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState newBlockState, boolean isMoving) {
-        if (blockState.getBlock() != blockState.getBlock()) {
+        if (blockState.getBlock() != newBlockState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof DryingTableBlockEntity) {
                 ((DryingTableBlockEntity) blockEntity).drops();

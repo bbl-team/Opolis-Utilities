@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 
+@Deprecated
 public interface OpolisBlockEntity {
 
     Component getDisplayName();

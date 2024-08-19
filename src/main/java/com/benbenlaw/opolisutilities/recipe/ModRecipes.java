@@ -66,6 +66,14 @@ public class ModRecipes{
     public static final Supplier<RecipeType<CatalogueRecipe>> CATALOGUE_TYPE =
             TYPES.register("catalogue", () -> CatalogueRecipe.Type.INSTANCE);
 
+    //Cloche
+
+    public static final Supplier<RecipeSerializer<ClocheRecipe>> CLOCHE_SERIALIZER =
+            SERIALIZER.register("cloche", () -> ClocheRecipe.Serializer.INSTANCE);
+
+    public static final Supplier<RecipeType<ClocheRecipe>> CLOCHE_TYPE =
+            TYPES.register("cloche", () -> ClocheRecipe.Type.INSTANCE);
+
 
 
 

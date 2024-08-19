@@ -5,6 +5,96 @@ TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
+TODO: banned in portable gui tag
+TODO: JEI Cloche
+
+4.6.0
+Deprecated OpolisBlockEntity interface as no longer needed
+Added 2 new slot textures, catalyst and seed
+Fixed summoning block not having a recipe
+Fixed drying/soaking table not dropping its inventory when broken
+Advanced crafter moved out of BETA
+
+
+Added cloche, allows the growing of crops inside a block
+    Recipes can be added shown below
+    Allows up to 3 additional outputs with a chance of dropping
+    Examples use wheat dropping wheat and oak saplings dropping oak logs, apples, sapling and sticks
+    durationModifier is a multiplier for the duration of the recipe
+    Speed Upgrades effect this duration based on the overall duration of the recipe
+    Full JEI support for the cloche
+    Cloche renders soil and seeds
+    Allows for hopper extraction but not inserting as seeds not used in the recipe
+    Cloche can be opened with a portable gui opener
+    Renders soil and seed inside the cloche
+    Support for vanilla crops and saplings added
+    the cloche is in beta
+
+
+
+
+basic recipe
+{
+  "type": "opolisutilities:cloche",
+  "seed": {
+    "count": 1,
+    "item": "minecraft:wheat_seeds"
+  },
+  "soil": {
+    "count": 1,
+    "tag": "minecraft:dirt"
+  },
+  "mainOutput": {
+    "count": 1,
+    "id": "minecraft:wheat"
+  },
+  "durationModifier": 1.5
+}
+
+Advanced Recipe
+
+{
+  "type": "opolisutilities:cloche",
+  "seed": {
+    "count": 1,
+    "item": "minecraft:oak_sapling"
+  },
+  "catalyst": {
+    "count": 1,
+    "item": "minecraft:gravel"
+  },
+  "soil": {
+    "count": 1,
+    "tag": "minecraft:dirt"
+  },
+  "mainOutput": {
+    "count": 1,
+    "id": "minecraft:oak_log"
+  },
+  "chanceOutput1": {
+    "count": 1,
+    "id": "minecraft:oak_sapling"
+  },
+  "chanceOutputChance1": 0.9,
+
+  "chanceOutput2": {
+    "count": 1,
+    "id": "minecraft:apple"
+  },
+  "chanceOutputChance2": 0.9,
+
+  "chanceOutput3": {
+    "count": 1,
+    "id": "minecraft:stick"
+  },
+  "chanceOutputChance3": 0.9,
+  "durationModifier": 1.1
+}
+
+
+4.5.7
+
+added support for non block entity guis
 
 4.5.6
 

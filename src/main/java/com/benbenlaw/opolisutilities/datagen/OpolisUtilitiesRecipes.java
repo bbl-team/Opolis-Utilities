@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.datagen.recipes.*;
 import com.benbenlaw.opolisutilities.item.ModItems;
+import com.benbenlaw.opolisutilities.recipe.ClocheRecipe;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -53,7 +54,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .save(consumer);
 
         //Summoning Block
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BLOCK_BREAKER.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SUMMONING_BLOCK.get())
                 .pattern("SSS")
                 .pattern("AMA")
                 .pattern("SSS")
@@ -95,6 +96,18 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .pattern("SSS")
                 .define('S', Tags.Items.STONES)
                 .define('B', ModItems.B_BUCKS)
+                .group("opolisutilities")
+                .unlockedBy("has_item", has(ModItems.B_BUCKS))
+                .save(consumer);
+
+        //Catalogue
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CLOCHE.get())
+                .pattern("SSS")
+                .pattern("WRW")
+                .pattern("SSS")
+                .define('S', Tags.Items.STONES)
+                .define('W', Tags.Items.BUCKETS_WATER)
+                .define('R',  ModBlocks.RESOURCE_GENERATOR.get())
                 .group("opolisutilities")
                 .unlockedBy("has_item", has(ModItems.B_BUCKS))
                 .save(consumer);
@@ -1070,6 +1083,247 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .unlockedBy("has_item", has(Items.LEAD))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/llama"));
 
+        // ********** Cloche ********** //
+
+        //Wheat
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.WHEAT_SEEDS), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.WHEAT, 1),
+                        new ItemStack(Items.WHEAT_SEEDS), 0.15,
+                        null, 0,
+                        null, 0,
+                        1.8)
+                .unlockedBy("has_item", has(Items.WHEAT_SEEDS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/wheat"));
+
+        //Beetroot
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.BEETROOT_SEEDS), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.BEETROOT, 1),
+                        new ItemStack(Items.BEETROOT_SEEDS), 0.15,
+                        null, 0,
+                        null, 0,
+                        1.8)
+                .unlockedBy("has_item", has(Items.BEETROOT_SEEDS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/beetroot"));
+
+        //Carrot
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.CARROT), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.CARROT, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        1.8)
+                .unlockedBy("has_item", has(Items.CARROT))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/carrot"));
+
+        //Potato
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.POTATO), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.POTATO, 1),
+                        new ItemStack(Items.POISONOUS_POTATO), 0.01,
+                        null, 0,
+                        null, 0,
+                        1.8)
+                .unlockedBy("has_item", has(Items.POTATO))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/potato"));
+
+        //Melon
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.MELON_SEEDS), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.MELON, 1),
+                        new ItemStack(Items.MELON_SEEDS), 0.15,
+                        null, 0,
+                        null, 0,
+                        3.0)
+                .unlockedBy("has_item", has(Items.MELON_SEEDS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/melon"));
+
+        //Pumpkin
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.PUMPKIN_SEEDS), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.PUMPKIN, 1),
+                        new ItemStack(Items.PUMPKIN_SEEDS), 0.15,
+                        null, 0,
+                        null, 0,
+                        3.0)
+                .unlockedBy("has_item", has(Items.PUMPKIN_SEEDS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/pumpkin"));
+
+        //Sugar Cane
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.SUGAR_CANE), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.SUGAR_CANE, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        2.6)
+                .unlockedBy("has_item", has(Items.SUGAR_CANE))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/sugar_cane"));
+
+        //Cactus
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.CACTUS), null, Ingredient.of(ItemTags.SAND),
+                        new ItemStack(Items.CACTUS, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        2.6)
+                .unlockedBy("has_item", has(Items.CACTUS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/cactus"));
+
+        //Bamboo
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.BAMBOO), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.BAMBOO, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        2.6)
+                .unlockedBy("has_item", has(Items.BAMBOO))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/bamboo"));
+
+        //Oak Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.OAK_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.OAK_LOG, 2),
+                        new ItemStack(Items.OAK_SAPLING), 0.15,
+                        new ItemStack(Items.APPLE), 0.05,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.OAK_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/oak_sapling"));
+
+        //Spruce Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.SPRUCE_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.SPRUCE_LOG, 2),
+                        new ItemStack(Items.SPRUCE_SAPLING), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.SPRUCE_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/spruce_sapling"));
+
+        //Birch Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.BIRCH_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.BIRCH_LOG, 2),
+                        new ItemStack(Items.BIRCH_SAPLING), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.BIRCH_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/birch_sapling"));
+
+        //Jungle Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.JUNGLE_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.JUNGLE_LOG, 2),
+                        new ItemStack(Items.JUNGLE_SAPLING), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.JUNGLE_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/jungle_sapling"));
+
+        //Acacia Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.ACACIA_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.ACACIA_LOG, 2),
+                        new ItemStack(Items.ACACIA_SAPLING), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.ACACIA_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/acacia_sapling"));
+
+        //Dark Oak Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.DARK_OAK_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.DARK_OAK_LOG, 2),
+                        new ItemStack(Items.DARK_OAK_SAPLING), 0.15,
+                        new ItemStack(Items.APPLE), 0.05,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.DARK_OAK_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/dark_oak_sapling"));
+
+        //Cherry Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.CHERRY_SAPLING), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.CHERRY_LOG, 2),
+                        new ItemStack(Items.CHERRY_SAPLING), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.CHERRY_SAPLING))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/cherry_sapling"));
+
+        //Mangrove Sapling
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.MANGROVE_PROPAGULE), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.MANGROVE_LOG, 2),
+                        new ItemStack(Items.MANGROVE_PROPAGULE), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.MANGROVE_PROPAGULE))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/mangrove_sapling"));
+
+        //Warped Fungus
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.WARPED_FUNGUS), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.WARPED_STEM, 2),
+                        new ItemStack(Items.WARPED_FUNGUS), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.WARPED_FUNGUS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/warped_fungus"));
+
+        //Crimson Fungus
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.CRIMSON_FUNGUS), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.CRIMSON_STEM, 2),
+                        new ItemStack(Items.CRIMSON_FUNGUS), 0.15,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.CRIMSON_FUNGUS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/crimson_fungus"));
+
+        //Glow Lichen
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.GLOW_LICHEN), null, Ingredient.of(Tags.Items.STONES),
+                        new ItemStack(Items.GLOW_LICHEN, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.GLOW_LICHEN))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/glow_lichen"));
+
+        //Cocoa Beans
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.COCOA_BEANS), null, Ingredient.of(ItemTags.JUNGLE_LOGS),
+                        new ItemStack(Items.COCOA_BEANS, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.COCOA_BEANS))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/cocoa_beans"));
+
+        //Vines
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.VINE), null, Ingredient.of(ItemTags.JUNGLE_LOGS),
+                        new ItemStack(Items.VINE, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        2.0)
+                .unlockedBy("has_item", has(Items.VINE))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/vines"));
+
+        //Brown Mushroom
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.BROWN_MUSHROOM), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.BROWN_MUSHROOM, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        3.0)
+                .unlockedBy("has_item", has(Items.BROWN_MUSHROOM))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/brown_mushroom"));
+
+        //Red Mushroom
+        ClocheRecipeBuilder.ClocheBuilder(Ingredient.of(Items.RED_MUSHROOM), null, Ingredient.of(ItemTags.DIRT),
+                        new ItemStack(Items.RED_MUSHROOM, 1),
+                        null, 0,
+                        null, 0,
+                        null, 0,
+                        3.0)
+                .unlockedBy("has_item", has(Items.RED_MUSHROOM))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "cloche/red_mushroom"));
 
 
 

@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class SummoningBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
+public class SummoningBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override

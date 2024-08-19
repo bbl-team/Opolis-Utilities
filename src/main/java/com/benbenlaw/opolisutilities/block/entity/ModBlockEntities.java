@@ -61,6 +61,9 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SummoningBlockEntity>> SUMMONING_BLOCK_ENTITY =
             register("summoning_block_entity", () ->
                     BlockEntityType.Builder.of(SummoningBlockEntity::new, ModBlocks.SUMMONING_BLOCK.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClocheBlockEntity>> CLOCHE_BLOCK_ENTITY =
+            register("cloche_block_entity", () ->
+                    BlockEntityType.Builder.of(ClocheBlockEntity::new, ModBlocks.CLOCHE.get()));
 
 
     //Capability Registration (Item Handler)
@@ -92,6 +95,9 @@ public class ModBlockEntities {
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
                 ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(), FluidGeneratorBlockEntity::getFluidHandlerCapability);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.CLOCHE_BLOCK_ENTITY.get(), ClocheBlockEntity::getItemHandlerCapability);
 
     }
 

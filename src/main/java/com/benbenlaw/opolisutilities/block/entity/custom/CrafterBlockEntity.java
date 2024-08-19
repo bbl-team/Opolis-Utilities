@@ -47,7 +47,7 @@ import java.util.*;
 
 import static com.benbenlaw.opolisutilities.block.custom.CrafterBlock.POWERED;
 
-public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
+public class CrafterBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(10) {
         @Override

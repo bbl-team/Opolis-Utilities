@@ -20,6 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -42,14 +43,18 @@ public class PortableGUIItem extends Item {
         ItemStack itemstack = player.getItemInHand(hand);
 
         if (!level.isClientSide() && player.isCrouching()) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
-            if (blockEntity != null && itemstack.getItem() instanceof PortableGUIItem) {
+            BlockState blockState = level.getBlockState(blockPos);
+            boolean hasMenuProvider = blockState.getMenuProvider(level, blockPos) != null;
+            boolean hasBlockEntity = level.getBlockEntity(blockPos) != null;
+
+            if (hasMenuProvider || hasBlockEntity && itemstack.getItem() instanceof PortableGUIItem) {
                 itemstack.set(ModDataComponents.INT_X, blockPos.getX());
                 itemstack.set(ModDataComponents.INT_Y, blockPos.getY());
                 itemstack.set(ModDataComponents.INT_Z, blockPos.getZ());
                 return InteractionResult.SUCCESS;
             }
+
         }
         return InteractionResult.FAIL;
     }
@@ -69,21 +74,20 @@ public class PortableGUIItem extends Item {
                     BlockPos blockPos = new BlockPos(x, y, z);
 
                     if (level.isLoaded(blockPos)) {
+                        BlockState blockState = level.getBlockState(blockPos);
 
-                        BlockEntity blockEntity = level.getBlockEntity(blockPos);
-                        if (blockEntity != null) {
+                        // Check if the BlockState has a MenuProvider
+                        MenuProvider menuProvider = blockState.getMenuProvider(level, blockPos);
 
+                        if (menuProvider != null) {
                             if (level.isAreaLoaded(blockPos, 16)) {
-
-                                if (blockEntity instanceof MenuConstructor menuConstructor) {
-                                    player.openMenu((MenuProvider) menuConstructor, blockPos);
-                                    return InteractionResultHolder.success(itemstack);
-                                } else {
-                                    player.sendSystemMessage(Component.translatable("tooltips.portable_gui.no_gui").withStyle(ChatFormatting.RED));
-                                }
+                                player.openMenu(menuProvider, blockPos);
+                                return InteractionResultHolder.success(itemstack);
                             } else {
                                 player.sendSystemMessage(Component.translatable("tooltips.portable_gui.in_spawn_chunk").withStyle(ChatFormatting.RED));
                             }
+                        } else {
+                            player.sendSystemMessage(Component.translatable("tooltips.portable_gui.no_gui").withStyle(ChatFormatting.RED));
                         }
                     } else {
                         player.sendSystemMessage(Component.translatable("tooltips.portable_gui.not_loaded").withStyle(ChatFormatting.RED));

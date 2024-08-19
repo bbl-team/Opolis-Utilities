@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class EnderScramblerBlockEntity extends BlockEntity implements MenuProvider, OpolisBlockEntity {
+public class EnderScramblerBlockEntity extends BlockEntity implements MenuProvider {
 
     public final ContainerData data;
     public int SCRAMBLER_RANGE = 1;

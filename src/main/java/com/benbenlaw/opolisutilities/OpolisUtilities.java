@@ -86,6 +86,7 @@ public class OpolisUtilities {
             event.register(ModMenuTypes.ENDER_SCRAMBLER_MENU.get(), EnderScramblerScreen::new);
             event.register(ModMenuTypes.FLUID_GENERATOR_MENU.get(), FluidGeneratorScreen::new);
             event.register(ModMenuTypes.SUMMONING_BLOCK_MENU.get(), SummoningBlockScreen::new);
+            event.register(ModMenuTypes.CLOCHE_MENU.get(), ClocheScreen::new);
 
         }
     }

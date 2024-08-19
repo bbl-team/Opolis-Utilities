@@ -47,6 +47,7 @@ public class OpolisUtilitiesBlockTags extends BlockTagsProvider {
                 .add(ModBlocks.ITEM_REPAIRER.get())
                 .add(ModBlocks.CRAFTER.get())
                 .add(ModBlocks.CATALOGUE.get())
+                .add(ModBlocks.CLOCHE.get())
         ;
 
         //Need Iron Tool

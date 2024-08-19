@@ -18,6 +18,10 @@ public class ModSlotTextures {
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "item/gui/block_slot");
     public static final ResourceLocation SPEED_UPGRADE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "item/gui/speed_upgrade_slot");
+    public static final ResourceLocation SEED_SLOT =
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "item/gui/seed_slot");
+    public static final ResourceLocation CATALYST_SLOT =
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "item/gui/catalyst_slot");
 
 
 }

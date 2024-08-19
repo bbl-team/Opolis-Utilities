@@ -45,7 +45,7 @@ import java.util.Objects;
 import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.FACING;
 import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.POWERED;
 
-public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity, OpolisBlockEntity {
+public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override

@@ -96,5 +96,15 @@ public record PacketOnOffButton() {
             }
         }
 
+        //Cloche Power Button
+        if (blockState.getBlock() instanceof ClocheBlock) {
+
+            if (blockState.getValue(ClocheBlock.POWERED)) {
+                level.setBlockAndUpdate(blockPos, ModBlocks.CLOCHE.get().defaultBlockState().setValue(ClocheBlock.POWERED, false));
+            } else {
+                level.setBlockAndUpdate(blockPos, ModBlocks.CLOCHE.get().defaultBlockState().setValue(ClocheBlock.POWERED, true));
+            }
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package com.benbenlaw.opolisutilities.event.client;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
+import com.benbenlaw.opolisutilities.block.entity.client.ClocheBlockEntityRenderer;
 import com.benbenlaw.opolisutilities.block.entity.client.DryingTableBlockEntityRenderer;
 import com.benbenlaw.opolisutilities.block.entity.client.FluidGeneratorBlockEntityRenderer;
 import com.benbenlaw.opolisutilities.block.entity.client.SummoningBlockEntityRenderer;
@@ -24,6 +25,9 @@ public class ClientListener {
 
         event.registerBlockEntityRenderer(ModBlockEntities.FLUID_GENERATOR_BLOCK_ENTITY.get(),
                 FluidGeneratorBlockEntityRenderer::new);
+
+        event.registerBlockEntityRenderer(ModBlockEntities.CLOCHE_BLOCK_ENTITY.get(),
+                ClocheBlockEntityRenderer::new);
     }
 
 }
