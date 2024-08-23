@@ -1,41 +1,26 @@
-# Package Configuration for KillerCupcakes Mod
-
-# General Settings
-package-as: Opolis Utilities
-enable-nolib-creation: no
-
-# External Libraries
-externals:
-  libs/LibDialog:
-    url: https://github.com/wildstarnasa/LibDialog.git
-    tag: latest  # If this line is omitted, the latest version (even if it's not a tag) is assumed.
-
-  libs/GeminiAddon:
-    url: https://github.com/wildstarnasa/GeminiAddon.git
-    tag: 1337.0.10  # This is an example. Please use an actual tag if you are targeting a specific version.
-
-# Folder Moving Rules
-move-folders:
-  KillerCupcakes/Modules/Fire: KillerCupcakesOnFire  # Moves KillerCupcakes/Modules/Fire to the same level as KillerCupcakes, as KillerCupCakesOnFire.
-  KillerCupcakes/Modules/Sky: KillerCupcakesInTheSky  # Moves KillerCupcakes/Modules/Sky to the same level as KillerCupcakes, as KillerCupcakesInTheSky.
-
-# Ignored Files and Directories
-ignore:
-  # Files and directories beginning with a dot (such as .git) are automatically ignored, as is the pkgmeta file itself.
-  - Scripts
-  - Some/File.txt
-
-# Dependencies
-required-dependencies:
-  - 221710-dear-cupcake  # Required dependencies
-
-optional-dependencies:
-  - 220002-junkit  # Optional dependencies
-
-# Changelog and License
-manual-changelog: changelog.txt
-license-output: LICENSE.txt
-
-# Tools Used
-tools-used:
-  - data-tools
+name: "Build Release"
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - { uses: actions/checkout@v2, with: { fetch-depth: 0 } }
+      - {
+        name: "Set up JDK 21",
+        uses: actions/setup-java@v2,
+        with: { distribution: "adopt", java-version: "21" },
+      }
+      - {
+        name: "Build with Gradle",
+        id: build,
+        run: "chmod +x gradlew && ./gradlew build publish",
+      }
+      - name: "Upload to CurseForge"
+        uses: itsmeow/curseforge-upload@v3
+        with:
+          file_path: "build/libs/opolisutilities-1.21-${mod_version}.jar"
+          game_endpoint: "minecraft"
+          relations: "neoforge-api:requiredDependency"
+          game_versions: "Minecraft 1.21:1.21.1,Java 21,NeoForge"
+          project_id: "649644"
+          token: "7edd171b-fa2a-43eb-87a1-b5a32d4ee835"
