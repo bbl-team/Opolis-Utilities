@@ -143,7 +143,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.changelog = changelog
     mainFile.addOptional("jei") // JEI
     mainFile.releaseType = "release"
-
+    mainFile.gameVersions.addAll("1.21", "1.21.1")
 }
 
 tasks.getByName("modrinth").setGroup("modpublishing")
@@ -154,7 +154,9 @@ modrinth {
     versionType = "release"
     versionName = "opolisutilities-" + "$minecraft_version" + "-" + "$mod_version"
     uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
-    gameVersions = ["$minecraft_version"] // Must be an array, even with only one version
+
+    gameVersions.addAll("1.21", "1.21.1")
+
     loaders = ["neoforge"]
     changelog = project.changelog
     dependencies {
