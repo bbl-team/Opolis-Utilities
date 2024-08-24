@@ -1,3 +1,7 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
+import javax.annotation.processing.ProcessingEnvironment
+
 plugins {
     id 'java-library'
     id 'eclipse'
@@ -128,37 +132,33 @@ idea {
     }
 }
 
-tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+tasks.register('publishCurseForge', TaskPublishCurseForge) {
     group "modpublishing"
-    apiToken = findProperty('CURSEFORGE_KEY')
+
+    apiToken = System.getenv("curseforge_token").toString()
 
     def projectId = 649644
-    def mainFile = upload(projectId, tasks.remapJar.archiveFile)
+    def mainFile = upload(projectId, jar)
 
     mainFile.changelog = changelog
     mainFile.addOptional("jei") // JEI
     mainFile.releaseType = "release"
-    mainFile.displayName = "opolisutilities" + "${minecraft_version}-${mod_version}"
+
 }
 
 tasks.getByName("modrinth").setGroup("modpublishing")
 
 modrinth {
-
-    /*
-    token = findProperty("modrinth_token") // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
-
-    projectId = "opolisutilities" // This can be the project ID or the slug. Either will work!
-    versionNumber = project.version // You don't need to set this manually. Will fail if Modrinth has this version already
-    versionName = "opolisutilities" + "${minecraft_version}-${mod_version}"
-    versionType = "release" // This is the default -- can also be `beta` or `alpha`
-    uploadFile = tasks.remapJar.archiveFile // With Loom, this MUST be set to `remapJar` instead of `jar`!
+    token = System.getenv("modrinth_token").toString()
+    projectId = "rzq32Rx3"
+    versionType = "release"
+    versionName = "opolisutilities-" + "$minecraft_version" + "-" + "$mod_version"
+    uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
     gameVersions = ["$minecraft_version"] // Must be an array, even with only one version
     loaders = ["neoforge"]
     changelog = project.changelog
     dependencies {
         optional.project "jei"
     }
-
-     */
 }
+

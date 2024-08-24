@@ -34,6 +34,7 @@ public class OpolisUtilities {
     public static final String MOD_ID = "opolisutilities";
     public static final Logger LOGGER = LogManager.getLogger();
 
+
     public OpolisUtilities(IEventBus modEventBus) {
 
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP, StartupConfigFile.SPEC, "opolis_utilities_startup.toml");

@@ -6,7 +6,22 @@ TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
 TODO: banned in portable gui tag
-TODO: JEI Cloche
+
+4.6.7 \n\
+- Final automatic updating
+
+4.6.6 \n\
+- Summoning block now drops itself when broken. \n\
+- Changed summoning recipes that have grass blocks to dirt blocks.
+
+4.6.3
+More Auto publish testing
+
+4.6.2
+Testing changelog
+
+4.6.1
+Tests
 
 4.6.0
 Deprecated OpolisBlockEntity interface as no longer needed

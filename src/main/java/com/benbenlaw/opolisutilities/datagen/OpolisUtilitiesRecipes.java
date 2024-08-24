@@ -927,49 +927,49 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
         //Chicken
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.SEEDS), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:chicken")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:chicken")
                 .unlockedBy("has_item", has(Tags.Items.SEEDS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/chicken"));
 
         //Cow
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.LEATHER), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:cow")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:cow")
                 .unlockedBy("has_item", has(Items.LEATHER))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/cow"));
 
         //Pig
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.POTATO), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:pig")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:pig")
                 .unlockedBy("has_item", has(Items.POTATO))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/pig"));
 
         //Sheep
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(ItemTags.WOOL), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:sheep")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:sheep")
                 .unlockedBy("has_item", has(ItemTags.WOOL))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/sheep"));
 
         //Wolf
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BONE), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:wolf")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:wolf")
                 .unlockedBy("has_item", has(Items.BONE))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/wolf"));
 
         //Cat
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.COD), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:cat")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:cat")
                 .unlockedBy("has_item", has(Items.COD))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/cat"));
 
         //Fox
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SWEET_BERRIES), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:fox")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:fox")
                 .unlockedBy("has_item", has(Items.SWEET_BERRIES))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/fox"));
 
         //Panda
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.BAMBOO), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:panda")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:panda")
                 .unlockedBy("has_item", has(Items.BAMBOO))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/panda"));
 
@@ -993,19 +993,19 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
         //Goat
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.WHEAT), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:goat")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:goat")
                 .unlockedBy("has_item", has(Items.WHEAT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/goat"));
 
         //Horse
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.HAY_BLOCK), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:horse")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:horse")
                 .unlockedBy("has_item", has(Items.HAY_BLOCK))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/horse"));
 
         //Donkey
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.GOLDEN_CARROT), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:donkey")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:donkey")
                 .unlockedBy("has_item", has(Items.GOLDEN_CARROT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/donkey"));
 
@@ -1019,7 +1019,7 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
         //Rabbit
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.CARROT), 1),
-                        Ingredient.of( new ItemStack(Items.GRASS_BLOCK)), "minecraft:rabbit")
+                        Ingredient.of(ItemTags.DIRT), "minecraft:rabbit")
                 .unlockedBy("has_item", has(Items.CARROT))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/rabbit"));
 

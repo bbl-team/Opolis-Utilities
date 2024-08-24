@@ -1,7 +1,7 @@
 {
   "type": "opolisutilities:summoning_block",
   "catalyst": {
-    "item": "minecraft:grass_block"
+    "tag": "minecraft:dirt"
   },
   "input": {
     "count": 1,
