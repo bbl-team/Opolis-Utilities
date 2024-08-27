@@ -1,7 +1,5 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
-import javax.annotation.processing.ProcessingEnvironment
-
 plugins {
     id 'java-library'
     id 'eclipse'

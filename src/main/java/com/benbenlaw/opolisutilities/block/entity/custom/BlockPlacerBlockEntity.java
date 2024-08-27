@@ -74,57 +74,15 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
     private int maxTickChecker = 0;
     private static final int INPUT_SLOT = 0;
 
-    private final IItemHandler upItemHandlerSide = new InputOutputItemHandler(itemHandler,
+    private final IItemHandler blockPlacerItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> i == INPUT_SLOT, // Allow in INPUT_SLOT
             i -> false // No output slots
-    );
-    private final IItemHandler downItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> i == INPUT_SLOT, // Allow in INPUT_SLOT
-            i -> false // No output slots
-    );
-    private final IItemHandler northItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> i == INPUT_SLOT, // Allow in INPUT_SLOT
-            i -> false // No output slots
-    );
-    private final IItemHandler southItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> i == INPUT_SLOT, // Allow in INPUT_SLOT
-            i -> false // No output slots
-    );
-    private final IItemHandler eastItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> i == INPUT_SLOT, // Allow in INPUT_SLOT
-            i -> false // No output slots
-    );
-    private final IItemHandler westItemHandlerSide = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> i == INPUT_SLOT, // Only allow insertion in slot 0
-            i -> false // No output slots on the top
     );
 
-    //If sides don't need to be handled use this
-    private final IItemHandler noSideItemHandlerSided = new InputOutputItemHandler(itemHandler,
-            (i, stack) -> false,
-            i -> false
-    );
 
     //Called in startup for sides of the block
     public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
-        side = DirectionUtils.adjustPosition(this.getBlockState().getValue(FACING), side);
-        if(side == null)
-            return itemHandler;
-
-        if(side == Direction.UP)
-            return upItemHandlerSide;
-        if(side == Direction.DOWN)
-            return downItemHandlerSide;
-        if(side == Direction.NORTH)
-            return northItemHandlerSide;
-        if(side == Direction.SOUTH)
-            return southItemHandlerSide;
-        if(side == Direction.EAST)
-            return eastItemHandlerSide;
-        if(side == Direction.WEST)
-            return westItemHandlerSide;
-
-        return noSideItemHandlerSided;
+        return blockPlacerItemHandler;
     }
 
     public void setHandler(ItemStackHandler handler) {

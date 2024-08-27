@@ -7,6 +7,24 @@ TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
 TODO: banned in portable gui tag
 
+
+//*******//
+UPDATE VERSION BEFORE PUSHING AND UPDATING
+//*******//
+
+4.7.0
+
+Disabled catalogue item handler (block entity) as this is not a block entity yet
+Fixed side based issues with the block placer and block breaker
+Added "banned_in_portable_gui", blocks in this tag will not be allowed to be opened with the portable gui opener
+Portable GUI now shows the name of the linked block in its name and its saved location number
+Portable GUI can now store 5 guis, crouch and scroll wheel to change the selected location
+    once selected same as before right click to open the gui and shift right click to set a block gui to that location
+Portable GUI now works correctly for vanilla GUI's that are outside of the default stillValid method range
+When a GUI is in an unloaded area the item changes its name to not loaded
+Change Shift information on the portable gui to be a bit more condensed
+
+
 4.6.7 \n\
 - Final automatic updating
 

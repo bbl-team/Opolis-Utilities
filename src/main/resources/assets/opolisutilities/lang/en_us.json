@@ -117,6 +117,8 @@
   "tooltips.portable_gui.not_loaded": "Block in unloaded chunk!",
   "tooltips.portable_gui.in_spawn_chunk": "Block in Spawn chunk, this will not work!",
   "tooltips.portable_gui.no_gui": "This block does not have a GUI/ doesnt work with the portable GUI!",
+  "tooltips.portable_gui.banned_block": "This block is banned from the portable GUI!",
+  "tooltips.portable_gui.no_location": "No position set for this location!",
 
 
   "sounds.opolisutilities.doorbell": "Doorbell Rings",

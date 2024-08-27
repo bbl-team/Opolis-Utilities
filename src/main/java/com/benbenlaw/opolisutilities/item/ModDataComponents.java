@@ -44,6 +44,30 @@ public class ModDataComponents {
                     DataComponentType.<Float>builder().persistent(Codec.FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).build());
 
 
+    //New Portable GUI Data Components
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LOCATION_1 =
+            COMPONENTS.register("location_1", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LOCATION_2 =
+            COMPONENTS.register("location_2", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LOCATION_3 =
+            COMPONENTS.register("location_3", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LOCATION_4 =
+            COMPONENTS.register("location_4", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LOCATION_5 =
+            COMPONENTS.register("location_5", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> LOCATION_VALUE =
+            COMPONENTS.register("location_value", () ->
+                    DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT).build());
 
     private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
         return register(name, codec, null);

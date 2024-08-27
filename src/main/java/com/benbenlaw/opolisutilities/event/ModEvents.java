@@ -10,9 +10,12 @@ import com.benbenlaw.opolisutilities.config.ConfigFile;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
+import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.PortableGUISelectorPayload;
 import com.benbenlaw.opolisutilities.screen.utils.ConfigValues;
 import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
@@ -46,11 +49,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -254,7 +260,40 @@ public class ModEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onScrollWheelUse(InputEvent.MouseScrollingEvent event) {
+        Player player = Minecraft.getInstance().player;
+        assert player != null;
+        ItemStack itemStack = player.getMainHandItem();
 
+        double scrollDelta = event.getScrollDeltaY();
+
+        if (player.isCrouching() && scrollDelta != 0.0 && itemStack.is(ModItems.PORTABLE_GUI)) {
+            int locationValue = 0;
+
+            if (itemStack.get(ModDataComponents.LOCATION_VALUE) != null) {
+                locationValue = itemStack.get(ModDataComponents.LOCATION_VALUE);
+            }
+
+            boolean increase = scrollDelta > 0;
+
+            if (increase) {
+                locationValue++;
+                if (locationValue > 5) {
+                    locationValue = 1; // Wrap around to 1
+                }
+            } else {
+                locationValue--;
+                if (locationValue < 1) {
+                    locationValue = 5; // Wrap around to 8
+                }
+            }
+
+            PacketDistributor.sendToServer(new PortableGUISelectorPayload(player.getInventory().selected, increase, locationValue));
+
+            event.setCanceled(true);
+        }
+    }
 }
 
 

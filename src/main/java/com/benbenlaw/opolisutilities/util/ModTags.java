@@ -14,6 +14,7 @@ public class ModTags {
 
         //OpolisUtilities Tags
         public static final TagKey<Block> BANNED_IN_BLOCK_PLACER = tag("banned_in_block_placer");
+        public static final TagKey<Block> BANNED_IN_PORTABLE_GUI = tag("banned_in_portable_gui");
 
 
         //Common Tags
@@ -35,6 +36,8 @@ public class ModTags {
         //OpolisUtilities Item Tags
         public static final TagKey<Item> BANNED_IN_BLOCK_PLACER = tag("banned_in_block_placer");
         public static final TagKey<Item> BANNED_IN_ITEM_REPAIRER = tag("banned_in_item_repairer");
+        public static final TagKey<Item> BANNED_IN_PORTABLE_GUI = tag("banned_in_portable_gui");
+
 
 
         //Common Tags
