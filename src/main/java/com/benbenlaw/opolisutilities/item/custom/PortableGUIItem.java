@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
+import com.benbenlaw.opolisutilities.screen.custom.BlockBreakerMenu;
 import com.benbenlaw.opolisutilities.screen.utils.PortableMenuProvider;
 import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.ChatFormatting;
@@ -131,14 +132,16 @@ public class PortableGUIItem extends Item {
                                 if (menuProvider != null) {
                                     if (level.isAreaLoaded(blockPos, 16)) {
 
+
                                         PortableMenuProvider portableMenuProvider = new PortableMenuProvider(menuProvider, player);
                                         player.openMenu(portableMenuProvider, blockPos);
+                                        System.out.println("Opening PortableGUI");
 
-                                        /*
-                                        Container originalContainer = player.openMenu(menuProvider, blockPos);
-                                        player.openMenu(menuProvider, blockPos)
-                                        ;
-                                         */
+
+
+
+                                       // player.openMenu(menuProvider, blockPos);
+
 
                                         return InteractionResultHolder.success(itemstack);
                                     } else {

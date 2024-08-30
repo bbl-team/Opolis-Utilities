@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ContainerSynchronizer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +20,7 @@ import java.awt.*;
 
 public class PortableContainer extends AbstractContainerMenu {
     private final AbstractContainerMenu originalMenu;
+
 
     public PortableContainer(AbstractContainerMenu originalMenu) {
         super(originalMenu.getType(), originalMenu.containerId);
@@ -41,19 +43,18 @@ public class PortableContainer extends AbstractContainerMenu {
     }
 
     @Override
-    public void slotsChanged(Container inventory) {
+    public void slotsChanged(@NotNull Container inventory) {
         originalMenu.slotsChanged(inventory);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
         return originalMenu.quickMoveStack(player, index);
     }
 
     @Override
-    public void removed(Player player) {
+    public void removed(@NotNull Player player) {
         originalMenu.removed(player);
     }
-
 
 }
