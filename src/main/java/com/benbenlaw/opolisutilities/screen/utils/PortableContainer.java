@@ -29,28 +29,31 @@ public class PortableContainer extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        // Always return true, ignoring the usual distance checks
         if (player.getItemInHand(player.getUsedItemHand()).getItem() instanceof PortableGUIItem) {
             return true;
         }
         return originalMenu.stillValid(player);
     }
 
-    // Delegate other methods to originalMenu as needed
     @Override
     public void broadcastChanges() {
         originalMenu.broadcastChanges();
     }
 
     @Override
-    public void slotsChanged(@NotNull Container inventory) {
-        originalMenu.slotsChanged(inventory);
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
+        ItemStack result = originalMenu.quickMoveStack(player, index);
+        System.out.println("ItemStack quickMoveStack called with index: " + index);
+        return result;
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int index) {
-        return originalMenu.quickMoveStack(player, index);
+    public void slotsChanged(@NotNull Container inventory) {
+        System.out.println("Slots changed in PortableContainer.");
+        originalMenu.slotsChanged(inventory);
+        this.broadcastChanges();
     }
+
 
     @Override
     public void removed(@NotNull Player player) {
