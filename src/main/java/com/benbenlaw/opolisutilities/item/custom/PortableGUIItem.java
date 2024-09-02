@@ -132,16 +132,15 @@ public class PortableGUIItem extends Item {
                                 if (menuProvider != null) {
                                     if (level.isAreaLoaded(blockPos, 16)) {
 
+                                        /* NEW CODE NOT WORKING CORRECTLY
 
                                         PortableMenuProvider portableMenuProvider = new PortableMenuProvider(menuProvider, player);
                                         player.openMenu(portableMenuProvider, blockPos);
                                         System.out.println("Opening PortableGUI");
 
+                                        */
 
-
-
-                                       // player.openMenu(menuProvider, blockPos);
-
+                                        player.openMenu(menuProvider, blockPos);
 
                                         return InteractionResultHolder.success(itemstack);
                                     } else {

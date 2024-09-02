@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.SoakingTableRecipe;
+import com.benbenlaw.opolisutilities.recipe.SummoningBlockRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -18,7 +19,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -34,6 +37,16 @@ public class SoakingTableRecipeCategory implements IRecipeCategory<SoakingTableR
 
         private final IDrawable background;
         private final IDrawable icon;
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(SoakingTableRecipe recipe) {
+        assert Minecraft.getInstance().level != null;
+        return Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(SoakingTableRecipe.Type.INSTANCE).stream()
+                .filter(recipeHolder -> recipeHolder.value().equals(recipe))
+                .map(RecipeHolder::id)
+                .findFirst()
+                .orElse(null);
+    }
 
         public SoakingTableRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 120, 19);

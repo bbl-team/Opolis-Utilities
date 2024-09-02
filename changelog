@@ -11,6 +11,15 @@ TODO: banned in portable gui tag
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+fluid generator
+
+4.8.0
+
+In JEI recipes can now be book marked
+IN JEI and EMI Speed block recipes and Fluid generator recipe categories now display slight different removing the tooltip form the item and adding information above the recipe
+Remove the kubjes finder as no longer in Opolis Utilities
+Reverted portable GUI back to 4.6.0 versions as that one kinda works and the current version doesnt
+
 4.7.0
 
 Disabled catalogue item handler (block entity) as this is not a block entity yet

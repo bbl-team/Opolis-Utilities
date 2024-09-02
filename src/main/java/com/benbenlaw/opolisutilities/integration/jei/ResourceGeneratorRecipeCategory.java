@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import com.benbenlaw.opolisutilities.recipe.SpeedUpgradesRecipe;
+import com.benbenlaw.opolisutilities.recipe.SummoningBlockRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -20,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -38,6 +40,16 @@ public class ResourceGeneratorRecipeCategory implements IRecipeCategory<Resource
 
     private IDrawable background;
     private final IDrawable icon;
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(ResourceGeneratorRecipe recipe) {
+        assert Minecraft.getInstance().level != null;
+        return Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE).stream()
+                .filter(recipeHolder -> recipeHolder.value().equals(recipe))
+                .map(RecipeHolder::id)
+                .findFirst()
+                .orElse(null);
+    }
     private final IGuiHelper helper;
     private final int tabs = 1;
     private int tabs_used = 0;

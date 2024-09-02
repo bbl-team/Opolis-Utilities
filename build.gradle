@@ -75,6 +75,11 @@ dependencies {
  //   compileOnly "curse.maven:mekanism-268560:5574951"
     runtimeOnly "curse.maven:mekanism-268560:5574951"
 
+    //EMI
+
+    compileOnly "curse.maven:emi-580555:5619579"
+    runtimeOnly "curse.maven:emi-580555:5619579"
+
 }
 
 tasks.withType(ProcessResources).configureEach {
