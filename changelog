@@ -13,6 +13,16 @@ UPDATE VERSION BEFORE PUSHING AND UPDATING
 
 fluid generator
 
+4.8.2
+
+Tweaked how the Portable GUI gets its block information for its tooltips
+Fixed another server crash with Portable GUI
+
+
+4.8.1
+
+Fixed particle events being fired server side
+
 4.8.0
 
 In JEI recipes can now be book marked

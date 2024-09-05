@@ -1,22 +1,20 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
-import com.benbenlaw.opolisutilities.screen.custom.BlockBreakerMenu;
-import com.benbenlaw.opolisutilities.screen.utils.PortableMenuProvider;
 import com.benbenlaw.opolisutilities.util.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -41,7 +39,7 @@ public class PortableGUIItem extends Item {
             boolean hasMenuProvider = blockState.getMenuProvider(level, blockPos) != null;
             boolean hasBlockEntity = level.getBlockEntity(blockPos) != null;
 
-            if(!blockState.is(ModTags.Blocks.BANNED_IN_PORTABLE_GUI)) {
+            if (!blockState.is(ModTags.Blocks.BANNED_IN_PORTABLE_GUI)) {
 
                 if (hasMenuProvider || hasBlockEntity && itemstack.getItem() instanceof PortableGUIItem) {
 
@@ -55,21 +53,28 @@ public class PortableGUIItem extends Item {
                     int blockY = blockPos.getY();
                     int blockZ = blockPos.getZ();
 
+                    String blockName = blockState.getBlock().getDescriptionId();
+
                     switch (locationValue) {
                         case 1:
                             itemstack.set(ModDataComponents.LOCATION_1, blockX + " " + blockY + " " + blockZ);
+                            itemstack.set(ModDataComponents.BLOCK_NAME_1, blockName);
                             break;
                         case 2:
                             itemstack.set(ModDataComponents.LOCATION_2, blockX + " " + blockY + " " + blockZ);
+                            itemstack.set(ModDataComponents.BLOCK_NAME_2, blockName);
                             break;
                         case 3:
                             itemstack.set(ModDataComponents.LOCATION_3, blockX + " " + blockY + " " + blockZ);
+                            itemstack.set(ModDataComponents.BLOCK_NAME_3, blockName);
                             break;
                         case 4:
                             itemstack.set(ModDataComponents.LOCATION_4, blockX + " " + blockY + " " + blockZ);
+                            itemstack.set(ModDataComponents.BLOCK_NAME_4, blockName);
                             break;
                         case 5:
                             itemstack.set(ModDataComponents.LOCATION_5, blockX + " " + blockY + " " + blockZ);
+                            itemstack.set(ModDataComponents.BLOCK_NAME_5, blockName);
                             break;
                     }
 
@@ -78,7 +83,6 @@ public class PortableGUIItem extends Item {
             } else {
                 player.sendSystemMessage(Component.translatable("tooltips.portable_gui.banned_block").withStyle(ChatFormatting.RED));
             }
-
         }
         return InteractionResult.FAIL;
     }
@@ -93,21 +97,28 @@ public class PortableGUIItem extends Item {
                 int locationValue = itemstack.get(ModDataComponents.LOCATION_VALUE);
 
                 String location = null;
+                String blockName = null;
+
                 switch (locationValue) {
                     case 1:
                         location = itemstack.get(ModDataComponents.LOCATION_1);
+                        blockName = itemstack.get(ModDataComponents.BLOCK_NAME_1);
                         break;
                     case 2:
                         location = itemstack.get(ModDataComponents.LOCATION_2);
+                        blockName = itemstack.get(ModDataComponents.BLOCK_NAME_2);
                         break;
                     case 3:
                         location = itemstack.get(ModDataComponents.LOCATION_3);
+                        blockName = itemstack.get(ModDataComponents.BLOCK_NAME_3);
                         break;
                     case 4:
                         location = itemstack.get(ModDataComponents.LOCATION_4);
+                        blockName = itemstack.get(ModDataComponents.BLOCK_NAME_4);
                         break;
                     case 5:
                         location = itemstack.get(ModDataComponents.LOCATION_5);
+                        blockName = itemstack.get(ModDataComponents.BLOCK_NAME_5);
                         break;
                     default:
                         player.sendSystemMessage(Component.translatable("tooltips.portable_gui.invalid_location_value").withStyle(ChatFormatting.RED));
@@ -131,17 +142,7 @@ public class PortableGUIItem extends Item {
                                 MenuProvider menuProvider = blockState.getMenuProvider(level, blockPos);
                                 if (menuProvider != null) {
                                     if (level.isAreaLoaded(blockPos, 16)) {
-
-                                        /* NEW CODE NOT WORKING CORRECTLY
-
-                                        PortableMenuProvider portableMenuProvider = new PortableMenuProvider(menuProvider, player);
-                                        player.openMenu(portableMenuProvider, blockPos);
-                                        System.out.println("Opening PortableGUI");
-
-                                        */
-
                                         player.openMenu(menuProvider, blockPos);
-
                                         return InteractionResultHolder.success(itemstack);
                                     } else {
                                         player.sendSystemMessage(Component.translatable("tooltips.portable_gui.in_spawn_chunk").withStyle(ChatFormatting.RED));
@@ -168,73 +169,68 @@ public class PortableGUIItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> components, TooltipFlag flag) {
-        Level level = Minecraft.getInstance().level;
 
-        assert level != null;
-        String block = "No Block";
+        // Default block name
+        String blockName = "Unknown Block";
 
+        // Retrieve location value, default to -1 if null
         Integer locationValue = itemStack.get(ModDataComponents.LOCATION_VALUE);
+        if (locationValue == null) {
+            locationValue = -1;
+        }
 
+        // Default message for no location
+        String locationMessage = "tooltips.portable_gui.no_location";
         String location = null;
+
         switch (locationValue) {
             case 1:
                 location = itemStack.get(ModDataComponents.LOCATION_1);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_1);
                 break;
             case 2:
                 location = itemStack.get(ModDataComponents.LOCATION_2);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_2);
                 break;
             case 3:
                 location = itemStack.get(ModDataComponents.LOCATION_3);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_3);
                 break;
             case 4:
                 location = itemStack.get(ModDataComponents.LOCATION_4);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_4);
                 break;
             case 5:
                 location = itemStack.get(ModDataComponents.LOCATION_5);
-                break;
-            case null:
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_5);
                 break;
             default:
                 // Handle unexpected locationValue values
+                location = null;
                 break;
         }
 
         if (location == null || location.trim().isEmpty()) {
-            components.add(Component.translatable("tooltips.portable_gui.no_location")
+            components.add(Component.translatable(locationMessage)
                     .withStyle(ChatFormatting.RED));
             super.appendHoverText(itemStack, tooltipContext, components, flag);
             return;
         }
 
-        String[] coordinates = location.split(" ");
-        if (coordinates.length == 3) {
-            try {
-                int x = Integer.parseInt(coordinates[0]);
-                int y = Integer.parseInt(coordinates[1]);
-                int z = Integer.parseInt(coordinates[2]);
-                BlockPos blockPos = new BlockPos(x, y, z);
+        // If blockName is null, use the default blockName
+        if (blockName == null || blockName.trim().isEmpty()) {
+            blockName = "Unknown Block";
+        }
 
-                block = level.getBlockState(blockPos).getBlock().getDescriptionId();
-
-                if (Screen.hasShiftDown()) {
-                    components.add(Component.translatable(block)
-                            .withStyle(ChatFormatting.GREEN)
-                            .append(Component.translatable("tooltips.portable_gui.shift.held"))
-                            .append(Component.literal(location.replace(" ", ", "))
+        if (Screen.hasShiftDown()) {
+            components.add(Component.translatable(blockName)
+                    .withStyle(ChatFormatting.GREEN)
+                    .append(Component.translatable("tooltips.portable_gui.shift.held"))
+                    .append(Component.literal(location.replace(" ", ", "))
                             .withStyle(ChatFormatting.GREEN)));
-
-                } else {
-                    components.add(Component.translatable("tooltips.portable_gui.hover.shift")
-                            .withStyle(ChatFormatting.BLUE));
-                }
-            } catch (NumberFormatException e) {
-                components.add(Component.translatable("tooltips.portable_gui.invalid_location_format")
-                        .withStyle(ChatFormatting.RED));
-            }
         } else {
-            // Handle the case where coordinates do not have exactly 3 parts
-            components.add(Component.translatable("tooltips.portable_gui.invalid_coordinates")
-                    .withStyle(ChatFormatting.RED));
+            components.add(Component.translatable("tooltips.portable_gui.hover.shift")
+                    .withStyle(ChatFormatting.BLUE));
         }
 
         super.appendHoverText(itemStack, tooltipContext, components, flag);
@@ -242,70 +238,58 @@ public class PortableGUIItem extends Item {
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        Level level = Minecraft.getInstance().level;
-        assert level != null;
 
+        // Retrieve location value, default to -1 if null
         Integer locationValue = itemStack.get(ModDataComponents.LOCATION_VALUE);
+        if (locationValue == null) {
+            locationValue = -1;
+        }
 
         // Default message in case of invalid location
         String locationMessage = "item.opolisutilities.portable_gui";
 
-        // Retrieve location based on the locationValue
         String location = null;
+        String blockName = null;
+
         switch (locationValue) {
             case 1:
                 location = itemStack.get(ModDataComponents.LOCATION_1);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_1);
                 break;
             case 2:
                 location = itemStack.get(ModDataComponents.LOCATION_2);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_2);
                 break;
             case 3:
                 location = itemStack.get(ModDataComponents.LOCATION_3);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_3);
                 break;
             case 4:
                 location = itemStack.get(ModDataComponents.LOCATION_4);
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_4);
                 break;
             case 5:
                 location = itemStack.get(ModDataComponents.LOCATION_5);
-                break;
-            case null:
+                blockName = itemStack.get(ModDataComponents.BLOCK_NAME_5);
                 break;
             default:
-                // Location value is not recognized
+                // Handle unexpected locationValue values
                 break;
         }
 
         if (location != null && !location.trim().isEmpty()) {
-            String[] coordinates = location.split(" ");
-            if (coordinates.length == 3) {
-                try {
-                    int x = Integer.parseInt(coordinates[0]);
-                    int y = Integer.parseInt(coordinates[1]);
-                    int z = Integer.parseInt(coordinates[2]);
-                    BlockPos blockPos = new BlockPos(x, y, z);
-                    String block = level.getBlockState(blockPos).getBlock().getDescriptionId();
-
-                    if (block.contains("block.minecraft.void_air")) {
-                        block = "Not Loaded!";
-                        return Component.translatable(locationMessage)
-                                .append(" ")
-                                .append(Component.translatable(block).withStyle(ChatFormatting.RED))
-                                .append(Component.literal(" (" + locationValue + ")").withStyle(ChatFormatting.BLUE));
-                    } else {
-
-                        return Component.translatable(locationMessage)
-                                .append(" ")
-                                .append(Component.translatable(block).withStyle(ChatFormatting.GREEN))
-                                .append(Component.literal(" (" + locationValue + ")").withStyle(ChatFormatting.BLUE));
-                    }
-                } catch (NumberFormatException ignored) {
-                }
+            if (blockName == null || blockName.trim().isEmpty()) {
+                blockName = "Unknown Block";
             }
+
+            return Component.translatable(locationMessage)
+                    .append(" ")
+                    .append(Component.translatable(blockName).withStyle(ChatFormatting.GREEN))
+                    .append(Component.literal(" (" + locationValue + ")").withStyle(ChatFormatting.BLUE));
         }
 
         return Component.translatable(locationMessage)
                 .append(" ")
                 .append(Component.literal(" (" + locationValue + ")").withStyle(ChatFormatting.BLUE));
     }
-
 }

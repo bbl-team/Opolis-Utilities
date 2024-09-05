@@ -47,6 +47,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.InputEvent;
@@ -260,6 +262,7 @@ public class ModEvents {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onScrollWheelUse(InputEvent.MouseScrollingEvent event) {
         Player player = Minecraft.getInstance().player;
@@ -294,6 +297,8 @@ public class ModEvents {
             event.setCanceled(true);
         }
     }
+
+
 }
 
 

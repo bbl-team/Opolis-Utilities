@@ -14,6 +14,7 @@ public class ModItems {
             DeferredRegister.createItems(OpolisUtilities.MOD_ID);
 
     public static final DeferredItem<Item> PORTABLE_GUI = ITEMS .register("portable_gui",
+        //    () -> new Item(new Item.Properties().stacksTo(1)));
             () -> new PortableGUIItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> MINI_COAL = ITEMS.register("mini_coal",

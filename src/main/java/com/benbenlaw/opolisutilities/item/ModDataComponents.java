@@ -64,6 +64,29 @@ public class ModDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LOCATION_5 =
             COMPONENTS.register("location_5", () ->
                     DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BLOCK_NAME_1 =
+            COMPONENTS.register("block_name_1", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BLOCK_NAME_2 =
+            COMPONENTS.register("block_name_2", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BLOCK_NAME_3 =
+            COMPONENTS.register("block_name_3", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BLOCK_NAME_4 =
+            COMPONENTS.register("block_name_4", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BLOCK_NAME_5 =
+            COMPONENTS.register("block_name_5", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
+
+
+
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> LOCATION_VALUE =
             COMPONENTS.register("location_value", () ->
