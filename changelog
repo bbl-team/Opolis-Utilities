@@ -13,11 +13,18 @@ UPDATE VERSION BEFORE PUSHING AND UPDATING
 
 fluid generator
 
+4.8.3
+
+Improved JEI and EMI look for cloche recipes
+Added Screen right click detection into the block placer, Redstone Clock, Ender Scrambler and Crafter
+    this change allows for holding shift to increase and decrease the tickrate of the block,
+    Ender Scrambler when shift held will go up by 3
+Above changes also fix an issue where the redstone clock could not be adjusted on servers
+
 4.8.2
 
 Tweaked how the Portable GUI gets its block information for its tooltips
 Fixed another server crash with Portable GUI
-
 
 4.8.1
 

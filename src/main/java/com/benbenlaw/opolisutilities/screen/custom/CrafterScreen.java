@@ -94,6 +94,9 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
                 ticks = crafterBlockEntity.maxProgress;
             }
 
+            guiGraphics.drawString(this.font, Component.translatable("gui.opolisutilities.shift"), this.leftPos + 95,
+                    this.topPos + 45, 0x3F3F3F, false);
+
             guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 90,
                     this.topPos + 60, 0x3F3F3F, false);
 
@@ -140,12 +143,14 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
                     PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
         }
 
+        boolean isShiftDown = CrafterScreen.hasShiftDown();
+
         //Tick Buttons
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 32, 20, 18, ModButtons.DECREASE_BUTTONS, (pressed) ->
-                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos(), isShiftDown))));
 
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
-                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos(), isShiftDown))));
 
         //Recipe Button
 

@@ -33,15 +33,16 @@ public record PacketIncreaseTickButton() {
         Player player = context.player();
         Level level = player.level();
         BlockPos blockPos = payload.blockPos();
-        BlockState blockState = level.getBlockState(blockPos);
+        boolean isShiftDown = payload.isShiftDown();
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
 
         //Block Placer Increase Tick Button
         if (blockEntity instanceof BlockPlacerBlockEntity blockPlacerBlockEntity) {
             int timer = blockPlacerBlockEntity.maxProgress;
+            int increment = isShiftDown ? 50 : 10;
             if (timer < 2000) {
-                blockPlacerBlockEntity.maxProgress = timer + 10;
+                blockPlacerBlockEntity.maxProgress = timer + increment;
 
             }
         }
@@ -49,15 +50,18 @@ public record PacketIncreaseTickButton() {
         //Crafter Increase Tick Button
         if (blockEntity instanceof CrafterBlockEntity crafterBlockEntity) {
             int timer = crafterBlockEntity.maxProgress;
+            int increment = isShiftDown ? 50 : 10;
+
             if (timer < 1200) {
-                crafterBlockEntity.maxProgress = timer + 10;
+                crafterBlockEntity.maxProgress = timer + increment;
 
             }
         }
 
         //Redstone Clock Increase Tick Button
         if (blockEntity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
-            int increment = Screen.hasShiftDown() ? 50 : 10;
+
+            int increment = isShiftDown ? 50 : 10;
             int timer = redstoneClockBlockEntity.maxProgress;
 
             if (timer < 1200) {
@@ -71,10 +75,17 @@ public record PacketIncreaseTickButton() {
         }
 
         //Ender Scrambler Increase Range Button
-        if (blockEntity instanceof EnderScramblerBlockEntity enderScramblerBlockEntity)  {
+        if (blockEntity instanceof EnderScramblerBlockEntity enderScramblerBlockEntity) {
+            int increment = isShiftDown ? 3 : 1;
             int range = enderScramblerBlockEntity.SCRAMBLER_RANGE;
-            if (range < ConfigValues.ENDER_SCRAMBLER_MAX_RANGE) {
-                enderScramblerBlockEntity.SCRAMBLER_RANGE = range + 1;
+            int maxRange = ConfigValues.ENDER_SCRAMBLER_MAX_RANGE;
+
+            if (range + increment > maxRange) {
+                increment = maxRange - range;
+            }
+
+            if (range < maxRange) {
+                enderScramblerBlockEntity.SCRAMBLER_RANGE = range + increment;
             }
         }
     }

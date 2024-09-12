@@ -77,8 +77,8 @@ dependencies {
 
     //EMI
 
-    compileOnly "curse.maven:emi-580555:5619579"
-    runtimeOnly "curse.maven:emi-580555:5619579"
+    //compileOnly "curse.maven:emi-580555:5619579"
+    //runtimeOnly "curse.maven:emi-580555:5619579"
 
 }
 

@@ -73,12 +73,17 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
             if (this.menu.level.getBlockEntity(this.menu.blockPos) instanceof BlockPlacerBlockEntity blockPlacerBlockEntity) {
                 ticks = blockPlacerBlockEntity.maxProgress;
             }
+
+            guiGraphics.drawString(this.font, Component.translatable("gui.opolisutilities.shift"), this.leftPos + 95,
+                    this.topPos + 45, 0x3F3F3F, false);
+
             guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 95,
                     this.topPos + 55, 0x3F3F3F, false);
         }
     }
 
     private void addMenuButtons() {
+
         //Power Button
         if (!this.menu.blockEntity.getBlockState().getValue(BlockPlacerBlock.POWERED)) {
             this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, ModButtons.OFF_BUTTONS, (pressed) ->
@@ -88,12 +93,14 @@ public class BlockPlacerScreen extends AbstractContainerScreen<BlockPlacerMenu> 
                     PacketDistributor.sendToServer(new OnOffButtonPayload(this.menu.blockEntity.getBlockPos()))));
         }
 
+        boolean isShiftDown = BlockPlacerScreen.hasShiftDown();
+
         //Tick Buttons
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 32, 20, 18, ModButtons.DECREASE_BUTTONS, (pressed) ->
-                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+                PacketDistributor.sendToServer(new DecreaseTickButtonPayload(this.menu.blockEntity.getBlockPos(), isShiftDown))));
 
         this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 66, 20, 18, ModButtons.INCREASE_BUTTONS, (pressed) ->
-                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos()))));
+                PacketDistributor.sendToServer(new IncreaseTickButtonPayload(this.menu.blockEntity.getBlockPos(), isShiftDown))));
     }
 
 }

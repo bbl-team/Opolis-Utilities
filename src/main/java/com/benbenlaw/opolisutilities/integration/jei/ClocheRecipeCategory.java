@@ -54,7 +54,7 @@ public class ClocheRecipeCategory implements IRecipeCategory<ClocheRecipe> {
     }
 
     public ClocheRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 140, 37);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 140, 55);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.CLOCHE.get()));
     }
 
@@ -85,37 +85,25 @@ public class ClocheRecipeCategory implements IRecipeCategory<ClocheRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 4, 20).addIngredients(recipe.soil());
 
         if (!recipe.catalyst().hasNoItems()) {
-            builder.addSlot(RecipeIngredientRole.CATALYST, 40, 11).addIngredients(recipe.catalyst())
+            builder.addSlot(RecipeIngredientRole.CATALYST, 4, 38).addIngredients(recipe.catalyst())
                     .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, -1, -1);
         }
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 2).addItemStack(new ItemStack(recipe.mainOutput().getItem(), recipe.mainOutput().getCount()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 67, 20).addItemStack(new ItemStack(recipe.mainOutput().getItem(), recipe.mainOutput().getCount()));
 
         if (recipe.chanceOutput1().getItem() != Items.AIR) {
-
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 123, 2).addItemStack(new ItemStack(recipe.chanceOutput1().getItem(), recipe.chanceOutput1().getCount()))
-                    .addTooltipCallback(new OpolisIRecipeSlotTooltipCallback() {
-                        @Override
-                        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
-                            tooltipBuilder.add(Component.literal("Chance: " + (recipe.chanceOutputChance1() * 100)+ "%"));
-                        }
-                    }).setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, -1, -1);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 20).addItemStack(new ItemStack(recipe.chanceOutput1().getItem(), recipe.chanceOutput1().getCount()))
+                    .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, -1, -1);
         }
 
         if (recipe.chanceOutput2().getItem() != Items.AIR) {
-
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 20).addItemStack(new ItemStack(recipe.chanceOutput2().getItem(), recipe.chanceOutput2().getCount()))
-                    .addTooltipCallback(new OpolisIRecipeSlotTooltipCallback() {
-                        @Override
-                        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
-                            tooltipBuilder.add(Component.literal("Chance: " + (recipe.chanceOutputChance2() * 100)+ "%"));
-                        }
-                    }).setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, -1, -1);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 103, 20).addItemStack(new ItemStack(recipe.chanceOutput2().getItem(), recipe.chanceOutput2().getCount()))
+                    .setBackground(JEIOpolisUtilitiesPlugin.slotDrawable, -1, -1);
         }
 
         if (recipe.chanceOutput3().getItem() != Items.AIR) {
 
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 123, 20).addItemStack(new ItemStack(recipe.chanceOutput3().getItem(), recipe.chanceOutput3().getCount()))
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 20).addItemStack(new ItemStack(recipe.chanceOutput3().getItem(), recipe.chanceOutput3().getCount()))
                     .addTooltipCallback(new OpolisIRecipeSlotTooltipCallback() {
                         @Override
                         public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
@@ -128,8 +116,45 @@ public class ClocheRecipeCategory implements IRecipeCategory<ClocheRecipe> {
     @Override
     public void draw(ClocheRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         final Minecraft minecraft = Minecraft.getInstance();
+
+        int[][] slotAreas = {
+                {67, 20, 16, 16},
+                {85, 20, 16, 16},
+                {103, 20, 16, 16},
+                {121, 20, 16, 16}
+        };
+
+        double[] chance = {
+                1.0,
+                recipe.chanceOutputChance1(),
+                recipe.chanceOutputChance2(),
+                recipe.chanceOutputChance3()
+        };
+
+        for (int i = 0; i < slotAreas.length; i++) {
+            int[] area = slotAreas[i];
+            int slotX = area[0];
+            int slotY = area[1];
+            int slotWidth = area[2];
+            int slotHeight = area[3];
+
+            // Default "Chance: " text without the percentage
+            String chanceText = "Chance: ";
+
+            // Add the percentage only if the mouse is hovering over the slot and the chance is greater than 0.0
+            if (mouseX >= slotX && mouseX < slotX + slotWidth && mouseY >= slotY && mouseY < slotY + slotHeight) {
+                if (chance[i] > 0.0) {
+                    chanceText += (chance[i] * 100) + "%";
+                }
+            }
+
+            // Render the chance text
+            guiGraphics.drawString(minecraft.font.self(), Component.literal(chanceText), 30, 2, Color.WHITE.getRGB());
+        }
+
+
         int finalDuration = (int) (220 * recipe.durationModifier());
-        guiGraphics.drawString(minecraft.font.self(), Component.literal(String.valueOf(finalDuration)), 57, 29, Color.WHITE.getRGB());
+        guiGraphics.drawString(minecraft.font.self(), Component.literal(String.valueOf(finalDuration)), 38, 40, Color.WHITE.getRGB());
 
     }
 }

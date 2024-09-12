@@ -33,33 +33,38 @@ public record PacketDecreaseTickButton() {
         Level level = player.level();
         BlockPos blockPos = payload.blockPos();
         BlockState blockState = level.getBlockState(blockPos);
+        boolean isShiftDown = payload.isShiftDown();
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
 
         //Block Placer Decrease Tick Button
         if (blockEntity instanceof BlockPlacerBlockEntity blockPlacerBlockEntity) {
+            int increment = isShiftDown ? 50 : 10;
             int timer = blockPlacerBlockEntity.maxProgress;
-            if (timer > 20) {
-                blockPlacerBlockEntity.maxProgress = timer - 10;
+            if (timer > 50) {
+                blockPlacerBlockEntity.maxProgress = timer - increment;
             }
         }
 
         //Crafter Decrease Tick Button
         if (blockEntity instanceof CrafterBlockEntity crafterBlockEntity) {
+            int increment = isShiftDown ? 50 : 10;
             int timer = crafterBlockEntity.maxProgress;
-            if (timer > 40) {
-                crafterBlockEntity.maxProgress = timer - 10;
+            if (timer > 50) {
+                crafterBlockEntity.maxProgress = timer - increment;
+
+
             }
         }
 
         //Redstone Clock Decrease Tick Button
 
         if (blockEntity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
-            int increment = Screen.hasShiftDown() ? 50 : 10;
+            int increment = isShiftDown ? 50 : 10;
             int timer = redstoneClockBlockEntity.maxProgress;
 
-            if (timer > 20) {
-                redstoneClockBlockEntity.maxProgress = timer + increment;
+            if (timer > 50) {
+                redstoneClockBlockEntity.maxProgress = timer - increment;
                 RedstoneClockBlockEntity entity = (RedstoneClockBlockEntity) level.getBlockEntity(blockPos);
                 assert entity != null;
                 entity.maxProgress = timer - increment;
@@ -69,9 +74,16 @@ public record PacketDecreaseTickButton() {
 
         //Ender Scrambler Decrease Range Button
         if (blockEntity instanceof EnderScramblerBlockEntity enderScramblerBlockEntity)  {
+            int increment = isShiftDown ? 3 : 1;
             int range = enderScramblerBlockEntity.SCRAMBLER_RANGE;
-            if (range > 1) {
-                enderScramblerBlockEntity.SCRAMBLER_RANGE = range - 1;
+            int minRange = 1;
+
+            if (range - increment < minRange) {
+                increment = range - minRange;
+            }
+
+            if (range > minRange) {
+                enderScramblerBlockEntity.SCRAMBLER_RANGE = range - increment;
             }
         }
     }
