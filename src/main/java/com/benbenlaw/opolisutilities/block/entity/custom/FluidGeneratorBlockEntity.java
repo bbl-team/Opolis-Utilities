@@ -76,16 +76,11 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
 
 
     public final ContainerData data;
-    public int validCheck = 0;
 
     public int progress = 0;
     public int maxProgress = 220;
     public int fluidAmount;
     public String resource = "";
-    public boolean isValidStructure = false;
-    public boolean useInventorySpeedBlocks;
-    public boolean hasInputInWorld;
-
     private final IItemHandler outputItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> false, // No input slots
             i -> i == 1 // Allow output from OUTPUT_SLOT
@@ -240,18 +235,29 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
         player.connection.send(Objects.requireNonNull(getUpdatePacket()));
     }
 
+
+    public void setFluid(FluidStack stack) {
+        this.FLUID_TANK.setFluid(stack);
+    }
+
+    public void getFluid(FluidStack stack) {
+        FLUID_TANK.setFluid(stack);
+    }
+
+    public FluidStack getFluidStack() {
+        return this.FLUID_TANK.getFluid();
+    }
+
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
         compoundTag.putInt("progress", progress);
         compoundTag.putInt("maxProgress", maxProgress);
-        compoundTag.putInt("validCheck", validCheck);
         compoundTag.putString("resource", resource);
         compoundTag.putInt("fluidAmount", fluidAmount);
         compoundTag.put("fluidTank", FLUID_TANK.writeToNBT(provider, new CompoundTag()));
-        compoundTag.putBoolean("useInventorySpeedBlocks", useInventorySpeedBlocks);
-        compoundTag.putBoolean("hasInputInWorld", hasInputInWorld);
     }
 
     @Override
@@ -259,12 +265,9 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
         progress = compoundTag.getInt("progress");
         maxProgress = compoundTag.getInt("maxProgress");
-        validCheck = compoundTag.getInt("validCheck");
         resource = compoundTag.getString("resource");
         fluidAmount = compoundTag.getInt("fluidAmount");
         FLUID_TANK.readFromNBT(provider, compoundTag.getCompound("fluidTank"));
-        useInventorySpeedBlocks = compoundTag.getBoolean("useInventorySpeedBlocks");
-        hasInputInWorld = compoundTag.getBoolean("hasInputInWorld");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -279,28 +282,18 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
 
 
     public void tick() {
-        Block genBlockBlock;
         Level level = this.level;
         BlockPos blockPos = this.worldPosition;
         assert level != null;
-        FluidGeneratorBlockEntity entity = this;
-        entity.validCheck++;
 
         if (!level.isClientSide()) {
-            useInventorySpeedBlocks = true;
+
+            sync();
 
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
-                        if (itemStack.getItem() instanceof BlockItem) {
-                            Block speedBlock = Block.byItem(itemStack.getItem());
-                            if (level.getBlockState(blockPos.above(2)).is(speedBlock)) {
-                                maxProgress = match.value().tickRate();
-                                useInventorySpeedBlocks = false;
-                                break;
-                            }
-                        }
                         if (this.itemHandler.getStackInSlot(1).is(itemStack.getItem())) {
                             maxProgress = match.value().tickRate();
                             break;
@@ -310,70 +303,25 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
             }
 
             // Reset if upgrade is removed
-            if (itemHandler.getStackInSlot(1).isEmpty() && useInventorySpeedBlocks) {
+            if (itemHandler.getStackInSlot(1).isEmpty()) {
                 maxProgress = 220;
             }
 
-            // Check valid block
-            if (entity.validCheck % 10 == 0) {
-                validCheck = 0;
-                isValidStructure = false;
-                sync();
-                boolean foundBlock = false;
-
-                // Check for valid fluid block above the generator
-                for (RecipeHolder<FluidGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(FluidGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                    FluidStack inputFluid = genBlocks.value().input();
-
-                    if (level.getFluidState(blockPos.above(1)).is(inputFluid.getFluid())) {
-                        resource = inputFluid.getFluidType().toString(); // Correctly assign resource as fluid's registry name
-                        fluidAmount = genBlocks.value().input().getAmount();
-                        isValidStructure = true;
-                        foundBlock = true;
-                        level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, true));
-                        break;
-                    }
-                }
-
-                // No Block check item slots
-                if (!foundBlock) {
-                    for (RecipeHolder<FluidGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(FluidGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                        Item bucketItem = genBlocks.value().input().getFluid().getBucket();
-                        if (this.itemHandler.getStackInSlot(0).is(bucketItem)) {
-                            resource = genBlocks.value().input().getFluid().getFluidType().toString();
-                            fluidAmount = genBlocks.value().input().getAmount();
-                            isValidStructure = true;
-                            level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, true));
-                            break;
-                        }
-                    }
-                }
-
-                // Update Blockstate if no valid structure was found
-                if (!isValidStructure) {
-                    resource = "";
-                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, false));
-                }
-            }
-
-            // Check for input and reset progress if no input is found
-            hasInputInWorld = false;
-
-            // Check if there is a valid block above the resource generator
             for (RecipeHolder<FluidGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(FluidGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                FluidStack inputFluid = genBlocks.value().input();
-                Fluid fluid = inputFluid.getFluid();
-
-                if (level.getFluidState(blockPos.above(1)).is(fluid.defaultFluidState().getType())) {
-                    hasInputInWorld = true;
+                Item bucketItem = genBlocks.value().input().getFluid().getBucket();
+                if (this.itemHandler.getStackInSlot(0).is(bucketItem)) {
+                    resource = genBlocks.value().input().getFluid().getFluidType().toString();
+                    fluidAmount = genBlocks.value().input().getAmount();
+                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, true));
                     break;
-                }
+                } else {
+                    resource = "";
+                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, false));                    }
             }
 
-            // Check if input slot is empty or there is no valid block above
-            if (this.itemHandler.getStackInSlot(0).isEmpty() && !hasInputInWorld) {
+            if (this.itemHandler.getStackInSlot(0).isEmpty()) {
                 progress = 0;
-            } else if (isValidStructure && FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity()) {
+            } else if (FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity()) {
                 FluidStack currentFluidInTank = FLUID_TANK.getFluid();
                 Fluid fluidStack = BuiltInRegistries.FLUID.get(ResourceLocation.parse(resource));
 
@@ -384,7 +332,6 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
                         if (level.getBlockState(blockPos).is(ModBlocks.FLUID_GENERATOR.get())) {
                             this.FLUID_TANK.fill(new FluidStack(fluidStack, fluidAmount), IFluidHandler.FluidAction.EXECUTE);
                             setChanged();
-                            sync();
                         }
                     }
                 }

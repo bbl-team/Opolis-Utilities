@@ -119,10 +119,13 @@
   "tooltips.portable_gui.no_gui": "This block does not have a GUI/ doesnt work with the portable GUI!",
   "tooltips.portable_gui.banned_block": "This block is banned from the portable GUI!",
   "tooltips.portable_gui.no_location": "No position set for this location!",
+  "tooltips.blocks.with_fluid.shift": "Press SHIFT for more info",
+
 
 
   "sounds.opolisutilities.doorbell": "Doorbell Rings",
 
+  "screen.opolisutilities.warning": "Dump Fluid!",
 
 
   "hover_effects.ender_scrambler.range": "Range: ",

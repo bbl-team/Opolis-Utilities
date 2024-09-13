@@ -84,7 +84,12 @@ public class ModDataComponents {
             COMPONENTS.register("block_name_5", () ->
                     DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
 
-
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> FLUID_TYPE =
+            COMPONENTS.register("fluid_type", () ->
+                    DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FLUID_AMOUNT =
+            COMPONENTS.register("fluid_amount", () ->
+                    DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT).build());
 
 
 

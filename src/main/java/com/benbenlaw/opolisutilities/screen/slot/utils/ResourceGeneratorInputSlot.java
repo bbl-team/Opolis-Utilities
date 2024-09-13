@@ -16,11 +16,4 @@ public class ResourceGeneratorInputSlot extends SlotItemHandler {
         this.level = level;
         this.blockPos = blockPos;
     }
-
-    @Override
-    public boolean mayPlace(@NotNull ItemStack stack) {
-        return level.getBlockState(blockPos.above()).isAir();
-
-    }
-
 }

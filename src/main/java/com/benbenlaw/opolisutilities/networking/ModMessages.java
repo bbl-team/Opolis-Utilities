@@ -18,6 +18,7 @@ public class ModMessages {
         registrar.playToServer(DecreaseTickButtonPayload.TYPE, DecreaseTickButtonPayload.STREAM_CODEC, PacketDecreaseTickButton.get()::handle);
         registrar.playToServer(SaveRecipePayload.TYPE, SaveRecipePayload.STREAM_CODEC, PacketSaveRecipeButton.get()::handle);
         registrar.playToServer(PortableGUISelectorPayload.TYPE, PortableGUISelectorPayload.STREAM_CODEC, PacketPortableGUISelector.get()::handle);
+        registrar.playToServer(ClearTankPayload.TYPE, ClearTankPayload.STREAM_CODEC, ClearTankPacket.get()::handle);
 
 
         //To Client From Server

@@ -1,9 +1,11 @@
 package com.benbenlaw.opolisutilities.screen.custom;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.networking.payload.ClearTankPayload;
 import com.benbenlaw.opolisutilities.screen.utils.FluidStackWidget;
 import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGeneratorMenu> {
@@ -57,10 +60,8 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
-        renderInWorldBlocks(guiGraphics, mouseX, mouseY, x, y);
-
+        renderWarning(guiGraphics, mouseX, mouseY);
     }
 
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
@@ -70,36 +71,41 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         }
     }
 
-    private void renderInWorldBlocks(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-
-        //Render Speed Upgrade Block In GUI
-        if (!this.menu.blockEntity.useInventorySpeedBlocks) {
-            Item inWorldBlockAsItem = level.getBlockState(this.menu.blockPos.above(2)).getBlock().asItem();
-            guiGraphics.renderFakeItem(new ItemStack(inWorldBlockAsItem), x + 116, y + 16);
-
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade_in_world"), mouseX, mouseY);
-            }
-        }
-
-        //Render Resource Block In GUI
-        if (this.menu.blockEntity.hasInputInWorld) {
-            Item inWorldFluidAsBucket = level.getFluidState(this.menu.blockPos.above(1)).getType().getBucket();
-            guiGraphics.renderFakeItem(new ItemStack(inWorldFluidAsBucket), x + 80, y + 16);
-
-
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 80, 16, 16, 16)) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.block_in_world"), mouseX, mouseY);
-            }
-        }
-    }
-
-
     private void addFluidWidgets() {
         addRenderableOnly(new FluidStackWidget(this, getMenu().blockEntity.FLUID_TANK, leftPos + 14, topPos + 15, 14, 56));
     }
 
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        boolean handled = super.mouseClicked(mouseX, mouseY, mouseButton);
 
+        int tankX = leftPos + 14;
+        int tankY = topPos + 15;
+        int tankWidth = 14;
+        int tankHeight = 56;
+
+        if (MouseUtil.isMouseOver(mouseX, mouseY, tankX, tankY, tankWidth, tankHeight)) {
+
+            int tank = this.menu.blockEntity.FLUID_TANK.getTanks();
+
+            boolean hasShiftDown = FluidGeneratorScreen.hasShiftDown();
+            PacketDistributor.sendToServer(new ClearTankPayload(menu.blockEntity.getBlockPos(), hasShiftDown, tank));
+
+        }
+        return handled;
+    }
+    private void renderWarning(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+
+        int tankX = leftPos + 14;
+        int tankY = topPos + 15;
+        int tankWidth = 14;
+        int tankHeight = 56;
+
+        if (MouseUtil.isMouseOver(mouseX, mouseY, tankX, tankY, tankWidth, tankHeight) && FluidGeneratorScreen.hasShiftDown()) {
+
+            guiGraphics.renderTooltip(this.font, Component.translatable("screen.opolisutilities.warning").withStyle(ChatFormatting.RED), mouseX, mouseY - 14);
+        }
+    }
 
 }
 

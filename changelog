@@ -11,7 +11,11 @@ TODO: banned in portable gui tag
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
-fluid generator
+4.9.0
+Removed in world support for fluid generator and resource generator
+    This fixes various issues preventing placing of items in these blocks
+Fluid generator contents can now be dumped hold shift and right click on the tank in the GUI
+Fluid generator now stores its fluids when broken, Hold shift to view contents of the fluid generator
 
 4.8.3
 

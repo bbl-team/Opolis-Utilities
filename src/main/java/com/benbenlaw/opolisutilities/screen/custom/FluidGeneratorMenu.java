@@ -49,25 +49,15 @@ public class FluidGeneratorMenu extends AbstractContainerMenu {
         this.addSlot(new ResourceGeneratorInputSlot(blockEntity.getItemStackHandler(), 0, 80, 16, level, blockPos) {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-
-                if (level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
-                }
-                return null;
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.BLOCK_SLOT);
             }
         });
         this.addSlot(new ResourceGeneratorUpgradeSlot(blockEntity.getItemStackHandler(), 1, 116, 16, level, blockPos) {
-
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-
-                if (level.getBlockState(blockPos.above(2)).is(Blocks.AIR)) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
-                }
-                return null;
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
             }
         });
-
 
         addDataSlots(data);
 

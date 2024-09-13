@@ -93,13 +93,9 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     public int progress = 0;
     public int maxProgress = 220;
     public String resource = "";
-    public boolean isValidStructure = false;
-
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
     public static final int UPGRADE_SLOT = 2;
-    public boolean useInventorySpeedBlocks;
-    public boolean hasInputInWorld;
 
     private final IItemHandler outputItemHandler = new InputOutputItemHandler(itemHandler,
             (i, stack) -> false, // No input slots
@@ -197,8 +193,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         compoundTag.putInt("maxProgress", maxProgress);
         compoundTag.putInt("validCheck", validCheck);
         compoundTag.putString("resource", resource);
-        compoundTag.putBoolean("useInventorySpeedBlocks", useInventorySpeedBlocks);
-        compoundTag.putBoolean("hasInputInWorld", hasInputInWorld);
     }
 
     @Override
@@ -208,8 +202,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         maxProgress = compoundTag.getInt("maxProgress");
         validCheck = compoundTag.getInt("validCheck");
         resource = compoundTag.getString("resource");
-        useInventorySpeedBlocks = compoundTag.getBoolean("useInventorySpeedBlocks");
-        hasInputInWorld = compoundTag.getBoolean("hasInputInWorld");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -223,29 +215,18 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     }
 
     public void tick() {
-        Block genBlockBlock;
         BlockPos blockPos = this.worldPosition;
         ResourceGeneratorBlockEntity entity = this;
         entity.validCheck++;
 
         assert level != null;
         if (!level.isClientSide()) {
-
+            sync();
             // Set Tickrate
-            useInventorySpeedBlocks = true;
-
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
-                        if (itemStack.getItem() instanceof BlockItem) {
-                            Block speedBlock = Block.byItem(itemStack.getItem());
-                            if (level.getBlockState(blockPos.above(2)).is(speedBlock)) {
-                                maxProgress = match.value().tickRate();
-                                useInventorySpeedBlocks = false;
-                                break;
-                            }
-                        }
                         if (this.itemHandler.getStackInSlot(UPGRADE_SLOT).is(itemStack.getItem())) {
                             maxProgress = match.value().tickRate();
                             break;
@@ -255,89 +236,34 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
 
             // Reset if upgrade is removed
-            if (itemHandler.getStackInSlot(UPGRADE_SLOT).isEmpty() && useInventorySpeedBlocks) {
+            if (itemHandler.getStackInSlot(UPGRADE_SLOT).isEmpty()) {
                 maxProgress = 220;
             }
 
-            // Check valid block
-            if (entity.validCheck % 10 == 0) {
-                validCheck = 0;
-                isValidStructure = false;
-                boolean foundBlock = false;
-
-                for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                    NonNullList<Ingredient> input = genBlocks.value().getIngredients();
-                    for (Ingredient ingredient : input) {
-                        for (ItemStack itemStack : ingredient.getItems()) {
-                            if (itemStack.getItem() instanceof BlockItem) {
-                                genBlockBlock = Block.byItem(itemStack.getItem());
-                                if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
-                                    resource = itemStack.getItem().toString();
-                                    isValidStructure = true;
-                                    foundBlock = true;
-                                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-                                    break;
-                                }
-                            }
-                        }
-                        if (foundBlock) break;
-                    }
-                    if (foundBlock) break;
-                }
-
-                // No Block check item slots
-                if (!foundBlock) {
-                    for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                        NonNullList<Ingredient> input = genBlocks.value().getIngredients();
-                        for (Ingredient ingredient : input) {
-                            for (ItemStack itemStack : ingredient.getItems()) {
-                                if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
-                                    resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
-                                    isValidStructure = true;
-                                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-                                    break;
-                                }
-                            }
-                            if (isValidStructure) break;
-                        }
-                        if (isValidStructure) break;
-                    }
-                }
-
-                // Update Blockstate if no valid structure was found
-                if (!isValidStructure) {
-                    resource = "";
-                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, false));
-                }
-            }
-
-            // Check for input and reset progress if no input is found
-            hasInputInWorld = false;
-
-            // Check if there is a valid block above the resource generator
             for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = genBlocks.value().getIngredients();
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
-                        if (itemStack.getItem() instanceof BlockItem) {
-                            genBlockBlock = Block.byItem(itemStack.getItem());
-                            if (level.getBlockState(blockPos.above(1)).is(genBlockBlock)) {
-                                hasInputInWorld = true;
-                                break;
-                            }
+                        if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
+                            resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
+                            level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                            break;
+                        } else {
+                            resource = "";
+                            level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, false));
                         }
                     }
-                    if (hasInputInWorld) break;
                 }
-                if (hasInputInWorld) break;
             }
 
+
             // Check if input slot is empty or there is no valid block above
-            if (this.itemHandler.getStackInSlot(INPUT_SLOT).isEmpty() && !hasInputInWorld) {
+            if (this.itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
                 progress = 0;
-            } else if (isValidStructure && (itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
+            } else if ((itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
                     (itemHandler.getStackInSlot(OUTPUT_SLOT).getItem() == BuiltInRegistries.ITEM.get(ResourceLocation.parse(resource)) &&
                             itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize()))) {
+
                 progress++;
                 if (progress >= maxProgress) {
                     progress = 0;
@@ -349,8 +275,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                     }
                 }
             }
-
-
         }
     }
 
