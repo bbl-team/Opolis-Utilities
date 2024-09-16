@@ -105,10 +105,9 @@ public class FluidGeneratorBlock extends BaseEntityBlock {
 
             //FILL BUCKET//
 
-            if (entity instanceof FluidGeneratorBlockEntity ) {
-
-                entity.onPlayerUse(player, InteractionHand.MAIN_HAND);
-
+            assert entity != null;
+            if (entity.onPlayerUse(player, InteractionHand.MAIN_HAND)) {
+                return InteractionResult.SUCCESS;
             }
 
 

@@ -5,46 +5,39 @@ TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
-TODO: death stone enable / disable
-TODO: rs stone/ recipes?
+
 
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.10.1
+
+Fixed fluid generator GUI not opening
+
 4.10.0
 
 New Config File called "items.toml" inside the new "config/opolisutilities" folder this controls how certain items behave
-
 Sapling grower now has a durability, can be changed in the config (enabled at 128)
 Sapling grower can now have its max bone meal attempts changed in the config (default 128)
 Sapling grower can either take damage or not take damage when used (default true)
-
 Animal new configs moved to the new config file
 Animal Net now has a durability, can be changed in the config (enabled at 8)
 Animal Net can now be configured to take damage (default false)
 Animal Net tooltips now show its valid mobs to collect
 Animal Net now shows the mob it has collected in its tooltip
-
 Crook now has a durability increase to 64 from 54
 Crook now has a durability, can be changed in the config (enabled at 64)
 Crook can now be configured to take damage (default true)
 Moved crook boost chance to new config file
-
 Death Stone can now be disabled when a player respawns, can be changed in the config (default true)
-
 Home Stone config moved to the new config file
-
 New Config File called "blocks.toml" inside the new "config/opolisutilities" folder this controls how certain blocks behave
-
 Ender Scrambler range now correctly controlled with config correctly
-
 Removed old debug for in world recipes
-
 Fixed resource generator not saving its resource correctly after in world recipe removal
 Fluid generator now works with other bucket and fluid container (mek tanks)
-
 Reworked interaction with portable gui to make it open when looking at another block
 Added all new fluid related screen and networking to opolis utilities (this enables casting to use this instead of its own system)
 Changed summoning recipe for the Armadillo
