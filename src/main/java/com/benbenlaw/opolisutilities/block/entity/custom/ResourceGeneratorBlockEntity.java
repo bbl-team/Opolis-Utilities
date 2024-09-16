@@ -4,6 +4,7 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.ResourceGeneratorBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItemHandler;
+import com.benbenlaw.opolisutilities.recipe.DryingTableRecipe;
 import com.benbenlaw.opolisutilities.recipe.NoInventoryRecipe;
 import com.benbenlaw.opolisutilities.recipe.ResourceGeneratorRecipe;
 import com.benbenlaw.opolisutilities.recipe.SpeedUpgradesRecipe;
@@ -35,6 +36,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,6 +47,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 
 public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
@@ -89,7 +92,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     }
 
     public final ContainerData data;
-    public int validCheck = 0;
     public int progress = 0;
     public int maxProgress = 220;
     public String resource = "";
@@ -191,7 +193,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
         compoundTag.putInt("progress", progress);
         compoundTag.putInt("maxProgress", maxProgress);
-        compoundTag.putInt("validCheck", validCheck);
         compoundTag.putString("resource", resource);
     }
 
@@ -200,7 +201,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
         progress = compoundTag.getInt("progress");
         maxProgress = compoundTag.getInt("maxProgress");
-        validCheck = compoundTag.getInt("validCheck");
         resource = compoundTag.getString("resource");
         super.loadAdditional(compoundTag, provider);
     }
@@ -217,7 +217,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
     public void tick() {
         BlockPos blockPos = this.worldPosition;
         ResourceGeneratorBlockEntity entity = this;
-        entity.validCheck++;
 
         assert level != null;
         if (!level.isClientSide()) {
@@ -240,22 +239,31 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 maxProgress = 220;
             }
 
-            for (RecipeHolder<ResourceGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(ResourceGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                NonNullList<Ingredient> input = genBlocks.value().getIngredients();
-                for (Ingredient ingredient : input) {
-                    for (ItemStack itemStack : ingredient.getItems()) {
-                        if (this.itemHandler.getStackInSlot(INPUT_SLOT).is(itemStack.getItem())) {
-                            resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
-                            level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
-                            break;
-                        } else {
-                            resource = "";
-                            level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, false));
-                        }
-                    }
+            RecipeInput inventory = new RecipeInput() {
+                @Override
+                public @NotNull ItemStack getItem(int index) {
+                    return itemHandler.getStackInSlot(index);
                 }
-            }
 
+                @Override
+                public int size() {
+                    return itemHandler.getSlots();
+                }
+            };
+
+            Optional<RecipeHolder<ResourceGeneratorRecipe>> match = level.getRecipeManager()
+                    .getRecipeFor(ResourceGeneratorRecipe.Type.INSTANCE, inventory, level);
+
+            if (match.isPresent()) {
+                ResourceGeneratorRecipe recipe = match.get().value();
+                if (recipe.matches(inventory, level)) {
+                    resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
+                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+                }
+            } else {
+                resource = "";
+                level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, false));
+            }
 
             // Check if input slot is empty or there is no valid block above
             if (this.itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
@@ -277,5 +285,4 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             }
         }
     }
-
 }

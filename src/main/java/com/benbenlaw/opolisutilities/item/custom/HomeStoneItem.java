@@ -1,6 +1,6 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
-import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -80,12 +80,11 @@ public class HomeStoneItem extends Item {
                     itemstack.get(ModDataComponents.INT_Z.get()) + 0.5
             );
 
-            player.getCooldowns().addCooldown(this, ConfigFile.homeStoneCooldown.get());
+            player.getCooldowns().addCooldown(this, StartupItemConfigFile.homeStoneCooldown.get());
             player.playNotifySound(SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.2f, 1);
             player.sendSystemMessage(Component.translatable("tooltips.home_stone.going_saved_location").withStyle(ChatFormatting.GREEN));
 
-            if (ConfigFile.homeStoneTakesDamage.get().equals(true)) {
-
+            if (StartupItemConfigFile.homeStoneTakesDamage.get().equals(true)) {
                 player.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, player,
                         EquipmentSlot.MAINHAND);
             }

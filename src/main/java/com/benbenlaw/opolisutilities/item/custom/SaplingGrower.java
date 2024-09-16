@@ -1,11 +1,14 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
-import com.benbenlaw.opolisutilities.screen.utils.ConfigValues;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +21,7 @@ public class SaplingGrower extends Item {
         super(properties);
     }
 
-    public int TOTAL_GROWTH_ATTEMPTS = 128; //ConfigValues.TOTAL_ATTEMPTS_FOR_SAPLING_GROWER;
+    public int TOTAL_GROWTH_ATTEMPTS = StartupItemConfigFile.totalGrowthAttempts.get();
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext pContext) {
@@ -26,11 +29,15 @@ public class SaplingGrower extends Item {
         Level level = pContext.getLevel();
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
+        ItemStack itemStack = pContext.getItemInHand();
 
         if (!level.isClientSide()) {
 
             if (blockState.is(BlockTags.SAPLINGS) || blockState.is(Blocks.RED_MUSHROOM) || blockState.is(Blocks.BROWN_MUSHROOM)) {
                 tryToGrow(level, blockPos);
+                if (StartupItemConfigFile.saplingGrowerTakesDamage.get()) {
+                    damageItem(level, blockPos, itemStack);
+                }
                 return InteractionResult.SUCCESS;
             }
         }
@@ -48,4 +55,19 @@ public class SaplingGrower extends Item {
         if (!level.isClientSide && blockState.getBlock() instanceof BonemealableBlock bonemealableBlock)
             bonemealableBlock.performBonemeal((ServerLevel) level, level.random, pos, blockState);
     }
+
+    public void damageItem(Level level, BlockPos blockPos, ItemStack itemStack) {
+
+        int currentDamage = itemStack.getDamageValue();
+        int maxDamage = itemStack.getMaxDamage();
+
+        if (itemStack.getDamageValue() + 1 < maxDamage) {
+            itemStack.setDamageValue(currentDamage + 1);
+        } else {
+            itemStack.shrink(1);
+            level.playSound(null, blockPos, SoundEvents.ITEM_BREAK,
+                    SoundSource.BLOCKS, 1, 1);
+        }
+    }
+
 }

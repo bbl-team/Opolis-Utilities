@@ -1,17 +1,11 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
-import com.benbenlaw.opolisutilities.config.ConfigFile;
-import com.benbenlaw.opolisutilities.event.ModEvents;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +14,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -50,9 +45,6 @@ public class AnimalNetItem extends Item {
         assert player != null;
         ItemStack itemstack = player.getItemInHand(hand);
         BlockPos blockPos = context.getClickedPos();
-        Direction direction = context.getClickedFace();
-    //    CompoundTag nbt = itemstack.getTag();
-
 
         if (!level.isClientSide()) {
             if (itemstack.get(ModDataComponents.ENTITY_TYPE.get()) != null) {
@@ -70,8 +62,7 @@ public class AnimalNetItem extends Item {
                     itemstack.remove(ModDataComponents.ENTITY_TYPE);
                     itemstack.remove(ModDataComponents.ENTITY_DATA);
 
-                    //TODO Fix Damage Values not being applied correctly
-                    if (ConfigFile.animalNetTakesDamage.get().equals(true)) {
+                    if (StartupItemConfigFile.animalNetTakesDamage.get().equals(true)) {
                         player.getItemInHand(hand).hurtAndBreak(1, player, player.getEquipmentSlotForItem(this.asItem().getDefaultInstance()));
                     }
 
@@ -88,26 +79,25 @@ public class AnimalNetItem extends Item {
         return InteractionResult.PASS;
     }
 
-    /*
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
-
+    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
 
-            if (stack.hasTag() && Objects.requireNonNull(stack.getTag()).contains("entity")) {
 
-                CompoundTag nbt = stack.getTag();
-                EntityType<?> entity = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(nbt.getString("entity")));
+            if (stack.get(ModDataComponents.ENTITY_TYPE.get()) != null) {
+
+                EntityType<?> entity = EntityType.byString(Objects.requireNonNull(stack.get(ModDataComponents.ENTITY_TYPE.get())))
+                        .orElse(null);
+
                 components.add(Component.translatable("tooltips.animal_net.shift.held").withStyle(ChatFormatting.BLUE));
                 components.add(Component.translatable(entity.toString()).withStyle(ChatFormatting.GREEN));
-
             }
             else {
 
-                boolean hostileMobs = ConfigFile.animalNetHostileMobs.get();
-                boolean waterMobs = ConfigFile.animalNetWaterMobs.get();
-                boolean animalMobs = ConfigFile.animalNetAnimalMobs.get();
-                boolean villagerMobs = ConfigFile.animalNetVillagerMobs.get();
+                boolean hostileMobs = StartupItemConfigFile.animalNetHostileMobs.get();
+                boolean waterMobs = StartupItemConfigFile.animalNetWaterMobs.get();
+                boolean animalMobs = StartupItemConfigFile.animalNetAnimalMobs.get();
+                boolean villagerMobs = StartupItemConfigFile.animalNetVillagerMobs.get();
 
                 components.add(Component.translatable("tooltips.animal_net.mob_types").withStyle(ChatFormatting.BLUE));
 
@@ -131,8 +121,6 @@ public class AnimalNetItem extends Item {
             components.add(Component.translatable("tooltips.animal_net.hover.shift").withStyle(ChatFormatting.BLUE));
 
         }
-        super.appendHoverText(stack, level, components, flag);
+        super.appendHoverText(stack, tooltipContext, components, flag);
     }
-
-     */
 }

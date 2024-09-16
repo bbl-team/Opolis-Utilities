@@ -383,30 +383,6 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
         return baseSpeed;
     }
 
-
-
-    /*
-    private float getToolBreakingSpeed(ItemStack tool) {
-
-        float baseToolSpeed;
-
-        if (tool.getItem() instanceof TieredItem tier) {
-            baseToolSpeed = tier.getTier().getSpeed();
-        } else {
-            baseToolSpeed = 1.0f;
-        }
-
-        assert this.level != null;
-
-        float finalSpeed = (float) (baseToolSpeed + ((enchantmentLevel / 0.2)));
-        System.out.println("Final Speed: " + finalSpeed);
-
-        return finalSpeed;
-    }
-
-     */
-
-
     // PLAY BLOCK BREAKING SOUND //
     int playingSound = 0;
     private void playBreakingSound(Level level, BlockPos blockPos) {

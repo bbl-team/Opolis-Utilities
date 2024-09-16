@@ -1,4 +1,4 @@
-// 1.21	2024-08-24T15:47:24.9761882	Recipes
+// 1.21	2024-09-16T14:11:39.3091577	Recipes
 d5345fdb937e87dbc4cd81a6e46a120aeeed3db8 data/opolisutilities/advancement/recipes/catalogue/catalogue/basic_loot_box.json
 04b8eab692bb6cb05deb1be0c93be6a2fcb94b23 data/opolisutilities/advancement/recipes/catalogue/catalogue/catalogue_book.json
 512db136535a433f26f651052dcf07d8649fd09c data/opolisutilities/advancement/recipes/cloche/cloche/acacia_sapling.json
@@ -129,7 +129,7 @@ b747683731d5159fcbeb0e1d0a148ce70182cbe5 data/opolisutilities/advancement/recipe
 0548a3ca6a9b311cfd8ba861df4c55a3d1755099 data/opolisutilities/advancement/recipes/speed_upgrades/speed_upgrades/wooden_fences.json
 82544185885669ce90c9d8cdf83809bcc2e4f4e5 data/opolisutilities/advancement/recipes/speed_upgrades/speed_upgrades/yellorium.json
 e43bc4309df9f611ef902ad890ca040f8b4e6378 data/opolisutilities/advancement/recipes/speed_upgrades/speed_upgrades/zinc.json
-8f582609ef547f3a828bcd47faef7c67a56a2229 data/opolisutilities/advancement/recipes/summoning/summoning_block/armadillo.json
+b318927a6795fc19923b29cbde16b3fb4dec8d1e data/opolisutilities/advancement/recipes/summoning/summoning_block/armadillo.json
 a5b74add77fc97802a2161a5c0429b6854865de0 data/opolisutilities/advancement/recipes/summoning/summoning_block/axolotl.json
 eed5f419d75ac6844d9a0c68c7c50b0502ecdc23 data/opolisutilities/advancement/recipes/summoning/summoning_block/bee.json
 2a9ce0309baabe2a4fe7839098d7c0f8be4d523e data/opolisutilities/advancement/recipes/summoning/summoning_block/camel.json
@@ -283,7 +283,7 @@ ebae14481bc4e2c70ad580e563a6b8c2b1ef3de5 data/opolisutilities/recipe/speed_upgra
 4ed789527d9043bed5ba5a47c4751dc262fa1cb3 data/opolisutilities/recipe/speed_upgrades/zinc.json
 1b7ae589b0391f7313109d82920b0332b7ab3686 data/opolisutilities/recipe/sticks.json
 2a786992be039f04d4bf372c268daeb5a52ebee3 data/opolisutilities/recipe/summoning_block.json
-d399f94064fa68987f59f49f55ea898ab70b3217 data/opolisutilities/recipe/summoning_block/armadillo.json
+70c0be6a6d805ba22a9cc1309d8ec8e9bb1f096b data/opolisutilities/recipe/summoning_block/armadillo.json
 62c78de7398bd65ed19fa1eb848cc2ea783ab243 data/opolisutilities/recipe/summoning_block/axolotl.json
 1f97a61afb061a96d9cc8076f44ad8771d66e313 data/opolisutilities/recipe/summoning_block/bee.json
 41620f27d32ff41be374d2872a3c0212e7a704e1 data/opolisutilities/recipe/summoning_block/camel.json

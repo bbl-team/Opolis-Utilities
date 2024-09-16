@@ -121,17 +121,23 @@
   "tooltips.portable_gui.no_location": "No position set for this location!",
   "tooltips.blocks.with_fluid.shift": "Press SHIFT for more info",
 
-
-
   "sounds.opolisutilities.doorbell": "Doorbell Rings",
 
   "screen.opolisutilities.warning": "Dump Fluid!",
 
-
   "hover_effects.ender_scrambler.range": "Range: ",
 
-  "jei.opolisutilities.resource_generator_2.information": "The resource generator 2 is a block that will duplicate items like cobblestone and stone.\n\nAny block that can store items can be placed underneath the resource generator 2 including hoppers and chests.\n\nWhen working the resource generator 2 will turn blue and start to provide items to the inventory below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the resource generator 2 will show all blocks that it can mine as well as any blocks that can effect its speed.\n\nAt a base speed it will collect 1 block every 11 seconds.",
-  "jei.opolisutilities.fluid_generator.information": "The fluid generator is a block that will create fluids and output the fluid into a tank below.\n\nAny block that can store fluids can be placed underneath the fluid generator.\n\nWhen working the fluid generator 2 will turn blue and start to provide fluid to the tank below.\n\nSpeed blocks can be placed on top to increase the speed blocks are produced.\n\nPressing U on the fluid generator will show all fluid that it can collect as well as any blocks that can effect its speed.\n\nAt a base speed it will collect a certain amount (shown in JEI) of fluid every 11 seconds.",
+  "jei.opolisutilities.resource_generator": "§lResource Generator§r \n\nThe Resource Generator is a one block solution to produce certain blocks!\n\nTop slot is the block you want, Top right slot is for speed upgrades, Bottom is the output\n\nJEI will show valid blocks that can be made as well as speed upgrades",
+  "jei.opolisutilities.fluid_generator": "§lFluid Generator§r \n\nThe Fluid Generator is a one block solution to produce certain fluids!\n\nTop slot is for a bucket, Top right slot is for speed upgrades, Left side is the tank\n\nJEI will show valid fluids that can be made as well as speed upgrades\n\nFluids can be dumped by shift clicking on the tank!\n\nThis block will store its fluid when broken",
+  "jei.opolisutilities.floating_block": "§lFloating Block§r \n\nThe Floating Block can be placed in the air with a supporting block",
+  "jei.opolisutilities.drying_table": "§lDrying Table§r \n\nThe Drying Table can be used to dry items\n\nTop slot is for the item to dry, Bottom is the output\n\nThis block can be waterlogged to create the Soaking Table\n\nThe Soaking Table makes items wet",
+  "jei.opolisutilities.item_repairer": "§lItem Repairer§r \n\nThe Item Repairer can be used to repair items\n\nTop slot is for the item to repair, Top right slot is for speed upgrades, Bottom is the repaired item\n\n",
+
+
+
+
+
+
 
   "enchantment.opolisutilities.warden_smite": "Warden Smite",
 

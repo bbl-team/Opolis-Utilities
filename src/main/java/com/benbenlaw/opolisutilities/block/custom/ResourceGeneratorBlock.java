@@ -89,35 +89,9 @@ public class ResourceGeneratorBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
-        int tickRate;
         ResourceGeneratorBlockEntity entity = (ResourceGeneratorBlockEntity) level.getBlockEntity(blockPos);
 
         if (!level.isClientSide()) {
-
-            //STAT CHECK//
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem().equals(Items.STICK)) {
-                if (blockState.getValue(ResourceGeneratorBlock.POWERED)) {
-
-                    assert entity != null;
-                    tickRate = entity.maxProgress;
-                    ItemStack itemStack = BuiltInRegistries.ITEM.get(ResourceLocation.parse(entity.resource)).getDefaultInstance();
-                    String itemName = itemStack.getDisplayName().getString();
-
-                    if (tickRate == 220) {
-                        player.sendSystemMessage(Component.translatable("block.in_world.no_speed_upgrade").withStyle(ChatFormatting.RED));
-                    }
-
-                    player.sendSystemMessage(Component.translatable("block.in_world.tickrate", tickRate).withStyle(ChatFormatting.GREEN));
-                    player.sendSystemMessage(Component.translatable("block.in_world.obtaining", itemName).withStyle(ChatFormatting.GREEN));
-                }
-
-                if (!blockState.getValue(ResourceGeneratorBlock.POWERED)) {
-                    {
-                        player.sendSystemMessage(Component.literal("Not running! Check the block above is valid!").withStyle(ChatFormatting.RED));
-                    }
-                }
-                return InteractionResult.SUCCESS;
-            }
 
             //MENU OPEN//
 

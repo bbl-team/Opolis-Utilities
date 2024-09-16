@@ -1,22 +1,15 @@
 package com.benbenlaw.opolisutilities.networking.packets;
 
-import com.benbenlaw.opolisutilities.block.ModBlocks;
-import com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock;
-import com.benbenlaw.opolisutilities.block.custom.CrafterBlock;
-import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
-import com.benbenlaw.opolisutilities.block.custom.RedstoneClockBlock;
 import com.benbenlaw.opolisutilities.block.entity.custom.BlockPlacerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.CrafterBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.EnderScramblerBlockEntity;
 import com.benbenlaw.opolisutilities.block.entity.custom.RedstoneClockBlockEntity;
+import com.benbenlaw.opolisutilities.config.StartupBlockConfigFile;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
-import com.benbenlaw.opolisutilities.screen.utils.ConfigValues;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 
@@ -78,7 +71,7 @@ public record PacketIncreaseTickButton() {
         if (blockEntity instanceof EnderScramblerBlockEntity enderScramblerBlockEntity) {
             int increment = isShiftDown ? 3 : 1;
             int range = enderScramblerBlockEntity.SCRAMBLER_RANGE;
-            int maxRange = ConfigValues.ENDER_SCRAMBLER_MAX_RANGE;
+            int maxRange = StartupBlockConfigFile.maxScramblerRange.get();
 
             if (range + increment > maxRange) {
                 increment = maxRange - range;

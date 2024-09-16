@@ -1,6 +1,7 @@
 package com.benbenlaw.opolisutilities.item;
 
 import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.custom.*;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -14,7 +15,6 @@ public class ModItems {
             DeferredRegister.createItems(OpolisUtilities.MOD_ID);
 
     public static final DeferredItem<Item> PORTABLE_GUI = ITEMS .register("portable_gui",
-        //    () -> new Item(new Item.Properties().stacksTo(1)));
             () -> new PortableGUIItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> MINI_COAL = ITEMS.register("mini_coal",
@@ -59,18 +59,19 @@ public class ModItems {
     public static final DeferredItem<Item> LOG_SHEET = ITEMS.register("log_sheet",
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> CROOK = ITEMS.register("crook",
-            () -> new CrookItem(new Item.Properties().durability(54)));
+            () -> new CrookItem(new Item.Properties().durability(StartupItemConfigFile.crookDurability.get())));
 
     public static final DeferredItem<Item> CATALOGUE_BOOK = ITEMS.register("catalogue_book",
             () -> new CatalogueBook(new Item.Properties()));
         public static final DeferredItem<Item> SAPLING_GROWER = ITEMS.register("sapling_grower",
-            () -> new SaplingGrower(new Item.Properties().stacksTo(1)));
+            () -> new SaplingGrower(new Item.Properties().stacksTo(1)
+                    .durability(StartupItemConfigFile.saplingGrowerDurability.get())));
 
     public static final DeferredItem<Item> UPGRADE_BASE = ITEMS.register("upgrade_base",
             () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> ANIMAL_NET =  ITEMS.register("animal_net",
-            () -> new AnimalNetItem(new Item.Properties().durability(8)));
+            () -> new AnimalNetItem(new Item.Properties().durability(StartupItemConfigFile.animalNetDurability.get())));
 
 
     public static void register(IEventBus eventBus) {

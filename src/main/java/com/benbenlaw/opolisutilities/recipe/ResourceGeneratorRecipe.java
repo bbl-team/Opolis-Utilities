@@ -7,14 +7,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInventoryRecipe> {
+public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<RecipeInput> {
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
@@ -24,8 +21,8 @@ public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInve
     }
 
     @Override
-    public boolean matches(@NotNull NoInventoryRecipe inv, @NotNull Level pLevel) {
-        return true;
+    public boolean matches(@NotNull RecipeInput inv, @NotNull Level pLevel) {
+        return input.test(inv.getItem(0));
     }
 
     @Override
@@ -34,7 +31,7 @@ public record ResourceGeneratorRecipe(Ingredient input) implements Recipe<NoInve
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull NoInventoryRecipe inv, HolderLookup.@NotNull Provider provider) {
+    public @NotNull ItemStack assemble(@NotNull RecipeInput inv, HolderLookup.@NotNull Provider provider) {
         return ItemStack.EMPTY;
     }
 

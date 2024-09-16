@@ -1,12 +1,11 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
-import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,11 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class CrookItem extends Item {
-    public CrookItem(Properties p_41383_) {
-        super(p_41383_);
+    public CrookItem(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -34,7 +32,7 @@ public class CrookItem extends Item {
 
         if (state.getBlock() instanceof LeavesBlock || state.is(BlockTags.LEAVES)) {
 
-            for (int i = 0; i < ConfigFile.crookBoost.get(); i++) {
+            for (int i = 0; i < StartupItemConfigFile.crookBoost.get(); i++) {
                 List<ItemStack> blockDrops = Block.getDrops(state.getBlock().defaultBlockState(), (ServerLevel) level, blockPos,
                         level.getBlockEntity(blockPos), null, ModItems.CROOK.get().getDefaultInstance());
 
@@ -43,8 +41,10 @@ public class CrookItem extends Item {
                 }
             }
             if (entity instanceof Player) {
-                entity.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, entity,
-                        entity.getEquipmentSlotForItem(stack));
+                if (StartupItemConfigFile.crookTakesDamage.get()) {
+                    entity.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, entity,
+                            entity.getEquipmentSlotForItem(stack));
+                }
             }
         }
         return super.mineBlock(stack, level, state, blockPos, entity);

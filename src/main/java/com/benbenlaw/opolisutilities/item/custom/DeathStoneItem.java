@@ -30,7 +30,6 @@ public class DeathStoneItem extends Item {
 
     public ResourceKey<Level> dimension = null;
 
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 

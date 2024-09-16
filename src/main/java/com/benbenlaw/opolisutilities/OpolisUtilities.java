@@ -4,7 +4,8 @@ package com.benbenlaw.opolisutilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
-import com.benbenlaw.opolisutilities.config.StartupConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupBlockConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.ModCreativeTab;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
@@ -23,7 +24,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +37,13 @@ public class OpolisUtilities {
 
     public OpolisUtilities(IEventBus modEventBus) {
 
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP, StartupConfigFile.SPEC, "opolis_utilities_startup.toml");
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP,
+                StartupItemConfigFile.SPEC, "opolisutilities/items.toml");
+
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP,
+                StartupBlockConfigFile.SPEC, "opolisutilities/blocks.toml");
+
+
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
 
 

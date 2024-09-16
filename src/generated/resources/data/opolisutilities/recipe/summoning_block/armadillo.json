@@ -1,11 +1,11 @@
 {
   "type": "opolisutilities:summoning_block",
   "catalyst": {
-    "item": "minecraft:sand"
+    "tag": "minecraft:terracotta"
   },
   "input": {
     "count": 1,
-    "item": "minecraft:sand"
+    "item": "minecraft:spider_eye"
   },
   "mob": "minecraft:armadillo"
 }

@@ -23,8 +23,6 @@ public class BasicLootBoxItem extends Item {
         super(pProperties);
     }
 
-
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);

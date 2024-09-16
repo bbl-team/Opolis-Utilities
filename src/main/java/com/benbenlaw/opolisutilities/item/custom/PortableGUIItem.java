@@ -12,9 +12,12 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,6 +26,140 @@ public class PortableGUIItem extends Item {
     public PortableGUIItem(Properties properties) {
         super(properties);
     }
+
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        BlockHitResult blockHitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+
+        // Check if it's a server-side operation
+        if (!level.isClientSide() && itemstack.getItem() instanceof PortableGUIItem) {
+            // Handle block interaction when the player is crouching
+            if (blockHitResult.getType() == HitResult.Type.BLOCK && player.isCrouching()) {
+                BlockPos blockPos = blockHitResult.getBlockPos();
+                BlockState blockState = level.getBlockState(blockPos);
+                boolean hasMenuProvider = blockState.getMenuProvider(level, blockPos) != null;
+                boolean hasBlockEntity = level.getBlockEntity(blockPos) != null;
+
+                // Ensure block is not banned from portable GUI interaction
+                if (!blockState.is(ModTags.Blocks.BANNED_IN_PORTABLE_GUI)) {
+                    if (hasMenuProvider || hasBlockEntity) {
+
+                        int locationValue = itemstack.get(ModDataComponents.LOCATION_VALUE) != null ?
+                                itemstack.get(ModDataComponents.LOCATION_VALUE) : 1;
+
+                        int blockX = blockPos.getX();
+                        int blockY = blockPos.getY();
+                        int blockZ = blockPos.getZ();
+                        String blockName = blockState.getBlock().getDescriptionId();
+
+                        // Store block coordinates and name based on location value
+                        switch (locationValue) {
+                            case 1:
+                                itemstack.set(ModDataComponents.LOCATION_1, blockX + " " + blockY + " " + blockZ);
+                                itemstack.set(ModDataComponents.BLOCK_NAME_1, blockName);
+                                break;
+                            case 2:
+                                itemstack.set(ModDataComponents.LOCATION_2, blockX + " " + blockY + " " + blockZ);
+                                itemstack.set(ModDataComponents.BLOCK_NAME_2, blockName);
+                                break;
+                            case 3:
+                                itemstack.set(ModDataComponents.LOCATION_3, blockX + " " + blockY + " " + blockZ);
+                                itemstack.set(ModDataComponents.BLOCK_NAME_3, blockName);
+                                break;
+                            case 4:
+                                itemstack.set(ModDataComponents.LOCATION_4, blockX + " " + blockY + " " + blockZ);
+                                itemstack.set(ModDataComponents.BLOCK_NAME_4, blockName);
+                                break;
+                            case 5:
+                                itemstack.set(ModDataComponents.LOCATION_5, blockX + " " + blockY + " " + blockZ);
+                                itemstack.set(ModDataComponents.BLOCK_NAME_5, blockName);
+                                break;
+                        }
+                        return InteractionResultHolder.success(itemstack);
+                    }
+                } else {
+                    player.sendSystemMessage(Component.translatable("tooltips.portable_gui.banned_block").withStyle(ChatFormatting.RED));
+                    return InteractionResultHolder.fail(itemstack);
+                }
+            }
+
+            // Handle stored location opening (regardless of whether block is clicked or air)
+            int locationValue = itemstack.get(ModDataComponents.LOCATION_VALUE);
+            String location = null;
+            String blockName = null;
+
+            // Get the stored block location and name based on location value
+            switch (locationValue) {
+                case 1:
+                    location = itemstack.get(ModDataComponents.LOCATION_1);
+                    blockName = itemstack.get(ModDataComponents.BLOCK_NAME_1);
+                    break;
+                case 2:
+                    location = itemstack.get(ModDataComponents.LOCATION_2);
+                    blockName = itemstack.get(ModDataComponents.BLOCK_NAME_2);
+                    break;
+                case 3:
+                    location = itemstack.get(ModDataComponents.LOCATION_3);
+                    blockName = itemstack.get(ModDataComponents.BLOCK_NAME_3);
+                    break;
+                case 4:
+                    location = itemstack.get(ModDataComponents.LOCATION_4);
+                    blockName = itemstack.get(ModDataComponents.BLOCK_NAME_4);
+                    break;
+                case 5:
+                    location = itemstack.get(ModDataComponents.LOCATION_5);
+                    blockName = itemstack.get(ModDataComponents.BLOCK_NAME_5);
+                    break;
+                default:
+                    player.sendSystemMessage(Component.translatable("tooltips.portable_gui.invalid_location_value").withStyle(ChatFormatting.RED));
+                    return InteractionResultHolder.fail(itemstack);
+            }
+
+            // Check if location data exists and attempt to open the stored block GUI
+            if (location != null && !location.isEmpty()) {
+                String[] coordinates = location.split(" ");
+                if (coordinates.length == 3) {
+                    try {
+                        int x = Integer.parseInt(coordinates[0]);
+                        int y = Integer.parseInt(coordinates[1]);
+                        int z = Integer.parseInt(coordinates[2]);
+                        BlockPos savedBlockPos = new BlockPos(x, y, z);
+
+                        if (level.isLoaded(savedBlockPos)) {
+                            BlockState savedBlockState = level.getBlockState(savedBlockPos);
+                            MenuProvider menuProvider = savedBlockState.getMenuProvider(level, savedBlockPos);
+
+                            if (menuProvider != null) {
+                                if (level.isAreaLoaded(savedBlockPos, 16)) {
+                                    player.openMenu(menuProvider, savedBlockPos);
+                                    return InteractionResultHolder.success(itemstack);
+                                } else {
+                                    player.sendSystemMessage(Component.translatable("tooltips.portable_gui.in_spawn_chunk").withStyle(ChatFormatting.RED));
+                                }
+                            } else {
+                                player.sendSystemMessage(Component.translatable("tooltips.portable_gui.no_gui").withStyle(ChatFormatting.RED));
+                            }
+                        } else {
+                            player.sendSystemMessage(Component.translatable("tooltips.portable_gui.not_loaded").withStyle(ChatFormatting.RED));
+                        }
+                    } catch (NumberFormatException e) {
+                        player.sendSystemMessage(Component.translatable("tooltips.portable_gui.invalid_location").withStyle(ChatFormatting.RED));
+                    }
+                } else {
+                    player.sendSystemMessage(Component.translatable("tooltips.portable_gui.invalid_location_format").withStyle(ChatFormatting.RED));
+                }
+            } else {
+                player.sendSystemMessage(Component.translatable("tooltips.portable_gui.no_location").withStyle(ChatFormatting.RED));
+            }
+        }
+
+        return InteractionResultHolder.fail(itemstack);
+    }
+
+
+    /*
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
@@ -167,6 +304,8 @@ public class PortableGUIItem extends Item {
         return InteractionResultHolder.fail(itemstack);
     }
 
+     */
+
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> components, TooltipFlag flag) {
 
@@ -181,7 +320,7 @@ public class PortableGUIItem extends Item {
 
         // Default message for no location
         String locationMessage = "tooltips.portable_gui.no_location";
-        String location = null;
+        String location;
 
         switch (locationValue) {
             case 1:

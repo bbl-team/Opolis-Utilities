@@ -925,6 +925,12 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
         // ********** Summoning Block ********** //
 
+        //Armadillo
+        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SPIDER_EYE), 1),
+                        Ingredient.of(ItemTags.TERRACOTTA), "minecraft:armadillo")
+                .unlockedBy("has_item", has(ItemTags.TERRACOTTA))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/armadillo"));
+
         //Chicken
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Tags.Items.SEEDS), 1),
                         Ingredient.of(ItemTags.DIRT), "minecraft:chicken")
@@ -984,12 +990,6 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                         Ingredient.of( new ItemStack(Items.BEEHIVE)), "minecraft:bee")
                 .unlockedBy("has_item", has(ItemTags.SMALL_FLOWERS))
                 .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/bee"));
-
-        //Armadillo
-        SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.SAND), 1),
-                        Ingredient.of( new ItemStack(Items.SAND)), "minecraft:armadillo")
-                .unlockedBy("has_item", has(Items.SAND))
-                .save(consumer, ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "summoning_block/armadillo"));
 
         //Goat
         SummoningRecipeBuilder.SummoningRecipeBuilder(new SizedIngredient(Ingredient.of(Items.WHEAT), 1),

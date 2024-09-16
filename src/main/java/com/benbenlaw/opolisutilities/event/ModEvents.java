@@ -7,19 +7,18 @@ import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.block.custom.EnderScramblerBlock;
 import com.benbenlaw.opolisutilities.block.entity.custom.EnderScramblerBlockEntity;
 import com.benbenlaw.opolisutilities.config.ConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupBlockConfigFile;
+import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.item.custom.AnimalNetItem;
-import com.benbenlaw.opolisutilities.networking.payload.OnOffButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.PortableGUISelectorPayload;
-import com.benbenlaw.opolisutilities.screen.utils.ConfigValues;
 import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,18 +51,14 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = OpolisUtilities.MOD_ID)
 public class ModEvents {
@@ -76,9 +71,8 @@ public class ModEvents {
         Entity entity = event.getEntity();
         if (entity instanceof EnderMan) {
             BlockPos pos = entity.getOnPos();
-            BlockEntity blockEntity = entity.level().getBlockEntity(pos);
 
-            int maxRange = ConfigValues.ENDER_SCRAMBLER_MAX_RANGE; // Get the maximum range
+            int maxRange = StartupBlockConfigFile.maxScramblerRange.get();
 
             for (int x = -maxRange; x <= maxRange; x++) {
                 for (int y = -maxRange; y <= maxRange; y++) {
@@ -148,14 +142,15 @@ public class ModEvents {
 
         }
 
-        if (level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
+        if (StartupItemConfigFile.shouldPlayerGetDeathStoneOnDeath.get()) {
 
-            level.addFreshEntity(new ItemEntity(level, player.getX(), player.getY(), player.getZ(),
-                    deathStoneItem));
-        }
-
-        if (!level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
-            player.addItem(deathStoneItem);
+            if (level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
+                level.addFreshEntity(new ItemEntity(level, player.getX(), player.getY(), player.getZ(),
+                        deathStoneItem));
+            }
+            if (!level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
+                player.addItem(deathStoneItem);
+            }
         }
     }
 
@@ -214,10 +209,10 @@ public class ModEvents {
                 DataComponentMap resultItemWithDataComponents = itemstack.getComponents();
                 itemstack.applyComponents(resultItemWithDataComponents);
 
-                boolean hostileMobs = ConfigFile.animalNetHostileMobs.get();
-                boolean waterMobs = ConfigFile.animalNetWaterMobs.get();
-                boolean animalMobs = ConfigFile.animalNetAnimalMobs.get();
-                boolean villagerMobs = ConfigFile.animalNetVillagerMobs.get();
+                boolean hostileMobs = StartupItemConfigFile.animalNetHostileMobs.get();
+                boolean waterMobs = StartupItemConfigFile.animalNetWaterMobs.get();
+                boolean animalMobs = StartupItemConfigFile.animalNetAnimalMobs.get();
+                boolean villagerMobs = StartupItemConfigFile.animalNetVillagerMobs.get();
 
                 boolean captureHostile = livingEntity instanceof Monster && hostileMobs;
                 boolean captureWater = livingEntity instanceof WaterAnimal && waterMobs;
@@ -228,8 +223,6 @@ public class ModEvents {
                     if (captureHostile || captureWater || captureAnimal || captureVillagers || livingEntity.isAlliedTo(player)) {
 
                         // Capture the mob
-                        assert resultItemWithDataComponents != null;
-
                         final var nbt = new CompoundTag();
                         livingEntity.saveWithoutId(nbt);
                         TAGS_TO_REMOVE.forEach(nbt::remove);
