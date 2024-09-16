@@ -15,14 +15,4 @@ public class ItemRepairerUpgradeSlot extends SlotItemHandler {
         this.level = level;
         this.blockPos = blockPos;
     }
-
-    @Override
-    public boolean mayPlace(ItemStack stack) {
-
-        if (!level.getBlockState(blockPos.above(1)).isAir()) {
-            return false;
-        } else {
-            return stack.getCount() <= 1;
-        }
-    }
 }

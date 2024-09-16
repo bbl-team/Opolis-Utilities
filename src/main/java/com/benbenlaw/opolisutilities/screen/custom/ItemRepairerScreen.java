@@ -70,28 +70,13 @@ public class ItemRepairerScreen extends AbstractContainerScreen<ItemRepairerMenu
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-
         renderTickRate(guiGraphics, mouseX, mouseY, x, y);
-        renderInWorldBlocks(guiGraphics, mouseX, mouseY, x, y);
     }
 
     private void renderTickRate(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
             guiGraphics.drawString(this.font, this.menu.blockEntity.maxProgress + " ticks", this.leftPos + 120,
                     this.topPos + 68, 0x3F3F3F, false);
-        }
-    }
-
-    private void renderInWorldBlocks(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-
-        //Render Speed Upgrade Block In GUI
-        if (!this.menu.blockEntity.useInventorySpeedBlocks) {
-            Item inWorldBlockAsItem = level.getBlockState(this.menu.blockPos.above(1)).getBlock().asItem();
-            guiGraphics.renderFakeItem(new ItemStack(inWorldBlockAsItem), x + 116, y + 16);
-
-            if (MouseUtil.isMouseAboveArea(mouseX, mouseY, x, y, 116, 16, 16, 16)) {
-                guiGraphics.renderTooltip(this.font, Component.translatable("block.gui.speed_upgrade_in_world"), mouseX, mouseY);
-            }
         }
     }
 

@@ -9,7 +9,6 @@ public final class ConfigFile {
 
     public static final ModConfigSpec.ConfigValue<Integer> homeStoneCooldown;
     public static final ModConfigSpec.ConfigValue<Boolean> homeStoneTakesDamage;
-
     public static final ModConfigSpec.ConfigValue<String> discordURL;
     public static final ModConfigSpec.ConfigValue<String> modpackVersion;
     public static final ModConfigSpec.ConfigValue<String> modpackName;
@@ -23,8 +22,9 @@ public final class ConfigFile {
     public static final ModConfigSpec.ConfigValue<Boolean> animalNetTakesDamage;
     public static final ModConfigSpec.ConfigValue<Boolean> woodenButtonsMakeDoorbellSound;
     public static final ModConfigSpec.ConfigValue<Boolean> summoningBlockCheckForSameEntityBeforeSpawningNewEntity;
-
     public static final ModConfigSpec.ConfigValue<Integer> summoningBlockRangeCheck;
+
+
 
 
     static {

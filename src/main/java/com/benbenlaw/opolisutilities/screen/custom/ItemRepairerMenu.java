@@ -57,10 +57,7 @@ public class ItemRepairerMenu extends AbstractContainerMenu {
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
 
-                if (level.getBlockState(blockPos.above()).is(Blocks.AIR)) {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
-                }
-                return null;
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ModSlotTextures.SPEED_UPGRADE);
             }
         });
 

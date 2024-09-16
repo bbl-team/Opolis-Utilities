@@ -5,11 +5,18 @@ TODO: Sapling grower damage (1.21)
 TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
-TODO: banned in portable gui tag
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.10.0
+
+4.9.2
+Fixes to item repairer inventory
+
+4.9.1
+Removed in world support for item repairer
 
 4.9.0
 Removed in world support for fluid generator and resource generator

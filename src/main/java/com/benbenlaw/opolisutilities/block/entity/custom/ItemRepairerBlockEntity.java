@@ -82,9 +82,6 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
     public static final int UPGRADE_SLOT = 2;
-
-    public boolean useInventorySpeedBlocks;
-
     private final IItemHandler itemRepairerHandler = new InputOutputItemHandler(itemHandler,
             (i, stack ) -> i == INPUT_SLOT && !stack.is(ModTags.Items.BANNED_IN_ITEM_REPAIRER),
             i -> i == OUTPUT_SLOT
@@ -179,7 +176,6 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         compoundTag.put("inventory", this.itemHandler.serializeNBT(provider));
         compoundTag.putInt("progress", progress);
         compoundTag.putInt("maxProgress", maxProgress);
-        compoundTag.putBoolean("useInventorySpeedBlocks", useInventorySpeedBlocks);
     }
 
     @Override
@@ -187,7 +183,6 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
         this.itemHandler.deserializeNBT(provider, compoundTag.getCompound("inventory"));
         progress = compoundTag.getInt("progress");
         maxProgress = compoundTag.getInt("maxProgress");
-        useInventorySpeedBlocks = compoundTag.getBoolean("useInventorySpeedBlocks");
         super.loadAdditional(compoundTag, provider);
     }
 
@@ -220,20 +215,11 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             }
 
             // Set Tickrate
-            useInventorySpeedBlocks = true;
-
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
-                        if (itemStack.getItem() instanceof BlockItem) {
-                            Block speedBlock = Block.byItem(itemStack.getItem());
-                            if (level.getBlockState(blockPos.above(1)).is(speedBlock)) {
-                                maxProgress = match.value().tickRate();
-                                useInventorySpeedBlocks = false;
-                                break;
-                            }
-                        }
+
                         if (this.itemHandler.getStackInSlot(2).is(itemStack.getItem())) {
                             maxProgress = match.value().tickRate();
                             break;
@@ -243,7 +229,7 @@ public class ItemRepairerBlockEntity extends BlockEntity implements MenuProvider
             }
 
             // Reset if upgrade is removed
-            if (itemHandler.getStackInSlot(2).isEmpty() && useInventorySpeedBlocks) {
+            if (itemHandler.getStackInSlot(2).isEmpty()) {
                 maxProgress = 220;
             }
 
