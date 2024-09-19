@@ -20,6 +20,7 @@ public class InformationJEI implements IModPlugin {
      @Override
     public void registerRecipes(IRecipeRegistration reg) {
 
+        //Blocks
          reg.addIngredientInfo(new ItemStack(ModBlocks.DRYING_TABLE.get()), VanillaTypes.ITEM_STACK,
                  Component.translatable("jei.opolisutilities.drying_table"));
 
@@ -34,6 +35,18 @@ public class InformationJEI implements IModPlugin {
 
         reg.addIngredientInfo(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.opolisutilities.fluid_generator"));
+
+        reg.addIngredientInfo(new ItemStack(ModBlocks.BLOCK_BREAKER.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.opolisutilities.block_breaker"));
+
+        reg.addIngredientInfo(new ItemStack(ModBlocks.BLOCK_PLACER.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.opolisutilities.block_placer"));
+
+
+        //Items
+        reg.addIngredientInfo(new ItemStack(ModItems.PORTABLE_GUI.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.opolisutilities.portable_gui"));
+
 
    //     reg.addIngredientInfo(new ItemStack(ModBlocks.RESOURCE_GENERATOR_2.get()), VanillaTypes.ITEM_STACK, Component.translatable("jei.opolisutilities.resource_generator_2.information"));
     //    reg.addIngredientInfo(new ItemStack(ModBlocks.FLUID_GENERATOR.get()), VanillaTypes.ITEM_STACK, Component.translatable("jei.opolisutilities.fluid_generator.information"));

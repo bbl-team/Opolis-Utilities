@@ -132,7 +132,10 @@
   "jei.opolisutilities.floating_block": "§lFloating Block§r \n\nThe Floating Block can be placed in the air with a supporting block",
   "jei.opolisutilities.drying_table": "§lDrying Table§r \n\nThe Drying Table can be used to dry items\n\nTop slot is for the item to dry, Bottom is the output\n\nThis block can be waterlogged to create the Soaking Table\n\nThe Soaking Table makes items wet",
   "jei.opolisutilities.item_repairer": "§lItem Repairer§r \n\nThe Item Repairer can be used to repair items\n\nTop slot is for the item to repair, Top right slot is for speed upgrades, Bottom is the repaired item\n\n",
+  "jei.opolisutilities.block_placer": "§lBlock Placer§r \n\nThe Block Placer can be used to place blocks\n\nBlocks/Items in the banned in block placer tag will not be able to be placed\n\nHas adjustable tickrate for placing blocks, can be turned on and off",
+  "jei.opolisutilities.block_breaker": "§lBlock Breaker§r \n\nThe Block Breaker can be used to break blocks\n\nLeft slot is for the tool, middle slot is the whitelist slot (only breaks that block), right slot is the blacklist slot (breaks every thing but that block)\n\nBreaking speed is determined by the tool and the block\n\nCan be turned on and off",
 
+  "jei.opolisutilities.portable_gui": "§lPortable GUI§r \n\nThe Portable GUI is an item that can be used to access the GUI of any block (lol this doesnt work looool)\n\nWhen held use Crouch and hold alt or ctrl to change between up to 5 locations, Shift right click on a valid block to set the location in the GUI, Right click to open that GUI\n\nThis item will not set gui locations if the block is in the banned from the Portable GUI tag",
 
 
 

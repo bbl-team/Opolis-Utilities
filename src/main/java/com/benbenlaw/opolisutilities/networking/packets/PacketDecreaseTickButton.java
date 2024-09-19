@@ -41,7 +41,7 @@ public record PacketDecreaseTickButton() {
         if (blockEntity instanceof BlockPlacerBlockEntity blockPlacerBlockEntity) {
             int increment = isShiftDown ? 50 : 10;
             int timer = blockPlacerBlockEntity.maxProgress;
-            if (timer > 50) {
+            if (timer - increment > 50) {
                 blockPlacerBlockEntity.maxProgress = timer - increment;
             }
         }
@@ -50,7 +50,7 @@ public record PacketDecreaseTickButton() {
         if (blockEntity instanceof CrafterBlockEntity crafterBlockEntity) {
             int increment = isShiftDown ? 50 : 10;
             int timer = crafterBlockEntity.maxProgress;
-            if (timer > 50) {
+            if (timer - increment > 50) {
                 crafterBlockEntity.maxProgress = timer - increment;
 
 
@@ -63,7 +63,7 @@ public record PacketDecreaseTickButton() {
             int increment = isShiftDown ? 50 : 10;
             int timer = redstoneClockBlockEntity.maxProgress;
 
-            if (timer > 50) {
+            if (timer - increment > 50) {
                 redstoneClockBlockEntity.maxProgress = timer - increment;
                 RedstoneClockBlockEntity entity = (RedstoneClockBlockEntity) level.getBlockEntity(blockPos);
                 assert entity != null;

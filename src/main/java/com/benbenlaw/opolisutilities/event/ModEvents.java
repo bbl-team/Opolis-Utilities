@@ -16,6 +16,7 @@ import com.benbenlaw.opolisutilities.networking.payload.PortableGUISelectorPaylo
 import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
@@ -264,7 +265,7 @@ public class ModEvents {
 
         double scrollDelta = event.getScrollDeltaY();
 
-        if (player.isCrouching() && scrollDelta != 0.0 && itemStack.is(ModItems.PORTABLE_GUI)) {
+        if (player.isCrouching() && (Screen.hasControlDown() || Screen.hasAltDown())  && scrollDelta != 0.0 && itemStack.is(ModItems.PORTABLE_GUI)) {
             int locationValue = 0;
 
             if (itemStack.get(ModDataComponents.LOCATION_VALUE) != null) {

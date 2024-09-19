@@ -3,6 +3,7 @@ package com.benbenlaw.opolisutilities.datagen;
 import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.block.ModBlocks;
 import com.benbenlaw.opolisutilities.datagen.recipes.*;
+import com.benbenlaw.opolisutilities.item.ModDataComponents;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import com.benbenlaw.opolisutilities.recipe.ClocheRecipe;
 import net.minecraft.core.Holder;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
@@ -40,7 +42,17 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput consumer) {
 
-
+        // Portable GUI
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORTABLE_GUI)
+                .pattern("E E")
+                .pattern("SCS")
+                .pattern("SCS")
+                .define('S', Tags.Items.STONES)
+                .define('E', Items.ENDER_PEARL)
+                .define('C', Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES)
+                .group("opolisutilities")
+                .unlockedBy("has_item", has(Items.LEATHER))
+                .save(consumer);
 
         //Animal Net
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ANIMAL_NET.get())

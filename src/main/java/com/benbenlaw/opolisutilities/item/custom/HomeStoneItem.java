@@ -40,8 +40,6 @@ public class HomeStoneItem extends Item {
 
         if (!level.isClientSide() && player.isCrouching() && hand == InteractionHand.OFF_HAND) {
 
-            //set x,y and x inside item nbt and playsound and print message
-
             itemstack.set(ModDataComponents.INT_X.get(), player.getOnPos().getX());
             itemstack.set(ModDataComponents.INT_Y.get(), player.getOnPos().getY());
             itemstack.set(ModDataComponents.INT_Z.get(), player.getOnPos().getZ());
@@ -109,7 +107,12 @@ public class HomeStoneItem extends Item {
 
         if(Screen.hasAltDown()) {
 
-            if(!Objects.requireNonNull(stack.get(ModDataComponents.INT_X)).toString().isEmpty()) {
+            Integer x = stack.get(ModDataComponents.INT_X.get());
+            Integer y = stack.get(ModDataComponents.INT_Y.get());
+            Integer z = stack.get(ModDataComponents.INT_Z.get());
+            String dimension = stack.get(ModDataComponents.DIMENSION.get());
+
+            if (x != null && y != null && z != null && dimension != null) {
 
                 components.add(Component.literal("X: " + stack.get(ModDataComponents.INT_X))
                         .withStyle(ChatFormatting.GREEN));
@@ -121,7 +124,7 @@ public class HomeStoneItem extends Item {
                         .withStyle(ChatFormatting.GREEN));
 
             }
-            if(Objects.requireNonNull(stack.get(ModDataComponents.INT_X.get())).toString().isEmpty()) {
+            else {
                 components.add(Component.translatable("tooltips.home_stone.no_location_set")
                         .withStyle(ChatFormatting.RED));
             }

@@ -1,16 +1,22 @@
 Changelog Opolis Utilities
 
 TODO: Fix Shift clicking into output slots
-TODO: Sapling grower damage (1.21)
-TODO: Fix config file (1.21)
 TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
-
-
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.10.2
+
+Pressing "ALT" on a unbound home stone no longer crashes the game
+Added Portable GUI recipe
+Portable GUI's which have no location value will now set itself to 1 when obtained or when in player inventory
+Portable GUI selection now uses shift as well as either alt or control pressed with the scroll wheel to change
+Added Portable GUI recipe
+Added more information to JEI
+Fixed various blocks tickrate going slightly above or below the max and min values in the screens
 
 4.10.1
 
