@@ -9,7 +9,9 @@ UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
 
+4.10.4
 
+Fixed cloches ignoring catalysts in recipes
 
 4.10.3
 

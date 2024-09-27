@@ -269,7 +269,9 @@ public class ClocheBlockEntity extends BlockEntity implements MenuProvider, IInv
 
             match.ifPresent(clocheRecipeRecipeHolder -> maxProgress = (int) (maxProgress * clocheRecipeRecipeHolder.value().durationModifier()));
 
-            if (match.isPresent() && blockState.getValue(POWERED)) {
+            if (match.isPresent() && blockState.getValue(POWERED) &&
+                    ( match.get().value().catalyst().test(inventory.getItem(CATALYST_SLOT)) || match.get().value().catalyst().isEmpty()) ) {
+
                 boolean allSlotsFull = true;
 
                 Item mainOutput = match.get().value().mainOutput().getItem().asItem();
