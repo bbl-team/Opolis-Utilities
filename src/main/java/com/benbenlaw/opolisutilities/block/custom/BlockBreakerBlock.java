@@ -44,7 +44,7 @@ public class BlockBreakerBlock extends BaseEntityBlock {
     }
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+        public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     /* ROTATION */
 

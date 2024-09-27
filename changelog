@@ -8,6 +8,15 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+
+
+
+4.10.3
+
+Fixed ender ores not dropping fragments when broken with a pickaxe with fortune
+Changed ender ore drop rate to 1-3 instead of 2-4
+Fixed crash when "using" a crook
+
 4.10.2
 
 Pressing "ALT" on a unbound home stone no longer crashes the game

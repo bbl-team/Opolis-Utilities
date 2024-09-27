@@ -69,43 +69,4 @@ public class CrookItem extends Item {
         itemAsEntity.setDeltaMovement((level.random.nextFloat() * 0.1 - 0.05), (level.random.nextFloat() * 0.1 - 0.03), (level.random.nextFloat() * 0.1 - 0.05));
         level.addFreshEntity(itemAsEntity);
     }
-
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
-        try {
-            new ReadFromTextFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return InteractionResultHolder.success(player.getItemInHand(hand));
-    }
-
-    public class ReadFromTextFile {
-
-        private final String everything;
-
-        public ReadFromTextFile() throws IOException {
-            try(BufferedReader br = new BufferedReader(new FileReader("D:/Mods/Opolis Utilites/changelog.txt"))) {
-                StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    line = br.readLine();
-                }
-                this.everything = sb.toString();
-            }
-        }
-
-        public void main(String[] args) throws IOException {
-
-            ReadFromTextFile obj1 = new ReadFromTextFile();
-            System.out.println(obj1.everything);
-        }
-
-    }
 }
