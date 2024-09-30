@@ -26,6 +26,10 @@ public class OpolisUtilitiesItemTags extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
 
+        //String
+
+        tag(Tags.Items.STRINGS).add(ModItems.LEAFY_STRING.get());
+
         //Enchantments
 
         this.tag(ItemTags.DURABILITY_ENCHANTABLE).add(ModItems.WOODEN_SHEARS.get(), ModItems.HOME_STONE.get());
