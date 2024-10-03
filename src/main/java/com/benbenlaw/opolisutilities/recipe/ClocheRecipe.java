@@ -31,7 +31,11 @@ public record ClocheRecipe(Ingredient seed, Ingredient catalyst, Ingredient soil
 
     @Override
     public boolean matches(RecipeInput container, @NotNull Level level) {
-        return seed.test(container.getItem(0)) && soil.test(container.getItem(1));
+
+        if (catalyst.test(container.getItem(2))) {
+            return seed.test(container.getItem(0)) && soil.test(container.getItem(1));
+        }
+        return false;
     }
 
     @Override

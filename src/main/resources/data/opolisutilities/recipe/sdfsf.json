@@ -1,10 +1,5 @@
 {
   "type": "opolisutilities:cloche",
-  "catalyst": [
-    {
-      "item": "minecraft:bone_meal"
-    }
-  ],
   "chanceOutput1": {
     "count": 1,
     "id": "minecraft:acacia_sapling"
@@ -13,7 +8,7 @@
   "durationModifier": 2.0,
   "mainOutput": {
     "count": 2,
-    "id": "minecraft:birch_log"
+    "id": "minecraft:oak_log"
   },
   "seed": {
     "item": "minecraft:dirt"

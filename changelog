@@ -1,12 +1,24 @@
 Changelog Opolis Utilities
 
 TODO: Fix Shift clicking into output slots
-TODO: add recipe input nbts and Catalogue (Not NBT item components for 1.21)
 TODO: fix portable gui crashing clients in single player in spawn chunks
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.10.8
+
+Cloche tickrate now updates correctly if a catalyst slot contains an item that is not used in any recipes
+
+4.10.7
+
+Maybe fixed issue with some items being used in the Resource Generator in custom recipes
+
+4.10.6
+
+Fixed cloche catalyst recipe matches being a bit off when the catalyst are different in recipes that contain the same soil and seed
+Disabled test recipes for the cloche
 
 4.10.5
 
