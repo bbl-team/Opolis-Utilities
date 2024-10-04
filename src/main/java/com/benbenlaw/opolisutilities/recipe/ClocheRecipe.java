@@ -32,11 +32,25 @@ public record ClocheRecipe(Ingredient seed, Ingredient catalyst, Ingredient soil
     @Override
     public boolean matches(RecipeInput container, @NotNull Level level) {
 
-        if (catalyst.test(container.getItem(2))) {
-            return seed.test(container.getItem(0)) && soil.test(container.getItem(1));
+        boolean containsCatalystInSlot = !container.getItem(2).isEmpty();
+        boolean needCatalyst = !catalyst.isEmpty();
+
+        if (containsCatalystInSlot) {
+            if (catalyst.test(container.getItem(2))) {
+                return seed.test(container.getItem(0)) && soil.test(container.getItem(1));
+            } else {
+                return false;
+            }
         }
-        return false;
+
+        return seed.test(container.getItem(0)) && soil.test(container.getItem(1));
+
     }
+
+
+
+
+
 
     @Override
     public ItemStack assemble(RecipeInput container, HolderLookup.Provider provider) {

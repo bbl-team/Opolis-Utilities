@@ -229,23 +229,27 @@ public class ClocheBlockEntity extends BlockEntity implements MenuProvider, IInv
         if (!level.isClientSide()) {
             sync();
 
-            maxProgress = 220;
+            // Keep the current maxProgress unless a valid recipe is found
+            int originalMaxProgress = maxProgress;
+            int defaultMaxProgress = 220;  // Default value if no valid recipe is found
+            boolean validRecipeFound = false;  // Flag to track if a valid recipe is found
 
+            // Check for speed upgrades
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
                 for (Ingredient ingredient : input) {
                     for (ItemStack itemStack : ingredient.getItems()) {
                         if (this.itemHandler.getStackInSlot(UPGRADE_SLOT).is(itemStack.getItem())) {
-                            maxProgress = match.value().tickRate();
+                            maxProgress = match.value().tickRate();  // Apply speed upgrade
                             break;
                         }
                     }
                 }
             }
 
-            // Reset if upgrade is removed
+            // Reset maxProgress if no upgrade is present
             if (itemHandler.getStackInSlot(UPGRADE_SLOT).isEmpty()) {
-                maxProgress = 220;
+                maxProgress = defaultMaxProgress;
             }
 
             if (itemHandler.getStackInSlot(SEED_SLOT).isEmpty() || itemHandler.getStackInSlot(SOIL_SLOT).isEmpty()) {
@@ -267,128 +271,140 @@ public class ClocheBlockEntity extends BlockEntity implements MenuProvider, IInv
             Optional<RecipeHolder<ClocheRecipe>> match = level.getRecipeManager()
                     .getRecipeFor(ClocheRecipe.Type.INSTANCE, inventory, level);
 
-            match.ifPresent(clocheRecipeRecipeHolder -> maxProgress = (int) (maxProgress * clocheRecipeRecipeHolder.value().durationModifier()));
+            // Only proceed if a valid recipe is found and the block is powered
+            if (match.isPresent() && blockState.getValue(POWERED)) {
+                ClocheRecipe recipe = match.get().value();
 
-            if (match.isPresent() && blockState.getValue(POWERED) &&
-                    ( match.get().value().catalyst().test(inventory.getItem(CATALYST_SLOT)) || match.get().value().catalyst().isEmpty()) ) {
+                // Check if the catalyst matches or is empty (no catalyst requirement)
+                if (recipe.catalyst().test(inventory.getItem(CATALYST_SLOT)) || recipe.catalyst().isEmpty()) {
+                    validRecipeFound = true;  // Mark that a valid recipe was found
 
-                boolean allSlotsFull = true;
+                    // Apply recipe's duration modifier to maxProgress
+                    maxProgress = (int) (maxProgress * recipe.durationModifier());
 
-                Item mainOutput = match.get().value().mainOutput().getItem().asItem();
-                Item chanceOutput1 = match.get().value().chanceOutput1().getItem().asItem();
-                Item chanceOutput2 = match.get().value().chanceOutput2().getItem().asItem();
-                Item chanceOutput3 = match.get().value().chanceOutput3().getItem().asItem();
+                    boolean allSlotsFull = true;
+                    Item mainOutput = recipe.mainOutput().getItem().asItem();
+                    Item chanceOutput1 = recipe.chanceOutput1().getItem().asItem();
+                    Item chanceOutput2 = recipe.chanceOutput2().getItem().asItem();
+                    Item chanceOutput3 = recipe.chanceOutput3().getItem().asItem();
 
-                for (int slot = 4; slot <= 7; slot++) {
-                    ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
-
-                    if (currentStack.isEmpty() ||
-                            (currentStack.getItem() == mainOutput && currentStack.getCount() < currentStack.getMaxStackSize()) ||
-                            (currentStack.getItem() == chanceOutput1 && currentStack.getCount() < currentStack.getMaxStackSize()) ||
-                            (currentStack.getItem() == chanceOutput2 && currentStack.getCount() < currentStack.getMaxStackSize()) ||
-                            (currentStack.getItem() == chanceOutput3 && currentStack.getCount() < currentStack.getMaxStackSize())) {
-                        allSlotsFull = false;
-                        break;
-                    }
-                }
-
-                // If all slots are full, return early without increasing progress
-                if (allSlotsFull) {
-                    return;
-                }
-
-                // Increase progress after confirming that slots are not full
-                progress++;
-
-                if (progress >= maxProgress) {
-                    boolean mainOutputPlaced = false;
-                    boolean chanceOutput1Placed = false;
-                    boolean chanceOutput2Placed = false;
-                    boolean chanceOutput3Placed = false;
-
-                    // Place Main Output
+                    // Check if output slots are full
                     for (int slot = 4; slot <= 7; slot++) {
                         ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
 
-                        if (currentStack.isEmpty()) {
-                            this.itemHandler.setStackInSlot(slot, new ItemStack(mainOutput));
-                            mainOutputPlaced = true;
-                            setChanged();
-                        } else if (currentStack.getItem() == mainOutput && currentStack.getCount() < currentStack.getMaxStackSize()) {
-                            int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
-                            currentStack.grow(amountToAdd);
-                            mainOutputPlaced = true;
-                            setChanged();
+                        if (currentStack.isEmpty() ||
+                                (currentStack.getItem() == mainOutput && currentStack.getCount() < currentStack.getMaxStackSize()) ||
+                                (currentStack.getItem() == chanceOutput1 && currentStack.getCount() < currentStack.getMaxStackSize()) ||
+                                (currentStack.getItem() == chanceOutput2 && currentStack.getCount() < currentStack.getMaxStackSize()) ||
+                                (currentStack.getItem() == chanceOutput3 && currentStack.getCount() < currentStack.getMaxStackSize())) {
+                            allSlotsFull = false;
+                            break;
                         }
-
-                        if (mainOutputPlaced) break;
                     }
 
-                    // Place ChanceOutput 1
-                    if (Math.random() < match.get().value().chanceOutputChance1()) {
+                    // Return early if all slots are full
+                    if (allSlotsFull) {
+                        return;
+                    }
+
+                    // Increase progress after confirming that slots are not full
+                    progress++;
+
+                    if (progress >= maxProgress) {
+                        // Place outputs in available slots
+                        boolean mainOutputPlaced = false;
+                        boolean chanceOutput1Placed = false;
+                        boolean chanceOutput2Placed = false;
+                        boolean chanceOutput3Placed = false;
+
+                        // Place main output
                         for (int slot = 4; slot <= 7; slot++) {
                             ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
 
                             if (currentStack.isEmpty()) {
-                                this.itemHandler.setStackInSlot(slot, new ItemStack(chanceOutput1));
-                                chanceOutput1Placed = true;
+                                this.itemHandler.setStackInSlot(slot, new ItemStack(mainOutput));
+                                mainOutputPlaced = true;
                                 setChanged();
-                            } else if (currentStack.getItem() == chanceOutput1 && currentStack.getCount() < currentStack.getMaxStackSize()) {
+                            } else if (currentStack.getItem() == mainOutput && currentStack.getCount() < currentStack.getMaxStackSize()) {
                                 int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
                                 currentStack.grow(amountToAdd);
-                                chanceOutput1Placed = true;
+                                mainOutputPlaced = true;
                                 setChanged();
                             }
 
-                            if (chanceOutput1Placed) break;
+                            if (mainOutputPlaced) break;
                         }
-                    }
 
-                    // Place ChanceOutput 2
-                    if (Math.random() < match.get().value().chanceOutputChance2()) {
-                        for (int slot = 4; slot <= 7; slot++) {
-                            ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
+                        // Place chance outputs
+                        if (Math.random() < recipe.chanceOutputChance1()) {
+                            for (int slot = 4; slot <= 7; slot++) {
+                                ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
 
-                            if (currentStack.isEmpty()) {
-                                this.itemHandler.setStackInSlot(slot, new ItemStack(chanceOutput2));
-                                chanceOutput2Placed = true;
-                                setChanged();
-                            } else if (currentStack.getItem() == chanceOutput2 && currentStack.getCount() < currentStack.getMaxStackSize()) {
-                                int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
-                                currentStack.grow(amountToAdd);
-                                chanceOutput2Placed = true;
-                                setChanged();
+                                if (currentStack.isEmpty()) {
+                                    this.itemHandler.setStackInSlot(slot, new ItemStack(chanceOutput1));
+                                    chanceOutput1Placed = true;
+                                    setChanged();
+                                } else if (currentStack.getItem() == chanceOutput1 && currentStack.getCount() < currentStack.getMaxStackSize()) {
+                                    int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
+                                    currentStack.grow(amountToAdd);
+                                    chanceOutput1Placed = true;
+                                    setChanged();
+                                }
+
+                                if (chanceOutput1Placed) break;
                             }
-
-                            if (chanceOutput2Placed) break;
                         }
-                    }
 
-                    // Place ChanceOutput 3
-                    if (Math.random() < match.get().value().chanceOutputChance3()) {
-                        for (int slot = 4; slot <= 7; slot++) {
-                            ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
+                        if (Math.random() < recipe.chanceOutputChance2()) {
+                            for (int slot = 4; slot <= 7; slot++) {
+                                ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
 
-                            if (currentStack.isEmpty()) {
-                                this.itemHandler.setStackInSlot(slot, new ItemStack(chanceOutput3));
-                                chanceOutput3Placed = true;
-                                setChanged();
-                            } else if (currentStack.getItem() == chanceOutput3 && currentStack.getCount() < currentStack.getMaxStackSize()) {
-                                int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
-                                currentStack.grow(amountToAdd);
-                                chanceOutput3Placed = true;
-                                setChanged();
+                                if (currentStack.isEmpty()) {
+                                    this.itemHandler.setStackInSlot(slot, new ItemStack(chanceOutput2));
+                                    chanceOutput2Placed = true;
+                                    setChanged();
+                                } else if (currentStack.getItem() == chanceOutput2 && currentStack.getCount() < currentStack.getMaxStackSize()) {
+                                    int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
+                                    currentStack.grow(amountToAdd);
+                                    chanceOutput2Placed = true;
+                                    setChanged();
+                                }
+
+                                if (chanceOutput2Placed) break;
                             }
-
-                            if (chanceOutput3Placed) break;
                         }
-                    }
 
-                    if (mainOutputPlaced || chanceOutput1Placed || chanceOutput2Placed || chanceOutput3Placed) {
-                        progress = 0;
+                        if (Math.random() < recipe.chanceOutputChance3()) {
+                            for (int slot = 4; slot <= 7; slot++) {
+                                ItemStack currentStack = this.itemHandler.getStackInSlot(slot);
+
+                                if (currentStack.isEmpty()) {
+                                    this.itemHandler.setStackInSlot(slot, new ItemStack(chanceOutput3));
+                                    chanceOutput3Placed = true;
+                                    setChanged();
+                                } else if (currentStack.getItem() == chanceOutput3 && currentStack.getCount() < currentStack.getMaxStackSize()) {
+                                    int amountToAdd = Math.min(currentStack.getMaxStackSize() - currentStack.getCount(), 1);
+                                    currentStack.grow(amountToAdd);
+                                    chanceOutput3Placed = true;
+                                    setChanged();
+                                }
+
+                                if (chanceOutput3Placed) break;
+                            }
+                        }
+
+                        if (mainOutputPlaced || chanceOutput1Placed || chanceOutput2Placed || chanceOutput3Placed) {
+                            progress = 0;
+                        }
                     }
                 }
             }
+
+            // Only reset maxProgress if no valid recipe was found (invalid catalyst or no match)
+            if (!validRecipeFound) {
+                maxProgress = originalMaxProgress;  // Keep previous value if no valid recipe
+            }
         }
     }
+
 }

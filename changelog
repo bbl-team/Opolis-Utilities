@@ -10,6 +10,7 @@ UPDATE VERSION BEFORE PUSHING AND UPDATING
 4.10.8
 
 Cloche tickrate now updates correctly if a catalyst slot contains an item that is not used in any recipes
+Tweaked catalyst behaviour in cloche recipes, should now always check the recipes with catalysts first (highly wip)
 
 4.10.7
 
