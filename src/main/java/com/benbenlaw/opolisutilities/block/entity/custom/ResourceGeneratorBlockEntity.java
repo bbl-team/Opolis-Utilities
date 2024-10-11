@@ -259,6 +259,22 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 if (recipe.matches(inventory, level)) {
                     resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
                     level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
+
+                    if ((itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
+                            (itemHandler.getStackInSlot(OUTPUT_SLOT).getItem() == itemHandler.getStackInSlot(INPUT_SLOT).getItem() &&
+                                    itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize()))) {
+
+                        progress++;
+                        if (progress >= maxProgress) {
+                            progress = 0;
+                            if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
+                                this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemHandler.getStackInSlot(INPUT_SLOT).getItem()), false);
+                                setChanged();
+                                sync();
+                            }
+                        }
+                    }
+
                 }
             } else {
                 resource = "";
@@ -268,19 +284,6 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
             // Check if input slot is empty or there is no valid block above
             if (this.itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
                 progress = 0;
-            } else if ((itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
-                    (itemHandler.getStackInSlot(OUTPUT_SLOT).getItem() == itemHandler.getStackInSlot(INPUT_SLOT).getItem() &&
-                            itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize()))) {
-
-                progress++;
-                if (progress >= maxProgress) {
-                    progress = 0;
-                    if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
-                        this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemHandler.getStackInSlot(INPUT_SLOT).getItem()), false);
-                        setChanged();
-                        sync();
-                    }
-                }
             }
         }
     }

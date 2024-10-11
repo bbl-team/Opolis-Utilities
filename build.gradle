@@ -72,8 +72,21 @@ dependencies {
     runtimeOnly "curse.maven:jei-238222:5606861"
 
     //Mekanism
- //   compileOnly "curse.maven:mekanism-268560:5574951"
+    //compileOnly "curse.maven:mekanism-268560:5574951"
     runtimeOnly "curse.maven:mekanism-268560:5574951"
+
+    //Chipped
+    compileOnly "curse.maven:chipped-456956:5681013"
+    runtimeOnly "curse.maven:chipped-456956:5681013"
+
+    //Chipped
+    compileOnly "curse.maven:resourceful-lib-570073:5793500"
+    runtimeOnly "curse.maven:resourceful-lib-570073:5793500"
+
+    //Chipped
+    compileOnly "curse.maven:athena-841890:5629395"
+    runtimeOnly "curse.maven:athena-841890:5629395"
+
 
     //EMI
 

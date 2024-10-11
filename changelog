@@ -7,6 +7,17 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.11.0
+
+More Portable GUI fixes and improvements
+Now Supports all vanilla GUI's at any distance provided the area is loaded (Like the opolis utilities blocks)
+Now supports mekanism
+Now supports chipped
+
+4.10.9
+
+Fixed Resource Generator producing any resource shh don't tell anyone
+
 4.10.8
 
 Cloche tickrate now updates correctly if a catalyst slot contains an item that is not used in any recipes
