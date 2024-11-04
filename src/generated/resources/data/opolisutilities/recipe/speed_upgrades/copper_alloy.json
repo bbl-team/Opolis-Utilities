@@ -4,13 +4,13 @@
       "type": "neoforge:not",
       "value": {
         "type": "neoforge:tag_empty",
-        "tag": "c:storage_blocks/solarium"
+        "tag": "c:storage_blocks/copper_alloy"
       }
     }
   ],
   "type": "opolisutilities:speed_upgrades",
   "input": {
-    "tag": "c:storage_blocks/solarium"
+    "tag": "c:storage_blocks/copper_alloy"
   },
-  "tickRate": 65
+  "tickRate": 100
 }

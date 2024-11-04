@@ -605,12 +605,21 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
 
         //Conductive Iron
         TagKey<Item> conductiveIronBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
-                String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/conductive_iron")))));
+                String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/conductive_alloy")))));
 
         SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(conductiveIronBlockTag), 60)
                 .unlockedBy("has_item", has(conductiveIronBlockTag))
                 .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(conductiveIronBlockTag))),
-                        ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/conductive_iron"));
+                        ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/conductive_alloy"));
+
+        //Copper Alloy
+        TagKey<Item> copperAlloyBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/copper_alloy")))));
+
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(copperAlloyBlockTag), 100)
+                .unlockedBy("has_item", has(copperAlloyBlockTag))
+                .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(copperAlloyBlockTag))),
+                        ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/copper_alloy"));
 
         //Compressed Iron
         TagKey<Item> compressedIronBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
@@ -908,12 +917,12 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                         ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/steel"));
 
         //Soularium
-        TagKey<Item> solariumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
-                String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/solarium")))));
-        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(solariumBlockTag), 65)
-                .unlockedBy("has_item", has(solariumBlockTag))
-                .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(solariumBlockTag))),
-                        ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/solarium"));
+        TagKey<Item> soulariumBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(
+                String.valueOf(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/soularium")))));
+        SpeedUpgradesRecipeBuilder.SpeedUpgradesRecipeBuilder(Ingredient.of(soulariumBlockTag), 65)
+                .unlockedBy("has_item", has(soulariumBlockTag))
+                .save(consumer.withConditions(new NotCondition(new TagEmptyCondition(soulariumBlockTag))),
+                        ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "speed_upgrades/soularium"));
 
         //Silver
         TagKey<Item> silverBlockTag = ItemTags.create(Objects.requireNonNull(ResourceLocation.tryParse(

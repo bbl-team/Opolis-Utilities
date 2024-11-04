@@ -7,6 +7,10 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.11.1
+
+Fixed some enderio storage blocks not being valid speed blocks
+
 4.11.0
 
 More Portable GUI fixes and improvements
