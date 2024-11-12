@@ -305,7 +305,7 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                                     maxProgress = 0;
                                 }
                                 if (tool.isDamageableItem()) {
-                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, createFakePlayer((ServerLevel) level), fakePlayer.getEquipmentSlotForItem(tool));
+                                    this.itemHandler.getStackInSlot(0).hurtAndBreak(1, fakePlayer, fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
                                 }
                                 if (damageValue + 1 == tool.getMaxDamage()) {

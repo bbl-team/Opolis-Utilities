@@ -7,6 +7,17 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.11.3
+
+Updated Logo
+
+4.11.2
+
+Resource generator now copies an exact match of the input block providing the block has a recipe for the generator
+Moved crafter shift information the same location as the recipe information
+Fixed memory leak with block breaker
+Improved Block Placer, now uses a fake player to place blocks allowing for more blocks to be placed correctly like doors, and double blocks
+
 4.11.1
 
 Fixed some enderio storage blocks not being valid speed blocks

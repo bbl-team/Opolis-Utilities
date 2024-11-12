@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItem
 import com.benbenlaw.opolisutilities.screen.custom.BlockPlacerMenu;
 import com.benbenlaw.opolisutilities.util.DirectionUtils;
 import com.benbenlaw.opolisutilities.util.inventory.IInventoryHandlingBlockEntity;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -20,9 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,17 +29,24 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.FACING;
 import static com.benbenlaw.opolisutilities.block.custom.BlockPlacerBlock.POWERED;
@@ -54,6 +60,9 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             sync();
         }
     };
+
+    private FakePlayer fakePlayer;
+
 
     public void sync() {
         if (level instanceof ServerLevel serverLevel) {
@@ -119,6 +128,10 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
                 return 2;
             }
         };
+
+        if (level instanceof ServerLevel serverLevel) {
+            this.fakePlayer = createFakePlayer(serverLevel);
+        }
     }
 
     @Override
@@ -197,6 +210,10 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             maxTickChecker = 0;
         }
 
+        if (this.fakePlayer == null && level instanceof ServerLevel serverLevel) {
+            this.fakePlayer = createFakePlayer(serverLevel);
+        }
+
         if (!blockState.isAir() && !blockState.is(Blocks.VOID_AIR) && pLevel instanceof ServerLevel && blockState.getValue(POWERED)) {
 
             ItemStack itemStackInSlot = pBlockEntity.getItemStackHandler().getStackInSlot(0);
@@ -224,16 +241,17 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
                                     {
 
                                 if (level.getBlockState(placeHere.below()).is(BlockTags.DIRT)) {
+                                    pLevel.playSound(null, pPos, blockSounds.getPlaceSound(), SoundSource.BLOCKS, 1, 1);
+                                    placeBlock(pLevel, placeHere, itemStackInSlot.copy());
                                     this.itemHandler.getStackInSlot(0).shrink(1);
-                                    level.setBlockAndUpdate(placeHere, itemToBlockState);
                                     sync();
                                 }
                             }
 
                             else {
-                                this.itemHandler.getStackInSlot(0).shrink(1);
                                 pLevel.playSound(null, pPos, blockSounds.getPlaceSound(), SoundSource.BLOCKS, 1, 1);
-                                level.setBlockAndUpdate(placeHere, itemToBlockState);
+                                placeBlock(pLevel, placeHere, itemStackInSlot.copy());
+                                this.itemHandler.getStackInSlot(0).shrink(1);
                                 sync();
                             }
                         }
@@ -245,5 +263,15 @@ public class BlockPlacerBlockEntity extends BlockEntity implements MenuProvider,
             setChanged();
             sync();
         }
+    }
+
+    private FakePlayer createFakePlayer(ServerLevel level) {
+        return new FakePlayer(level, new GameProfile(UUID.randomUUID(), "BlockPlacer"));
+    }
+
+    public boolean placeBlock(Level level, BlockPos pos, ItemStack stack) {
+        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        return CommonHooks.onPlaceItemIntoWorld(new UseOnContext(fakePlayer, InteractionHand.MAIN_HAND,
+                new BlockHitResult(new Vec3(0, 0, 0), Direction.DOWN, pos, false))) == InteractionResult.SUCCESS;
     }
 }

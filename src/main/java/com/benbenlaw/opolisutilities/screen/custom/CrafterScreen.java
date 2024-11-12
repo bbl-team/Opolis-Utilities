@@ -94,11 +94,11 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
                 ticks = crafterBlockEntity.maxProgress;
             }
 
-            guiGraphics.drawString(this.font, Component.translatable("gui.opolisutilities.shift"), this.leftPos + 95,
-                    this.topPos + 45, 0x3F3F3F, false);
-
-            guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 90,
+            guiGraphics.drawString(this.font, Component.translatable("gui.opolisutilities.shift"), this.leftPos + 87,
                     this.topPos + 60, 0x3F3F3F, false);
+
+            guiGraphics.drawString(this.font, ticks + " ticks", this.leftPos + 87,
+                    this.topPos + 70, 0x3F3F3F, false);
 
         }
 

@@ -30,11 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class StillValidMixin {
 
-
     @Inject(method = "stillValid(Lnet/minecraft/world/entity/player/Player;)Z", at = @At("HEAD"), cancellable = true)
-
     void stillValid(Player p_41431_, CallbackInfoReturnable<Boolean> cir) {
-
         if (p_41431_.getItemInHand(InteractionHand.MAIN_HAND).getItem().asItem() == ModItems.PORTABLE_GUI.get()) {
             cir.setReturnValue(true);
         }

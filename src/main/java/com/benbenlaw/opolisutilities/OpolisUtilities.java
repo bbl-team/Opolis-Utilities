@@ -16,6 +16,7 @@ import com.benbenlaw.opolisutilities.screen.ModMenuTypes;
 import com.benbenlaw.opolisutilities.screen.custom.*;
 import com.benbenlaw.opolisutilities.sound.ModSounds;
 import com.benbenlaw.opolisutilities.util.ModAttachments;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
@@ -24,6 +25,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,6 +80,19 @@ public class OpolisUtilities {
 
     @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 
+    public static class CommonModEvents {
+        @SubscribeEvent
+        public static void registerTickControllers(RegisterTicketControllersEvent event) {
+            event.register(new TicketController(ResourceLocation.fromNamespaceAndPath("opolisutilities", "portable_gui")));
+            System.out.println("Registered ticket controller");
+
+        }
+    }
+
+
+
+    @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+
     public static class ClientModEvents {
 
         @SubscribeEvent
@@ -97,4 +113,6 @@ public class OpolisUtilities {
 
         }
     }
+
+
 }

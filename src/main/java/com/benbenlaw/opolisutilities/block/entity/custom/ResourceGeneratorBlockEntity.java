@@ -14,6 +14,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -33,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -258,6 +263,16 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                 ResourceGeneratorRecipe recipe = match.get().value();
                 if (recipe.matches(inventory, level)) {
                     resource = this.itemHandler.getStackInSlot(INPUT_SLOT).getItem().toString();
+                    ItemStack output = this.itemHandler.getStackInSlot(INPUT_SLOT).copy();
+
+                    if (!this.itemHandler.getStackInSlot(INPUT_SLOT).getComponents().isEmpty()) {
+                        DataComponentMap dataComponentMap = this.itemHandler.getStackInSlot(INPUT_SLOT).getComponents();
+                        output.applyComponents(dataComponentMap);
+                    }
+
+                    output.setCount(entity.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + 1);
+
+
                     level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(ResourceGeneratorBlock.POWERED, true));
 
                     if ((itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
@@ -268,7 +283,9 @@ public class ResourceGeneratorBlockEntity extends BlockEntity implements MenuPro
                         if (progress >= maxProgress) {
                             progress = 0;
                             if (level.getBlockState(blockPos).is(ModBlocks.RESOURCE_GENERATOR.get())) {
-                                this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(itemHandler.getStackInSlot(INPUT_SLOT).getItem()), false);
+
+                                entity.itemHandler.setStackInSlot(OUTPUT_SLOT, output);
+                                //this.itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem()), false);
                                 setChanged();
                                 sync();
                             }
