@@ -21,7 +21,9 @@ public class ModMessages {
         registrar.playToServer(ClearTankPayload.TYPE, ClearTankPayload.STREAM_CODEC, ClearTankPacket.get()::handle);
 
 
+
         //To Client From Server
+        registrar.playToClient(RequestChunkLoadPayload.TYPE, RequestChunkLoadPayload.STREAM_CODEC, RequestChunkLoadPacket.get()::handle);
 
 
     }
