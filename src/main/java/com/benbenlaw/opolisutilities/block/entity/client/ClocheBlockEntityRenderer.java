@@ -101,6 +101,7 @@ public class ClocheBlockEntityRenderer implements BlockEntityRenderer<ClocheBloc
             else if (seedAsBlock.getBlock() instanceof StemBlock) {
                 int maxAge = 7;
                 int age = Math.round((float) progress / maxProgress * maxAge);
+                age = Math.min(age, maxAge);
                 BlockState seedAsBlockCrop = seedAsBlock.setValue(BlockStateProperties.AGE_7, age);
 
                 pPoseStack.pushPose();

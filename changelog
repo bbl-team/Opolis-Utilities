@@ -7,6 +7,9 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.11.4
+Fix for client renderer crash with cloche
+
 4.11.3
 
 Updated Logo
