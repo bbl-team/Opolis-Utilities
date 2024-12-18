@@ -1,5 +1,9 @@
 package com.benbenlaw.opolisutilities.item.custom;
 
+import com.benbenlaw.core.block.colored.util.IColored;
+import com.benbenlaw.core.item.CoreDataComponents;
+import com.benbenlaw.core.item.colored.ColoredBlockItem;
+import com.benbenlaw.core.item.colored.ColoredItem;
 import com.benbenlaw.opolisutilities.config.StartupItemConfigFile;
 import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.core.BlockPos;
@@ -11,6 +15,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.util.List;
 
+import static com.benbenlaw.core.block.colored.ColoredLeaves.COLOR;
+import static com.benbenlaw.core.block.colored.ColoredLeaves.LIT;
+
 public class CrookItem extends Item {
     public CrookItem(Properties properties) {
         super(properties);
@@ -32,11 +40,26 @@ public class CrookItem extends Item {
 
         if (state.getBlock() instanceof LeavesBlock || state.is(BlockTags.LEAVES)) {
 
+            //Support Core IColored
+            DyeColor color = null;
+            if (state.getBlock() instanceof IColored) {
+                color = state.getValue(COLOR);
+            }
+
             for (int i = 0; i < StartupItemConfigFile.crookBoost.get(); i++) {
                 List<ItemStack> blockDrops = Block.getDrops(state.getBlock().defaultBlockState(), (ServerLevel) level, blockPos,
                         level.getBlockEntity(blockPos), null, ModItems.CROOK.get().getDefaultInstance());
 
                 for (ItemStack drop : blockDrops) {
+
+                    //Support Core IColored
+                    if (drop.getItem() instanceof ColoredBlockItem || drop.getItem() instanceof ColoredItem) {
+                        assert color != null;
+                        drop.set(CoreDataComponents.COLOR, color.toString());
+                        drop.set(CoreDataComponents.LIT, state.getValue(LIT));
+
+                    }
+
                     spawnBlockAsEntity(level, blockPos, drop);
                 }
             }

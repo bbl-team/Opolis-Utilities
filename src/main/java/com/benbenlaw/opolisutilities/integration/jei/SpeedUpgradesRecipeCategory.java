@@ -98,7 +98,7 @@ public class SpeedUpgradesRecipeCategory implements IRecipeCategory<SpeedUpgrade
         int yOffset = 20;
 
         int numRows = (int) Math.ceil((double) mutableRecipes.size() / 9);
-        int numCols = Math.min(9, mutableRecipes.size()); // Maximum of 9 columns
+        int numCols = Math.min(9, mutableRecipes.size());
         backgroundWidth = 4 + numCols * 19;
         int backgroundHeight = 2 + numRows * 19 + yOffset;
 
