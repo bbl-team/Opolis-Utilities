@@ -7,6 +7,12 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.11.6
+Deprecated Cloche classes in preparation for removal
+Removed cloche recipe
+Update block breaker method to better get entity drops
+Updated Changelog message to link to full changelog on github
+
 4.11.5
 Updated to minecraft 1.21.1
 Crook now supports BBL Core IColored

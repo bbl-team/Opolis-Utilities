@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
+@Deprecated(forRemoval = true)
 public class ClocheScreen extends AbstractContainerScreen<ClocheMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/cloche_gui.png");

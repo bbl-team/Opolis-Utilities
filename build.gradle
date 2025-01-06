@@ -76,6 +76,14 @@ dependencies {
     compileOnly "curse.maven:caveopolis-mod-639186:5982032"
     runtimeOnly "curse.maven:caveopolis-mod-639186:5982032"
 
+    //Functional Storage
+    compileOnly "curse.maven:functional-storage-556861:6023174"
+    runtimeOnly "curse.maven:functional-storage-556861:6023174"
+
+    //Caveopolis 5.0.20
+    compileOnly "curse.maven:titanium-287342:5897690"
+    runtimeOnly "curse.maven:titanium-287342:5897690"
+
     //BBL Core
     compileOnly "curse.maven:bbl-core-1135181:5973478"
     runtimeOnly "curse.maven:bbl-core-1135181:5973478"

@@ -9,6 +9,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -242,7 +243,10 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                 final Block block = this.level.getBlockState(placeHere).getBlock();
                 ItemStack tool = itemHandler.getStackInSlot(0);
                 int damageValue = this.itemHandler.getStackInSlot(0).getDamageValue();
-                blockDrops = Block.getDrops(block.defaultBlockState(), (ServerLevel) this.level, placeHere, this.level.getBlockEntity(pos), null, tool);
+                blockDrops = getBlockDrops(this.level, placeHere);
+
+
+               //         Block.getDrops(block.defaultBlockState(), (ServerLevel) this.level, placeHere, this.level.getBlockEntity(pos), null, tool);
 
                 boolean blockRequiresCorrectTool = block.defaultBlockState().requiresCorrectToolForDrops();
                 boolean hasCorrectTool = tool.isCorrectToolForDrops(block.defaultBlockState());
@@ -405,5 +409,18 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
     private FakePlayer createFakePlayer(ServerLevel level) {
         return new FakePlayer(level, new GameProfile(UUID.randomUUID(), "BlockBreaker"));
+    }
+
+
+    //Thanks to Industrial Foregoing for this method
+    public static List<ItemStack> getBlockDrops(Level world, BlockPos pos) {
+        return getBlockDrops(world, pos, 0);
+    }
+
+    public static List<ItemStack> getBlockDrops(Level world, BlockPos pos, int fortune) {
+        BlockState state = world.getBlockState(pos);
+        NonNullList<ItemStack> stacks = NonNullList.create();
+        stacks.addAll(Block.getDrops(state, (ServerLevel) world, pos, world.getBlockEntity(pos)));
+        return stacks;
     }
 }

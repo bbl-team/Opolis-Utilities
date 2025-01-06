@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 import java.util.Objects;
+@Deprecated(forRemoval = true, since = "4.11.6")
 
 public class ClocheBlockEntityRenderer implements BlockEntityRenderer<ClocheBlockEntity> {
     public ClocheBlockEntityRenderer(BlockEntityRendererProvider.Context context) {

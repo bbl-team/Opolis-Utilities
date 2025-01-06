@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated(forRemoval = true, since = "4.11.6")
 public class ClocheMenu extends AbstractContainerMenu {
     protected ClocheBlockEntity blockEntity;
     protected Level level;

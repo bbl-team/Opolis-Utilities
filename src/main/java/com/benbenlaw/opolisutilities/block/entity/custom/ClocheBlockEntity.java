@@ -47,6 +47,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.benbenlaw.opolisutilities.block.custom.ClocheBlock.POWERED;
+@Deprecated(forRemoval = true, since = "4.11.6")
 
 public class ClocheBlockEntity extends BlockEntity implements MenuProvider, IInventoryHandlingBlockEntity {
 

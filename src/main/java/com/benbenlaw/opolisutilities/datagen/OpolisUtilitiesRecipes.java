@@ -112,18 +112,6 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
                 .unlockedBy("has_item", has(ModItems.B_BUCKS))
                 .save(consumer);
 
-        //Catalogue
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CLOCHE.get())
-                .pattern("SSS")
-                .pattern("WRW")
-                .pattern("SSS")
-                .define('S', Tags.Items.STONES)
-                .define('W', Tags.Items.BUCKETS_WATER)
-                .define('R',  ModBlocks.RESOURCE_GENERATOR.get())
-                .group("opolisutilities")
-                .unlockedBy("has_item", has(ModItems.B_BUCKS))
-                .save(consumer);
-
         //Catalogue Book
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CATALOGUE_BOOK.get())
                 .requires(ModBlocks.CATALOGUE.get())
