@@ -7,6 +7,9 @@ TODO: fix portable gui crashing clients in single player in spawn chunks
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.11.7
+Fluid generator no longer tries to process a recipe if the input bucket is not going to produce a result
+
 4.11.6
 Deprecated Cloche classes in preparation for removal
 Removed cloche recipe

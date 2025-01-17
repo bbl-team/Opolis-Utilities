@@ -287,9 +287,9 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
         assert level != null;
 
         if (!level.isClientSide()) {
-
             sync();
 
+            // Speed upgrade recipe handling
             for (RecipeHolder<SpeedUpgradesRecipe> match : level.getRecipeManager().getRecipesFor(SpeedUpgradesRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
                 NonNullList<Ingredient> input = match.value().getIngredients();
                 for (Ingredient ingredient : input) {
@@ -307,25 +307,39 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
                 maxProgress = 220;
             }
 
+            // Fluid generator recipe handling
+            boolean isMatchingFluid = false; // Track whether the fluid matches
+
             for (RecipeHolder<FluidGeneratorRecipe> genBlocks : level.getRecipeManager().getRecipesFor(FluidGeneratorRecipe.Type.INSTANCE, NoInventoryRecipe.INSTANCE, level)) {
-                Item bucketItem = genBlocks.value().input().getFluid().getBucket();
-                if (this.itemHandler.getStackInSlot(0).is(bucketItem)) {
-                    resource = genBlocks.value().input().getFluid().getFluidType().toString();
+                Fluid recipeFluid = genBlocks.value().input().getFluid();
+
+                // Extract fluid from the bucket (modded or vanilla)
+                ItemStack bucketStack = this.itemHandler.getStackInSlot(0);
+                FluidStack bucketFluidStack = FluidUtil.getFluidContained(bucketStack).orElse(FluidStack.EMPTY);
+
+                if (!bucketFluidStack.isEmpty() && bucketFluidStack.getFluid() == recipeFluid) {
+                    isMatchingFluid = true;
+                    resource = recipeFluid.getFluidType().toString();
                     fluidAmount = genBlocks.value().input().getAmount();
                     level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, true));
                     break;
-                } else {
-                    resource = "";
-                    level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, false));                    }
+                }
             }
 
+            // Update block state if no matching fluid
+            if (!isMatchingFluid) {
+                resource = "";
+                level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(FluidGeneratorBlock.POWERED, false));
+            }
+
+            // Tank filling and progress handling
             if (this.itemHandler.getStackInSlot(0).isEmpty()) {
                 progress = 0;
             } else if (FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity()) {
                 FluidStack currentFluidInTank = FLUID_TANK.getFluid();
                 Fluid fluidStack = BuiltInRegistries.FLUID.get(ResourceLocation.parse(resource));
 
-                if (currentFluidInTank.isEmpty() || currentFluidInTank.getFluid() == fluidStack) {
+                if ((currentFluidInTank.isEmpty() || currentFluidInTank.getFluid() == fluidStack) && isMatchingFluid) {
                     progress++;
                     if (progress >= maxProgress) {
                         progress = 0;
@@ -338,5 +352,6 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
             }
         }
     }
+
 }
 

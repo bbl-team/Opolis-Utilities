@@ -104,6 +104,14 @@ dependencies {
     compileOnly "curse.maven:athena-841890:5629395"
     runtimeOnly "curse.maven:athena-841890:5629395"
 
+    //Ceramic Buckets
+    compileOnly "curse.maven:ceramic-bucket-363799:5676627"
+    runtimeOnly "curse.maven:ceramic-bucket-363799:5676627"
+
+    //Bucket Lib
+    compileOnly "curse.maven:bucketlib-560156:5800757"
+    runtimeOnly "curse.maven:bucketlib-560156:5800757"
+
 
     //EMI
 
