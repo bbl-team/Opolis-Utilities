@@ -2,10 +2,19 @@ Changelog Opolis Utilities
 
 TODO: Fix Shift clicking into output slots
 TODO: fix portable gui crashing clients in single player in spawn chunks
+1.22
+Resource generator config for times
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.11.10
+Removed the old patchouli book
+Fixed block breaker
+
+4.11.8
+Fluid generator no longer allows fluids to be pumped into it causing a duplication when the same fluid stack is both inserted and extracted
 
 4.11.7
 Fluid generator no longer tries to process a recipe if the input bucket is not going to produce a result

@@ -85,8 +85,12 @@ dependencies {
     runtimeOnly "curse.maven:titanium-287342:5897690"
 
     //BBL Core
-    compileOnly "curse.maven:bbl-core-1135181:5973478"
-    runtimeOnly "curse.maven:bbl-core-1135181:5973478"
+    compileOnly "curse.maven:bbl-core-1135181:6240092"
+    runtimeOnly "curse.maven:bbl-core-1135181:6240092"
+
+    //Casting
+    compileOnly "curse.maven:bbl-casting-1052163:6063327"
+    runtimeOnly "curse.maven:bbl-casting-1052163:6063327"
 
     //Mekanism
     compileOnly "curse.maven:mekanism-268560:5574951"
@@ -96,11 +100,11 @@ dependencies {
     compileOnly "curse.maven:chipped-456956:5681013"
     runtimeOnly "curse.maven:chipped-456956:5681013"
 
-    //Chipped
+    //resourceful lib
     compileOnly "curse.maven:resourceful-lib-570073:5793500"
     runtimeOnly "curse.maven:resourceful-lib-570073:5793500"
 
-    //Chipped
+    //athena
     compileOnly "curse.maven:athena-841890:5629395"
     runtimeOnly "curse.maven:athena-841890:5629395"
 

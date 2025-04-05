@@ -114,7 +114,7 @@ public class FluidGeneratorBlockEntity extends BlockEntity implements MenuProvid
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            return resource.getAmount() - FLUID_TANK.fill(resource, action);
+            return 0;// resource.getAmount() - FLUID_TANK.fill(resource, action);
         }
 
         @Override

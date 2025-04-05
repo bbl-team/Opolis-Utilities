@@ -1,5 +1,6 @@
 package com.benbenlaw.opolisutilities.block.entity.custom;
 
+import com.benbenlaw.core.block.UnbreakableResourceBlock;
 import com.benbenlaw.opolisutilities.block.entity.ModBlockEntities;
 import com.benbenlaw.opolisutilities.block.entity.custom.handler.InputOutputItemHandler;
 import com.benbenlaw.opolisutilities.screen.custom.BlockBreakerMenu;
@@ -40,6 +41,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -302,12 +304,13 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                             if (this.itemHandler.getStackInSlot(1).is(Item.BY_BLOCK.get(block)) && this.itemHandler.getStackInSlot(2).isEmpty()) {
 
-                                this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
-
-                                for (ItemStack drop : blockDrops) {
-                                    spawnBlockAsEntity(this.level, placeHere, drop);
-                                    maxProgress = 0;
+                                block.playerDestroy(level, fakePlayer, placeHere, level.getBlockState(placeHere), level.getBlockEntity(placeHere), tool);
+                                if (block instanceof UnbreakableResourceBlock) {
+                                    return;
+                                } else {
+                                    level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
                                 }
+
                                 if (tool.isDamageableItem()) {
                                     this.itemHandler.getStackInSlot(0).hurtAndBreak(1, fakePlayer, fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
@@ -319,13 +322,13 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
 
                             } else if (!this.itemHandler.getStackInSlot(2).is(Item.BY_BLOCK.get(block)) && this.itemHandler.getStackInSlot(1).isEmpty()) {
 
-                                this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
-
-                                for (ItemStack drop : blockDrops) {
-                                    spawnBlockAsEntity(this.level, placeHere, drop);
-                                    maxProgress = 0;
-
+                                block.playerDestroy(level, fakePlayer, placeHere, level.getBlockState(placeHere), level.getBlockEntity(placeHere), tool);
+                                if (block instanceof UnbreakableResourceBlock) {
+                                    return;
+                                } else {
+                                    level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
                                 }
+
                                 if (tool.isDamageableItem()) {
                                     this.itemHandler.getStackInSlot(0).hurtAndBreak(1, fakePlayer, fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
@@ -338,13 +341,13 @@ public class BlockBreakerBlockEntity extends BlockEntity implements MenuProvider
                             } else if (this.itemHandler.getStackInSlot(1).isEmpty() && this.itemHandler.getStackInSlot(2).isEmpty()) {
                                 //break block with/ without the needing the tool (no filter)
 
-                                this.level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
-
-                                for (ItemStack drop : blockDrops) {
-                                    spawnBlockAsEntity(this.level, placeHere, drop);
-                                    maxProgress = 0;
-
+                                block.playerDestroy(level, fakePlayer, placeHere, level.getBlockState(placeHere), level.getBlockEntity(placeHere), tool);
+                                if (block instanceof UnbreakableResourceBlock) {
+                                    return;
+                                } else {
+                                    level.setBlockAndUpdate(placeHere, Blocks.AIR.defaultBlockState());
                                 }
+
                                 if (tool.isDamageableItem()) {
                                     this.itemHandler.getStackInSlot(0).hurtAndBreak(1, fakePlayer, fakePlayer.getEquipmentSlotForItem(tool));
                                     playBrokenSound(level, placeHere);
