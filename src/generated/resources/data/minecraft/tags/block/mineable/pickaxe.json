@@ -12,6 +12,7 @@
     "opolisutilities:item_repairer",
     "opolisutilities:crafter",
     "opolisutilities:catalogue",
-    "opolisutilities:cloche"
+    "opolisutilities:cloche",
+    "opolisutilities:smart_crafting_table"
   ]
 }

@@ -33,7 +33,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 runs {
     configureEach {
-
         systemProperty 'forge.logging.markers', 'REGISTRIES'
         systemProperty 'forge.logging.console.level', 'debug'
         modSource project.sourceSets.main
@@ -45,14 +44,14 @@ runs {
 
     server {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
+        arguments '--nogui'  // change here
     }
     gameTestServer {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
     }
 
     data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        arguments '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 

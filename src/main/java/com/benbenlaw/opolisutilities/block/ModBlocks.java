@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,7 +60,6 @@ public class ModBlocks {
     public static final DeferredBlock<Block> FLUID_GENERATOR = registerBlock("fluid_generator",
             () -> new FluidGeneratorBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f,2.0f)
-
                     .noOcclusion()));
 
     public static final DeferredBlock<Block> CATALOGUE = registerBlock("catalogue",
@@ -99,6 +99,10 @@ public class ModBlocks {
                     .strength(4.5f,3.0f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)));
+
+    public static final DeferredBlock<Block> SMART_CRAFTING_TABLE = registerBlock("smart_crafting_table",
+            () -> new SmartCraftingTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)
+                    .sound(SoundType.WOOD)));
 
 
     //Light Level When Interacted With

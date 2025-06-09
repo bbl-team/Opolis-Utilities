@@ -9,7 +9,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-
+@Deprecated(forRemoval = true, since = "4.11.10")
 public class ModpackVersionCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher){

@@ -25,6 +25,8 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<FluidGeneratorMenu>> FLUID_GENERATOR_MENU;
     public static final DeferredHolder<MenuType<?>, MenuType<SummoningBlockMenu>> SUMMONING_BLOCK_MENU;
     public static final DeferredHolder<MenuType<?>, MenuType<ClocheMenu>> CLOCHE_MENU;
+    public static final DeferredHolder<MenuType<?>, MenuType<SmartCraftingMenu>> SMART_CRAFTING_MENU;
+
 
 
     static {
@@ -63,6 +65,11 @@ public class ModMenuTypes {
 
         CLOCHE_MENU = MENUS.register("cloche_menu", () ->
                 IMenuTypeExtension.create(ClocheMenu::new));
+
+        SMART_CRAFTING_MENU = MENUS.register("smart_crafting_menu", () ->
+                IMenuTypeExtension.create(SmartCraftingMenu::new));
+
+
 
 
     }

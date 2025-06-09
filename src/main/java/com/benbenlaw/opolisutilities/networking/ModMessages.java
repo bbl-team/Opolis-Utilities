@@ -19,11 +19,13 @@ public class ModMessages {
         registrar.playToServer(SaveRecipePayload.TYPE, SaveRecipePayload.STREAM_CODEC, PacketSaveRecipeButton.get()::handle);
         registrar.playToServer(PortableGUISelectorPayload.TYPE, PortableGUISelectorPayload.STREAM_CODEC, PacketPortableGUISelector.get()::handle);
         registrar.playToServer(ClearTankPayload.TYPE, ClearTankPayload.STREAM_CODEC, ClearTankPacket.get()::handle);
+        registrar.playToServer(SmartCraftingRecipeClickPayload.TYPE, SmartCraftingRecipeClickPayload.STREAM_CODEC, SmartCraftingRecipeClickPacket.get()::handle);
 
 
 
         //To Client From Server
         registrar.playToClient(RequestChunkLoadPayload.TYPE, RequestChunkLoadPayload.STREAM_CODEC, RequestChunkLoadPacket.get()::handle);
+        registrar.playToClient(SmartCraftingRecipePayload.TYPE, SmartCraftingRecipePayload.STREAM_CODEC, SmartCraftingRecipePacket.get()::handle);
 
 
     }

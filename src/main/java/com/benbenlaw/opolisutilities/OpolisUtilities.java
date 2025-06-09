@@ -110,6 +110,7 @@ public class OpolisUtilities {
             event.register(ModMenuTypes.FLUID_GENERATOR_MENU.get(), FluidGeneratorScreen::new);
             event.register(ModMenuTypes.SUMMONING_BLOCK_MENU.get(), SummoningBlockScreen::new);
             event.register(ModMenuTypes.CLOCHE_MENU.get(), ClocheScreen::new);
+            event.register(ModMenuTypes.SMART_CRAFTING_MENU.get(), SmartCraftingScreen::new);
 
         }
     }

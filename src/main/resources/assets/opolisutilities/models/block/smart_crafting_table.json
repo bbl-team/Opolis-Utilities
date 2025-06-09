@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "opolisutilities:block/smart_crafting_table"
+  }
+}

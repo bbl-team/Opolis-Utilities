@@ -42,6 +42,17 @@ public class OpolisUtilitiesRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput consumer) {
 
+        //Crafter
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SMART_CRAFTING_TABLE.get())
+                .pattern("CCC")
+                .pattern("A A")
+                .pattern("CCC")
+                .define('C', Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES)
+                .define('A', Tags.Items.RODS_WOODEN)
+                .group("opolisutilities")
+                .unlockedBy("has_item", has(Items.CRAFTING_TABLE))
+                .save(consumer);
+
         // Portable GUI
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORTABLE_GUI)
                 .pattern("E E")

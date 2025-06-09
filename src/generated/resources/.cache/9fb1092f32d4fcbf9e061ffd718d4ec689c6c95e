@@ -1,4 +1,4 @@
-// 1.21	2024-11-04T15:33:24.7514106	Recipes
+// 1.21.1	2025-06-09T18:00:22.6727228	Recipes
 d5345fdb937e87dbc4cd81a6e46a120aeeed3db8 data/opolisutilities/advancement/recipes/catalogue/catalogue/basic_loot_box.json
 04b8eab692bb6cb05deb1be0c93be6a2fcb94b23 data/opolisutilities/advancement/recipes/catalogue/catalogue/catalogue_book.json
 512db136535a433f26f651052dcf07d8649fd09c data/opolisutilities/advancement/recipes/cloche/cloche/acacia_sapling.json
@@ -39,7 +39,6 @@ b493e6be62feced1976d77535330ae78104e09ec data/opolisutilities/advancement/recipe
 b86180028dcbb2e1654d3ab34a6a0aace626305c data/opolisutilities/advancement/recipes/misc/catalogue_book.json
 fc3402006f5ebf2504727a3a3a5f7239c8e9d57d data/opolisutilities/advancement/recipes/misc/charcoal.json
 ebe044b12c9c222e1f055ca8d5df6ab2586526b5 data/opolisutilities/advancement/recipes/misc/chests.json
-f239f8a2ca662477e4da4d9b859352b30aea1fd0 data/opolisutilities/advancement/recipes/misc/cloche.json
 0a7f24c2ea30c2d052d43bb6f8611f341281b538 data/opolisutilities/advancement/recipes/misc/coal.json
 904d95ad60e2a33847db7846604254e10c513413 data/opolisutilities/advancement/recipes/misc/copper_ingot.json
 4cc201b9a6d1dd0e87c3fda4ac24bada57287f94 data/opolisutilities/advancement/recipes/misc/copper_nugget.json
@@ -68,6 +67,7 @@ a8cdb9ccc402cdc1420f4a6e1435c9d3f250f61f data/opolisutilities/advancement/recipe
 2f0a24172173db75a34b173f8ddd68d72e99436e data/opolisutilities/advancement/recipes/misc/resource_generator.json
 92e14caa4f1da5cf31a00facf839cb3acd90ae26 data/opolisutilities/advancement/recipes/misc/saddle.json
 ca9864a4c054aabd9de8a765062c5dc9b9a9bf85 data/opolisutilities/advancement/recipes/misc/sapling_grower.json
+b3add9667f4b4a5259499937cc9ebac1e803b43a data/opolisutilities/advancement/recipes/misc/smart_crafting_table.json
 acdcbfd119807422484b035b8f1008022cf2eab4 data/opolisutilities/advancement/recipes/misc/sticks.json
 cb85fac6bc318e35963bd534acbb77f9de2b3b6e data/opolisutilities/advancement/recipes/misc/summoning_block.json
 009d7ba0abaeaa5dd96ce550cb568733f45e9c60 data/opolisutilities/advancement/recipes/misc/wooden_shears.json
@@ -165,7 +165,6 @@ e1e8eb569a33247bacf31b801fbc877fef448e43 data/opolisutilities/recipe/catalogue/c
 330bef5efe2626a31d03993434324e4312f89470 data/opolisutilities/recipe/catalogue_book.json
 2f10d8356ba82290fd67726579acec3bb6be3c5e data/opolisutilities/recipe/charcoal.json
 0922645201102d6b0ca8f2649c8ab30cb2540f93 data/opolisutilities/recipe/chests.json
-9fd4e934e7314346254a40a287fc7910b7e6f639 data/opolisutilities/recipe/cloche.json
 6d8c841c7d9c1b3ae2a93861bdb3a8baae0a0262 data/opolisutilities/recipe/cloche/acacia_sapling.json
 54343eb4a72a01169a32b901316f3265a1f402b1 data/opolisutilities/recipe/cloche/bamboo.json
 62577c623c3599ce2b6dafd5b8563da1300a7470 data/opolisutilities/recipe/cloche/beetroot.json
@@ -227,6 +226,7 @@ eac894c2bbf160d736726d16f58d0b8928dd7b99 data/opolisutilities/recipe/resource_ge
 7c7f118dcdc0ee7996f6fcb2fdf61575433e0337 data/opolisutilities/recipe/resource_generator/stones.json
 6aaffba0a6977adb7e18a4da44e13f7d8473d569 data/opolisutilities/recipe/saddle.json
 95bb7fb10508401a18e09313a7144a2cd80d925c data/opolisutilities/recipe/sapling_grower.json
+b3a2033e8173e36aefb066168cb56840589c36ce data/opolisutilities/recipe/smart_crafting_table.json
 c0bbe8d216d916b1c767dd9d4c95e4d62b3f41f0 data/opolisutilities/recipe/soaking_table/mud.json
 17d660da2e180fb643066c050dac59b3a93429fc data/opolisutilities/recipe/soaking_table/soaked_paper.json
 903e6c562ac8e2343fe645de1325f3e3b4cbc7fc data/opolisutilities/recipe/soaking_table/water_bottle.json

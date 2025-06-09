@@ -37,6 +37,7 @@
   "block.opolisutilities.fluid_generator": "Fluid Generator",
   "block.opolisutilities.ender_ore": "Ender Ore",
   "block.opolisutilities.deepslate_ender_ore": "Deepslate Ender Ore",
+  "block.opolisutilities.smart_crafting_table": "Smart Crafting Table (BETA)",
 
   "block.opolisutilities.redstone_clock": "Redstone Clock",
   "gui.opolisutilities.shift": "SHIFT +/- 50",

@@ -4,10 +4,15 @@ TODO: Fix Shift clicking into output slots
 TODO: fix portable gui crashing clients in single player in spawn chunks
 1.22
 Resource generator config for times
+Deatrh and home stone should use GlobalPos
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.12.0
+Added Smart Crafting Table, this block will allow you to craft items by checking your inventory and selecting the item you want
+Clicking the item will give you the item and remove the required items from your inventory
 
 4.11.10
 Removed the old patchouli book

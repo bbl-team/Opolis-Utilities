@@ -12,13 +12,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
-
+@Deprecated(forRemoval = true, since = "4.11.10")
 public class DiscordCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
         dispatcher.register(Commands.literal("discord").executes((command) -> execute(command)));
     }
-
     private static int execute(CommandContext<CommandSourceStack> command){
         if(command.getSource().getEntity() instanceof Player){
             Player player = (Player) command.getSource().getEntity();

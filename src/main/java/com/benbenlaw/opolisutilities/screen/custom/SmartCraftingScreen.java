@@ -1,0 +1,251 @@
+package com.benbenlaw.opolisutilities.screen.custom;
+
+import com.benbenlaw.opolisutilities.OpolisUtilities;
+import com.benbenlaw.opolisutilities.networking.packets.SmartCraftingRecipeClickPacket;
+import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
+import com.benbenlaw.opolisutilities.networking.payload.SmartCraftingRecipeClickPayload;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.util.Collections;
+import java.util.List;
+
+public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMenu> {
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/smart_crafting_table.png");
+
+    private static final int TOOLTIP_SIZE = 62;
+    private static final ResourceLocation CRAFTING_TOOLTIP_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/smart_crafting_table_render.png");
+
+    private List<CraftingRecipe> recipes = Collections.emptyList();
+    private List<RecipeHolder<CraftingRecipe>> clientRecipes = Collections.emptyList();
+
+    public void setClientRecipes(List<RecipeHolder<CraftingRecipe>> recipes) {
+        this.clientRecipes = recipes;
+    }
+
+    // Slot size and layout
+    private static final int ICON_SIZE = 16;
+    private static final int ICON_SPACING = 17;
+    private static final int VISIBLE_ROWS = 3;
+    private static final int VISIBLE_COLS = 8;
+
+    private int hoveredRecipeIndex = -1;
+    private int scrollOffset = 0;
+
+    public SmartCraftingScreen(SmartCraftingMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
+        this.imageWidth = 176;
+        this.imageHeight = 166;
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, TEXTURE);
+
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        renderRecipeIcons(guiGraphics, mouseX, mouseY);
+        renderTooltip(guiGraphics, mouseX, mouseY);
+        renderRecipeIngredients(guiGraphics, mouseX, mouseY);
+    }
+
+    private void renderRecipeIcons(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        List<RecipeHolder<CraftingRecipe>> recipes = this.clientRecipes;
+
+        int xStart = (width - imageWidth) / 2 + 11;
+        int yStart = (height - imageHeight) / 2 + 18;
+
+        int maxRows = (int) Math.ceil(recipes.size() / (float) VISIBLE_COLS);
+        int maxScroll = Math.max(0, maxRows - VISIBLE_ROWS);
+
+        scrollOffset = Math.min(scrollOffset, maxScroll);
+        scrollOffset = Math.max(scrollOffset, 0);
+        hoveredRecipeIndex = -1;
+
+        for (int i = 0; i < recipes.size(); i++) {
+            int row = i / VISIBLE_COLS;
+            int col = i % VISIBLE_COLS;
+
+            if (row < scrollOffset || row >= scrollOffset + VISIBLE_ROWS) {
+                continue;
+            }
+
+            RecipeHolder<CraftingRecipe> recipe = recipes.get(i);
+            assert Minecraft.getInstance().level != null;
+
+            ItemStack resultStack = recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).copy();
+
+            int iconX = xStart + col * ICON_SPACING;
+            int iconY = yStart + (row - scrollOffset) * ICON_SPACING;
+
+            guiGraphics.renderItem(resultStack, iconX, iconY);
+            guiGraphics.renderItemDecorations(minecraft.font, resultStack, iconX, iconY);
+
+            // Check if mouse is over this icon
+            if (mouseX >= iconX && mouseX <= iconX + ICON_SIZE &&
+                    mouseY >= iconY && mouseY <= iconY + ICON_SIZE) {
+                hoveredRecipeIndex = i; // mark this recipe as hovered
+                guiGraphics.renderTooltip(font, resultStack.getHoverName(), mouseX, mouseY);
+            }
+        }
+    }
+
+
+    private void renderRecipeIngredients(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        if (hoveredRecipeIndex == -1) return;
+
+        RecipeHolder<CraftingRecipe> recipeHolder = clientRecipes.get(hoveredRecipeIndex);
+        CraftingRecipe recipe = recipeHolder.value();
+
+        List<Ingredient> ingredients = recipe.getIngredients();
+
+        int gridSize = 3;
+        int iconSize = 19;  // spacing between icons
+
+        // Fixed tooltip position left of GUI
+        int tooltipX = this.leftPos - 58;
+        int tooltipY = this.topPos;
+
+        int recipeWidth = 3;
+        int recipeHeight = 3;
+
+        // Calculate offset to center recipe in 3x3 grid
+        int offsetX = 0;
+        int offsetY = 0;
+
+        if (recipe instanceof net.minecraft.world.item.crafting.ShapedRecipe shaped) {
+            recipeWidth = shaped.getWidth();
+            recipeHeight = shaped.getHeight();
+            offsetX = (gridSize - recipeWidth) / 2;
+            offsetY = (gridSize - recipeHeight) / 2;
+        }
+
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, 400);
+
+        int texWidth = 64;
+        int texHeight = 64;
+
+        RenderSystem.setShaderTexture(0, CRAFTING_TOOLTIP_TEXTURE);
+        guiGraphics.blit(
+                CRAFTING_TOOLTIP_TEXTURE,
+                tooltipX,
+                tooltipY,
+                0, 0,
+                62, 62,
+                texWidth,
+                texHeight
+        );
+
+        // Draw ingredients with proper mapping
+        for (int slotY = 0; slotY < gridSize; slotY++) {
+            for (int slotX = 0; slotX < gridSize; slotX++) {
+                int ingredientX = slotX - offsetX;
+                int ingredientY = slotY - offsetY;
+
+                ItemStack stack = ItemStack.EMPTY;
+
+                // Only draw if inside recipe bounds
+                if (ingredientX >= 0 && ingredientX < recipeWidth && ingredientY >= 0 && ingredientY < recipeHeight) {
+                    int ingredientIndex = ingredientY * recipeWidth + ingredientX;
+                    if (ingredientIndex < ingredients.size()) {
+                        Ingredient ing = ingredients.get(ingredientIndex);
+                        if (!ing.isEmpty()) {
+                            ItemStack[] matchingStacks = ing.getItems();
+                            if (matchingStacks.length > 0) {
+                                stack = matchingStacks[0];
+                            }
+                        }
+                    }
+                }
+
+                int x = tooltipX + slotX * iconSize + 5;
+                int y = tooltipY + slotY * iconSize + 5;
+
+                guiGraphics.renderItem(stack, x, y);
+                if (!stack.isEmpty()) {
+                    guiGraphics.renderItemDecorations(minecraft.font, stack, x, y);
+                }
+            }
+        }
+
+        guiGraphics.pose().popPose();
+    }
+
+
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        guiGraphics.drawString(font, title, 8, 6, 0x404040, false);
+        guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 96 + 2, 0x404040, false);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0) {
+            int xStart = (width - imageWidth) / 2 + 11;
+            int yStart = (height - imageHeight) / 2 + 18;
+
+            for (int i = 0; i < clientRecipes.size(); i++) {
+                int row = i / VISIBLE_COLS;
+                int col = i % VISIBLE_COLS;
+
+                // Only consider visible rows with scrollOffset
+                if (row < scrollOffset || row >= scrollOffset + VISIBLE_ROWS) {
+                    continue;
+                }
+
+                int iconX = xStart + col * ICON_SPACING;
+                int iconY = yStart + (row - scrollOffset) * ICON_SPACING;
+
+                if (mouseX >= iconX && mouseX <= iconX + ICON_SIZE &&
+                        mouseY >= iconY && mouseY <= iconY + ICON_SIZE) {
+
+                    var recipeId = clientRecipes.get(i).id();
+                    PacketDistributor.sendToServer(new SmartCraftingRecipeClickPayload(recipeId));
+                    return true; // Click handled
+                }
+            }
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        scrollOffset -= deltaY;
+
+        int maxRows = (int) Math.ceil(clientRecipes.size() / (float) VISIBLE_COLS);
+        int maxScroll = Math.max(0, maxRows - VISIBLE_ROWS);
+
+        if (scrollOffset < 0) scrollOffset = 0;
+        if (scrollOffset > maxScroll) scrollOffset = maxScroll;
+
+        return true;
+    }
+}

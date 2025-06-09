@@ -16,6 +16,7 @@ import com.benbenlaw.opolisutilities.networking.payload.PortableGUISelectorPaylo
 import com.benbenlaw.opolisutilities.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
@@ -124,8 +125,6 @@ public class ModEvents {
         }
 
     }
-
-
 
     @SubscribeEvent
     public static void addDeathStoneOnPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
