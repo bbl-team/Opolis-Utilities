@@ -10,6 +10,14 @@ Deatrh and home stone should use GlobalPos
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.12.1
+Crafting remainders now work with the smart crafting table
+Grid crafting recipe now shows the item from your inventory not any item if the recipe is using tags
+Adjusted position of the items in the smart crafting table
+Adjusted the smart crafting table gui to be a consistent size on the borders
+Added Shift Clicking Support, this will craft as many items as possible using up to a stack of input items, eg a stack of logs will craft 4 stacks of planks
+Added alternative gui called "smart_crafting_table_borders" this has the item background inside the gui
+
 4.12.0
 Added Smart Crafting Table, this block will allow you to craft items by checking your inventory and selecting the item you want
 Clicking the item will give you the item and remove the required items from your inventory

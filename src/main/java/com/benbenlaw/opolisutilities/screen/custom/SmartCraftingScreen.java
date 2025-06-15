@@ -6,6 +6,7 @@ import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayloa
 import com.benbenlaw.opolisutilities.networking.payload.SmartCraftingRecipeClickPayload;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -21,8 +22,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMenu> {
     private static final ResourceLocation TEXTURE =
@@ -79,7 +82,7 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
         List<RecipeHolder<CraftingRecipe>> recipes = this.clientRecipes;
 
         int xStart = (width - imageWidth) / 2 + 11;
-        int yStart = (height - imageHeight) / 2 + 18;
+        int yStart = (height - imageHeight) / 2 + 17;
 
         int maxRows = (int) Math.ceil(recipes.size() / (float) VISIBLE_COLS);
         int maxScroll = Math.max(0, maxRows - VISIBLE_ROWS);
@@ -111,7 +114,15 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
             if (mouseX >= iconX && mouseX <= iconX + ICON_SIZE &&
                     mouseY >= iconY && mouseY <= iconY + ICON_SIZE) {
                 hoveredRecipeIndex = i; // mark this recipe as hovered
-                guiGraphics.renderTooltip(font, resultStack.getHoverName(), mouseX, mouseY);
+
+                List<Component> tooltip = new ArrayList<>();
+                tooltip.add(resultStack.getHoverName());
+
+                if (hasShiftDown()) {
+                    tooltip.add(Component.literal("SHIFT to craft as many as possible!").withStyle(ChatFormatting.RED));
+                }
+
+                guiGraphics.renderTooltip(font, tooltip, Optional.empty(), mouseX, mouseY);
             }
         }
     }
@@ -126,7 +137,7 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
         List<Ingredient> ingredients = recipe.getIngredients();
 
         int gridSize = 3;
-        int iconSize = 19;  // spacing between icons
+        int iconSize = 18;  // spacing between icons
 
         // Fixed tooltip position left of GUI
         int tooltipX = this.leftPos - 58;
@@ -159,8 +170,8 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
                 tooltipY,
                 0, 0,
                 62, 62,
-                texWidth,
-                texHeight
+                62,
+                62
         );
 
         // Draw ingredients with proper mapping
@@ -177,9 +188,30 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
                     if (ingredientIndex < ingredients.size()) {
                         Ingredient ing = ingredients.get(ingredientIndex);
                         if (!ing.isEmpty()) {
+                            ItemStack matchedStack = ItemStack.EMPTY;
                             ItemStack[] matchingStacks = ing.getItems();
+
                             if (matchingStacks.length > 0) {
-                                stack = matchingStacks[0];
+                                // Try to find a match from player's inventory
+                                assert Minecraft.getInstance().player != null;
+                                for (ItemStack inventoryStack : Minecraft.getInstance().player.getInventory().items) {
+                                    if (inventoryStack.isEmpty()) continue;
+                                    for (ItemStack candidate : matchingStacks) {
+                                        if (ItemStack.isSameItem(inventoryStack, candidate)) {
+                                            matchedStack = inventoryStack.copy();
+                                            matchedStack.setCount(1); // Display single item
+                                            break;
+                                        }
+                                    }
+                                    if (!matchedStack.isEmpty()) break;
+                                }
+
+                                // Fallback to first matching item
+                                if (matchedStack.isEmpty()) {
+                                    matchedStack = matchingStacks[0];
+                                }
+
+                                stack = matchedStack;
                             }
                         }
                     }
@@ -210,7 +242,7 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0) {
             int xStart = (width - imageWidth) / 2 + 11;
-            int yStart = (height - imageHeight) / 2 + 18;
+            int yStart = (height - imageHeight) / 2 + 17;
 
             for (int i = 0; i < clientRecipes.size(); i++) {
                 int row = i / VISIBLE_COLS;
@@ -228,7 +260,9 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
                         mouseY >= iconY && mouseY <= iconY + ICON_SIZE) {
 
                     var recipeId = clientRecipes.get(i).id();
-                    PacketDistributor.sendToServer(new SmartCraftingRecipeClickPayload(recipeId));
+                    assert Minecraft.getInstance().player != null;
+                    boolean isShiftClick = hasShiftDown();
+                    PacketDistributor.sendToServer(new SmartCraftingRecipeClickPayload(recipeId, isShiftClick));
                     return true; // Click handled
                 }
             }

@@ -149,49 +149,79 @@ public class SmartCraftingMenu extends AbstractContainerMenu {
         return CraftingInput.ofPositioned(3, 3, grid).input();
     }
 
-
-
-    public void craftRecipeById(ResourceLocation recipeId) {
+    public void craftRecipeById(ResourceLocation recipeId, boolean shiftClick) {
         if (level.isClientSide) return;
 
         RecipeManager rm = level.getRecipeManager();
         Optional<RecipeHolder<?>> optionalRecipe = rm.byKey(recipeId);
-
         if (optionalRecipe.isEmpty()) return;
 
         Recipe<?> recipeHolder = optionalRecipe.get().value();
-        CraftingInput input = buildCraftingInputForRecipe((CraftingRecipe) recipeHolder, player.getInventory());
+        if (!(recipeHolder instanceof CraftingRecipe craftingRecipe)) return;
 
-        if (rm.getRecipeFor(RecipeType.CRAFTING, input, (ServerLevel) level)
-                .map(RecipeHolder::value)
-                .filter(r -> r == recipeHolder)
-                .isEmpty()) {
-            return;
-        }
+        int maxCrafts = shiftClick ? getMaxCraftableAmount(craftingRecipe) : 1;
 
-        // Remove required ingredients from player's inventory
-        for (Ingredient ingredient : recipeHolder.getIngredients()) {
-            if (ingredient.isEmpty()) continue;
+        for (int i = 0; i < maxCrafts; i++) {
+            CraftingInput input = buildCraftingInputForRecipe(craftingRecipe, player.getInventory());
 
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                ItemStack stack = player.getInventory().getItem(i);
-                if (ingredient.test(stack)) {
-                    stack.shrink(1);
-                    if (stack.isEmpty()) {
-                        player.getInventory().setItem(i, ItemStack.EMPTY);
+            if (!craftingRecipe.matches(input, level)) break;
+
+            NonNullList<ItemStack> remainingItems = craftingRecipe.getRemainingItems(input);
+
+            for (int j = 0; j < craftingRecipe.getIngredients().size(); j++) {
+                Ingredient ingredient = craftingRecipe.getIngredients().get(j);
+                if (ingredient.isEmpty()) continue;
+
+                for (int k = 0; k < player.getInventory().getContainerSize(); k++) {
+                    ItemStack stack = player.getInventory().getItem(k);
+                    if (ingredient.test(stack)) {
+                        stack.shrink(1);
+                        if (stack.isEmpty()) {
+                            player.getInventory().setItem(k, ItemStack.EMPTY);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
+
+            for (ItemStack remainder : remainingItems) {
+                if (!remainder.isEmpty() && !player.getInventory().add(remainder)) {
+                    player.drop(remainder, false);
+                }
+            }
+
+            ItemStack result = craftingRecipe.assemble(input, level.registryAccess());
+            player.getInventory().placeItemBackInInventory(result);
         }
 
-        ItemStack result = ((CraftingRecipe) recipeHolder).assemble(input, level.registryAccess());
-        player.getInventory().placeItemBackInInventory(result);
         player.playNotifySound(SoundEvents.LEVER_CLICK, SoundSource.PLAYERS, 1.0F, 1.0F);
-
         player.getInventory().setChanged();
         player.inventoryMenu.broadcastChanges();
         updateValidRecipes();
+    }
+
+    private int getMaxCraftableAmount(CraftingRecipe recipe) {
+        Inventory inv = player.getInventory();
+        int max = Integer.MAX_VALUE;
+
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            if (ingredient.isEmpty()) continue;
+
+            int count = 0;
+            for (ItemStack stack : inv.items) {
+                if (ingredient.test(stack)) {
+                    count += stack.getCount();
+                }
+            }
+
+            int possible = count / 1; // Each ingredient needed once per craft
+            if (possible < max) {
+                max = possible;
+            }
+        }
+
+        // Avoid infinite loops due to buggy recipes
+        return Math.max(0, Math.min(max, 64));
     }
 
 
