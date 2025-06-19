@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated(since = "4.12.2", forRemoval = true)
 public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/smart_crafting_table.png");
@@ -73,9 +74,9 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        renderRecipeIngredients(guiGraphics, mouseX, mouseY);
         renderRecipeIcons(guiGraphics, mouseX, mouseY);
         renderTooltip(guiGraphics, mouseX, mouseY);
-        renderRecipeIngredients(guiGraphics, mouseX, mouseY);
     }
 
     private void renderRecipeIcons(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -158,7 +159,7 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
         }
 
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0, 0, 400);
+        guiGraphics.pose().translate(0, 0, 0);
 
         int texWidth = 64;
         int texHeight = 64;

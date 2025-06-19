@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Deprecated(since = "4.12.2", forRemoval = true)
 public class SmartCraftingMenu extends AbstractContainerMenu {
 
     protected Level level;

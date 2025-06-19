@@ -10,6 +10,11 @@ Deatrh and home stone should use GlobalPos
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.12.2
+Fixed Smart Crafting Table rendering crafting items above the item tooltip
+Everything related to the smart crafting table is now Deprecated and will be removed in the major Opolis Utilities update, this will become its own mod
+    in the future
+
 4.12.1
 Crafting remainders now work with the smart crafting table
 Grid crafting recipe now shows the item from your inventory not any item if the recipe is using tags
