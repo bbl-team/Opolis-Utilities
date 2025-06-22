@@ -4,11 +4,16 @@ TODO: Fix Shift clicking into output slots
 TODO: fix portable gui crashing clients in single player in spawn chunks
 1.22
 Resource generator config for times
-Deatrh and home stone should use GlobalPos
+Death and home stone should use GlobalPos
 
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.12.3
+Fixed crash with smart crafting table trying to render ingredient when there is no recipe
+Smart crafting table now caches inventory when opened, if inventory changes from source that are not the smart crafting table
+    recipe list will now update to show the new valid recipes with the new player inventory
 
 4.12.2
 Fixed Smart Crafting Table rendering crafting items above the item tooltip

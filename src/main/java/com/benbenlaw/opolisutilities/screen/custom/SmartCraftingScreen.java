@@ -132,6 +132,10 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
     private void renderRecipeIngredients(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (hoveredRecipeIndex == -1) return;
 
+        if (clientRecipes.isEmpty() || hoveredRecipeIndex < 0 || hoveredRecipeIndex >= clientRecipes.size()) {
+            return;
+        }
+
         RecipeHolder<CraftingRecipe> recipeHolder = clientRecipes.get(hoveredRecipeIndex);
         CraftingRecipe recipe = recipeHolder.value();
 

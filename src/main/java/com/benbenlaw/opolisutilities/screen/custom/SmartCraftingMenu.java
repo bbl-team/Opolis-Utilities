@@ -34,6 +34,7 @@ public class SmartCraftingMenu extends AbstractContainerMenu {
     protected ContainerData data;
     protected Player player;
     protected BlockPos blockPos;
+    private final NonNullList<ItemStack> lastInventorySnapshot;
 
     public SmartCraftingMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
         this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(2));
@@ -46,6 +47,11 @@ public class SmartCraftingMenu extends AbstractContainerMenu {
         this.blockPos = blockPos;
         this.level = inventory.player.level();
         this.data = data;
+
+        this.lastInventorySnapshot = NonNullList.withSize(player.getInventory().items.size(), ItemStack.EMPTY);
+        for (int i = 0; i < player.getInventory().items.size(); i++) {
+            this.lastInventorySnapshot.set(i, player.getInventory().items.get(i).copy());
+        }
 
         if (!level.isClientSide) {
             updateValidRecipes();
@@ -224,6 +230,34 @@ public class SmartCraftingMenu extends AbstractContainerMenu {
         return Math.max(0, Math.min(max, 64));
     }
 
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+
+        if (level.isClientSide) return;
+
+        boolean changed = false;
+        List<ItemStack> current = player.getInventory().items;
+
+        for (int i = 0; i < current.size(); i++) {
+            ItemStack oldStack = lastInventorySnapshot.get(i);
+            ItemStack newStack = current.get(i);
+
+            if (!ItemStack.matches(oldStack, newStack)) {
+                changed = true;
+                break;
+            }
+        }
+
+        if (changed) {
+            updateValidRecipes();
+
+            // Update the snapshot
+            for (int i = 0; i < current.size(); i++) {
+                lastInventorySnapshot.set(i, current.get(i).copy());
+            }
+        }
+    }
 
     @Override
     public @NotNull ItemStack quickMoveStack(Player p_38941_, int p_38942_) {
