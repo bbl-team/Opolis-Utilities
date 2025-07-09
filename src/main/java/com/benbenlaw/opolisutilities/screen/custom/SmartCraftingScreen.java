@@ -4,10 +4,12 @@ import com.benbenlaw.opolisutilities.OpolisUtilities;
 import com.benbenlaw.opolisutilities.networking.packets.SmartCraftingRecipeClickPacket;
 import com.benbenlaw.opolisutilities.networking.payload.IncreaseTickButtonPayload;
 import com.benbenlaw.opolisutilities.networking.payload.SmartCraftingRecipeClickPayload;
+import com.benbenlaw.opolisutilities.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.Minecraft;
@@ -15,12 +17,14 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,14 +37,20 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/smart_crafting_table.png");
 
     private static final int TOOLTIP_SIZE = 62;
+
     private static final ResourceLocation CRAFTING_TOOLTIP_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID, "textures/gui/smart_crafting_table_render.png");
 
+    static final ResourceLocation SCROLL_SPRITE =
+            ResourceLocation.fromNamespaceAndPath(OpolisUtilities.MOD_ID,"textures/gui/interface_scroll.png");
+
     private List<CraftingRecipe> recipes = Collections.emptyList();
+
     private List<RecipeHolder<CraftingRecipe>> clientRecipes = Collections.emptyList();
 
     public void setClientRecipes(List<RecipeHolder<CraftingRecipe>> recipes) {
         this.clientRecipes = recipes;
+        updateFilteredRecipes();
     }
 
     // Slot size and layout
@@ -49,14 +59,90 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
     private static final int VISIBLE_ROWS = 3;
     private static final int VISIBLE_COLS = 8;
 
+    private static final int SCROLLBAR_WIDTH = 12;
+    private static final int SCROLLBAR_HEIGHT = 54;
+    private static final int SCROLLBAR_X_OFFSET = 154;
+    private static final int SCROLLBAR_Y_OFFSET = 15;
+
     private int hoveredRecipeIndex = -1;
     private int scrollOffset = 0;
+    private boolean isDraggingScrollbar = false;
+
+    private static final int COLUMNS = 8;
+    public static int visibleRows = 3;
+    private final int itemsPerPage = COLUMNS * visibleRows;
+
+    private EditBox searchBox;
+    private String lastSearchText = "";
+    private List<RecipeHolder<CraftingRecipe>> filteredRecipes = Collections.emptyList();
+    private int dragOffsetY = 0;
 
     public SmartCraftingScreen(SmartCraftingMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageWidth = 176;
         this.imageHeight = 166;
     }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        int x = (width - imageWidth) / 2 + 8;
+        int y = (height - imageHeight) / 2 - 14; // position above GUI
+
+        searchBox = new EditBox(font, x, y, 141, 15, Component.literal("Search..."));
+        searchBox.setMaxLength(50);
+        searchBox.setResponder(this::onSearchTextChanged);
+        searchBox.setFocused(true);
+        searchBox.setBordered(true);
+        searchBox.setVisible(true);
+
+        addRenderableWidget(searchBox);
+
+        updateFilteredRecipes();
+    }
+
+    private void onSearchTextChanged(String text) {
+        lastSearchText = text.toLowerCase();
+        updateFilteredRecipes();
+    }
+
+    private void updateFilteredRecipes() {
+        if (lastSearchText.isEmpty()) {
+            filteredRecipes = clientRecipes;
+        } else {
+            filteredRecipes = clientRecipes.stream()
+                    .filter(holder -> {
+                        ItemStack result = holder.value().getResultItem(Minecraft.getInstance().level.registryAccess());
+                        String name = result.getHoverName().getString().toLowerCase();
+                        return name.contains(lastSearchText);
+                    })
+                    .toList();
+        }
+    }
+
+    @Override
+    public boolean charTyped(char codePoint, int modifiers) {
+        return searchBox.charTyped(codePoint, modifiers) || super.charTyped(codePoint, modifiers);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            return super.keyPressed(keyCode, scanCode, modifiers);
+        }
+
+        if (searchBox.isFocused()) {
+            if (searchBox.keyPressed(keyCode, scanCode, modifiers) || searchBox.canConsumeInput()) {
+                return true;
+            }
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+
+    }
+
+
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
@@ -68,19 +154,32 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+
+
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+
+        if (filteredRecipes.isEmpty() && !clientRecipes.isEmpty() && lastSearchText.isEmpty()) {
+            filteredRecipes = clientRecipes;
+        }
+
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
         renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         renderRecipeIngredients(guiGraphics, mouseX, mouseY);
         renderRecipeIcons(guiGraphics, mouseX, mouseY);
         renderTooltip(guiGraphics, mouseX, mouseY);
+
+        //guiGraphics.blit(SCROLL_SPRITE, x + SCROLLBAR_X_OFFSET, y + SCROLLBAR_Y_OFFSET, 168, 0, 12, 15, 12, 15);
+
     }
 
     private void renderRecipeIcons(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        List<RecipeHolder<CraftingRecipe>> recipes = this.clientRecipes;
+        List<RecipeHolder<CraftingRecipe>> recipes = this.filteredRecipes;
 
         int xStart = (width - imageWidth) / 2 + 11;
         int yStart = (height - imageHeight) / 2 + 17;
@@ -126,17 +225,60 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
                 guiGraphics.renderTooltip(font, tooltip, Optional.empty(), mouseX, mouseY);
             }
         }
+
+        // Draw the scroll bar
+        int guiX = (width - imageWidth) / 2;
+        int guiY = (height - imageHeight) / 2;
+
+        int totalRows = (int) Math.ceil((double) filteredRecipes.size() / VISIBLE_COLS);
+
+        if (maxScroll > 0) {
+            float scrollPercent = scrollOffset / (float) maxScroll;
+
+            int knobHeight = 15; // Height of your knob texture
+            int trackHeight = SCROLLBAR_HEIGHT - knobHeight;
+            int knobY = (int)(scrollPercent * trackHeight);
+
+            guiGraphics.blit(
+                    SCROLL_SPRITE,
+                    guiX + SCROLLBAR_X_OFFSET,
+                    guiY + SCROLLBAR_Y_OFFSET + knobY,
+                    0, 0,             // U, V in your texture
+                    12, knobHeight,   // width, height of the knob texture
+                    12, 15            // texture atlas size (only needed if you're using texture atlas)
+            );
+
+        }
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (isDraggingScrollbar) {
+            int scrollbarY = topPos + SCROLLBAR_Y_OFFSET;
+            int handleHeight = 15;
+
+            int totalRows = (int) Math.ceil((double) filteredRecipes.size() / VISIBLE_COLS);
+            int maxScroll = Math.max(0, totalRows - VISIBLE_ROWS);
+
+            int relativeY = (int) mouseY - scrollbarY - dragOffsetY;
+            float percent = Mth.clamp(relativeY / (float)(SCROLLBAR_HEIGHT - handleHeight), 0.0F, 1.0F);
+
+            // scrollOffset is in rows
+            scrollOffset = Mth.clamp(Math.round(percent * maxScroll), 0, maxScroll);
+            return true;
+        }
+
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
 
     private void renderRecipeIngredients(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (hoveredRecipeIndex == -1) return;
 
-        if (clientRecipes.isEmpty() || hoveredRecipeIndex < 0 || hoveredRecipeIndex >= clientRecipes.size()) {
+        if (filteredRecipes.isEmpty() || hoveredRecipeIndex < 0 || hoveredRecipeIndex >= filteredRecipes.size()) {
             return;
         }
-
-        RecipeHolder<CraftingRecipe> recipeHolder = clientRecipes.get(hoveredRecipeIndex);
+        RecipeHolder<CraftingRecipe> recipeHolder = filteredRecipes.get(hoveredRecipeIndex);
         CraftingRecipe recipe = recipeHolder.value();
 
         List<Ingredient> ingredients = recipe.getIngredients();
@@ -249,7 +391,7 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
             int xStart = (width - imageWidth) / 2 + 11;
             int yStart = (height - imageHeight) / 2 + 17;
 
-            for (int i = 0; i < clientRecipes.size(); i++) {
+            for (int i = 0; i < filteredRecipes.size(); i++) {
                 int row = i / VISIBLE_COLS;
                 int col = i % VISIBLE_COLS;
 
@@ -264,7 +406,7 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
                 if (mouseX >= iconX && mouseX <= iconX + ICON_SIZE &&
                         mouseY >= iconY && mouseY <= iconY + ICON_SIZE) {
 
-                    var recipeId = clientRecipes.get(i).id();
+                    var recipeId = filteredRecipes.get(i).id();
                     assert Minecraft.getInstance().player != null;
                     boolean isShiftClick = hasShiftDown();
                     PacketDistributor.sendToServer(new SmartCraftingRecipeClickPayload(recipeId, isShiftClick));
@@ -272,18 +414,47 @@ public class SmartCraftingScreen extends AbstractContainerScreen<SmartCraftingMe
                 }
             }
         }
+
+        if (button == 1) { // Right-click
+            if (searchBox.isMouseOver(mouseX, mouseY)) {
+                searchBox.setValue("");
+                onSearchTextChanged(""); // Also trigger filtering
+                return true;
+            }
+        }
+
+        int scrollbarX = leftPos + SCROLLBAR_X_OFFSET;
+        int scrollbarY = topPos + SCROLLBAR_Y_OFFSET;
+        int handleHeight = 15;
+        int maxScroll = Math.max(0, filteredRecipes.size() - itemsPerPage);
+        if (maxScroll > 0) {
+            float scrollPercent = scrollOffset / (float) maxScroll;
+            int handleY = scrollbarY + (int) ((SCROLLBAR_HEIGHT - handleHeight) * scrollPercent);
+
+            if (MouseUtil.isMouseOver(mouseX, mouseY, scrollbarX, handleY, SCROLLBAR_WIDTH, handleHeight)) {
+                isDraggingScrollbar = true;
+                dragOffsetY = (int) mouseY - handleY;
+                return true;
+            } else {
+                isDraggingScrollbar = false;
+            }
+        }
+
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
-        scrollOffset -= deltaY;
-
-        int maxRows = (int) Math.ceil(clientRecipes.size() / (float) VISIBLE_COLS);
+        int maxRows = (int) Math.ceil(filteredRecipes.size() / (float) VISIBLE_COLS);
         int maxScroll = Math.max(0, maxRows - VISIBLE_ROWS);
 
-        if (scrollOffset < 0) scrollOffset = 0;
-        if (scrollOffset > maxScroll) scrollOffset = maxScroll;
+        // Scrolling up: deltaY > 0 -> decrease scrollOffset (go up one row)
+        // Scrolling down: deltaY < 0 -> increase scrollOffset (go down one row)
+        if (deltaY < 0 && scrollOffset < maxScroll) {
+            scrollOffset++;
+        } else if (deltaY > 0 && scrollOffset > 0) {
+            scrollOffset--;
+        }
 
         return true;
     }

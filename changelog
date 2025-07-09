@@ -2,6 +2,7 @@ Changelog Opolis Utilities
 
 TODO: Fix Shift clicking into output slots
 TODO: fix portable gui crashing clients in single player in spawn chunks
+
 1.22
 Resource generator config for times
 Death and home stone should use GlobalPos
@@ -9,6 +10,10 @@ Death and home stone should use GlobalPos
 //*******//
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
+
+4.12.4
+Scroll bar now works correctly in the smart crafting table
+Added search box to the smart crafting table
 
 4.12.3
 Fixed crash with smart crafting table trying to render ingredient when there is no recipe

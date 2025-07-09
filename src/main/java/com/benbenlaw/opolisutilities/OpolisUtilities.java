@@ -46,9 +46,7 @@ public class OpolisUtilities {
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP,
                 StartupBlockConfigFile.SPEC, "opolisutilities/blocks.toml");
 
-
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigFile.SPEC, "opolis_utilities.toml");
-
 
         ModItems.register(modEventBus);
         ModDataComponents.COMPONENTS.register(modEventBus);
