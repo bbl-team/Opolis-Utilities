@@ -1,0 +1,10 @@
+{
+  "values": {
+    "opolisutilities:mini_coal": {
+      "burn_time": 200
+    },
+    "opolisutilities:mini_charcoal": {
+      "burn_time": 200
+    }
+  }
+}

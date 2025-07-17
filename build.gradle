@@ -66,10 +66,8 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
     //JEI
-
     compileOnly "curse.maven:jei-238222:5606861"
     runtimeOnly "curse.maven:jei-238222:5606861"
-
 
     //Caveopolis 5.0.20
     compileOnly "curse.maven:caveopolis-mod-639186:5982032"

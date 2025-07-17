@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 
+@Deprecated(since = "4.12.5", forRemoval = true)
 public class MiniCoalItem extends Item {
 
     final boolean hasBurnTime;

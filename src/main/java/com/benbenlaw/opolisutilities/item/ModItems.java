@@ -18,10 +18,11 @@ public class ModItems {
             () -> new PortableGUIItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> MINI_COAL = ITEMS.register("mini_coal",
-            () -> new MiniCoalItem(true));
+            () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> MINI_CHARCOAL = ITEMS.register("mini_charcoal",
-            () -> new MiniCoalItem(true));
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> BASIC_LOOT_BOX = ITEMS.register("basic_loot_box",
             () -> new BasicLootBoxItem(new Item.Properties()));
 

@@ -11,6 +11,10 @@ Death and home stone should use GlobalPos
 UPDATE VERSION BEFORE PUSHING AND UPDATING
 //*******//
 
+4.12.5
+Changed Mini Coal and Mini Charcoal to use neoforge data maps for burn time
+Deprecated MiniCoalItem
+
 4.12.4
 Scroll bar now works correctly in the smart crafting table
 Added search box to the smart crafting table
